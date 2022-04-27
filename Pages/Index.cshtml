@@ -1,10 +1,30 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
 }
-
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Index Page</h1>
 </div>
+
+
+<h2>My Map</h2>
+<div id="map" class="map"></div>
+<script type="text/javascript">
+    var map = new ol.Map({
+    target: 'map',
+    layers: [
+        new ol.layer.Tile({
+        source: new ol.source.OSM()
+        })
+    ],
+    view: new ol.View({
+        center: ol.proj.fromLonLat([-2.575876, 53.371478]),
+        zoom: 10
+    })
+    });
+</script>
+
+</div>
+ 
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/test-hub.js"></script>

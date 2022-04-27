@@ -1,7 +1,37 @@
+using Foodbank_Project;
+using Foodbank_Project.Jobs;
+using Foodbank_Project.Jobs.Scraping;
+using Quartz;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeAreaFolder("Identity", "/Manage", "AtLeast21");
+});
+
+builder.Services.AddSignalR();
+
+builder.Services.AddQuartz(q =>
+{
+    q.UseMicrosoftDependencyInjectionJobFactory();
+
+    var giveFodJoobKey = new JobKey("giveFodJoobKey");
+    q.AddJob<GiveFoodAPIFoodBanks>(opts => opts.WithIdentity(giveFodJoobKey));
+    q.AddTrigger(opts => opts
+        .ForJob(giveFodJoobKey)
+        .WithIdentity("giveFoodJob-trigger")
+        .WithSimpleSchedule(x => x
+            .WithIntervalInHours(3)
+            .RepeatForever()));
+
+
+});
+
+builder.Services.AddQuartzHostedService(
+    q => q.WaitForJobsToComplete = true);
 
 var app = builder.Build();
 
@@ -13,10 +43,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();;
 
 app.UseAuthorization();
 
