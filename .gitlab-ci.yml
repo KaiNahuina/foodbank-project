@@ -37,6 +37,8 @@ build_docker:
       --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
       --destination "$CI_APPLICATION_REPOSITORY:$CI_APPLICATION_TAG"
       --destination "$CI_APPLICATION_REPOSITORY:latest"
+      --use-new-run # experimental
+      --snapshotMode=redo # experimental
 
 build:
     stage: build
@@ -49,17 +51,17 @@ build:
         - dotnet publish "Foodbank Project.csproj" -c debug -r linux-x64 --self-contained --no-restore
         - dotnet publish "Foodbank Project.csproj" -c release -r win-x64 --self-contained --no-restore
         - dotnet publish "Foodbank Project.csproj" -c release -r linux-x64 --self-contained --no-restore
-        - apt-get update
-        - apt-get install -y zip
-        - mkdir -p bin/final
-        - zip -r bin/final/foodbank_proj-$CI_COMMIT_REF_SLUG-debug-win-x64.zip bin/debug/net6.0/win-x64 
-        - zip -r bin/final/foodbank_proj-$CI_COMMIT_REF_SLUG-debug-linux-x64.zip bin/debug/net6.0/linux-x64 
-        - zip -r bin/final/foodbank_proj-$CI_COMMIT_REF_SLUG-release-win-x64.zip bin/release/net6.0/win-x64 
-        - zip -r bin/final/foodbank_proj-$CI_COMMIT_REF_SLUG-release-linux-x64.zip bin/release/net6.0/linux-x64 
+        #- apt-get update
+        #- apt-get install -y zip
+        #- mkdir -p bin/final
+        #- zip -r bin/final/foodbank_proj-$CI_COMMIT_REF_SLUG-debug-win-x64.zip bin/debug/net6.0/win-x64 
+        #- zip -r bin/final/foodbank_proj-$CI_COMMIT_REF_SLUG-debug-linux-x64.zip bin/debug/net6.0/linux-x64 
+        #- zip -r bin/final/foodbank_proj-$CI_COMMIT_REF_SLUG-release-win-x64.zip bin/release/net6.0/win-x64 
+        #- zip -r bin/final/foodbank_proj-$CI_COMMIT_REF_SLUG-release-linux-x64.zip bin/release/net6.0/linux-x64 
 
-    artifacts:
-        paths:
-            - bin/final
+    #artifacts:
+     #   paths:
+      #      - bin/final
 
 test:
     stage: test
