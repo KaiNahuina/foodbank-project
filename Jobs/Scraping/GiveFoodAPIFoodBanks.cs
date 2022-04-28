@@ -1,4 +1,6 @@
-﻿using Foodbank_Project.Models.Foodbank.External;
+﻿using Foodbank_Project.Models.Foodbank;
+using Foodbank_Project.Models.Foodbank.External;
+using Foodbank_Project.Models.Foodbank.Internal;
 using Quartz;
 using System.Diagnostics;
 using System.Net.Http.Headers;
@@ -17,7 +19,7 @@ namespace Foodbank_Project.Jobs.Scraping
         {
             _logger.LogInformation("Commencing GiveFood API Scraping job...");
             Stopwatch stopwatch = new Stopwatch();
-            List<Foodbank> foodbanks;
+            List<Models.Foodbank.External.Foodbank> foodbanks;
             // Stage 1
             {
                 HttpClient client = new HttpClient();
@@ -34,7 +36,7 @@ namespace Foodbank_Project.Jobs.Scraping
                     if (response.IsSuccessStatusCode)
                     {
                         stopwatch.Stop();
-                        foodbanks = await response.Content.ReadAsAsync<List<Foodbank>>();
+                        foodbanks = await response.Content.ReadAsAsync<List<Models.Foodbank.External.Foodbank>>();
                         _logger.LogInformation($"Finished gathering foodbank centres. Got {foodbanks.Count} in {stopwatch.ElapsedMilliseconds}ms");
                         response.Dispose();
                         client.Dispose();
@@ -56,7 +58,7 @@ namespace Foodbank_Project.Jobs.Scraping
             {
                 HttpClient client = new HttpClient();
                 HttpRequestMessage request;
-                Foodbank foodbank;
+                Models.Foodbank.External.Foodbank foodbank;
                 for (int i = 0; i < foodbanks.Count; i++)
                 {
                     foodbank = foodbanks[i];
@@ -74,7 +76,7 @@ namespace Foodbank_Project.Jobs.Scraping
                             HttpResponseMessage response = await client.SendAsync(request);
                             if (response.IsSuccessStatusCode)
                             {
-                                foodbanks[i].Merge(await response.Content.ReadAsAsync<Foodbank>());
+                                foodbanks[i].Merge(await response.Content.ReadAsAsync<Models.Foodbank.External.Foodbank>());
                                 stopwatch.Stop();
                                 _logger.LogInformation($"Succesfully added locations for {foodbank.Name}({foodbank.Urls.Self}) in {stopwatch.ElapsedMilliseconds}ms [{i + 1} of {foodbanks.Count}]");
                                 Thread.Sleep(100);
@@ -99,6 +101,12 @@ namespace Foodbank_Project.Jobs.Scraping
             }
             _logger.LogInformation("GiveFood API Scraping job finished");
 
+            var internalFoodbanks = new List<Models.Foodbank.Internal.Foodbank>();
+            foreach (var item in foodbanks)
+            {
+                internalFoodbanks.Add(FoodbankConverter.Converter(item));
+            }
+            // TODO Submit data to DB
         }
     }
 

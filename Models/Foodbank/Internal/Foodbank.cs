@@ -8,6 +8,8 @@ namespace Foodbank_Project.Models.Foodbank.Internal
 
         public string? Name { get; set; }
         public string? AltName { get; set; }
+        public string? Notes { get; set; }
+        public bool Protected { get; set; } = false;
         public string? Slug { get; set; }
         public string? Phone { get; set; }
         public string? SecondaryPhone { get; set; }

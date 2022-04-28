@@ -7,14 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages(options =>
 {
-    options.Conventions.AuthorizeAreaFolder("Identity", "/Manage", "AtLeast21");
+    //options.Conventions.AuthorizeAreaFolder("Identity", "/Manage", "AtLeast21");
 });
 
 builder.Services.AddDbContext<FoodbankContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Foodbanks")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-builder.Services.AddSignalR();
 
 builder.Services.AddQuartz(q =>
 {
@@ -28,12 +26,12 @@ builder.Services.AddQuartz(q =>
         .WithSimpleSchedule(x => x
             .WithIntervalInHours(3)
             .RepeatForever()));
-
-
 });
 
 builder.Services.AddQuartzHostedService(
     q => q.WaitForJobsToComplete = true);
+
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
