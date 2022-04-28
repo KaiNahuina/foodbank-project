@@ -8,24 +8,24 @@
 // Not exported from index.
 /** @private */
 export class AbortController implements AbortSignal {
-    private _isAborted: boolean = false;
     public onabort: (() => void) | null = null;
+    private _isAborted = false;
 
-    public abort(): void {
+    get signal(): AbortSignal {
+        return this;
+    }
+
+    get aborted() {
+        return this._isAborted;
+    }
+
+    public abort() {
         if (!this._isAborted) {
             this._isAborted = true;
             if (this.onabort) {
                 this.onabort();
             }
         }
-    }
-
-    get signal(): AbortSignal {
-        return this;
-    }
-
-    get aborted(): boolean {
-        return this._isAborted;
     }
 }
 

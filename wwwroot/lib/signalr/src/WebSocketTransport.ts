@@ -1,16 +1,18 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-import { HeaderNames } from "./HeaderNames";
-import { HttpClient } from "./HttpClient";
-import { MessageHeaders } from "./IHubProtocol";
-import { ILogger, LogLevel } from "./ILogger";
-import { ITransport, TransferFormat } from "./ITransport";
-import { WebSocketConstructor } from "./Polyfills";
-import { Arg, getDataDetail, getUserAgentHeader, Platform } from "./Utils";
+import {HeaderNames} from "./HeaderNames";
+import {HttpClient} from "./HttpClient";
+import {MessageHeaders} from "./IHubProtocol";
+import {ILogger, LogLevel} from "./ILogger";
+import {ITransport, TransferFormat} from "./ITransport";
+import {WebSocketConstructor} from "./Polyfills";
+import {Arg, getDataDetail, getUserAgentHeader, Platform} from "./Utils";
 
 /** @private */
 export class WebSocketTransport implements ITransport {
+    public onreceive: ((data: string | ArrayBuffer) => void) | null;
+    public onclose: ((error?: Error) => void) | null;
     private readonly _logger: ILogger;
     private readonly _accessTokenFactory: (() => string | Promise<string>) | undefined;
     private readonly _logMessageContent: boolean;
@@ -18,9 +20,6 @@ export class WebSocketTransport implements ITransport {
     private readonly _httpClient: HttpClient;
     private _webSocket?: WebSocket;
     private _headers: MessageHeaders;
-
-    public onreceive: ((data: string | ArrayBuffer) => void) | null;
-    public onclose: ((error?: Error) => void) | null;
 
     constructor(httpClient: HttpClient, accessTokenFactory: (() => string | Promise<string>) | undefined, logger: ILogger,
                 logMessageContent: boolean, webSocketConstructor: WebSocketConstructor, headers: MessageHeaders) {
@@ -35,7 +34,7 @@ export class WebSocketTransport implements ITransport {
         this._headers = headers;
     }
 
-    public async connect(url: string, transferFormat: TransferFormat): Promise<void> {
+    public async connect(url: string, transferFormat: TransferFormat) {
         Arg.isRequired(url, "url");
         Arg.isRequired(transferFormat, "transferFormat");
         Arg.isIn(transferFormat, TransferFormat, "transferFormat");
@@ -55,7 +54,7 @@ export class WebSocketTransport implements ITransport {
             let opened = false;
 
             if (Platform.isNode) {
-                const headers: {[k: string]: string} = {};
+                const headers: { [k: string]: string } = {};
                 const [name, value] = getUserAgentHeader();
                 headers[name] = value;
 
@@ -65,7 +64,7 @@ export class WebSocketTransport implements ITransport {
 
                 // Only pass headers when in non-browser environments
                 webSocket = new this._webSocketConstructor(url, undefined, {
-                    headers: { ...headers, ...this._headers },
+                    headers: {...headers, ...this._headers},
                 });
             }
 
@@ -121,9 +120,9 @@ export class WebSocketTransport implements ITransport {
                         error = event.error;
                     } else {
                         error = "WebSocket failed to connect. The connection could not be found on the server,"
-                        + " either the endpoint may not be a SignalR endpoint,"
-                        + " the connection ID is not present on the server, or there is a proxy blocking WebSockets."
-                        + " If you have multiple servers check that sticky sessions are enabled.";
+                            + " either the endpoint may not be a SignalR endpoint,"
+                            + " the connection ID is not present on the server, or there is a proxy blocking WebSockets."
+                            + " If you have multiple servers check that sticky sessions are enabled.";
                     }
 
                     reject(new Error(error));
@@ -132,7 +131,7 @@ export class WebSocketTransport implements ITransport {
         });
     }
 
-    public send(data: any): Promise<void> {
+    public send(data: any) {
         if (this._webSocket && this._webSocket.readyState === this._webSocketConstructor.OPEN) {
             this._logger.log(LogLevel.Trace, `(WebSockets transport) sending data. ${getDataDetail(data, this._logMessageContent)}.`);
             this._webSocket.send(data);
@@ -142,7 +141,7 @@ export class WebSocketTransport implements ITransport {
         return Promise.reject("WebSocket is not in the OPEN state");
     }
 
-    public stop(): Promise<void> {
+    public stop() {
         if (this._webSocket) {
             // Manually invoke onclose callback inline so we know the HttpConnection was closed properly before returning
             // This also solves an issue where websocket.onclose could take 18+ seconds to trigger during network disconnects
@@ -152,13 +151,16 @@ export class WebSocketTransport implements ITransport {
         return Promise.resolve();
     }
 
-    private _close(event?: CloseEvent | Error): void {
+    private _close(event?: CloseEvent | Error) {
         // webSocket will be null if the transport did not start successfully
         if (this._webSocket) {
             // Clear websocket handlers because we are considering the socket closed now
-            this._webSocket.onclose = () => {};
-            this._webSocket.onmessage = () => {};
-            this._webSocket.onerror = () => {};
+            this._webSocket.onclose = () => {
+            };
+            this._webSocket.onmessage = () => {
+            };
+            this._webSocket.onerror = () => {
+            };
             this._webSocket.close();
             this._webSocket = undefined;
         }

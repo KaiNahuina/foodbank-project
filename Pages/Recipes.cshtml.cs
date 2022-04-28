@@ -1,19 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿#region
 
-namespace Foodbank_Project.Pages
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+#endregion
+
+namespace Foodbank_Project.Pages;
+
+public class RecipesModel : PageModel
 {
-    public class RecipesModel : PageModel
+    public void OnGet()
     {
-        private readonly ILogger<RecipesModel> _logger;
-
-        public RecipesModel(ILogger<RecipesModel> logger)
-        {
-            _logger = logger;
-        }
-
-        public void OnGet()
-        {
-
-        }
     }
 }

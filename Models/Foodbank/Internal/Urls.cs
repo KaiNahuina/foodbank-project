@@ -1,16 +1,19 @@
-﻿using Newtonsoft.Json;
+﻿namespace Foodbank_Project.Models.Foodbank.Internal;
 
-namespace Foodbank_Project.Models.Foodbank.Internal
+public class Urls
 {
-    public class Urls
-    {
-        public int UrlsId { get; set; }
+    // ReSharper disable once UnusedMember.Global
+    public int UrlsId { get; set; }
 
-        public string? Homepage { get; set; }
-        public string? ShoppingList { get; set; }
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public string? Homepage { get; set; }
 
-        public int FoodbankId { get; set; }
-        public Foodbank? Foodbank { get; set; }
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public string? ShoppingList { get; set; }
 
-    }
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
+    public int FoodbankId { get; set; }
+
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
+    public Foodbank? Foodbank { get; set; }
 }

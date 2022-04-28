@@ -1,6 +1,6 @@
 default:
-    tags:
-        - docker
+  tags:
+    - docker
 
 include:
   - template: Auto-DevOps.gitlab-ci.yml
@@ -11,15 +11,15 @@ variables:
   CI_COMMIT_BRANCH: $CI_COMMIT_REF_SLUG
 
 security-code-scan-sast:
-    before_script:
-        - wget https://dot.net/v1/dotnet-install.sh
-        - bash ./dotnet-install.sh -c 6.0
+  before_script:
+    - wget https://dot.net/v1/dotnet-install.sh
+    - bash ./dotnet-install.sh -c 6.0
 
 build_docker:
   stage: build
   image:
     name: gcr.io/kaniko-project/executor:debug
-    entrypoint: [""]
+    entrypoint: [ "" ]
   script:
     - |
       if [[ -z "$CI_COMMIT_TAG" ]]; then
@@ -41,41 +41,41 @@ build_docker:
       --snapshotMode=redo # experimental
 
 build:
-    stage: build
-    image: mcr.microsoft.com/dotnet/sdk:6.0
-    services:
-        -
-    script:
-        - dotnet restore
-        - dotnet publish "Foodbank Project.csproj" -c debug -r win-x64 --self-contained --no-restore
-        - dotnet publish "Foodbank Project.csproj" -c debug -r linux-x64 --self-contained --no-restore
-        - dotnet publish "Foodbank Project.csproj" -c release -r win-x64 --self-contained --no-restore
-        - dotnet publish "Foodbank Project.csproj" -c release -r linux-x64 --self-contained --no-restore
-        #- apt-get update
-        #- apt-get install -y zip
-        #- mkdir -p bin/final
-        #- zip -r bin/final/foodbank_proj-$CI_COMMIT_REF_SLUG-debug-win-x64.zip bin/debug/net6.0/win-x64 
-        #- zip -r bin/final/foodbank_proj-$CI_COMMIT_REF_SLUG-debug-linux-x64.zip bin/debug/net6.0/linux-x64 
-        #- zip -r bin/final/foodbank_proj-$CI_COMMIT_REF_SLUG-release-win-x64.zip bin/release/net6.0/win-x64 
-        #- zip -r bin/final/foodbank_proj-$CI_COMMIT_REF_SLUG-release-linux-x64.zip bin/release/net6.0/linux-x64 
+  stage: build
+  image: mcr.microsoft.com/dotnet/sdk:6.0
+  services:
+    -
+  script:
+    - dotnet restore
+    - dotnet publish "Foodbank Project.csproj" -c debug -r win-x64 --self-contained --no-restore
+    - dotnet publish "Foodbank Project.csproj" -c debug -r linux-x64 --self-contained --no-restore
+    - dotnet publish "Foodbank Project.csproj" -c release -r win-x64 --self-contained --no-restore
+    - dotnet publish "Foodbank Project.csproj" -c release -r linux-x64 --self-contained --no-restore
+    #- apt-get update
+    #- apt-get install -y zip
+    #- mkdir -p bin/final
+    #- zip -r bin/final/foodbank_proj-$CI_COMMIT_REF_SLUG-debug-win-x64.zip bin/debug/net6.0/win-x64 
+    #- zip -r bin/final/foodbank_proj-$CI_COMMIT_REF_SLUG-debug-linux-x64.zip bin/debug/net6.0/linux-x64 
+    #- zip -r bin/final/foodbank_proj-$CI_COMMIT_REF_SLUG-release-win-x64.zip bin/release/net6.0/win-x64 
+    #- zip -r bin/final/foodbank_proj-$CI_COMMIT_REF_SLUG-release-linux-x64.zip bin/release/net6.0/linux-x64 
 
     #artifacts:
-     #   paths:
-      #      - bin/final
+    #   paths:
+    #      - bin/final
 
 test:
-    stage: test
-    image: mcr.microsoft.com/dotnet/sdk:6.0
-    services:
-        -
-    script: 
-        - dotnet restore
-        - mkdir -p bin/tests
-        - dotnet test --test-adapter-path:. --no-restore --logger:"junit;LogFilePath=bin/tests/test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
-    artifacts:
-        when: always
-        paths:
-            - 'Foodbank Project Tests/bin/tests/test-result.xml'
-        reports:
-            junit:
-                - 'Foodbank Project Tests/bin/tests/test-result.xml'
+  stage: test
+  image: mcr.microsoft.com/dotnet/sdk:6.0
+  services:
+    -
+  script:
+    - dotnet restore
+    - mkdir -p bin/tests
+    - dotnet test --test-adapter-path:. --no-restore --logger:"junit;LogFilePath=bin/tests/test-result.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
+  artifacts:
+    when: always
+    paths:
+      - 'Foodbank Project Tests/bin/tests/test-result.xml'
+    reports:
+      junit:
+        - 'Foodbank Project Tests/bin/tests/test-result.xml'

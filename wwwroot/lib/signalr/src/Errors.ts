@@ -1,16 +1,15 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-import { HttpTransportType } from "./ITransport";
+import {HttpTransportType} from "./ITransport";
 
 /** Error thrown when an HTTP request fails. */
 export class HttpError extends Error {
     // @ts-ignore: Intentionally unused.
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    private __proto__: Error;
-
     /** The HTTP status code represented by this error. */
     public statusCode: number;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    private __proto__: Error;
 
     /** Constructs a new instance of {@link @microsoft/signalr.HttpError}.
      *
@@ -38,7 +37,7 @@ export class TimeoutError extends Error {
      *
      * @param {string} errorMessage A descriptive error message.
      */
-    constructor(errorMessage: string = "A timeout occurred.") {
+    constructor(errorMessage = "A timeout occurred.") {
         const trueProto = new.target.prototype;
         super(errorMessage);
 
@@ -58,7 +57,7 @@ export class AbortError extends Error {
      *
      * @param {string} errorMessage A descriptive error message.
      */
-    constructor(errorMessage: string = "An abort occurred.") {
+    constructor(errorMessage = "An abort occurred.") {
         const trueProto = new.target.prototype;
         super(errorMessage);
 
@@ -72,14 +71,12 @@ export class AbortError extends Error {
 /** @private */
 export class UnsupportedTransportError extends Error {
     // @ts-ignore: Intentionally unused.
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    private __proto__: Error;
-
     /** The {@link @microsoft/signalr.HttpTransportType} this error occured on. */
     public transport: HttpTransportType;
-
     /** The type name of this error. */
     public errorType: string;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    private __proto__: Error;
 
     /** Constructs a new instance of {@link @microsoft/signalr.UnsupportedTransportError}.
      *
@@ -102,14 +99,12 @@ export class UnsupportedTransportError extends Error {
 /** @private */
 export class DisabledTransportError extends Error {
     // @ts-ignore: Intentionally unused.
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    private __proto__: Error;
-
     /** The {@link @microsoft/signalr.HttpTransportType} this error occured on. */
     public transport: HttpTransportType;
-
     /** The type name of this error. */
     public errorType: string;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    private __proto__: Error;
 
     /** Constructs a new instance of {@link @microsoft/signalr.DisabledTransportError}.
      *
@@ -132,14 +127,12 @@ export class DisabledTransportError extends Error {
 /** @private */
 export class FailedToStartTransportError extends Error {
     // @ts-ignore: Intentionally unused.
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    private __proto__: Error;
-
     /** The {@link @microsoft/signalr.HttpTransportType} this error occured on. */
     public transport: HttpTransportType;
-
     /** The type name of this error. */
     public errorType: string;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    private __proto__: Error;
 
     /** Constructs a new instance of {@link @microsoft/signalr.FailedToStartTransportError}.
      *
@@ -162,11 +155,10 @@ export class FailedToStartTransportError extends Error {
 /** @private */
 export class FailedToNegotiateWithServerError extends Error {
     // @ts-ignore: Intentionally unused.
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    private __proto__: Error;
-
     /** The type name of this error. */
     public errorType: string;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    private __proto__: Error;
 
     /** Constructs a new instance of {@link @microsoft/signalr.FailedToNegotiateWithServerError}.
      *
@@ -187,11 +179,10 @@ export class FailedToNegotiateWithServerError extends Error {
 /** @private */
 export class AggregateErrors extends Error {
     // @ts-ignore: Intentionally unused.
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    private __proto__: Error;
-
     /** The collection of errors this error is aggregating. */
     public innerErrors: Error[];
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    private __proto__: Error;
 
     /** Constructs a new instance of {@link @microsoft/signalr.AggregateErrors}.
      *

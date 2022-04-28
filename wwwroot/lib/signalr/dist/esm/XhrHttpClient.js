@@ -1,13 +1,15 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-import { AbortError, HttpError, TimeoutError } from "./Errors";
-import { HttpClient, HttpResponse } from "./HttpClient";
-import { LogLevel } from "./ILogger";
+import {AbortError, HttpError, TimeoutError} from "./Errors";
+import {HttpClient, HttpResponse} from "./HttpClient";
+import {LogLevel} from "./ILogger";
+
 export class XhrHttpClient extends HttpClient {
     constructor(logger) {
         super();
         this._logger = logger;
     }
+
     /** @inheritDoc */
     send(request) {
         // Check that abort was not signaled before calling send
@@ -30,9 +32,7 @@ export class XhrHttpClient extends HttpClient {
             const headers = request.headers;
             if (headers) {
                 Object.keys(headers)
-                    .forEach((header) => {
-                    xhr.setRequestHeader(header, headers[header]);
-                });
+                    .forEach(header => xhr.setRequestHeader(header, headers[header]));
             }
             if (request.responseType) {
                 xhr.responseType = request.responseType;
@@ -52,8 +52,7 @@ export class XhrHttpClient extends HttpClient {
                 }
                 if (xhr.status >= 200 && xhr.status < 300) {
                     resolve(new HttpResponse(xhr.status, xhr.statusText, xhr.response || xhr.responseText));
-                }
-                else {
+                } else {
                     reject(new HttpError(xhr.response || xhr.responseText || xhr.statusText, xhr.status));
                 }
             };
@@ -69,4 +68,5 @@ export class XhrHttpClient extends HttpClient {
         });
     }
 }
+
 //# sourceMappingURL=XhrHttpClient.js.map

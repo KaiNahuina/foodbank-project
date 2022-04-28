@@ -1,31 +1,33 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-import { HttpClient } from "./HttpClient";
-import { ILogger, LogLevel } from "./ILogger";
-import { NullLogger } from "./Loggers";
-import { IStreamSubscriber, ISubscription } from "./Stream";
-import { Subject } from "./Subject";
-import { IHttpConnectionOptions } from "./IHttpConnectionOptions";
+import {HttpClient} from "./HttpClient";
+import {ILogger, LogLevel} from "./ILogger";
+import {NullLogger} from "./Loggers";
+import {IStreamSubscriber, ISubscription} from "./Stream";
+import {Subject} from "./Subject";
+import {IHttpConnectionOptions} from "./IHttpConnectionOptions";
 
 // Version token that will be replaced by the prepack command
 /** The version of the SignalR client. */
 
 export const VERSION: string = "0.0.0-DEV_BUILD";
+
 /** @private */
 export class Arg {
-    public static isRequired(val: any, name: string): void {
+    public static isRequired(val: any, name: string) {
         if (val === null || val === undefined) {
             throw new Error(`The '${name}' argument is required.`);
         }
     }
-    public static isNotEmpty(val: string, name: string): void {
+
+    public static isNotEmpty(val: string, name: string) {
         if (!val || val.match(/^\s*$/)) {
             throw new Error(`The '${name}' argument should not be empty.`);
         }
     }
 
-    public static isIn(val: any, values: any, name: string): void {
+    public static isIn(val: any, values: any, name: string) {
         // TypeScript enums have keys for **both** the name and the value of each enum member on the type itself.
         if (!(val in values)) {
             throw new Error(`Unknown ${name} value: ${val}.`);
@@ -36,29 +38,29 @@ export class Arg {
 /** @private */
 export class Platform {
     // react-native has a window but no document so we should check both
-    public static get isBrowser(): boolean {
+    public static get isBrowser() {
         return typeof window === "object" && typeof window.document === "object";
     }
 
     // WebWorkers don't have a window object so the isBrowser check would fail
-    public static get isWebWorker(): boolean {
+    public static get isWebWorker() {
         return typeof self === "object" && "importScripts" in self;
     }
 
     // react-native has a window but no document
-    static get isReactNative(): boolean {
+    static get isReactNative() {
         return typeof window === "object" && typeof window.document === "undefined";
     }
 
     // Node apps shouldn't have a window object, but WebWorkers don't either
     // so we need to check for both WebWorker and window
-    public static get isNode(): boolean {
+    public static get isNode() {
         return !this.isBrowser && !this.isWebWorker && !this.isReactNative;
     }
 }
 
 /** @private */
-export function getDataDetail(data: any, includeContent: boolean): string {
+export function getDataDetail(data: any, includeContent: boolean) {
     let detail = "";
     if (isArrayBuffer(data)) {
         detail = `Binary data of length ${data.byteLength}`;
@@ -80,7 +82,7 @@ export function formatArrayBuffer(data: ArrayBuffer): string {
 
     // Uint8Array.map only supports returning another Uint8Array?
     let str = "";
-    view.forEach((num) => {
+    view.forEach(num => {
         const pad = num < 16 ? "0" : "";
         str += `0x${pad}${num.toString(16)} `;
     });
@@ -95,13 +97,13 @@ export function isArrayBuffer(val: any): val is ArrayBuffer {
     return val && typeof ArrayBuffer !== "undefined" &&
         (val instanceof ArrayBuffer ||
             // Sometimes we get an ArrayBuffer that doesn't satisfy instanceof
-            (val.constructor && val.constructor.name === "ArrayBuffer"));
+            val.constructor && val.constructor.name === "ArrayBuffer");
 }
 
 /** @private */
 export async function sendMessage(logger: ILogger, transportName: string, httpClient: HttpClient, url: string, accessTokenFactory: (() => string | Promise<string>) | undefined,
-                                  content: string | ArrayBuffer, options: IHttpConnectionOptions): Promise<void> {
-    let headers: {[k: string]: string} = {};
+                                  content: string | ArrayBuffer, options: IHttpConnectionOptions) {
+    let headers: { [k: string]: string } = {};
     if (accessTokenFactory) {
         const token = await accessTokenFactory();
         if (token) {
@@ -119,7 +121,7 @@ export async function sendMessage(logger: ILogger, transportName: string, httpCl
     const responseType = isArrayBuffer(content) ? "arraybuffer" : "text";
     const response = await httpClient.post(url, {
         content,
-        headers: { ...headers, ...options.headers},
+        headers: {...headers, ...options.headers},
         responseType,
         timeout: options.timeout,
         withCredentials: options.withCredentials,
@@ -155,22 +157,21 @@ export class SubjectSubscription<T> implements ISubscription<T> {
         this._observer = observer;
     }
 
-    public dispose(): void {
+    public dispose() {
         const index: number = this._subject.observers.indexOf(this._observer);
         if (index > -1) {
             this._subject.observers.splice(index, 1);
         }
 
         if (this._subject.observers.length === 0 && this._subject.cancelCallback) {
-            this._subject.cancelCallback().catch((_) => { });
+            this._subject.cancelCallback().catch(_ => {
+            });
         }
     }
 }
 
 /** @private */
 export class ConsoleLogger implements ILogger {
-    private readonly _minLevel: LogLevel;
-
     // Public for testing purposes.
     public out: {
         error(message: any): void,
@@ -178,13 +179,14 @@ export class ConsoleLogger implements ILogger {
         info(message: any): void,
         log(message: any): void,
     };
+    private readonly _minLevel: LogLevel;
 
     constructor(minimumLogLevel: LogLevel) {
         this._minLevel = minimumLogLevel;
         this.out = console;
     }
 
-    public log(logLevel: LogLevel, message: string): void {
+    public log(logLevel: LogLevel, message: string) {
         if (logLevel >= this._minLevel) {
             const msg = `[${new Date().toISOString()}] ${LogLevel[logLevel]}: ${message}`;
             switch (logLevel) {
@@ -213,13 +215,13 @@ export function getUserAgentHeader(): [string, string] {
     if (Platform.isNode) {
         userAgentHeaderName = "User-Agent";
     }
-    return [ userAgentHeaderName, constructUserAgent(VERSION, getOsName(), getRuntime(), getRuntimeVersion()) ];
+    return [userAgentHeaderName, constructUserAgent(VERSION, getOsName(), getRuntime(), getRuntimeVersion())];
 }
 
 /** @private */
-export function constructUserAgent(version: string, os: string, runtime: string, runtimeVersion: string | undefined): string {
+export function constructUserAgent(version: string, os: string, runtime: string, runtimeVersion: string | undefined) {
     // Microsoft SignalR/[Version] ([Detailed Version]; [Operating System]; [Runtime]; [Runtime Version])
-    let userAgent: string = "Microsoft SignalR/";
+    let userAgent = "Microsoft SignalR/";
 
     const majorAndMinor = version.split(".");
     userAgent += `${majorAndMinor[0]}.${majorAndMinor[1]}`;
@@ -244,7 +246,8 @@ export function constructUserAgent(version: string, os: string, runtime: string,
 }
 
 // eslint-disable-next-line spaced-comment
-/*#__PURE__*/ function getOsName(): string {
+/*#__PURE__*/
+function getOsName() {
     if (Platform.isNode) {
         switch (process.platform) {
             case "win32":
@@ -262,14 +265,15 @@ export function constructUserAgent(version: string, os: string, runtime: string,
 }
 
 // eslint-disable-next-line spaced-comment
-/*#__PURE__*/ function getRuntimeVersion(): string | undefined {
+/*#__PURE__*/
+function getRuntimeVersion(): string | undefined {
     if (Platform.isNode) {
         return process.versions.node;
     }
     return undefined;
 }
 
-function getRuntime(): string {
+function getRuntime() {
     if (Platform.isNode) {
         return "NodeJS";
     } else {

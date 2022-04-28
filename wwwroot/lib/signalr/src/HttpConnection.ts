@@ -1,18 +1,25 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-import { DefaultHttpClient } from "./DefaultHttpClient";
-import { AggregateErrors, DisabledTransportError, FailedToNegotiateWithServerError, FailedToStartTransportError, HttpError, UnsupportedTransportError } from "./Errors";
-import { HeaderNames } from "./HeaderNames";
-import { HttpClient } from "./HttpClient";
-import { IConnection } from "./IConnection";
-import { IHttpConnectionOptions } from "./IHttpConnectionOptions";
-import { ILogger, LogLevel } from "./ILogger";
-import { HttpTransportType, ITransport, TransferFormat } from "./ITransport";
-import { LongPollingTransport } from "./LongPollingTransport";
-import { ServerSentEventsTransport } from "./ServerSentEventsTransport";
-import { Arg, createLogger, getUserAgentHeader, Platform } from "./Utils";
-import { WebSocketTransport } from "./WebSocketTransport";
+import {DefaultHttpClient} from "./DefaultHttpClient";
+import {
+    AggregateErrors,
+    DisabledTransportError,
+    FailedToNegotiateWithServerError,
+    FailedToStartTransportError,
+    HttpError,
+    UnsupportedTransportError
+} from "./Errors";
+import {HeaderNames} from "./HeaderNames";
+import {HttpClient} from "./HttpClient";
+import {IConnection} from "./IConnection";
+import {IHttpConnectionOptions} from "./IHttpConnectionOptions";
+import {ILogger, LogLevel} from "./ILogger";
+import {HttpTransportType, ITransport, TransferFormat} from "./ITransport";
+import {LongPollingTransport} from "./LongPollingTransport";
+import {ServerSentEventsTransport} from "./ServerSentEventsTransport";
+import {Arg, createLogger, getUserAgentHeader, Platform} from "./Utils";
+import {WebSocketTransport} from "./WebSocketTransport";
 
 /** @private */
 const enum ConnectionState {
@@ -43,29 +50,26 @@ const MAX_REDIRECTS = 100;
 
 /** @private */
 export class HttpConnection implements IConnection {
-    private _connectionState: ConnectionState;
+    public readonly features: any = {};
     // connectionStarted is tracked independently from connectionState, so we can check if the
+    public baseUrl: string;
+    public connectionId?: string;
+    public onreceive: ((data: string | ArrayBuffer) => void) | null;
+    public onclose: ((e?: Error) => void) | null;
+    // Needs to not start with _ to be available for tests
+    private _connectionState: ConnectionState;
     // connection ever did successfully transition from connecting to connected before disconnecting.
     private _connectionStarted: boolean;
     private readonly _httpClient: HttpClient;
     private readonly _logger: ILogger;
     private readonly _options: IHttpConnectionOptions;
-    // Needs to not start with _ to be available for tests
     // eslint-disable-next-line @typescript-eslint/naming-convention
     private transport?: ITransport;
     private _startInternalPromise?: Promise<void>;
     private _stopPromise?: Promise<void>;
-    private _stopPromiseResolver: (value?: PromiseLike<void>) => void = () => {};
     private _stopError?: Error;
     private _accessTokenFactory?: () => string | Promise<string>;
     private _sendQueue?: TransportSendQueue;
-
-    public readonly features: any = {};
-    public baseUrl: string;
-    public connectionId?: string;
-    public onreceive: ((data: string | ArrayBuffer) => void) | null;
-    public onclose: ((e?: Error) => void) | null;
-
     private readonly _negotiateVersion: number = 1;
 
     constructor(url: string, options: IHttpConnectionOptions = {}) {
@@ -120,7 +124,9 @@ export class HttpConnection implements IConnection {
     }
 
     public start(): Promise<void>;
+
     public start(transferFormat: TransferFormat): Promise<void>;
+
     public async start(transferFormat?: TransferFormat): Promise<void> {
         transferFormat = transferFormat || TransferFormat.Binary;
 
@@ -157,7 +163,7 @@ export class HttpConnection implements IConnection {
         this._connectionStarted = true;
     }
 
-    public send(data: string | ArrayBuffer): Promise<void> {
+    public send(data: string | ArrayBuffer) {
         if (this._connectionState !== ConnectionState.Connected) {
             return Promise.reject(new Error("Cannot send data if the connection is not in the 'Connected' State."));
         }
@@ -170,7 +176,7 @@ export class HttpConnection implements IConnection {
         return this._sendQueue.send(data);
     }
 
-    public async stop(error?: Error): Promise<void> {
+    public async stop(error?: Error) {
         if (this._connectionState === ConnectionState.Disconnected) {
             this._logger.log(LogLevel.Debug, `Call to HttpConnection.stop(${error}) ignored because the connection is already in the disconnected state.`);
             return Promise.resolve();
@@ -183,7 +189,7 @@ export class HttpConnection implements IConnection {
 
         this._connectionState = ConnectionState.Disconnecting;
 
-        this._stopPromise = new Promise((resolve) => {
+        this._stopPromise = new Promise(resolve => {
             // Don't complete stop() until stopConnection() completes.
             this._stopPromiseResolver = resolve;
         });
@@ -193,7 +199,10 @@ export class HttpConnection implements IConnection {
         await this._stopPromise;
     }
 
-    private async _stopInternal(error?: Error): Promise<void> {
+    private _stopPromiseResolver: (value?: PromiseLike<void>) => void = () => {
+    };
+
+    private async _stopInternal(error?: Error) {
         // Set error as soon as possible otherwise there is a race between
         // the transport closing and providing an error and the error from a close message
         // We would prefer the close message error.
@@ -305,8 +314,8 @@ export class HttpConnection implements IConnection {
         }
     }
 
-    private async _getNegotiationResponse(url: string): Promise<INegotiateResponse> {
-        const headers: {[k: string]: string} = {};
+    private async _getNegotiationResponse(url: string) {
+        const headers: { [k: string]: string } = {};
         if (this._accessTokenFactory) {
             const token = await this._accessTokenFactory();
             if (token) {
@@ -322,7 +331,7 @@ export class HttpConnection implements IConnection {
         try {
             const response = await this._httpClient.post(negotiateUrl, {
                 content: "",
-                headers: { ...headers, ...this._options.headers },
+                headers: {...headers, ...this._options.headers},
                 timeout: this._options.timeout,
                 withCredentials: this._options.withCredentials,
             });
@@ -370,9 +379,9 @@ export class HttpConnection implements IConnection {
             return;
         }
 
-        const transportExceptions: any[] = [];
+        const transportExceptions = [];
         const transports = negotiateResponse.availableTransports || [];
-        let negotiate: INegotiateResponse | undefined = negotiateResponse;
+        let negotiate = negotiateResponse;
         for (const endpoint of transports) {
             const transportOrError = this._resolveTransportOrError(endpoint, requestedTransport, requestedTransferFormat);
             if (transportOrError instanceof Error) {
@@ -432,9 +441,9 @@ export class HttpConnection implements IConnection {
         }
     }
 
-    private _startTransport(url: string, transferFormat: TransferFormat): Promise<void> {
+    private _startTransport(url: string, transferFormat: TransferFormat) {
         this.transport!.onreceive = this.onreceive;
-        this.transport!.onclose = (e) => this._stopConnection(e);
+        this.transport!.onclose = e => this._stopConnection(e);
         return this.transport!.connect(url, transferFormat);
     }
 
@@ -445,10 +454,10 @@ export class HttpConnection implements IConnection {
             return new Error(`Skipping transport '${endpoint.transport}' because it is not supported by this client.`);
         } else {
             if (transportMatches(requestedTransport, transport)) {
-                const transferFormats = endpoint.transferFormats.map((s) => TransferFormat[s]);
+                const transferFormats = endpoint.transferFormats.map(s => TransferFormat[s]);
                 if (transferFormats.indexOf(requestedTransferFormat) >= 0) {
-                    if ((transport === HttpTransportType.WebSockets && !this._options.WebSocket) ||
-                        (transport === HttpTransportType.ServerSentEvents && !this._options.EventSource)) {
+                    if (transport === HttpTransportType.WebSockets && !this._options.WebSocket ||
+                        transport === HttpTransportType.ServerSentEvents && !this._options.EventSource) {
                         this._logger.log(LogLevel.Debug, `Skipping transport '${HttpTransportType[transport]}' because it is not supported in your environment.'`);
                         return new UnsupportedTransportError(`'${HttpTransportType[transport]}' is not supported in your environment.`, transport);
                     } else {
@@ -471,10 +480,10 @@ export class HttpConnection implements IConnection {
     }
 
     private _isITransport(transport: any): transport is ITransport {
-        return transport && typeof (transport) === "object" && "connect" in transport;
+        return transport && typeof transport === "object" && "connect" in transport;
     }
 
-    private _stopConnection(error?: Error): void {
+    private _stopConnection(error?: Error) {
         this._logger.log(LogLevel.Debug, `HttpConnection.stopConnection(${error}) called while in state ${this._connectionState}.`);
 
         this.transport = undefined;
@@ -506,9 +515,7 @@ export class HttpConnection implements IConnection {
         }
 
         if (this._sendQueue) {
-            this._sendQueue.stop().catch((e) => {
-                this._logger.log(LogLevel.Error, `TransportSendQueue.stop() threw error '${e}'.`);
-            });
+            this._sendQueue.stop().catch(e => this._logger.log(LogLevel.Error, `TransportSendQueue.stop() threw error '${e}'.`));
             this._sendQueue = undefined;
         }
 
@@ -527,7 +534,7 @@ export class HttpConnection implements IConnection {
         }
     }
 
-    private _resolveUrl(url: string): string {
+    private _resolveUrl(url: string) {
         // startsWith is not supported in IE
         if (url.lastIndexOf("https://", 0) === 0 || url.lastIndexOf("http://", 0) === 0) {
             return url;
@@ -567,14 +574,14 @@ export class HttpConnection implements IConnection {
 }
 
 function transportMatches(requestedTransport: HttpTransportType | undefined, actualTransport: HttpTransportType) {
-    return !requestedTransport || ((actualTransport & requestedTransport) !== 0);
+    return !requestedTransport || (actualTransport & requestedTransport) !== 0;
 }
 
 /** @private */
 export class TransportSendQueue {
-    private _buffer: any[] = [];
+    private _buffer = [];
     private _sendBufferedData: PromiseSource;
-    private _executing: boolean = true;
+    private _executing = true;
     private _transportResult?: PromiseSource;
     private _sendLoopPromise: Promise<void>;
 
@@ -585,7 +592,19 @@ export class TransportSendQueue {
         this._sendLoopPromise = this._sendLoop();
     }
 
-    public send(data: string | ArrayBuffer): Promise<void> {
+    private static _concatBuffers(arrayBuffers: ArrayBuffer[]) {
+        const totalLength = arrayBuffers.map(b => b.byteLength).reduce((a, b) => a + b);
+        const result = new Uint8Array(totalLength);
+        let offset = 0;
+        for (const item of arrayBuffers) {
+            result.set(new Uint8Array(item), offset);
+            offset += item.byteLength;
+        }
+
+        return result.buffer;
+    }
+
+    public send(data: string | ArrayBuffer) {
         this._bufferData(data);
         if (!this._transportResult) {
             this._transportResult = new PromiseSource();
@@ -593,22 +612,22 @@ export class TransportSendQueue {
         return this._transportResult.promise;
     }
 
-    public stop(): Promise<void> {
+    public stop() {
         this._executing = false;
         this._sendBufferedData.resolve();
         return this._sendLoopPromise;
     }
 
-    private _bufferData(data: string | ArrayBuffer): void {
-        if (this._buffer.length && typeof(this._buffer[0]) !== typeof(data)) {
-            throw new Error(`Expected data to be of type ${typeof(this._buffer)} but was of type ${typeof(data)}`);
+    private _bufferData(data: string | ArrayBuffer) {
+        if (this._buffer.length && typeof this._buffer[0] !== typeof data) {
+            throw new Error(`Expected data to be of type ${typeof this._buffer} but was of type ${typeof data}`);
         }
 
         this._buffer.push(data);
         this._sendBufferedData.resolve();
     }
 
-    private async _sendLoop(): Promise<void> {
+    private async _sendLoop() {
         while (true) {
             await this._sendBufferedData.promise;
 
@@ -625,7 +644,7 @@ export class TransportSendQueue {
             const transportResult = this._transportResult!;
             this._transportResult = undefined;
 
-            const data = typeof(this._buffer[0]) === "string" ?
+            const data = typeof this._buffer[0] === "string" ?
                 this._buffer.join("") :
                 TransportSendQueue._concatBuffers(this._buffer);
 
@@ -639,34 +658,22 @@ export class TransportSendQueue {
             }
         }
     }
-
-    private static _concatBuffers(arrayBuffers: ArrayBuffer[]): ArrayBuffer {
-        const totalLength = arrayBuffers.map((b) => b.byteLength).reduce((a, b) => a + b);
-        const result = new Uint8Array(totalLength);
-        let offset = 0;
-        for (const item of arrayBuffers) {
-            result.set(new Uint8Array(item), offset);
-            offset += item.byteLength;
-        }
-
-        return result.buffer;
-    }
 }
 
 class PromiseSource {
+    public promise: Promise<void>;
     private _resolver?: () => void;
     private _rejecter!: (reason?: any) => void;
-    public promise: Promise<void>;
 
     constructor() {
         this.promise = new Promise((resolve, reject) => [this._resolver, this._rejecter] = [resolve, reject]);
     }
 
-    public resolve(): void {
+    public resolve() {
         this._resolver!();
     }
 
-    public reject(reason?: any): void {
+    public reject(reason?: any) {
         this._rejecter!(reason);
     }
 }

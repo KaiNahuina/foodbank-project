@@ -1,8 +1,8 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-import { IStreamResult, IStreamSubscriber, ISubscription } from "./Stream";
-import { SubjectSubscription } from "./Utils";
+import {IStreamResult, IStreamSubscriber, ISubscription} from "./Stream";
+import {SubjectSubscription} from "./Utils";
 
 /** Stream implementation to stream items to the server. */
 export class Subject<T> implements IStreamResult<T> {
@@ -16,13 +16,13 @@ export class Subject<T> implements IStreamResult<T> {
         this.observers = [];
     }
 
-    public next(item: T): void {
+    public next(item: T) {
         for (const observer of this.observers) {
             observer.next(item);
         }
     }
 
-    public error(err: any): void {
+    public error(err: any) {
         for (const observer of this.observers) {
             if (observer.error) {
                 observer.error(err);
@@ -30,7 +30,7 @@ export class Subject<T> implements IStreamResult<T> {
         }
     }
 
-    public complete(): void {
+    public complete() {
         for (const observer of this.observers) {
             if (observer.complete) {
                 observer.complete();

@@ -1,11 +1,11 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-import { HttpClient } from "./HttpClient";
-import { MessageHeaders } from "./IHubProtocol";
-import { ILogger, LogLevel } from "./ILogger";
-import { HttpTransportType, ITransport } from "./ITransport";
-import { EventSourceConstructor, WebSocketConstructor } from "./Polyfills";
+import {HttpClient} from "./HttpClient";
+import {MessageHeaders} from "./IHubProtocol";
+import {ILogger, LogLevel} from "./ILogger";
+import {HttpTransportType, ITransport} from "./ITransport";
+import {EventSourceConstructor, WebSocketConstructor} from "./Polyfills";
 
 /** Options provided to the 'withUrl' method on {@link @microsoft/signalr.HubConnectionBuilder} to configure options for the HTTP-based transports. */
 export interface IHttpConnectionOptions {
@@ -25,39 +25,28 @@ export interface IHttpConnectionOptions {
      * level (or higher).
      */
     logger?: ILogger | LogLevel;
-
-    /** A function that provides an access token required for HTTP Bearer authentication.
-     *
-     * @returns {string | Promise<string>} A string containing the access token, or a Promise that resolves to a string containing the access token.
-     */
-    accessTokenFactory?(): string | Promise<string>;
-
     /** A boolean indicating if message content should be logged.
      *
      * Message content can contain sensitive user data, so this is disabled by default.
      */
     logMessageContent?: boolean;
-
     /** A boolean indicating if negotiation should be skipped.
      *
      * Negotiation can only be skipped when the {@link @microsoft/signalr.IHttpConnectionOptions.transport} property is set to 'HttpTransportType.WebSockets'.
      */
     skipNegotiation?: boolean;
-
     // Used for unit testing and code spelunkers
     /** A constructor that can be used to create a WebSocket.
      *
      * @internal
      */
     WebSocket?: WebSocketConstructor;
-
     // Used for unit testing and code spelunkers
     /** A constructor that can be used to create an EventSource.
      *
      * @internal
      */
     EventSource?: EventSourceConstructor;
-
     /**
      * Default value is 'true'.
      * This controls whether credentials such as cookies are sent in cross-site requests.
@@ -65,7 +54,6 @@ export interface IHttpConnectionOptions {
      * Cookies are used by many load-balancers for sticky sessions which is required when your app is deployed with multiple servers.
      */
     withCredentials?: boolean;
-
     /**
      * Default value is 100,000 milliseconds.
      * Timeout to apply to Http requests.
@@ -73,4 +61,10 @@ export interface IHttpConnectionOptions {
      * This will not apply to Long Polling poll requests, EventSource, or WebSockets.
      */
     timeout?: number;
+
+    /** A function that provides an access token required for HTTP Bearer authentication.
+     *
+     * @returns {string | Promise<string>} A string containing the access token, or a Promise that resolves to a string containing the access token.
+     */
+    accessTokenFactory?(): string | Promise<string>;
 }

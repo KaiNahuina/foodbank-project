@@ -1,113 +1,116 @@
-﻿using Foodbank_Project.Models.Foodbank;
-using Foodbank_Project.Models.Foodbank.External;
-using Foodbank_Project.Models.Foodbank.Internal;
-using Quartz;
+﻿#region
+
 using System.Diagnostics;
 using System.Net.Http.Headers;
+using Foodbank_Project.Models.Foodbank;
+using Foodbank_Project.Models.Foodbank.Internal;
+using Quartz;
+using Foodbank = Foodbank_Project.Models.Foodbank.External.Foodbank;
 
-namespace Foodbank_Project.Jobs.Scraping
+#endregion
+
+namespace Foodbank_Project.Jobs.Scraping;
+
+// ReSharper disable once ClassNeverInstantiated.Global
+public class GiveFoodApiFoodBanks : IJob
 {
-    public class GiveFoodAPIFoodBanks : IJob
-    {
-        private readonly ILogger<GiveFoodAPIFoodBanks> _logger;
+    private readonly ILogger<GiveFoodApiFoodBanks> _logger;
 
-        public GiveFoodAPIFoodBanks(ILogger<GiveFoodAPIFoodBanks> logger)
+    public GiveFoodApiFoodBanks(ILogger<GiveFoodApiFoodBanks> logger)
+    {
+        _logger = logger;
+    }
+
+    public async Task Execute(IJobExecutionContext context)
+    {
+        _logger.LogInformation("Commencing GiveFood API Scraping job...");
+        var stopwatch = new Stopwatch();
+        List<Foodbank> foodbanks;
+        // Stage 1
         {
-            _logger = logger;
-        }
-        public async Task Execute(IJobExecutionContext context)
-        {
-            _logger.LogInformation("Commencing GiveFood API Scraping job...");
-            Stopwatch stopwatch = new Stopwatch();
-            List<Models.Foodbank.External.Foodbank> foodbanks;
-            // Stage 1
+            var client = new HttpClient();
+            client.BaseAddress = new Uri("https://www.givefood.org.uk/api/2/foodbanks/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json")
+            );
+
+            try
             {
-                HttpClient client = new HttpClient();
-                client.BaseAddress = new Uri("https://www.givefood.org.uk/api/2/foodbanks/");
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(
+                stopwatch.Start();
+                var response = await client.GetAsync("");
+                if (response.IsSuccessStatusCode)
+                {
+                    stopwatch.Stop();
+                    foodbanks = await response.Content.ReadAsAsync<List<Foodbank>>();
+                    _logger.LogInformation("Finished gathering foodbank centres. Got {Count} in {Elapsed}ms",
+                        foodbanks.Count, stopwatch.ElapsedMilliseconds);
+                    response.Dispose();
+                    client.Dispose();
+                }
+                else
+                {
+                    response.Dispose();
+                    client.Dispose();
+                    throw new Exception(
+                        $"HttpClient responded with non 200 code: {response.StatusCode} - {response.ReasonPhrase}");
+                }
+            }
+            catch (Exception ex)
+            {
+                client.Dispose();
+                _logger.LogError("Something went really wrong! Job will be skipped! {Exception}", ex);
+                return;
+            }
+        }
+        // Stage 2
+        {
+            var client = new HttpClient();
+            for (var i = 0; i < foodbanks.Count; i++)
+            {
+                var foodbank = foodbanks[i];
+                if (foodbank.Urls?.Self is null) continue;
+                var request = new HttpRequestMessage(HttpMethod.Get, foodbank.Urls.Self);
+                request.Headers.Accept.Clear();
+                request.Headers.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json")
                 );
 
                 try
                 {
-                    stopwatch.Start();
-                    HttpResponseMessage response = await client.GetAsync("");
+                    stopwatch.Restart();
+                    var response = await client.SendAsync(request);
                     if (response.IsSuccessStatusCode)
                     {
+                        foodbanks[i].Merge(await response.Content.ReadAsAsync<Foodbank>());
                         stopwatch.Stop();
-                        foodbanks = await response.Content.ReadAsAsync<List<Models.Foodbank.External.Foodbank>>();
-                        _logger.LogInformation($"Finished gathering foodbank centres. Got {foodbanks.Count} in {stopwatch.ElapsedMilliseconds}ms");
-                        response.Dispose();
-                        client.Dispose();
+                        _logger.LogInformation(
+                            "Successfully added locations for {Name}({Self}) in {Elapsed}ms [{I} of {Count}]",
+                            foodbank.Name, foodbank.Urls.Self, stopwatch.ElapsedMilliseconds, i + 1, foodbanks.Count);
+                        Thread.Sleep(100);
                     }
                     else
                     {
                         response.Dispose();
-                        client.Dispose();
-                        throw new Exception($"HttpClient responded with non 200 code: {response.StatusCode} - {response.ReasonPhrase}");
-                    }
-                }catch (Exception ex)
-                {
-                    client.Dispose();
-                    _logger.LogError($"Something went really wrong! Job will be skipped! {ex}");
-                    return;
-                }
-            }
-            // Stage 2
-            {
-                HttpClient client = new HttpClient();
-                HttpRequestMessage request;
-                Models.Foodbank.External.Foodbank foodbank;
-                for (int i = 0; i < foodbanks.Count; i++)
-                {
-                    foodbank = foodbanks[i];
-                    if (foodbank.Urls is not null && foodbank.Urls.Self is not null)
-                    {
-                        request = new HttpRequestMessage(HttpMethod.Get, foodbank.Urls.Self);
-                        request.Headers.Accept.Clear();
-                        request.Headers.Accept.Add(
-                            new MediaTypeWithQualityHeaderValue("application/json")
-                        );
-
-                        try
-                        {
-                            stopwatch.Restart();
-                            HttpResponseMessage response = await client.SendAsync(request);
-                            if (response.IsSuccessStatusCode)
-                            {
-                                foodbanks[i].Merge(await response.Content.ReadAsAsync<Models.Foodbank.External.Foodbank>());
-                                stopwatch.Stop();
-                                _logger.LogInformation($"Succesfully added locations for {foodbank.Name}({foodbank.Urls.Self}) in {stopwatch.ElapsedMilliseconds}ms [{i + 1} of {foodbanks.Count}]");
-                                Thread.Sleep(100);
-                            }
-                            else
-                            {
-                                response.Dispose();
-                                request.Dispose();
-                                throw new Exception($"HttpClient responded with non 200 code: {response.StatusCode} - {response.ReasonPhrase}");
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            request.Dispose();
-                            _logger.LogError($"Something went really wrong! Skipping... {ex}");
-                            continue;
-                        }
-
+                        request.Dispose();
+                        throw new Exception(
+                            $"HttpClient responded with non 200 code: {response.StatusCode} - {response.ReasonPhrase}");
                     }
                 }
-                client.Dispose();
+                catch (Exception ex)
+                {
+                    request.Dispose();
+                    _logger.LogError("Something went really wrong! Skipping... {Exception}", ex);
+                }
             }
-            _logger.LogInformation("GiveFood API Scraping job finished");
 
-            var internalFoodbanks = new List<Models.Foodbank.Internal.Foodbank>();
-            foreach (var item in foodbanks)
-            {
-                internalFoodbanks.Add(FoodbankConverter.Converter(item));
-            }
-            // TODO Submit data to DB
+            client.Dispose();
         }
-    }
+        _logger.LogInformation("GiveFood API Scraping job finished");
 
+        // ReSharper disable once UnusedVariable
+        var internalFoodbanks = foodbanks.Select(FoodbankConverter.Convert).ToList();
+        internalFoodbanks.ForEach(f => f.Provider = Provider.GiveFoodApi);
+        // TODO Submit data to DB
+    }
 }

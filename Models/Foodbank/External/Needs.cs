@@ -1,19 +1,19 @@
-﻿using Newtonsoft.Json;
+﻿#region
 
-namespace Foodbank_Project.Models.Foodbank.External
+using Newtonsoft.Json;
+
+#endregion
+
+namespace Foodbank_Project.Models.Foodbank.External;
+
+public class Needs
 {
-    public class Needs
-    {
-        [JsonProperty("id")] // Id from API is commit SHA
-        public object? Id { get; set; }
+    [JsonProperty("id")] // Id from API is commit SHA
+    public object? Id { get; set; }
 
-        [JsonProperty("needs")]
-        public string? NeedsStr { get; set; }
+    [JsonProperty("needs")] public string? NeedsStr { get; set; }
 
-        [JsonProperty("created")]
-        public DateTime? Created { get; set; }
+    [JsonProperty("created")] public DateTime? Created { get; set; }
 
-        [JsonProperty("self")]
-        public string? Self { get; set; }
-    }
+    [JsonProperty("self")] public string? Self { get; set; }
 }

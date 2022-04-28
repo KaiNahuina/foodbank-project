@@ -1,17 +1,25 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-import { HandshakeProtocol, HandshakeRequestMessage, HandshakeResponseMessage } from "./HandshakeProtocol";
-import { IConnection } from "./IConnection";
-import { CancelInvocationMessage, CompletionMessage, IHubProtocol, InvocationMessage, MessageType, StreamInvocationMessage, StreamItemMessage } from "./IHubProtocol";
-import { ILogger, LogLevel } from "./ILogger";
-import { IRetryPolicy } from "./IRetryPolicy";
-import { IStreamResult } from "./Stream";
-import { Subject } from "./Subject";
-import { Arg, getErrorString, Platform } from "./Utils";
+import {HandshakeProtocol, HandshakeRequestMessage, HandshakeResponseMessage} from "./HandshakeProtocol";
+import {IConnection} from "./IConnection";
+import {
+    CancelInvocationMessage,
+    CompletionMessage,
+    IHubProtocol,
+    InvocationMessage,
+    MessageType,
+    StreamInvocationMessage,
+    StreamItemMessage
+} from "./IHubProtocol";
+import {ILogger, LogLevel} from "./ILogger";
+import {IRetryPolicy} from "./IRetryPolicy";
+import {IStreamResult} from "./Stream";
+import {Subject} from "./Subject";
+import {Arg, getErrorString, Platform} from "./Utils";
 
-const DEFAULT_TIMEOUT_IN_MS: number = 30 * 1000;
-const DEFAULT_PING_INTERVAL_IN_MS: number = 15 * 1000;
+const DEFAULT_TIMEOUT_IN_MS = 30 * 1000;
+const DEFAULT_PING_INTERVAL_IN_MS = 15 * 1000;
 
 /** Describes the current state of the {@link HubConnection} to the server. */
 export enum HubConnectionState {
@@ -29,8 +37,22 @@ export enum HubConnectionState {
 
 /** Represents a connection to a SignalR Hub. */
 export class HubConnection {
-    private readonly _cachedPingMessage: string | ArrayBuffer;
+    /** The server timeout in milliseconds.
+     *
+     * If this timeout elapses without receiving any messages from the server, the connection will be terminated with an error.
+     * The default timeout value is 30,000 milliseconds (30 seconds).
+     */
+    public serverTimeoutInMilliseconds: number;
     // Needs to not start with _ for tests
+    /** Default interval at which to ping the server.
+     *
+     * The default value is 15,000 milliseconds (15 seconds).
+     * Allows the server to detect hard disconnects (like when a client unplugs their computer).
+     * The ping will happen at most as often as the server pings.
+     * If the server pings every 5 seconds, a value lower than 5 will ping every 5 seconds.
+     */
+    public keepAliveIntervalInMilliseconds: number;
+    private readonly _cachedPingMessage: string | ArrayBuffer;
     // eslint-disable-next-line @typescript-eslint/naming-convention
     private readonly connection: IConnection;
     private readonly _logger: ILogger;
@@ -40,60 +62,27 @@ export class HubConnection {
     private _callbacks: { [invocationId: string]: (invocationEvent: StreamItemMessage | CompletionMessage | null, error?: Error) => void };
     private _methods: { [name: string]: ((...args: any[]) => void)[] };
     private _invocationId: number;
-
     private _closedCallbacks: ((error?: Error) => void)[];
     private _reconnectingCallbacks: ((error?: Error) => void)[];
     private _reconnectedCallbacks: ((connectionId?: string) => void)[];
-
     private _receivedHandshakeResponse: boolean;
     private _handshakeResolver!: (value?: PromiseLike<{}>) => void;
     private _handshakeRejecter!: (reason?: any) => void;
-    private _stopDuringStartError?: Error;
-
-    private _connectionState: HubConnectionState;
     // connectionStarted is tracked independently from connectionState, so we can check if the
+    private _stopDuringStartError?: Error;
+    private _connectionState: HubConnectionState;
     // connection ever did successfully transition from connecting to connected before disconnecting.
     private _connectionStarted: boolean;
     private _startPromise?: Promise<void>;
-    private _stopPromise?: Promise<void>;
-    private _nextKeepAlive: number = 0;
 
     // The type of these a) doesn't matter and b) varies when building in browser and node contexts
     // Since we're building the WebPack bundle directly from the TypeScript, this matters (previously
+    private _stopPromise?: Promise<void>;
+    private _nextKeepAlive = 0;
     // we built the bundle from the compiled JavaScript).
     private _reconnectDelayHandle?: any;
     private _timeoutHandle?: any;
     private _pingServerHandle?: any;
-
-    private _freezeEventListener = () =>
-    {
-        this._logger.log(LogLevel.Warning, "The page is being frozen, this will likely lead to the connection being closed and messages being lost. For more information see the docs at https://docs.microsoft.com/aspnet/core/signalr/javascript-client#bsleep");
-    };
-
-    /** The server timeout in milliseconds.
-     *
-     * If this timeout elapses without receiving any messages from the server, the connection will be terminated with an error.
-     * The default timeout value is 30,000 milliseconds (30 seconds).
-     */
-    public serverTimeoutInMilliseconds: number;
-
-    /** Default interval at which to ping the server.
-     *
-     * The default value is 15,000 milliseconds (15 seconds).
-     * Allows the server to detect hard disconnects (like when a client unplugs their computer).
-     * The ping will happen at most as often as the server pings.
-     * If the server pings every 5 seconds, a value lower than 5 will ping every 5 seconds.
-     */
-    public keepAliveIntervalInMilliseconds: number;
-
-    /** @internal */
-    // Using a public static factory method means we can have a private constructor and an _internal_
-    // create method that can be used by HubConnectionBuilder. An "internal" constructor would just
-    // be stripped away and the '.d.ts' file would have no constructor, which is interpreted as a
-    // public parameter-less constructor.
-    public static create(connection: IConnection, logger: ILogger, protocol: IHubProtocol, reconnectPolicy?: IRetryPolicy): HubConnection {
-        return new HubConnection(connection, logger, protocol, reconnectPolicy);
-    }
 
     private constructor(connection: IConnection, logger: ILogger, protocol: IHubProtocol, reconnectPolicy?: IRetryPolicy) {
         Arg.isRequired(connection, "connection");
@@ -122,23 +111,23 @@ export class HubConnection {
         this._connectionState = HubConnectionState.Disconnected;
         this._connectionStarted = false;
 
-        this._cachedPingMessage = this._protocol.writeMessage({ type: MessageType.Ping });
+        this._cachedPingMessage = this._protocol.writeMessage({type: MessageType.Ping});
     }
 
     /** Indicates the state of the {@link HubConnection} to the server. */
-    get state(): HubConnectionState {
+    get state() {
         return this._connectionState;
     }
 
     /** Represents the connection id of the {@link HubConnection} on the server. The connection id will be null when the connection is either
      *  in the disconnected state or if the negotiation step was skipped.
      */
-    get connectionId(): string | null {
-        return this.connection ? (this.connection.connectionId || null) : null;
+    get connectionId() {
+        return this.connection ? this.connection.connectionId || null : null;
     }
 
     /** Indicates the url of the {@link HubConnection} to the server. */
-    get baseUrl(): string {
+    get baseUrl() {
         return this.connection.baseUrl || "";
     }
 
@@ -159,14 +148,255 @@ export class HubConnection {
         this.connection.baseUrl = url;
     }
 
+    /** @internal */
+    // Using a public static factory method means we can have a private constructor and an _internal_
+    // create method that can be used by HubConnectionBuilder. An "internal" constructor would just
+    // be stripped away and the '.d.ts' file would have no constructor, which is interpreted as a
+    // public parameter-less constructor.
+    public static create(connection: IConnection, logger: ILogger, protocol: IHubProtocol, reconnectPolicy?: IRetryPolicy) {
+        return new HubConnection(connection, logger, protocol, reconnectPolicy);
+    }
+
     /** Starts the connection.
      *
      * @returns {Promise<void>} A Promise that resolves when the connection has been successfully established, or rejects with an error.
      */
-    public start(): Promise<void> {
+    public start() {
         this._startPromise = this._startWithStateTransitions();
         return this._startPromise;
     }
+
+    /** Stops the connection.
+     *
+     * @returns {Promise<void>} A Promise that resolves when the connection has been successfully terminated, or rejects with an error.
+     */
+    public async stop() {
+        // Capture the start promise before the connection might be restarted in an onclose callback.
+        const startPromise = this._startPromise;
+
+        this._stopPromise = this._stopInternal();
+        await this._stopPromise;
+
+        try {
+            // Awaiting undefined continues immediately
+            await startPromise;
+        } catch (e) {
+            // This exception is returned to the user as a rejected Promise from the start method.
+        }
+    }
+
+    /** Invokes a streaming hub method on the server using the specified name and arguments.
+     *
+     * @typeparam T The type of the items returned by the server.
+     * @param {string} methodName The name of the server method to invoke.
+     * @param {any[]} args The arguments used to invoke the server method.
+     * @returns {IStreamResult<T>} An object that yields results from the server as they are received.
+     */
+    public stream<T = any>(methodName: string, ...args: any[]): IStreamResult<T> {
+        const [streams, streamIds] = this._replaceStreamingParams(args);
+        const invocationDescriptor = this._createStreamInvocation(methodName, args, streamIds);
+
+        // eslint-disable-next-line prefer-const
+        let promiseQueue: Promise<void>;
+
+        const subject = new Subject<T>();
+        subject.cancelCallback = () => {
+            const cancelInvocation = this._createCancelInvocation(invocationDescriptor.invocationId);
+
+            delete this._callbacks[invocationDescriptor.invocationId];
+
+            return promiseQueue.then(() => this._sendWithProtocol(cancelInvocation));
+        };
+
+        this._callbacks[invocationDescriptor.invocationId] = (invocationEvent: CompletionMessage | StreamItemMessage | null, error?: Error) => {
+            if (error) {
+                subject.error(error);
+                return;
+            } else if (invocationEvent) {
+                // invocationEvent will not be null when an error is not passed to the callback
+                if (invocationEvent.type === MessageType.Completion) {
+                    if (invocationEvent.error) {
+                        subject.error(new Error(invocationEvent.error));
+                    } else {
+                        subject.complete();
+                    }
+                } else {
+                    subject.next(invocationEvent.item as T);
+                }
+            }
+        };
+
+        promiseQueue = this._sendWithProtocol(invocationDescriptor)
+            .catch(e => {
+                subject.error(e);
+                delete this._callbacks[invocationDescriptor.invocationId];
+            });
+
+        this._launchStreams(streams, promiseQueue);
+
+        return subject;
+    }
+
+    /** Invokes a hub method on the server using the specified name and arguments. Does not wait for a response from the receiver.
+     *
+     * The Promise returned by this method resolves when the client has sent the invocation to the server. The server may still
+     * be processing the invocation.
+     *
+     * @param {string} methodName The name of the server method to invoke.
+     * @param {any[]} args The arguments used to invoke the server method.
+     * @returns {Promise<void>} A Promise that resolves when the invocation has been successfully sent, or rejects with an error.
+     */
+    public send(methodName: string, ...args: any[]) {
+        const [streams, streamIds] = this._replaceStreamingParams(args);
+        const sendPromise = this._sendWithProtocol(this._createInvocation(methodName, args, true, streamIds));
+
+        this._launchStreams(streams, sendPromise);
+
+        return sendPromise;
+    }
+
+    /** Invokes a hub method on the server using the specified name and arguments.
+     *
+     * The Promise returned by this method resolves when the server indicates it has finished invoking the method. When the promise
+     * resolves, the server has finished invoking the method. If the server method returns a result, it is produced as the result of
+     * resolving the Promise.
+     *
+     * @typeparam T The expected return type.
+     * @param {string} methodName The name of the server method to invoke.
+     * @param {any[]} args The arguments used to invoke the server method.
+     * @returns {Promise<T>} A Promise that resolves with the result of the server method (if any), or rejects with an error.
+     */
+    public invoke<T = any>(methodName: string, ...args: any[]): Promise<T> {
+        const [streams, streamIds] = this._replaceStreamingParams(args);
+        const invocationDescriptor = this._createInvocation(methodName, args, false, streamIds);
+
+        const p = new Promise<any>((resolve, reject) => {
+            // invocationId will always have a value for a non-blocking invocation
+            this._callbacks[invocationDescriptor.invocationId!] = (invocationEvent: StreamItemMessage | CompletionMessage | null, error?: Error) => {
+                if (error) {
+                    reject(error);
+                    return;
+                } else if (invocationEvent) {
+                    // invocationEvent will not be null when an error is not passed to the callback
+                    if (invocationEvent.type === MessageType.Completion) {
+                        if (invocationEvent.error) {
+                            reject(new Error(invocationEvent.error));
+                        } else {
+                            resolve(invocationEvent.result);
+                        }
+                    } else {
+                        reject(new Error(`Unexpected message type: ${invocationEvent.type}`));
+                    }
+                }
+            };
+
+            const promiseQueue = this._sendWithProtocol(invocationDescriptor)
+                .catch(e => {
+                    reject(e);
+                    // invocationId will always have a value for a non-blocking invocation
+                    delete this._callbacks[invocationDescriptor.invocationId!];
+                });
+
+            this._launchStreams(streams, promiseQueue);
+        });
+
+        return p;
+    }
+
+    /** Registers a handler that will be invoked when the hub method with the specified method name is invoked.
+     *
+     * @param {string} methodName The name of the hub method to define.
+     * @param {Function} newMethod The handler that will be raised when the hub method is invoked.
+     */
+    public on(methodName: string, newMethod: (...args: any[]) => void) {
+        if (!methodName || !newMethod) {
+            return;
+        }
+
+        methodName = methodName.toLowerCase();
+        if (!this._methods[methodName]) {
+            this._methods[methodName] = [];
+        }
+
+        // Preventing adding the same handler multiple times.
+        if (this._methods[methodName].indexOf(newMethod) !== -1) {
+            return;
+        }
+
+        this._methods[methodName].push(newMethod);
+    }
+
+    /** Removes all handlers for the specified hub method.
+     *
+     * @param {string} methodName The name of the method to remove handlers for.
+     */
+    public off(methodName: string): void;
+
+    /** Removes the specified handler for the specified hub method.
+     *
+     * You must pass the exact same Function instance as was previously passed to {@link @microsoft/signalr.HubConnection.on}. Passing a different instance (even if the function
+     * body is the same) will not remove the handler.
+     *
+     * @param {string} methodName The name of the method to remove handlers for.
+     * @param {Function} method The handler to remove. This must be the same Function instance as the one passed to {@link @microsoft/signalr.HubConnection.on}.
+     */
+    public off(methodName: string, method: (...args: any[]) => void): void;
+
+    public off(methodName: string, method?: (...args: any[]) => void) {
+        if (!methodName) {
+            return;
+        }
+
+        methodName = methodName.toLowerCase();
+        const handlers = this._methods[methodName];
+        if (!handlers) {
+            return;
+        }
+        if (method) {
+            const removeIdx = handlers.indexOf(method);
+            if (removeIdx !== -1) {
+                handlers.splice(removeIdx, 1);
+                if (handlers.length === 0) {
+                    delete this._methods[methodName];
+                }
+            }
+        } else {
+            delete this._methods[methodName];
+        }
+
+    }
+
+    /** Registers a handler that will be invoked when the connection is closed.
+     *
+     * @param {Function} callback The handler that will be invoked when the connection is closed. Optionally receives a single argument containing the error that caused the connection to close (if any).
+     */
+    public onclose(callback: (error?: Error) => void) {
+        if (callback) {
+            this._closedCallbacks.push(callback);
+        }
+    }
+
+    /** Registers a handler that will be invoked when the connection starts reconnecting.
+     *
+     * @param {Function} callback The handler that will be invoked when the connection starts reconnecting. Optionally receives a single argument containing the error that caused the connection to start reconnecting (if any).
+     */
+    public onreconnecting(callback: (error?: Error) => void) {
+        if (callback) {
+            this._reconnectingCallbacks.push(callback);
+        }
+    }
+
+    /** Registers a handler that will be invoked when the connection successfully reconnects.
+     *
+     * @param {Function} callback The handler that will be invoked when the connection successfully reconnects.
+     */
+    public onreconnected(callback: (connectionId?: string) => void) {
+        if (callback) {
+            this._reconnectedCallbacks.push(callback);
+        }
+    }
+
+    private _freezeEventListener = () => this._logger.log(LogLevel.Warning, "The page is being frozen, this will likely lead to the connection being closed and messages being lost. For more information see the docs at https://docs.microsoft.com/aspnet/core/signalr/javascript-client#bsleep");
 
     private async _startWithStateTransitions(): Promise<void> {
         if (this._connectionState !== HubConnectionState.Disconnected) {
@@ -247,26 +477,7 @@ export class HubConnection {
         }
     }
 
-    /** Stops the connection.
-     *
-     * @returns {Promise<void>} A Promise that resolves when the connection has been successfully terminated, or rejects with an error.
-     */
-    public async stop(): Promise<void> {
-        // Capture the start promise before the connection might be restarted in an onclose callback.
-        const startPromise = this._startPromise;
-
-        this._stopPromise = this._stopInternal();
-        await this._stopPromise;
-
-        try {
-            // Awaiting undefined continues immediately
-            await startPromise;
-        } catch (e) {
-            // This exception is returned to the user as a rejected Promise from the start method.
-        }
-    }
-
-    private _stopInternal(error?: Error): Promise<void> {
+    private _stopInternal(error?: Error) {
         if (this._connectionState === HubConnectionState.Disconnected) {
             this._logger.log(LogLevel.Debug, `Call to HubConnection.stop(${error}) ignored because it is already in the disconnected state.`);
             return Promise.resolve();
@@ -304,60 +515,6 @@ export class HubConnection {
         return this.connection.stop(error);
     }
 
-    /** Invokes a streaming hub method on the server using the specified name and arguments.
-     *
-     * @typeparam T The type of the items returned by the server.
-     * @param {string} methodName The name of the server method to invoke.
-     * @param {any[]} args The arguments used to invoke the server method.
-     * @returns {IStreamResult<T>} An object that yields results from the server as they are received.
-     */
-    public stream<T = any>(methodName: string, ...args: any[]): IStreamResult<T> {
-        const [streams, streamIds] = this._replaceStreamingParams(args);
-        const invocationDescriptor = this._createStreamInvocation(methodName, args, streamIds);
-
-        // eslint-disable-next-line prefer-const
-        let promiseQueue: Promise<void>;
-
-        const subject = new Subject<T>();
-        subject.cancelCallback = () => {
-            const cancelInvocation: CancelInvocationMessage = this._createCancelInvocation(invocationDescriptor.invocationId);
-
-            delete this._callbacks[invocationDescriptor.invocationId];
-
-            return promiseQueue.then(() => {
-                return this._sendWithProtocol(cancelInvocation);
-            });
-        };
-
-        this._callbacks[invocationDescriptor.invocationId] = (invocationEvent: CompletionMessage | StreamItemMessage | null, error?: Error) => {
-            if (error) {
-                subject.error(error);
-                return;
-            } else if (invocationEvent) {
-                // invocationEvent will not be null when an error is not passed to the callback
-                if (invocationEvent.type === MessageType.Completion) {
-                    if (invocationEvent.error) {
-                        subject.error(new Error(invocationEvent.error));
-                    } else {
-                        subject.complete();
-                    }
-                } else {
-                    subject.next((invocationEvent.item) as T);
-                }
-            }
-        };
-
-        promiseQueue = this._sendWithProtocol(invocationDescriptor)
-            .catch((e) => {
-                subject.error(e);
-                delete this._callbacks[invocationDescriptor.invocationId];
-            });
-
-        this._launchStreams(streams, promiseQueue);
-
-        return subject;
-    }
-
     private _sendMessage(message: any) {
         this._resetKeepAliveInterval();
         return this.connection.send(message);
@@ -369,164 +526,6 @@ export class HubConnection {
      */
     private _sendWithProtocol(message: any) {
         return this._sendMessage(this._protocol.writeMessage(message));
-    }
-
-    /** Invokes a hub method on the server using the specified name and arguments. Does not wait for a response from the receiver.
-     *
-     * The Promise returned by this method resolves when the client has sent the invocation to the server. The server may still
-     * be processing the invocation.
-     *
-     * @param {string} methodName The name of the server method to invoke.
-     * @param {any[]} args The arguments used to invoke the server method.
-     * @returns {Promise<void>} A Promise that resolves when the invocation has been successfully sent, or rejects with an error.
-     */
-    public send(methodName: string, ...args: any[]): Promise<void> {
-        const [streams, streamIds] = this._replaceStreamingParams(args);
-        const sendPromise = this._sendWithProtocol(this._createInvocation(methodName, args, true, streamIds));
-
-        this._launchStreams(streams, sendPromise);
-
-        return sendPromise;
-    }
-
-    /** Invokes a hub method on the server using the specified name and arguments.
-     *
-     * The Promise returned by this method resolves when the server indicates it has finished invoking the method. When the promise
-     * resolves, the server has finished invoking the method. If the server method returns a result, it is produced as the result of
-     * resolving the Promise.
-     *
-     * @typeparam T The expected return type.
-     * @param {string} methodName The name of the server method to invoke.
-     * @param {any[]} args The arguments used to invoke the server method.
-     * @returns {Promise<T>} A Promise that resolves with the result of the server method (if any), or rejects with an error.
-     */
-    public invoke<T = any>(methodName: string, ...args: any[]): Promise<T> {
-        const [streams, streamIds] = this._replaceStreamingParams(args);
-        const invocationDescriptor = this._createInvocation(methodName, args, false, streamIds);
-
-        const p = new Promise<any>((resolve, reject) => {
-            // invocationId will always have a value for a non-blocking invocation
-            this._callbacks[invocationDescriptor.invocationId!] = (invocationEvent: StreamItemMessage | CompletionMessage | null, error?: Error) => {
-                if (error) {
-                    reject(error);
-                    return;
-                } else if (invocationEvent) {
-                    // invocationEvent will not be null when an error is not passed to the callback
-                    if (invocationEvent.type === MessageType.Completion) {
-                        if (invocationEvent.error) {
-                            reject(new Error(invocationEvent.error));
-                        } else {
-                            resolve(invocationEvent.result);
-                        }
-                    } else {
-                        reject(new Error(`Unexpected message type: ${invocationEvent.type}`));
-                    }
-                }
-            };
-
-            const promiseQueue = this._sendWithProtocol(invocationDescriptor)
-                .catch((e) => {
-                    reject(e);
-                    // invocationId will always have a value for a non-blocking invocation
-                    delete this._callbacks[invocationDescriptor.invocationId!];
-                });
-
-            this._launchStreams(streams, promiseQueue);
-        });
-
-        return p;
-    }
-
-    /** Registers a handler that will be invoked when the hub method with the specified method name is invoked.
-     *
-     * @param {string} methodName The name of the hub method to define.
-     * @param {Function} newMethod The handler that will be raised when the hub method is invoked.
-     */
-    public on(methodName: string, newMethod: (...args: any[]) => void): void {
-        if (!methodName || !newMethod) {
-            return;
-        }
-
-        methodName = methodName.toLowerCase();
-        if (!this._methods[methodName]) {
-            this._methods[methodName] = [];
-        }
-
-        // Preventing adding the same handler multiple times.
-        if (this._methods[methodName].indexOf(newMethod) !== -1) {
-            return;
-        }
-
-        this._methods[methodName].push(newMethod);
-    }
-
-    /** Removes all handlers for the specified hub method.
-     *
-     * @param {string} methodName The name of the method to remove handlers for.
-     */
-    public off(methodName: string): void;
-
-    /** Removes the specified handler for the specified hub method.
-     *
-     * You must pass the exact same Function instance as was previously passed to {@link @microsoft/signalr.HubConnection.on}. Passing a different instance (even if the function
-     * body is the same) will not remove the handler.
-     *
-     * @param {string} methodName The name of the method to remove handlers for.
-     * @param {Function} method The handler to remove. This must be the same Function instance as the one passed to {@link @microsoft/signalr.HubConnection.on}.
-     */
-    public off(methodName: string, method: (...args: any[]) => void): void;
-    public off(methodName: string, method?: (...args: any[]) => void): void {
-        if (!methodName) {
-            return;
-        }
-
-        methodName = methodName.toLowerCase();
-        const handlers = this._methods[methodName];
-        if (!handlers) {
-            return;
-        }
-        if (method) {
-            const removeIdx = handlers.indexOf(method);
-            if (removeIdx !== -1) {
-                handlers.splice(removeIdx, 1);
-                if (handlers.length === 0) {
-                    delete this._methods[methodName];
-                }
-            }
-        } else {
-            delete this._methods[methodName];
-        }
-
-    }
-
-    /** Registers a handler that will be invoked when the connection is closed.
-     *
-     * @param {Function} callback The handler that will be invoked when the connection is closed. Optionally receives a single argument containing the error that caused the connection to close (if any).
-     */
-    public onclose(callback: (error?: Error) => void): void {
-        if (callback) {
-            this._closedCallbacks.push(callback);
-        }
-    }
-
-    /** Registers a handler that will be invoked when the connection starts reconnecting.
-     *
-     * @param {Function} callback The handler that will be invoked when the connection starts reconnecting. Optionally receives a single argument containing the error that caused the connection to start reconnecting (if any).
-     */
-    public onreconnecting(callback: (error?: Error) => void): void {
-        if (callback) {
-            this._reconnectingCallbacks.push(callback);
-        }
-    }
-
-    /** Registers a handler that will be invoked when the connection successfully reconnects.
-     *
-     * @param {Function} callback The handler that will be invoked when the connection successfully reconnects.
-     */
-    public onreconnected(callback: (connectionId?: string) => void): void {
-        if (callback) {
-            this._reconnectedCallbacks.push(callback);
-        }
     }
 
     private _processIncomingData(data: any) {
@@ -640,8 +639,7 @@ export class HubConnection {
             this._timeoutHandle = setTimeout(() => this.serverTimeout(), this.serverTimeoutInMilliseconds);
 
             // Set keepAlive timer if there isn't one
-            if (this._pingServerHandle === undefined)
-            {
+            if (this._pingServerHandle === undefined) {
                 let nextPing = this._nextKeepAlive - new Date().getTime();
                 if (nextPing < 0) {
                     nextPing = 0;
@@ -675,7 +673,7 @@ export class HubConnection {
         const methods = this._methods[invocationMessage.target.toLowerCase()];
         if (methods) {
             try {
-                methods.forEach((m) => m.apply(this, invocationMessage.arguments));
+                methods.forEach(m => m.apply(this, invocationMessage.arguments));
             } catch (e) {
                 this._logger.log(LogLevel.Error, `A callback for the method ${invocationMessage.target.toLowerCase()} threw error '${e}'.`);
             }
@@ -736,7 +734,7 @@ export class HubConnection {
             }
 
             try {
-                this._closedCallbacks.forEach((c) => c.apply(this, [error]));
+                this._closedCallbacks.forEach(c => c.apply(this, [error]));
             } catch (e) {
                 this._logger.log(LogLevel.Error, `An onclose callback called with error '${error}' threw error '${e}'.`);
             }
@@ -766,7 +764,7 @@ export class HubConnection {
 
         if (this._reconnectingCallbacks.length !== 0) {
             try {
-                this._reconnectingCallbacks.forEach((c) => c.apply(this, [error]));
+                this._reconnectingCallbacks.forEach(c => c.apply(this, [error]));
             } catch (e) {
                 this._logger.log(LogLevel.Error, `An onreconnecting callback called with error '${error}' threw error '${e}'.`);
             }
@@ -781,7 +779,7 @@ export class HubConnection {
         while (nextRetryDelay !== null) {
             this._logger.log(LogLevel.Information, `Reconnect attempt number ${previousReconnectAttempts} will start in ${nextRetryDelay} ms.`);
 
-            await new Promise((resolve) => {
+            await new Promise(resolve => {
                 this._reconnectDelayHandle = setTimeout(resolve, nextRetryDelay!);
             });
             this._reconnectDelayHandle = undefined;
@@ -799,7 +797,7 @@ export class HubConnection {
 
                 if (this._reconnectedCallbacks.length !== 0) {
                     try {
-                        this._reconnectedCallbacks.forEach((c) => c.apply(this, [this.connection.connectionId]));
+                        this._reconnectedCallbacks.forEach(c => c.apply(this, [this.connection.connectionId]));
                     } catch (e) {
                         this._logger.log(LogLevel.Error, `An onreconnected callback called with connectionId '${this.connection.connectionId}; threw error '${e}'.`);
                     }
@@ -846,7 +844,7 @@ export class HubConnection {
         this._callbacks = {};
 
         Object.keys(callbacks)
-            .forEach((key) => {
+            .forEach(key => {
                 const callback = callbacks[key];
                 try {
                     callback(null, error);
@@ -856,14 +854,14 @@ export class HubConnection {
             });
     }
 
-    private _cleanupPingTimer(): void {
+    private _cleanupPingTimer() {
         if (this._pingServerHandle) {
             clearTimeout(this._pingServerHandle);
             this._pingServerHandle = undefined;
         }
     }
 
-    private _cleanupTimeout(): void {
+    private _cleanupTimeout() {
         if (this._timeoutHandle) {
             clearTimeout(this._timeoutHandle);
         }
@@ -908,7 +906,7 @@ export class HubConnection {
         }
     }
 
-    private _launchStreams(streams: IStreamResult<any>[], promiseQueue: Promise<void>): void {
+    private _launchStreams(streams: IStreamResult<any>[], promiseQueue: Promise<void>) {
         if (streams.length === 0) {
             return;
         }
@@ -925,7 +923,7 @@ export class HubConnection {
                 complete: () => {
                     promiseQueue = promiseQueue.then(() => this._sendWithProtocol(this._createCompletionMessage(streamId)));
                 },
-                error: (err) => {
+                error: err => {
                     let message: string;
                     if (err instanceof Error) {
                         message = err.message;
@@ -937,7 +935,7 @@ export class HubConnection {
 
                     promiseQueue = promiseQueue.then(() => this._sendWithProtocol(this._createCompletionMessage(streamId, message)));
                 },
-                next: (item) => {
+                next: item => {
                     promiseQueue = promiseQueue.then(() => this._sendWithProtocol(this._createStreamItemMessage(streamId, item)));
                 },
             });

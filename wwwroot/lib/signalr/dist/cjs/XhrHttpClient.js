@@ -1,16 +1,18 @@
 "use strict";
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", {value: true});
 exports.XhrHttpClient = void 0;
 const Errors_1 = require("./Errors");
 const HttpClient_1 = require("./HttpClient");
 const ILogger_1 = require("./ILogger");
+
 class XhrHttpClient extends HttpClient_1.HttpClient {
     constructor(logger) {
         super();
         this._logger = logger;
     }
+
     /** @inheritDoc */
     send(request) {
         // Check that abort was not signaled before calling send
@@ -33,9 +35,7 @@ class XhrHttpClient extends HttpClient_1.HttpClient {
             const headers = request.headers;
             if (headers) {
                 Object.keys(headers)
-                    .forEach((header) => {
-                    xhr.setRequestHeader(header, headers[header]);
-                });
+                    .forEach(header => xhr.setRequestHeader(header, headers[header]));
             }
             if (request.responseType) {
                 xhr.responseType = request.responseType;
@@ -55,8 +55,7 @@ class XhrHttpClient extends HttpClient_1.HttpClient {
                 }
                 if (xhr.status >= 200 && xhr.status < 300) {
                     resolve(new HttpClient_1.HttpResponse(xhr.status, xhr.statusText, xhr.response || xhr.responseText));
-                }
-                else {
+                } else {
                     reject(new Errors_1.HttpError(xhr.response || xhr.responseText || xhr.statusText, xhr.status));
                 }
             };
@@ -72,5 +71,6 @@ class XhrHttpClient extends HttpClient_1.HttpClient {
         });
     }
 }
+
 exports.XhrHttpClient = XhrHttpClient;
 //# sourceMappingURL=XhrHttpClient.js.map
