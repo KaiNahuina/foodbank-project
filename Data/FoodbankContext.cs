@@ -11,10 +11,11 @@ namespace Foodbank_Project.Data
         }
 
         public DbSet<Foodbank>? foodbanks { get; set; }
-        public DbSet<CharityInfo>? foodbankCharityInfos { get; set; }
-        public DbSet<Urls>? foodbankUrls { get; set; }
-        public DbSet<Location>? foodbankLocations { get; set; }
+        public DbSet<CharityInfo>? charityInfos { get; set; }
+        public DbSet<Urls>? urls { get; set; }
+        public DbSet<Location>? locations { get; set; }
         public DbSet<FoodbankNeed>? foodbankNeeds { get; set; }
+        public DbSet<Need>? needs { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,12 +28,12 @@ namespace Foodbank_Project.Data
             modelBuilder.Entity<FoodbankNeed>().HasKey(fn => new { fn.FoodbankId, fn.NeedId });
 
             modelBuilder.Entity<FoodbankNeed>()
-                .HasOne<Foodbank>(fn => fn.Foodbank)
+                .HasOne(fn => fn.Foodbank)
                 .WithMany(f => f.FoodbankNeeds)
                 .HasForeignKey(fn => fn.FoodbankId);
 
             modelBuilder.Entity<FoodbankNeed>()
-                .HasOne<Need>(fn => fn.Need)
+                .HasOne(fn => fn.Need)
                 .WithMany(n => n.FoodbankNeeds)
                 .HasForeignKey(n => n.NeedId);
 
@@ -58,10 +59,9 @@ namespace Foodbank_Project.Data
             modelBuilder.Entity<Foodbank>().Property(f => f.LatLng).IsRequired();
             modelBuilder.Entity<Foodbank>().Property(f => f.Network).IsRequired();
             modelBuilder.Entity<Foodbank>().Property(f => f.Created).IsRequired();
+            modelBuilder.Entity<Foodbank>().Property(f => f.Protected).IsRequired();
 
             modelBuilder.Entity<Urls>().Property(fu => fu.Homepage).IsRequired();
-            // Homepage link would be enough
-            //modelBuilder.Entity<FoodbankUrls>().Property(fu => fu.ShoppingList).IsRequired();
 
             modelBuilder.Entity<Location>().Property(fl => fl.Slug).IsRequired();
             modelBuilder.Entity<Location>().Property(fl => fl.Name).IsRequired();

@@ -31,7 +31,7 @@ namespace Foodbank_Project.Models.Foodbank.External
         [JsonProperty("closed")]
         public bool? Closed { get; set; }
 
-        [JsonProperty("coutry")]
+        [JsonProperty("country")]
         public string? Country { get; set; }
 
         [JsonProperty("lat_lng")]
