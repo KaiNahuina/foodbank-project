@@ -1,0 +1,19 @@
+﻿using Newtonsoft.Json;
+
+namespace Foodbank_Project.Models.Foodbank.External
+{
+    public class Needs
+    {
+        [JsonProperty("id")] // Id from API is commit SHA
+        public object? Id { get; set; }
+
+        [JsonProperty("needs")]
+        public string? NeedsStr { get; set; }
+
+        [JsonProperty("created")]
+        public DateTime? Created { get; set; }
+
+        [JsonProperty("self")]
+        public string? Self { get; set; }
+    }
+}
