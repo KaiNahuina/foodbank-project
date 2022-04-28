@@ -1,113 +1,88 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace Foodbank_Project.Models
 {
-
     public class Foodbank
     {
-        [JsonPropertyName("name")]
-        public string? Name;
+        public int ID { get; set; }
 
-        [JsonPropertyName("alt_name")]
-        public string? AltName;
+        [JsonProperty("name")]
+        public string? Name { get; set; }
 
-        [JsonPropertyName("slug")]
-        public string? Slug;
+        [JsonProperty("alt_name")]
+        public string? AltName { get; set; }
 
-        [JsonPropertyName("phone")]
-        public string? Phone;
+        // Field not needed, Change to dispose on DB store
+        [JsonProperty("slug")]
+        public string? Slug { get; set; }
 
-        [JsonPropertyName("secondary_phone")]
-        public string? SecondaryPhone;
+        [JsonProperty("phone")]
+        public string? Phone { get; set; }
 
-        [JsonPropertyName("email")]
-        public string? Email;
+        [JsonProperty("secondary_phone")]
+        public string? SecondaryPhone { get; set; }
 
-        [JsonPropertyName("address")]
-        public string? Address;
+        [JsonProperty("email")]
+        public string? Email { get; set; }
 
-        [JsonPropertyName("postcode")]
-        public string? Postcode;
+        [JsonProperty("address")]
+        public string? Address { get; set; }
 
-        [JsonPropertyName("closed")]
-        public bool Closed;
+        [JsonProperty("postcode")]
+        public string? Postcode { get; set; }
 
-        [JsonPropertyName("country")]
-        public string? Country;
+        [JsonProperty("closed")]
+        public bool Closed { get; set; }
 
-        [JsonPropertyName("lat_lng")]
-        public string? LatLng;
+        [JsonProperty("coutry")]
+        public string? Country { get; set; }
 
-        [JsonPropertyName("network")]
-        public string? Network;
+        [JsonProperty("lat_lng")]
+        public string? LatLng { get; set; }
 
-        [JsonPropertyName("created")]
-        public DateTime Created;
+        [JsonProperty("network")]
+        public string? Network { get; set; }
 
-        [JsonPropertyName("urls")]
-        public UrlsObj? Urls;
+        [JsonProperty("created")]
+        public DateTime Created { get; set; }
 
-        [JsonPropertyName("charity")]
-        public CharityObj? Charity;
+        [JsonProperty("urls")]
+        public FoodbankUrls? Urls { get; set; }
 
-        [JsonPropertyName("politics")]
-        public PoliticsObj? Politics;
+        [JsonProperty("charity")]
+        public FoodbankCharityInfo? Charity { get; set; }
 
-        public override string ToString()
+        // Field not needed, Change to dispose on DB store
+        [JsonProperty("politcs")]
+        public object? Politics { get; set; }
+
+        [JsonProperty("locations")]
+        public List<FoodbankLocation>? Locations;
+
+        [JsonProperty("need")]
+        public FoodbankNeed? Need;
+
+        // Field not needed, Change to dispose on DB store
+        [JsonProperty("nearby_foodbanks")]
+        public List<object>? NearbyFoodbanks;
+
+        public void Merge(Foodbank giver)
         {
-            return $"Name: {Name}, Alt Name: {AltName}, Slug: {Slug}, Phone: {Phone}, Secondary Phone: {SecondaryPhone}, Email: {Email}" +
-                $", Address: {Address}, Postcode: {Postcode}, Closed:{Closed}, Country:{Country}, Network: {Network}";
+            this.Name ??= giver.Name;
+            this.AltName ??= giver.AltName;
+            this.Slug ??= giver.Slug;
+            this.Phone ??= giver.Phone;
+            this.SecondaryPhone ??= giver.SecondaryPhone;
+            this.Email ??= giver.Email;
+            this.Address ??= giver.Address;
+            this.Postcode ??= giver.Postcode;
+            this.Country ??= giver.Country;
+            this.LatLng ??= giver.LatLng;
+            this.Network ??= giver.Network;
+            this.Urls ??= giver.Urls;
+            this.Charity ??= giver.Charity;
+            this.Locations ??= giver.Locations;
+            this.Need ??= giver.Need;
         }
-
-        public class UrlsObj
-        {
-            [JsonPropertyName("self")]
-            public string? Self;
-
-            [JsonPropertyName("html")]
-            public string? Html;
-
-            [JsonPropertyName("homepage")]
-            public string? Homepage;
-
-            [JsonPropertyName("shopping_list")]
-            public string? ShoppingList;
-        }
-
-        public class CharityObj
-        {
-            [JsonPropertyName("registration_id")]
-            public string? RegistrationId;
-
-            [JsonPropertyName("register_url")]
-            public string? RegisterUrl;
-        }
-
-        public class PoliticsObj
-        {
-            [JsonPropertyName("parliamentary_constituency")]
-            public string? ParliamentaryConstituency;
-
-            [JsonPropertyName("mp")]
-            public string? Mp;
-
-            [JsonPropertyName("mp_party")]
-            public string? MpParty;
-
-            [JsonPropertyName("mp_parl_id")]
-            public int? MpParlId;
-
-            [JsonPropertyName("ward")]
-            public string? Ward;
-
-            [JsonPropertyName("district")]
-            public string? District;
-
-            [JsonPropertyName("urls")]
-            public UrlsObj? Urls;
-        }
-
     }
-
-
 }
