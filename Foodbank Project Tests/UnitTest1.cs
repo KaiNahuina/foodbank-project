@@ -1,4 +1,3 @@
-using Foodbank_Project.Pages;
 using Xunit;
 
 namespace Foodbank_Project_Tests
@@ -8,7 +7,7 @@ namespace Foodbank_Project_Tests
         [Fact]
         public void Test1()
         {
-            Assert.True(true); 
+            Assert.True(true);
         }
     }
 }

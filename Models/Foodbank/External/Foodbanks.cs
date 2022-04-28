@@ -1,18 +1,15 @@
 ﻿using Newtonsoft.Json;
 
-namespace Foodbank_Project.Models
+namespace Foodbank_Project.Models.Foodbank.External
 {
     public class Foodbank
     {
-        public int ID { get; set; }
-
         [JsonProperty("name")]
         public string? Name { get; set; }
 
         [JsonProperty("alt_name")]
         public string? AltName { get; set; }
 
-        // Field not needed, Change to dispose on DB store
         [JsonProperty("slug")]
         public string? Slug { get; set; }
 
@@ -32,7 +29,7 @@ namespace Foodbank_Project.Models
         public string? Postcode { get; set; }
 
         [JsonProperty("closed")]
-        public bool Closed { get; set; }
+        public bool? Closed { get; set; }
 
         [JsonProperty("coutry")]
         public string? Country { get; set; }
@@ -44,25 +41,24 @@ namespace Foodbank_Project.Models
         public string? Network { get; set; }
 
         [JsonProperty("created")]
-        public DateTime Created { get; set; }
+        public DateTime? Created { get; set; }
 
         [JsonProperty("urls")]
-        public FoodbankUrls? Urls { get; set; }
+        public Urls? Urls { get; set; }
 
         [JsonProperty("charity")]
-        public FoodbankCharityInfo? Charity { get; set; }
+        public CharityInfo? Charity { get; set; }
 
-        // Field not needed, Change to dispose on DB store
+        [JsonProperty("locations")]
+        public ICollection<Location>? Locations;
+
+        [JsonProperty("need")]
+        public Needs? Needs { get; set; }
+
+
         [JsonProperty("politcs")]
         public object? Politics { get; set; }
 
-        [JsonProperty("locations")]
-        public List<FoodbankLocation>? Locations;
-
-        [JsonProperty("need")]
-        public FoodbankNeed? Need;
-
-        // Field not needed, Change to dispose on DB store
         [JsonProperty("nearby_foodbanks")]
         public List<object>? NearbyFoodbanks;
 
@@ -76,13 +72,17 @@ namespace Foodbank_Project.Models
             this.Email ??= giver.Email;
             this.Address ??= giver.Address;
             this.Postcode ??= giver.Postcode;
+            this.Closed ??= giver.Closed;
             this.Country ??= giver.Country;
             this.LatLng ??= giver.LatLng;
             this.Network ??= giver.Network;
+            this.Created ??= giver.Created;
             this.Urls ??= giver.Urls;
             this.Charity ??= giver.Charity;
             this.Locations ??= giver.Locations;
-            this.Need ??= giver.Need;
+            this.Needs ??= giver.Needs;
+            this.Politics ??= giver.Politics;
+            this.NearbyFoodbanks ??= giver.NearbyFoodbanks;
         }
     }
 }

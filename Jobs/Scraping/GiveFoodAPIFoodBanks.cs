@@ -1,8 +1,7 @@
-﻿using Foodbank_Project.Models;
+﻿using Foodbank_Project.Models.Foodbank.External;
 using Quartz;
 using System.Diagnostics;
 using System.Net.Http.Headers;
-using System.Text.Json.Serialization;
 
 namespace Foodbank_Project.Jobs.Scraping
 {
@@ -53,7 +52,8 @@ namespace Foodbank_Project.Jobs.Scraping
                             try
                             {
                                 subResponse = await subClient.SendAsync(request);
-                            }catch (Exception ex)
+                            }
+                            catch (Exception ex)
                             {
                                 _logger.LogError($"Something went very wrong! {ex.ToString()}. Skipping...");
                                 continue;
@@ -62,7 +62,7 @@ namespace Foodbank_Project.Jobs.Scraping
                             {
                                 foodbanks[i].Merge(await subResponse.Content.ReadAsAsync<Foodbank>());
                                 sw.Stop();
-                                _logger.LogInformation($"Succesfully added locations for {_foodbank.Name}({_foodbank.Urls.Self}) in {sw.ElapsedMilliseconds}ms [{i+1} of {foodbanks.Count}]");
+                                _logger.LogInformation($"Succesfully added locations for {_foodbank.Name}({_foodbank.Urls.Self}) in {sw.ElapsedMilliseconds}ms [{i + 1} of {foodbanks.Count}]");
                                 Thread.Sleep(200);
                             }
                             else

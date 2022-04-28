@@ -1,9 +1,7 @@
-using Foodbank_Project;
-using Foodbank_Project.Jobs;
+using Foodbank_Project.Data;
 using Foodbank_Project.Jobs.Scraping;
-using Quartz;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +9,10 @@ builder.Services.AddRazorPages(options =>
 {
     options.Conventions.AuthorizeAreaFolder("Identity", "/Manage", "AtLeast21");
 });
+
+builder.Services.AddDbContext<FoodbankContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Foodbanks")));
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddSignalR();
 
@@ -39,16 +41,21 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+else
+{
+    app.UseDeveloperExceptionPage();
+    app.UseMigrationsEndPoint();
+}
+
 
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();;
+app.UseAuthentication(); ;
 
 app.UseAuthorization();
 
