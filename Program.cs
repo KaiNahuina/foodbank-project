@@ -32,8 +32,6 @@ builder.Services.AddQuartz(q =>
 builder.Services.AddQuartzHostedService(
     q => q.WaitForJobsToComplete = true);
 
-builder.Services.AddSignalR();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
