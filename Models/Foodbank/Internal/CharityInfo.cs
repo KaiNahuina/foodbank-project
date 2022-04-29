@@ -1,15 +1,19 @@
-﻿using Newtonsoft.Json;
+﻿namespace Foodbank_Project.Models.Foodbank.Internal;
 
-namespace Foodbank_Project.Models.Foodbank.Internal
+public class CharityInfo
 {
-    public class CharityInfo
-    {
-        public int CharityInfoId { get; set; }
+    // ReSharper disable once UnassignedField.Global
+    public Foodbank? Foodbank;
 
-        public string? CharityNumber { get; set; }
-        public string? CharityRegistarUrl { get; set; }
+    // ReSharper disable once UnusedMember.Global
+    public int CharityInfoId { get; set; }
 
-        public int FoodbankId { get; set; }
-        public Foodbank? Foodbank;
-    }
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
+    public string? CharityNumber { get; set; }
+
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
+    public string? CharityRegisterUrl { get; set; }
+
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
+    public int FoodbankId { get; set; }
 }

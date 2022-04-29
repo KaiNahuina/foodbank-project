@@ -1,6 +1,7 @@
-import { IConnection } from "./IConnection";
-import { IHttpConnectionOptions } from "./IHttpConnectionOptions";
-import { HttpTransportType, ITransport, TransferFormat } from "./ITransport";
+import {IConnection} from "./IConnection";
+import {IHttpConnectionOptions} from "./IHttpConnectionOptions";
+import {HttpTransportType, ITransport, TransferFormat} from "./ITransport";
+
 /** @private */
 export interface INegotiateResponse {
     connectionId?: string;
@@ -11,13 +12,20 @@ export interface INegotiateResponse {
     accessToken?: string;
     error?: string;
 }
+
 /** @private */
 export interface IAvailableTransport {
     transport: keyof typeof HttpTransportType;
     transferFormats: (keyof typeof TransferFormat)[];
 }
+
 /** @private */
 export declare class HttpConnection implements IConnection {
+    readonly features: any;
+    baseUrl: string;
+    connectionId?: string;
+    onreceive: ((data: string | ArrayBuffer) => void) | null;
+    onclose: ((e?: Error) => void) | null;
     private _connectionState;
     private _connectionStarted;
     private readonly _httpClient;
@@ -30,17 +38,7 @@ export declare class HttpConnection implements IConnection {
     private _stopError?;
     private _accessTokenFactory?;
     private _sendQueue?;
-    readonly features: any;
-    baseUrl: string;
-    connectionId?: string;
-    onreceive: ((data: string | ArrayBuffer) => void) | null;
-    onclose: ((e?: Error) => void) | null;
     private readonly _negotiateVersion;
-    constructor(url: string, options?: IHttpConnectionOptions);
-    start(): Promise<void>;
-    start(transferFormat: TransferFormat): Promise<void>;
-    send(data: string | ArrayBuffer): Promise<void>;
-    stop(error?: Error): Promise<void>;
     private _stopInternal;
     private _startInternal;
     private _getNegotiationResponse;
@@ -53,19 +51,33 @@ export declare class HttpConnection implements IConnection {
     private _stopConnection;
     private _resolveUrl;
     private _resolveNegotiateUrl;
+
+    constructor(url: string, options?: IHttpConnectionOptions);
+
+    start(): Promise<void>;
+
+    start(transferFormat: TransferFormat): Promise<void>;
+
+    send(data: string | ArrayBuffer): Promise<void>;
+
+    stop(error?: Error): Promise<void>;
 }
+
 /** @private */
 export declare class TransportSendQueue {
+    private static _concatBuffers;
     private readonly _transport;
     private _buffer;
     private _sendBufferedData;
     private _executing;
     private _transportResult?;
     private _sendLoopPromise;
-    constructor(_transport: ITransport);
-    send(data: string | ArrayBuffer): Promise<void>;
-    stop(): Promise<void>;
     private _bufferData;
     private _sendLoop;
-    private static _concatBuffers;
+
+    constructor(_transport: ITransport);
+
+    send(data: string | ArrayBuffer): Promise<void>;
+
+    stop(): Promise<void>;
 }

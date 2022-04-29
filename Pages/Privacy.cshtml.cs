@@ -1,18 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿#region
 
-namespace Foodbank_Project.Pages
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+#endregion
+
+namespace Foodbank_Project.Pages;
+
+public class PrivacyModel : PageModel
 {
-    public class PrivacyModel : PageModel
+    public void OnGet()
     {
-        private readonly ILogger<PrivacyModel> _logger;
-
-        public PrivacyModel(ILogger<PrivacyModel> logger)
-        {
-            _logger = logger;
-        }
-
-        public void OnGet()
-        {
-        }
     }
 }

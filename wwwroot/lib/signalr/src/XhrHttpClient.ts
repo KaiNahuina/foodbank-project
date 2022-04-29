@@ -1,9 +1,9 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-import { AbortError, HttpError, TimeoutError } from "./Errors";
-import { HttpClient, HttpRequest, HttpResponse } from "./HttpClient";
-import { ILogger, LogLevel } from "./ILogger";
+import {AbortError, HttpError, TimeoutError} from "./Errors";
+import {HttpClient, HttpRequest, HttpResponse} from "./HttpClient";
+import {ILogger, LogLevel} from "./ILogger";
 
 export class XhrHttpClient extends HttpClient {
     private readonly _logger: ILogger;
@@ -14,7 +14,7 @@ export class XhrHttpClient extends HttpClient {
     }
 
     /** @inheritDoc */
-    public send(request: HttpRequest): Promise<HttpResponse> {
+    public send(request: HttpRequest) {
         // Check that abort was not signaled before calling send
         if (request.abortSignal && request.abortSignal.aborted) {
             return Promise.reject(new AbortError());
@@ -39,9 +39,7 @@ export class XhrHttpClient extends HttpClient {
             const headers = request.headers;
             if (headers) {
                 Object.keys(headers)
-                    .forEach((header) => {
-                        xhr.setRequestHeader(header, headers[header]);
-                    });
+                    .forEach(header => xhr.setRequestHeader(header, headers[header]));
             }
 
             if (request.responseType) {

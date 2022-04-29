@@ -1,12 +1,12 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-import { AbortError } from "./Errors";
-import { FetchHttpClient } from "./FetchHttpClient";
-import { HttpClient, HttpRequest, HttpResponse } from "./HttpClient";
-import { ILogger } from "./ILogger";
-import { Platform } from "./Utils";
-import { XhrHttpClient } from "./XhrHttpClient";
+import {AbortError} from "./Errors";
+import {FetchHttpClient} from "./FetchHttpClient";
+import {HttpClient, HttpRequest} from "./HttpClient";
+import {ILogger} from "./ILogger";
+import {Platform} from "./Utils";
+import {XhrHttpClient} from "./XhrHttpClient";
 
 /** Default implementation of {@link @microsoft/signalr.HttpClient}. */
 export class DefaultHttpClient extends HttpClient {
@@ -26,7 +26,7 @@ export class DefaultHttpClient extends HttpClient {
     }
 
     /** @inheritDoc */
-    public send(request: HttpRequest): Promise<HttpResponse> {
+    public send(request: HttpRequest) {
         // Check that abort was not signaled before calling send
         if (request.abortSignal && request.abortSignal.aborted) {
             return Promise.reject(new AbortError());
@@ -42,7 +42,7 @@ export class DefaultHttpClient extends HttpClient {
         return this._httpClient.send(request);
     }
 
-    public getCookieString(url: string): string {
+    public getCookieString(url: string) {
         return this._httpClient.getCookieString(url);
     }
 }

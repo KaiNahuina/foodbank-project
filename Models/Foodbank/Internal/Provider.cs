@@ -1,8 +1,7 @@
-﻿namespace Foodbank_Project.Models.Foodbank.Internal
+﻿namespace Foodbank_Project.Models.Foodbank.Internal;
+
+public enum Provider
 {
-    public enum Provider
-    {
-        GiveFood,
-        IFAN
-    }
+    // ReSharper disable once UnusedMember.Global
+    GiveFoodApi
 }

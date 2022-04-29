@@ -11,11 +11,9 @@ async function start() {
         console.log(err);
         setTimeout(start, 5000);
     }
-};
+}
 
-connection.onclose(async () => {
-    await start();
-});
+connection.onclose(async () => await start());
 
 start();
 

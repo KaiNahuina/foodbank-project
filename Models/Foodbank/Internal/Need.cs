@@ -1,11 +1,11 @@
-﻿namespace Foodbank_Project.Models.Foodbank.Internal
+﻿namespace Foodbank_Project.Models.Foodbank.Internal;
+
+public class Need
 {
-    public class Need
-    {
-        public int NeedId { get; set; }
+    // ReSharper disable once UnusedMember.Global
+    public int NeedId { get; set; }
 
-        public string? NeedStr { get; set; }
+    public string? NeedStr { get; set; }
 
-        public ICollection<FoodbankNeed>? FoodbankNeeds { get; set; }
-    }
+    public ICollection<FoodbankNeed>? FoodbankNeeds { get; set; }
 }

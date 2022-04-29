@@ -1,61 +1,53 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Foodbank_Project</RootNamespace>
-    <UserSecretsId>090fccae-f626-47ac-863f-cefe60dc83e0</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>.</DockerfileContext>
-    <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>Foodbank_Project</RootNamespace>
+        <UserSecretsId>090fccae-f626-47ac-863f-cefe60dc83e0</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerfileContext>.</DockerfileContext>
+        <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Foodbank Project Tests\**" />
-    <Content Remove="Foodbank Project Tests\**" />
-    <EmbeddedResource Remove="Foodbank Project Tests\**" />
-    <None Remove="Foodbank Project Tests\**" />
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="Foodbank Project Tests\**"/>
+        <Content Remove="Foodbank Project Tests\**"/>
+        <EmbeddedResource Remove="Foodbank Project Tests\**"/>
+        <None Remove="Foodbank Project Tests\**"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Pages\test.cshtml.cs" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Remove="Pages\GetHelp"/>
+        <None Remove="Pages\NewFile.txt"/>
+        <None Remove="Pages\R"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Content Remove="Pages\test.cshtml" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.8"/>
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.4"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.4"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.4"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.4"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.4">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0"/>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.3"/>
+        <PackageReference Include="Quartz" Version="3.4.0"/>
+        <PackageReference Include="Quartz.Extensions.Hosting" Version="3.4.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Pages\GetHelp" />
-    <None Remove="Pages\NewFile.txt" />
-    <None Remove="Pages\R" />
-  </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Pages\Admin\"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.4">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.3" />
-    <PackageReference Include="Quartz" Version="3.4.0" />
-    <PackageReference Include="Quartz.Extensions.Hosting" Version="3.4.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Pages\Admin\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include=".gitlab\auto-deploy-values.yaml" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Include=".gitlab\auto-deploy-values.yaml"/>
+    </ItemGroup>
 
 </Project>

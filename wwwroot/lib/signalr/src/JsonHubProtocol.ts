@@ -1,11 +1,18 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-import { CompletionMessage, HubMessage, IHubProtocol, InvocationMessage, MessageType, StreamItemMessage } from "./IHubProtocol";
-import { ILogger, LogLevel } from "./ILogger";
-import { TransferFormat } from "./ITransport";
-import { NullLogger } from "./Loggers";
-import { TextMessageFormat } from "./TextMessageFormat";
+import {
+    CompletionMessage,
+    HubMessage,
+    IHubProtocol,
+    InvocationMessage,
+    MessageType,
+    StreamItemMessage
+} from "./IHubProtocol";
+import {ILogger, LogLevel} from "./ILogger";
+import {TransferFormat} from "./ITransport";
+import {NullLogger} from "./Loggers";
+import {TextMessageFormat} from "./TextMessageFormat";
 
 const JSON_HUB_PROTOCOL_NAME: string = "json";
 
@@ -13,7 +20,7 @@ const JSON_HUB_PROTOCOL_NAME: string = "json";
 export class JsonHubProtocol implements IHubProtocol {
 
     /** @inheritDoc */
-    public readonly name: string = JSON_HUB_PROTOCOL_NAME;
+    public readonly name = JSON_HUB_PROTOCOL_NAME;
     /** @inheritDoc */
     public readonly version: number = 1;
 
@@ -80,11 +87,11 @@ export class JsonHubProtocol implements IHubProtocol {
      * @param {HubMessage} message The message to write.
      * @returns {string} A string containing the serialized representation of the message.
      */
-    public writeMessage(message: HubMessage): string {
+    public writeMessage(message: HubMessage) {
         return TextMessageFormat.write(JSON.stringify(message));
     }
 
-    private _isInvocationMessage(message: InvocationMessage): void {
+    private _isInvocationMessage(message: InvocationMessage) {
         this._assertNotEmptyString(message.target, "Invalid payload for Invocation message.");
 
         if (message.invocationId !== undefined) {
@@ -92,7 +99,7 @@ export class JsonHubProtocol implements IHubProtocol {
         }
     }
 
-    private _isStreamItemMessage(message: StreamItemMessage): void {
+    private _isStreamItemMessage(message: StreamItemMessage) {
         this._assertNotEmptyString(message.invocationId, "Invalid payload for StreamItem message.");
 
         if (message.item === undefined) {
@@ -100,7 +107,7 @@ export class JsonHubProtocol implements IHubProtocol {
         }
     }
 
-    private _isCompletionMessage(message: CompletionMessage): void {
+    private _isCompletionMessage(message: CompletionMessage) {
         if (message.result && message.error) {
             throw new Error("Invalid payload for Completion message.");
         }
@@ -112,7 +119,7 @@ export class JsonHubProtocol implements IHubProtocol {
         this._assertNotEmptyString(message.invocationId, "Invalid payload for Completion message.");
     }
 
-    private _assertNotEmptyString(value: any, errorMessage: string): void {
+    private _assertNotEmptyString(value: any, errorMessage: string) {
         if (typeof value !== "string" || value === "") {
             throw new Error(errorMessage);
         }

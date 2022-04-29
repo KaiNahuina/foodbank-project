@@ -1,12 +1,13 @@
 "use strict";
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", {value: true});
 exports.FetchHttpClient = void 0;
 const Errors_1 = require("./Errors");
 const HttpClient_1 = require("./HttpClient");
 const ILogger_1 = require("./ILogger");
 const Utils_1 = require("./Utils");
+
 class FetchHttpClient extends HttpClient_1.HttpClient {
     constructor(logger) {
         super();
@@ -21,8 +22,7 @@ class FetchHttpClient extends HttpClient_1.HttpClient {
             // node-fetch doesn't have a nice API for getting and setting cookies
             // fetch-cookie will wrap a fetch implementation with a default CookieJar or a provided one
             this._fetchType = requireFunc("fetch-cookie")(this._fetchType, this._jar);
-        }
-        else {
+        } else {
             this._fetchType = fetch.bind(Utils_1.getGlobalThis());
         }
         if (typeof AbortController === "undefined") {
@@ -31,11 +31,11 @@ class FetchHttpClient extends HttpClient_1.HttpClient {
             const requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : require;
             // Node needs EventListener methods on AbortController which our custom polyfill doesn't provide
             this._abortControllerType = requireFunc("abort-controller");
-        }
-        else {
+        } else {
             this._abortControllerType = AbortController;
         }
     }
+
     /** @inheritDoc */
     async send(request) {
         // Check that abort was not signaled before calling send
@@ -84,15 +84,13 @@ class FetchHttpClient extends HttpClient_1.HttpClient {
                 redirect: "follow",
                 signal: abortController.signal,
             });
-        }
-        catch (e) {
+        } catch (e) {
             if (error) {
                 throw error;
             }
             this._logger.log(ILogger_1.LogLevel.Warning, `Error from HTTP request. ${e}.`);
             throw e;
-        }
-        finally {
+        } finally {
             if (timeoutId) {
                 clearTimeout(timeoutId);
             }
@@ -108,6 +106,7 @@ class FetchHttpClient extends HttpClient_1.HttpClient {
         const payload = await content;
         return new HttpClient_1.HttpResponse(response.status, response.statusText, payload);
     }
+
     getCookieString(url) {
         let cookies = "";
         if (Utils_1.Platform.isNode && this._jar) {
@@ -117,7 +116,9 @@ class FetchHttpClient extends HttpClient_1.HttpClient {
         return cookies;
     }
 }
+
 exports.FetchHttpClient = FetchHttpClient;
+
 function deserializeContent(response, responseType) {
     let content;
     switch (responseType) {
@@ -137,4 +138,5 @@ function deserializeContent(response, responseType) {
     }
     return content;
 }
+
 //# sourceMappingURL=FetchHttpClient.js.map

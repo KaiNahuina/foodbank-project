@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 // @ts-ignore: This will be removed from built files and is here to make the types available during dev work
-import { CookieJar } from "@types/tough-cookie";
+import {CookieJar} from "@types/tough-cookie";
 
-import { AbortError, HttpError, TimeoutError } from "./Errors";
-import { HttpClient, HttpRequest, HttpResponse } from "./HttpClient";
-import { ILogger, LogLevel } from "./ILogger";
-import { Platform, getGlobalThis } from "./Utils";
+import {AbortError, HttpError, TimeoutError} from "./Errors";
+import {HttpClient, HttpRequest, HttpResponse} from "./HttpClient";
+import {ILogger, LogLevel} from "./ILogger";
+import {getGlobalThis, Platform} from "./Utils";
 
 export class FetchHttpClient extends HttpClient {
     private readonly _abortControllerType: { prototype: AbortController, new(): AbortController };
@@ -48,7 +48,7 @@ export class FetchHttpClient extends HttpClient {
     }
 
     /** @inheritDoc */
-    public async send(request: HttpRequest): Promise<HttpResponse> {
+    public async send(request: HttpRequest) {
         // Check that abort was not signaled before calling send
         if (request.abortSignal && request.abortSignal.aborted) {
             throw new AbortError();
@@ -133,8 +133,8 @@ export class FetchHttpClient extends HttpClient {
         );
     }
 
-    public getCookieString(url: string): string {
-        let cookies: string = "";
+    public getCookieString(url: string) {
+        let cookies = "";
         if (Platform.isNode && this._jar) {
             // @ts-ignore: unused variable
             this._jar.getCookies(url, (e, c) => cookies = c.join("; "));

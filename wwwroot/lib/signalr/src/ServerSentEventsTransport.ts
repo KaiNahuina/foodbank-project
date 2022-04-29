@@ -1,24 +1,23 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-import { HttpClient } from "./HttpClient";
-import { MessageHeaders } from "./IHubProtocol";
-import { ILogger, LogLevel } from "./ILogger";
-import { ITransport, TransferFormat } from "./ITransport";
-import { Arg, getDataDetail, getUserAgentHeader, Platform, sendMessage } from "./Utils";
-import { IHttpConnectionOptions } from "./IHttpConnectionOptions";
+import {HttpClient} from "./HttpClient";
+import {MessageHeaders} from "./IHubProtocol";
+import {ILogger, LogLevel} from "./ILogger";
+import {ITransport, TransferFormat} from "./ITransport";
+import {Arg, getDataDetail, getUserAgentHeader, Platform, sendMessage} from "./Utils";
+import {IHttpConnectionOptions} from "./IHttpConnectionOptions";
 
 /** @private */
 export class ServerSentEventsTransport implements ITransport {
+    public onreceive: ((data: string | ArrayBuffer) => void) | null;
+    public onclose: ((error?: Error) => void) | null;
     private readonly _httpClient: HttpClient;
     private readonly _accessTokenFactory: (() => string | Promise<string>) | undefined;
     private readonly _logger: ILogger;
     private readonly _options: IHttpConnectionOptions;
     private _eventSource?: EventSource;
     private _url?: string;
-
-    public onreceive: ((data: string | ArrayBuffer) => void) | null;
-    public onclose: ((error?: Error) => void) | null;
 
     constructor(httpClient: HttpClient, accessTokenFactory: (() => string | Promise<string>) | undefined, logger: ILogger,
                 options: IHttpConnectionOptions) {
@@ -31,7 +30,7 @@ export class ServerSentEventsTransport implements ITransport {
         this.onclose = null;
     }
 
-    public async connect(url: string, transferFormat: TransferFormat): Promise<void> {
+    public async connect(url: string, transferFormat: TransferFormat) {
         Arg.isRequired(url, "url");
         Arg.isRequired(transferFormat, "transferFormat");
         Arg.isIn(transferFormat, TransferFormat, "transferFormat");
@@ -57,7 +56,7 @@ export class ServerSentEventsTransport implements ITransport {
 
             let eventSource: EventSource;
             if (Platform.isBrowser || Platform.isWebWorker) {
-                eventSource = new this._options.EventSource!(url, { withCredentials: this._options.withCredentials });
+                eventSource = new this._options.EventSource!(url, {withCredentials: this._options.withCredentials});
             } else {
                 // Non-browser passes cookies via the dictionary
                 const cookies = this._httpClient.getCookieString(url);
@@ -66,7 +65,10 @@ export class ServerSentEventsTransport implements ITransport {
                 const [name, value] = getUserAgentHeader();
                 headers[name] = value;
 
-                eventSource = new this._options.EventSource!(url, { withCredentials: this._options.withCredentials, headers: { ...headers, ...this._options.headers} } as EventSourceInit);
+                eventSource = new this._options.EventSource!(url, {
+                    withCredentials: this._options.withCredentials,
+                    headers: {...headers, ...this._options.headers}
+                } as EventSourceInit);
             }
 
             try {
@@ -89,8 +91,8 @@ export class ServerSentEventsTransport implements ITransport {
                         this._close();
                     } else {
                         reject(new Error("EventSource failed to connect. The connection could not be found on the server,"
-                        + " either the connection ID is not present on the server, or a proxy is refusing/buffering the connection."
-                        + " If you have multiple servers check that sticky sessions are enabled."));
+                            + " either the connection ID is not present on the server, or a proxy is refusing/buffering the connection."
+                            + " If you have multiple servers check that sticky sessions are enabled."));
                     }
                 };
 
@@ -107,14 +109,14 @@ export class ServerSentEventsTransport implements ITransport {
         });
     }
 
-    public async send(data: any): Promise<void> {
+    public async send(data: any) {
         if (!this._eventSource) {
             return Promise.reject(new Error("Cannot send until the transport is connected"));
         }
         return sendMessage(this._logger, "SSE", this._httpClient, this._url!, this._accessTokenFactory, data, this._options);
     }
 
-    public stop(): Promise<void> {
+    public stop() {
         this._close();
         return Promise.resolve();
     }

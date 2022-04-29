@@ -1,36 +1,29 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-import { AbortController } from "./AbortController";
-import { HttpError, TimeoutError } from "./Errors";
-import { HeaderNames } from "./HeaderNames";
-import { HttpClient, HttpRequest } from "./HttpClient";
-import { ILogger, LogLevel } from "./ILogger";
-import { ITransport, TransferFormat } from "./ITransport";
-import { Arg, getDataDetail, getUserAgentHeader, sendMessage } from "./Utils";
-import { IHttpConnectionOptions } from "./IHttpConnectionOptions";
+import {AbortController} from "./AbortController";
+import {HttpError, TimeoutError} from "./Errors";
+import {HeaderNames} from "./HeaderNames";
+import {HttpClient, HttpRequest} from "./HttpClient";
+import {ILogger, LogLevel} from "./ILogger";
+import {ITransport, TransferFormat} from "./ITransport";
+import {Arg, getDataDetail, getUserAgentHeader, sendMessage} from "./Utils";
+import {IHttpConnectionOptions} from "./IHttpConnectionOptions";
 
 // Not exported from 'index', this type is internal.
 /** @private */
 export class LongPollingTransport implements ITransport {
+    public onreceive: ((data: string | ArrayBuffer) => void) | null;
+    public onclose: ((error?: Error) => void) | null;
     private readonly _httpClient: HttpClient;
     private readonly _accessTokenFactory: (() => string | Promise<string>) | undefined;
     private readonly _logger: ILogger;
     private readonly _options: IHttpConnectionOptions;
     private readonly _pollAbort: AbortController;
-
     private _url?: string;
     private _running: boolean;
     private _receiving?: Promise<void>;
     private _closeError?: Error;
-
-    public onreceive: ((data: string | ArrayBuffer) => void) | null;
-    public onclose: ((error?: Error) => void) | null;
-
-    // This is an internal type, not exported from 'index' so this is really just internal.
-    public get pollAborted(): boolean {
-        return this._pollAbort.aborted;
-    }
 
     constructor(httpClient: HttpClient, accessTokenFactory: (() => string | Promise<string>) | undefined, logger: ILogger, options: IHttpConnectionOptions) {
         this._httpClient = httpClient;
@@ -45,7 +38,12 @@ export class LongPollingTransport implements ITransport {
         this.onclose = null;
     }
 
-    public async connect(url: string, transferFormat: TransferFormat): Promise<void> {
+    // This is an internal type, not exported from 'index' so this is really just internal.
+    public get pollAborted() {
+        return this._pollAbort.aborted;
+    }
+
+    public async connect(url: string, transferFormat: TransferFormat) {
         Arg.isRequired(url, "url");
         Arg.isRequired(transferFormat, "transferFormat");
         Arg.isIn(transferFormat, TransferFormat, "transferFormat");
@@ -61,7 +59,7 @@ export class LongPollingTransport implements ITransport {
         }
 
         const [name, value] = getUserAgentHeader();
-        const headers = { [name]: value, ...this._options.headers };
+        const headers = {[name]: value, ...this._options.headers};
 
         const pollOptions: HttpRequest = {
             abortSignal: this._pollAbort.signal,
@@ -95,6 +93,49 @@ export class LongPollingTransport implements ITransport {
         this._receiving = this._poll(this._url, pollOptions);
     }
 
+    public async send(data: any) {
+        if (!this._running) {
+            return Promise.reject(new Error("Cannot send until the transport is connected"));
+        }
+        return sendMessage(this._logger, "LongPolling", this._httpClient, this._url!, this._accessTokenFactory, data, this._options);
+    }
+
+    public async stop() {
+        this._logger.log(LogLevel.Trace, "(LongPolling transport) Stopping polling.");
+
+        // Tell receiving loop to stop, abort any current request, and then wait for it to finish
+        this._running = false;
+        this._pollAbort.abort();
+
+        try {
+            await this._receiving;
+
+            // Send DELETE to clean up long polling on the server
+            this._logger.log(LogLevel.Trace, `(LongPolling transport) sending DELETE request to ${this._url}.`);
+
+            const headers: { [k: string]: string } = {};
+            const [name, value] = getUserAgentHeader();
+            headers[name] = value;
+
+            const deleteOptions: HttpRequest = {
+                headers: {...headers, ...this._options.headers},
+                timeout: this._options.timeout,
+                withCredentials: this._options.withCredentials,
+            };
+            const token = await this._getAccessToken();
+            this._updateHeaderToken(deleteOptions, token);
+            await this._httpClient.delete(this._url!, deleteOptions);
+
+            this._logger.log(LogLevel.Trace, "(LongPolling transport) DELETE request sent.");
+        } finally {
+            this._logger.log(LogLevel.Trace, "(LongPolling transport) Stop finished.");
+
+            // Raise close event here instead of in polling
+            // It needs to happen after the DELETE request is sent
+            this._raiseOnClose();
+        }
+    }
+
     private async _getAccessToken(): Promise<string | null> {
         if (this._accessTokenFactory) {
             return await this._accessTokenFactory();
@@ -116,7 +157,7 @@ export class LongPollingTransport implements ITransport {
         }
     }
 
-    private async _poll(url: string, pollOptions: HttpRequest): Promise<void> {
+    private async _poll(url: string, pollOptions: HttpRequest) {
         try {
             while (this._running) {
                 // We have to get the access token on each poll, in case it changes
@@ -174,49 +215,6 @@ export class LongPollingTransport implements ITransport {
             if (!this.pollAborted) {
                 this._raiseOnClose();
             }
-        }
-    }
-
-    public async send(data: any): Promise<void> {
-        if (!this._running) {
-            return Promise.reject(new Error("Cannot send until the transport is connected"));
-        }
-        return sendMessage(this._logger, "LongPolling", this._httpClient, this._url!, this._accessTokenFactory, data, this._options);
-    }
-
-    public async stop(): Promise<void> {
-        this._logger.log(LogLevel.Trace, "(LongPolling transport) Stopping polling.");
-
-        // Tell receiving loop to stop, abort any current request, and then wait for it to finish
-        this._running = false;
-        this._pollAbort.abort();
-
-        try {
-            await this._receiving;
-
-            // Send DELETE to clean up long polling on the server
-            this._logger.log(LogLevel.Trace, `(LongPolling transport) sending DELETE request to ${this._url}.`);
-
-            const headers: {[k: string]: string} = {};
-            const [name, value] = getUserAgentHeader();
-            headers[name] = value;
-
-            const deleteOptions: HttpRequest = {
-                headers: { ...headers, ...this._options.headers },
-                timeout: this._options.timeout,
-                withCredentials: this._options.withCredentials,
-            };
-            const token = await this._getAccessToken();
-            this._updateHeaderToken(deleteOptions, token);
-            await this._httpClient.delete(this._url!, deleteOptions);
-
-            this._logger.log(LogLevel.Trace, "(LongPolling transport) DELETE request sent.");
-        } finally {
-            this._logger.log(LogLevel.Trace, "(LongPolling transport) Stop finished.");
-
-            // Raise close event here instead of in polling
-            // It needs to happen after the DELETE request is sent
-            this._raiseOnClose();
         }
     }
 

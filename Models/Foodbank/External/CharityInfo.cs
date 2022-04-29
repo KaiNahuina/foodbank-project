@@ -1,13 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿#region
 
-namespace Foodbank_Project.Models.Foodbank.External
+using Newtonsoft.Json;
+
+#endregion
+
+namespace Foodbank_Project.Models.Foodbank.External;
+
+public class CharityInfo
 {
-    public class CharityInfo
-    {
-        [JsonProperty("registration_id")]
-        public string? RegistrationId { get; set; }
+    [JsonProperty("registration_id")] public string? RegistrationId { get; set; }
 
-        [JsonProperty("register_url")]
-        public string? RegisterUrl { get; set; }
-    }
+    [JsonProperty("register_url")] public string? RegisterUrl { get; set; }
 }

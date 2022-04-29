@@ -1,8 +1,8 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-import { AbortSignal } from "./AbortController";
-import { MessageHeaders } from "./IHubProtocol";
+import {AbortSignal} from "./AbortController";
+import {MessageHeaders} from "./IHubProtocol";
 
 /** Represents an HTTP request. */
 export interface HttpRequest {
@@ -95,7 +95,7 @@ export abstract class HttpClient {
      * @returns {Promise<HttpResponse>} A Promise that resolves with an {@link @microsoft/signalr.HttpResponse} describing the response, or rejects with an Error indicating a failure.
      */
     public get(url: string, options: HttpRequest): Promise<HttpResponse>;
-    public get(url: string, options?: HttpRequest): Promise<HttpResponse> {
+    public get(url: string, options?: HttpRequest) {
         return this.send({
             ...options,
             method: "GET",
@@ -117,7 +117,7 @@ export abstract class HttpClient {
      * @returns {Promise<HttpResponse>} A Promise that resolves with an {@link @microsoft/signalr.HttpResponse} describing the response, or rejects with an Error indicating a failure.
      */
     public post(url: string, options: HttpRequest): Promise<HttpResponse>;
-    public post(url: string, options?: HttpRequest): Promise<HttpResponse> {
+    public post(url: string, options?: HttpRequest) {
         return this.send({
             ...options,
             method: "POST",
@@ -139,7 +139,7 @@ export abstract class HttpClient {
      * @returns {Promise<HttpResponse>} A Promise that resolves with an {@link @microsoft/signalr.HttpResponse} describing the response, or rejects with an Error indicating a failure.
      */
     public delete(url: string, options: HttpRequest): Promise<HttpResponse>;
-    public delete(url: string, options?: HttpRequest): Promise<HttpResponse> {
+    public delete(url: string, options?: HttpRequest) {
         return this.send({
             ...options,
             method: "DELETE",
@@ -160,7 +160,7 @@ export abstract class HttpClient {
      * @returns {string} A string containing all the key-value cookie pairs for the specified URL.
      */
     // @ts-ignore
-    public getCookieString(url: string): string {
+    public getCookieString(url: string) {
         return "";
     }
 }

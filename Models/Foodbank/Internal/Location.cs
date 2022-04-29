@@ -1,19 +1,31 @@
-﻿using Newtonsoft.Json;
+﻿namespace Foodbank_Project.Models.Foodbank.Internal;
 
-namespace Foodbank_Project.Models.Foodbank.Internal
+public class Location
 {
-    public class Location
-    {
-        public int LocationId { get; set; }
+    // ReSharper disable once UnusedMember.Global
+    public int LocationId { get; set; }
 
-        public string? Name { get; set; }
-        public string? Slug { get; set; }
-        public string? Address { get; set; }
-        public string? Postcode { get; set; }
-        public string? LatLng { get; set; }
-        public string? Phone { get; set; }
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public string? Name { get; set; }
 
-        public int FoodbankId { get; set; }
-        public Foodbank? Foodbank { get; set; }
-    }
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public string? Slug { get; set; }
+
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public string? Address { get; set; }
+
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public string? Postcode { get; set; }
+
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public string? LatLng { get; set; }
+
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public string? Phone { get; set; }
+
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
+    public int FoodbankId { get; set; }
+
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public Foodbank? Foodbank { get; set; }
 }
