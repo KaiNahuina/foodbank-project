@@ -1,7 +1,7 @@
 #region
 
 using Foodbank_Project.Data;
-using Foodbank_Project.Jobs.Scraping;
+using Foodbank_Project.Services.Scraping;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
 

@@ -5,7 +5,7 @@ using System.Net.Http.Headers;
 
 #endregion
 
-namespace Foodbank_Project.Jobs.Scraping;
+namespace Foodbank_Project.Services.Scraping;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 /**public class GiveFoodApiFoodBanks : IJob
@@ -115,12 +115,17 @@ namespace Foodbank_Project.Jobs.Scraping;
 
 public class GiveFoodApiService : BackgroundService
 {
+    /* Creating a logger that will be used to log information about the service. */
     private readonly ILogger _logger;
+    /* A reference to the configuration file. */
     private readonly IConfiguration _config;
 
+    /* Creating a new instance of the HttpClient class. */
     private readonly HttpClient _httpClient = new();
+    /* A stopwatch that is used to measure the time it takes to get a response from the API. */
     private readonly Stopwatch _sw = new();
     
+    /* Creating a new instance of the class, and setting the logger and configuration variables which are injected from builder.Services */
     public GiveFoodApiService(ILoggerFactory logger, IConfiguration configuration)
     {
         _logger = logger.CreateLogger("Services.GiveFoodApi");
@@ -180,6 +185,9 @@ public class GiveFoodApiService : BackgroundService
     }
     
     
+    /// <summary>
+    /// > The Dispose() function is called when the service is stopped
+    /// </summary>
     public override void Dispose()
     {
         _logger.LogInformation("Gracefully stopping service...");
@@ -187,8 +195,15 @@ public class GiveFoodApiService : BackgroundService
         _logger.LogInformation("Goodbye!");
         base.Dispose();
     }
-
-    // Url : Country
+    
+    
+    /// <summary>
+    /// > This function makes an HTTP GET request to the specified URL, and returns the response as a JSON object
+    /// </summary>
+    /// <param name="url">The URL of the API endpoint you want to call.</param>
+    /// <returns>
+    /// A Task&lt;T&gt; that contains permits asynchronous execution
+    /// </returns>
     private async Task<T> GetFoodbank<T>(string url)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, url);
