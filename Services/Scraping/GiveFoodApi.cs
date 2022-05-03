@@ -2,17 +2,13 @@
 
 using System.Diagnostics;
 using System.Net.Http.Headers;
-using Foodbank_Project.Models.Foodbank;
-using Foodbank_Project.Models.Foodbank.Internal;
-using Quartz;
-using Foodbank = Foodbank_Project.Models.Foodbank.External.Foodbank;
 
 #endregion
 
 namespace Foodbank_Project.Jobs.Scraping;
 
 // ReSharper disable once ClassNeverInstantiated.Global
-public class GiveFoodApiFoodBanks : IJob
+/**public class GiveFoodApiFoodBanks : IJob
 {
     private readonly ILogger<GiveFoodApiFoodBanks> _logger;
 
@@ -112,5 +108,100 @@ public class GiveFoodApiFoodBanks : IJob
         var internalFoodbanks = foodbanks.Select(FoodbankConverter.Convert).ToList();
         internalFoodbanks.ForEach(f => f.Provider = Provider.GiveFoodApi);
         // TODO Submit data to DB
+    }
+}
+**/
+
+
+public class GiveFoodApiService : BackgroundService
+{
+    private readonly ILogger _logger;
+    private readonly IConfiguration _config;
+
+    private readonly HttpClient _httpClient = new();
+    private readonly Stopwatch _sw = new();
+    
+    public GiveFoodApiService(ILoggerFactory logger, IConfiguration configuration)
+    {
+        _logger = logger.CreateLogger("Services.GiveFoodApi");
+        _config = configuration.GetSection("Services:GiveFoodApi");
+    }
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        /*
+        try
+        {
+            _logger.LogInformation("Service started. Runs every {Stamp}", TimeSpan.FromSeconds(_config.GetValue<int>("Interval")).ToString(@"h\hm\ms\s"));
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                try
+                {
+                    await Task.Delay(_config.GetValue<int>("Interval") * 1000, stoppingToken);
+                    _logger.LogInformation("Service running");
+
+                    var cancelTask = Task.Delay(_config.GetValue<int>("Timeout") * 1000, stoppingToken);
+                    var giveFoodApiTask =
+                        Task.Run(() => GetFoodbank<List<Foodbank>>("https://www.givefood.org.uk/api/2/foodbanks/"), stoppingToken);
+
+                    await await Task.WhenAny(giveFoodApiTask, cancelTask);
+
+                    if (giveFoodApiTask.IsCompletedSuccessfully)
+                    {
+                        _logger.LogInformation("Successfully got {Count} foodbanks", giveFoodApiTask.Result.Count);
+                        foreach (var foodbankRaw in giveFoodApiTask.Result)
+                        {
+                            cancelTask = Task.Delay(_config.GetValue<int>("Timeout") * 1000, stoppingToken);
+                            var foodbank = Task.Run(() => GetFoodbank<Foodbank>(foodbankRaw.Urls?.Self ?? ""));
+
+                            await await Task.WhenAny(foodbank, cancelTask);
+                        }
+                    }
+                    else
+                    {
+                        _logger.LogWarning("Service run failed! Timeout occured! Will be rescheduled");
+                    }
+                }
+                catch (Exception e)
+                {
+                    _logger.LogWarning("Service run failed! Will be rescheduled {Exception}", e);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Service failed to start! Will not be scheduled again until restart {Exception}", e);
+        }*/
+        
+        _logger.LogInformation("Service started. Runs every {Stamp}", TimeSpan.FromSeconds(_config.GetValue<int>("Interval")).ToString(@"h\hm\ms\s"));
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            await Task.Delay(100);
+        }
+    }
+    
+    
+    public override void Dispose()
+    {
+        _logger.LogInformation("Gracefully stopping service...");
+        _httpClient.Dispose();
+        _logger.LogInformation("Goodbye!");
+        base.Dispose();
+    }
+
+    // Url : Country
+    private async Task<T> GetFoodbank<T>(string url)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, url);
+        request.Headers.Accept.Clear();
+        request.Headers.Accept.Add(
+            new MediaTypeWithQualityHeaderValue("application/json")
+        );
+        _sw.Restart();
+        var response = await _httpClient.SendAsync(request);
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadAsAsync<T>();
+        }
+        throw new Exception($"Non 200 HTTP code for {url}");
     }
 }

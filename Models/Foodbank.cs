@@ -1,4 +1,4 @@
-﻿namespace Foodbank_Project.Models.Foodbank.Internal;
+﻿namespace Foodbank_Project.Models;
 
 public class Foodbank
 {
@@ -51,14 +51,16 @@ public class Foodbank
 
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public DateTime? Created { get; set; }
-
-    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
-    public Urls? Urls { get; set; }
+    
+    public string? Homepage { get; set; }
+    
+    public string? ShoppingList { get; set; }
+    
+    public string? CharityNumber { get; set; }
+    
+    public string? CharityRegisterUrl { get; set; }
 
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public Provider Provider { get; set; }
-
-    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
-    public CharityInfo? Charity { get; set; }
     public ICollection<FoodbankNeed>? FoodbankNeeds { get; set; }
 }

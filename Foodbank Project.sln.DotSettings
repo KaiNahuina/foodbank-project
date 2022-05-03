@@ -62,6 +62,7 @@
     &amp;lt;Reformat&amp;gt;true&amp;lt;/Reformat&amp;gt;&#xD;
   &amp;lt;/Language&amp;gt;&#xD;
 &amp;lt;/profile&amp;gt;&lt;/RIDER_SETTINGS&gt;&lt;/Profile&gt;</s:String>
+	<s:Int64 x:Key="/Default/Environment/UnitTesting/ParallelProcessesCount/@EntryValue">8</s:Int64>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Foodbank/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Foodbanks/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=IFAN/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

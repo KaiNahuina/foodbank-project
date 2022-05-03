@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 #endregion
 
-namespace Foodbank_Project.Models.Foodbank.External;
+namespace Foodbank_Project.Models.External;
 
 public class Foodbank
 {

@@ -15,22 +15,7 @@ builder.Services.AddDbContext<FoodbankContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Foodbanks") ?? string.Empty));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddQuartz(q =>
-{
-    q.UseMicrosoftDependencyInjectionJobFactory();
-
-    var giveFoodJobKey = new JobKey("giveFoodJobKey");
-    q.AddJob<GiveFoodApiFoodBanks>(opts => opts.WithIdentity(giveFoodJobKey));
-    q.AddTrigger(opts => opts
-        .ForJob(giveFoodJobKey)
-        .WithIdentity("giveFoodJob-trigger")
-        .WithSimpleSchedule(x => x
-            .WithIntervalInHours(3)
-            .RepeatForever()));
-});
-
-builder.Services.AddQuartzHostedService(
-    q => q.WaitForJobsToComplete = true);
+builder.Services.AddHostedService<GiveFoodApiService>();
 
 var app = builder.Build();
 

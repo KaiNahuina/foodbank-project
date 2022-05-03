@@ -1,4 +1,4 @@
-﻿namespace Foodbank_Project.Models.Foodbank.Internal;
+﻿namespace Foodbank_Project.Models;
 
 public class Need
 {

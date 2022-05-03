@@ -1,6 +1,6 @@
 ﻿#region
 
-using Foodbank_Project.Models.Foodbank.Internal;
+using Foodbank_Project.Models;
 using Microsoft.EntityFrameworkCore;
 
 #endregion
@@ -16,12 +16,6 @@ public class FoodbankContext : DbContext
 
     // ReSharper disable once UnusedMember.Global
     public DbSet<Foodbank>? Foodbanks { get; set; }
-
-    // ReSharper disable once UnusedMember.Global
-    public DbSet<CharityInfo>? CharityInfos { get; set; }
-
-    // ReSharper disable once UnusedMember.Global
-    public DbSet<Urls>? Urls { get; set; }
 
     // ReSharper disable once UnusedMember.Global
     public DbSet<Location>? Locations { get; set; }
@@ -52,16 +46,6 @@ public class FoodbankContext : DbContext
             .WithMany(n => n.FoodbankNeeds)
             .HasForeignKey(n => n.NeedId);
 
-        modelBuilder.Entity<Foodbank>()
-            .HasOne(f => f.Charity)
-            .WithOne(fci => fci.Foodbank)
-            .HasForeignKey<CharityInfo>(fci => fci.FoodbankId);
-
-        modelBuilder.Entity<Foodbank>()
-            .HasOne(f => f.Urls)
-            .WithOne(fu => fu.Foodbank)
-            .HasForeignKey<Urls>(fu => fu.FoodbankId);
-
 
         modelBuilder.Entity<Foodbank>().Property(f => f.Name).IsRequired();
         modelBuilder.Entity<Foodbank>().Property(f => f.Slug).IsRequired();
@@ -75,9 +59,7 @@ public class FoodbankContext : DbContext
         modelBuilder.Entity<Foodbank>().Property(f => f.Network).IsRequired();
         modelBuilder.Entity<Foodbank>().Property(f => f.Created).IsRequired();
         modelBuilder.Entity<Foodbank>().Property(f => f.Protected).IsRequired();
-
-        modelBuilder.Entity<Urls>().Property(fu => fu.Homepage).IsRequired();
-        modelBuilder.Entity<Urls>().Property(fu => fu.ShoppingList).IsRequired(false);
+        
 
         modelBuilder.Entity<Location>().Property(fl => fl.Slug).IsRequired();
         modelBuilder.Entity<Location>().Property(fl => fl.Name).IsRequired();

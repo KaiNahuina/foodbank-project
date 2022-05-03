@@ -1,16 +1,12 @@
-﻿#region
+﻿using Foodbank_Project.Models;
 
-using Foodbank_Project.Models.Foodbank.Internal;
+namespace Foodbank_Project.Util;
 
-#endregion
-
-namespace Foodbank_Project.Models.Foodbank;
-
-public static class FoodbankConverter
+public static class FoodbankHelpers
 {
-    public static Internal.Foodbank Convert(External.Foodbank externalFoodbank)
+    public static Foodbank Convert(Models.External.Foodbank externalFoodbank)
     {
-        var foodbank = new Internal.Foodbank
+        var foodbank = new Foodbank
         {
             Name = externalFoodbank.Name,
             AltName = externalFoodbank.AltName,
@@ -25,20 +21,14 @@ public static class FoodbankConverter
             LatLng = externalFoodbank.LatLng,
             Network = externalFoodbank.Network,
             Created = externalFoodbank.Created,
-            Urls = new Urls
-            {
-                Homepage = externalFoodbank.Urls?.Homepage,
-                ShoppingList = externalFoodbank.Urls?.ShoppingList
-            },
-            Charity = new CharityInfo
-            {
-                CharityNumber = externalFoodbank.Charity?.RegistrationId,
-                CharityRegisterUrl = externalFoodbank.Charity?.RegisterUrl
-            },
+            Homepage = externalFoodbank.Urls?.Homepage,
+            ShoppingList = externalFoodbank.Urls?.ShoppingList,
+            CharityNumber = externalFoodbank.Charity?.RegistrationId,
+            CharityRegisterUrl = externalFoodbank.Charity?.RegisterUrl,
             Locations = new List<Location>()
         };
 
-        foreach (var item in externalFoodbank.Locations ?? new List<External.Location>(0))
+        foreach (var item in externalFoodbank.Locations ?? new List<Models.External.Location>(0))
         {
             var location = new Location
             {
