@@ -74,4 +74,20 @@ public class ServiceHelperTests
         });
         Assert.False(result.Result);
     }
+    
+    [Fact]
+    public async void CancelledTask_Result()
+    {
+        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        
+        cancellationTokenSource.Cancel();
+        
+        var result = await ServiceHelpers.TimeoutTask(1000, cancellationTokenSource.Token, async (token) =>
+        {
+            await Task.Delay(500);
+            return true;
+        });
+
+        Assert.False(result.Result);
+    }
 }

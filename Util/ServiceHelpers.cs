@@ -20,7 +20,7 @@ public static class ServiceHelpers
 
         public enum Code
         {
-            Success, Timeout, Errored, NotRun, NoErrorNoRun
+            Success, Timeout, Errored, NotRun, NoErrorNoRun, Cancelled
         }
         
         public override string ToString()
@@ -38,7 +38,8 @@ public static class ServiceHelpers
         }
     }
 
-    public static async Task<ResultWrapper<T>> TimeoutTask<T>(int timeoutMs, CancellationToken cancellationToken, Func<CancellationToken, Task<T>> target)
+    public static async Task<ResultWrapper<T>> TimeoutTask<T>(int timeoutMs, CancellationToken cancellationToken,
+        Func<CancellationToken, Task<T>> target)
     {
         var cancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         var task = Task.Run(() => target(cancellation.Token), cancellation.Token);
@@ -65,11 +66,18 @@ public static class ServiceHelpers
                     ResultCode = ResultWrapper<T>.Code.Timeout
                 };
             }
-            
+
             AttemptCancel(cancellation);
             return new ResultWrapper<T>
             {
                 ResultCode = ResultWrapper<T>.Code.NoErrorNoRun,
+            };
+        }
+        catch (TaskCanceledException)
+        {
+            return new ResultWrapper<T>
+            {
+                ResultCode = ResultWrapper<T>.Code.Cancelled
             };
         }
         catch (Exception ex)
@@ -83,7 +91,15 @@ public static class ServiceHelpers
                     ResultCode = ResultWrapper<T>.Code.Errored
                 };
             }
-            catch(Exception ex2)
+            catch (TaskCanceledException)
+            {
+                return new ResultWrapper<T>
+                {
+                    Ex = ex,
+                    ResultCode = ResultWrapper<T>.Code.Cancelled
+                };
+            }
+            catch (Exception ex2)
             {
                 return new ResultWrapper<T>
                 {
@@ -91,7 +107,6 @@ public static class ServiceHelpers
                     Ex = new AggregateException(ex, ex2)
                 };
             }
-            
         }
     }
 
