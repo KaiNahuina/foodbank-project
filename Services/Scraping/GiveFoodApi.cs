@@ -175,7 +175,7 @@ public class GiveFoodApiService : BackgroundService
         _logger.LogInformation("Service started. Runs every {Stamp}", TimeSpan.FromSeconds(_config.GetValue<int>("Interval")).ToString(@"h\hm\ms\s"));
         while (!stoppingToken.IsCancellationRequested)
         {
-            await Task.Delay(100);
+            await Task.Delay(100, stoppingToken);
         }
     }
     
