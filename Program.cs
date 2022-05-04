@@ -1,8 +1,10 @@
 #region
 
 using Foodbank_Project.Data;
-using Foodbank_Project.Jobs.Scraping;
+using Foodbank_Project.Services.Scraping;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Options;
 using Quartz;
 
 #endregion
@@ -13,26 +15,10 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<FoodbankContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Foodbanks") ?? string.Empty));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddQuartz(q =>
-{
-    q.UseMicrosoftDependencyInjectionJobFactory();
-
-    var giveFoodJobKey = new JobKey("giveFoodJobKey");
-    q.AddJob<GiveFoodApiFoodBanks>(opts => opts.WithIdentity(giveFoodJobKey));
-    q.AddTrigger(opts => opts
-        .ForJob(giveFoodJobKey)
-        .WithIdentity("giveFoodJob-trigger")
-        .WithSimpleSchedule(x => x
-            .WithIntervalInHours(3)
-            .RepeatForever()));
-});
-
-builder.Services.AddQuartzHostedService(
-    q => q.WaitForJobsToComplete = true);
-
-builder.Services.AddSignalR();
+builder.Services.AddHostedService<GiveFoodApiService>();
 
 var app = builder.Build();
 
@@ -47,7 +33,6 @@ else
     app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
 }
-
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
