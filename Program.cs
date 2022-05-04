@@ -3,6 +3,8 @@
 using Foodbank_Project.Data;
 using Foodbank_Project.Services.Scraping;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Options;
 using Quartz;
 
 #endregion
@@ -13,6 +15,7 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<FoodbankContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Foodbanks") ?? string.Empty));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddHostedService<GiveFoodApiService>();
@@ -30,7 +33,6 @@ else
     app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
 }
-
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

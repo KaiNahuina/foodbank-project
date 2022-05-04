@@ -1,4 +1,6 @@
-﻿using Foodbank_Project.Models;
+﻿using System.Collections;
+using Foodbank_Project.Data;
+using Foodbank_Project.Models;
 
 namespace Foodbank_Project.Util;
 
@@ -66,5 +68,66 @@ public static class FoodbankHelpers
         }
 
         return foodbank;
+    }
+
+    // minor case of insanity here
+    // Uses Reflection.Emit :(
+    public static void MergeToEntity(Foodbank target, Foodbank from, FoodbankContext ctx)
+    {
+        MergeProperties(target, from, "FoodbankId");
+
+        // merge locations 
+        if (from.Locations != null)
+        {
+            foreach (var fromLocation in from.Locations)
+            {
+                Location? found = null;
+                if (target.Locations is not null)
+                {
+                    foreach (var targetLocation in target.Locations)
+                    {
+                        if (targetLocation.Slug == fromLocation.Slug)
+                        {
+                            found = targetLocation;
+                        }
+                    }
+
+                    if (found != null)
+                    {
+                        MergeProperties(found, fromLocation, "LocationId");
+                    }
+                    else
+                    {
+                        target.Locations.Remove(fromLocation);
+                    }
+                }
+            }
+        }
+
+        foreach (var fneed in from.FoodbankNeeds)
+        {
+            foreach (var tneed in target.FoodbankNeeds)
+            {
+                
+            }
+        }
+    }
+    
+    private static void MergeProperties<T>(T target, T from, string exclude)
+    {
+        Type t = typeof(Foodbank);
+
+        var properties = t.GetProperties().Where(prop =>
+            prop.CanRead && prop.CanWrite && prop.PropertyType != typeof(ICollection));
+
+        foreach (var prop in properties)
+        {
+            var value = prop.GetValue(from, null);
+            var value2 = prop.GetValue(target, null);
+            if (prop.Name == exclude && value != value2)
+            {
+                prop.SetValue(target, value, null);
+            }
+        }
     }
 }

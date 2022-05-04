@@ -28,4 +28,9 @@ public class Location
 
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public Foodbank? Foodbank { get; set; }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is Location location && location.LocationId == this.LocationId;
+    }
 }

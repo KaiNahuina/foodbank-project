@@ -2,8 +2,10 @@
 
 using System.Diagnostics;
 using System.Net.Http.Headers;
+using Foodbank_Project.Data;
 using Foodbank_Project.Models;
 using Foodbank_Project.Util;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
 
 #endregion
@@ -19,13 +21,15 @@ public class GiveFoodApiService : BackgroundService
     /* Creating a new instance of the HttpClient class. */
     private readonly HttpClient _httpClient = new();
     /* A stopwatch that is used to measure the time it takes to get a response from the API. */
-    private readonly Stopwatch _sw = new();
-    
+
+    private readonly FoodbankContext _ctx;
+
     /* Creating a new instance of the class, and setting the logger and configuration variables which are injected from builder.Services */
-    public GiveFoodApiService(ILoggerFactory logger, IConfiguration configuration)
+    public GiveFoodApiService(ILoggerFactory logger, IConfiguration configuration, IServiceProvider service)
     {
         _logger = logger.CreateLogger("Services.GiveFoodApi");
         _config = configuration.GetSection("Services:GiveFoodApi");
+        _ctx = service.CreateScope().ServiceProvider.GetRequiredService<FoodbankContext>();
     }
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -49,6 +53,8 @@ public class GiveFoodApiService : BackgroundService
                 case ServiceHelpers.ResultWrapper<List<Models.External.Foodbank>>.Code.Success:
                 {
                     _logger.LogInformation("Successfully got {Count} foodbanks", resultWrapper.Result?.Count);
+                    //dev onyl !!!
+                    //resultWrapper.Result.RemoveRange(25, resultWrapper.Result.Count-25);
                     for (int i = 0; i < resultWrapper.Result?.Count; i++)
                     {
                         var resultWrapperInner = await ServiceHelpers.TimeoutTask(
@@ -62,12 +68,27 @@ public class GiveFoodApiService : BackgroundService
                         {
                             case ServiceHelpers.ResultWrapper<Models.External.Foodbank>.Code.Success:
                             {
-                                _logger.LogInformation("Successfully got {Count} foodbanks",
-                                    resultWrapper.Result?.Count);
                                 resultWrapper.Result?[i].Merge(resultWrapperInner.Result!);
                                 _logger.LogInformation(
                                     "Successfully added locations for {Name}({Self}) [{I} of {Count}]",
                                     resultWrapper.Result?[i].Name, resultWrapper.Result?[i].Urls?.Self, i + 1, resultWrapper.Result?.Count);
+                                
+                                Foodbank internalFoodbank = FoodbankHelpers.Convert(resultWrapper.Result?[i]);
+
+                                Foodbank? aFoodbank = await  _ctx.Foodbanks!.FirstOrDefaultAsync((f) => f.Slug == internalFoodbank.Slug,
+                                    stoppingToken );
+
+                                if (aFoodbank is null)
+                                {
+                                    _ctx.Foodbanks!.Add(internalFoodbank);
+                                }else if (!aFoodbank.Protected)
+                                {
+                                    // TODO: Overwrite local model with remote
+                                    _ctx.Foodbanks!.Update(aFoodbank);
+                                }
+                                
+                                await _ctx.SaveChangesAsync(stoppingToken);
+                                
                                 break;
                             }
                             case ServiceHelpers.ResultWrapper<Models.External.Foodbank>.Code.Timeout:
@@ -92,8 +113,6 @@ public class GiveFoodApiService : BackgroundService
                         }
 
                     }
-                    
-                    // data ready for store
                     break;
                 }
                 case ServiceHelpers.ResultWrapper<List<Models.External.Foodbank>>.Code.Timeout:
@@ -142,12 +161,12 @@ public class GiveFoodApiService : BackgroundService
         request.Headers.Accept.Add(
             new MediaTypeWithQualityHeaderValue("application/json")
         );
-        _sw.Restart();
         var response = await _httpClient.SendAsync(request, cancellationToken);
         if (response.IsSuccessStatusCode)
         {
             return await response.Content.ReadAsAsync<T>(cancellationToken);
         }
+
         throw new Exception($"Non 200 HTTP code for {url}");
     }
 }

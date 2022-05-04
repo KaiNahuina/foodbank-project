@@ -63,4 +63,9 @@ public class Foodbank
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public Provider Provider { get; set; }
     public ICollection<FoodbankNeed>? FoodbankNeeds { get; set; }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is Foodbank foodbank && foodbank.FoodbankId == this.FoodbankId;
+    }
 }
