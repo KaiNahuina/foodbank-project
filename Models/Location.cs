@@ -28,6 +28,6 @@ public class Location
 
     public override bool Equals(object? obj)
     {
-        return obj is Location location && location.LocationId == this.LocationId;
+        return obj is Location location && location.LocationId == LocationId;
     }
 }
