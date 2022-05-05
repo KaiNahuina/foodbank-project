@@ -12,35 +12,35 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Remove="Foodbank Project Tests\**" />
-        <Content Remove="Foodbank Project Tests\**" />
-        <EmbeddedResource Remove="Foodbank Project Tests\**" />
-        <None Remove="Foodbank Project Tests\**" />
+        <Compile Remove="Foodbank Project Tests\**"/>
+        <Content Remove="Foodbank Project Tests\**"/>
+        <EmbeddedResource Remove="Foodbank Project Tests\**"/>
+        <None Remove="Foodbank Project Tests\**"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.8" />
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.4" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.4" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.4" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.4" />
+        <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.8"/>
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.4"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.4"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.4"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.4"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.4">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.3" />
-        <PackageReference Include="Quartz" Version="3.4.0" />
-        <PackageReference Include="Quartz.Extensions.Hosting" Version="3.4.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0"/>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.3"/>
+        <PackageReference Include="Quartz" Version="3.4.0"/>
+        <PackageReference Include="Quartz.Extensions.Hosting" Version="3.4.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Include=".gitlab\auto-deploy-values.yaml" />
+        <None Include=".gitlab\auto-deploy-values.yaml"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Pages\Admin" />
+        <Folder Include="Pages\Admin"/>
     </ItemGroup>
 
 </Project>
