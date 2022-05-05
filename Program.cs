@@ -3,10 +3,18 @@
 using Foodbank_Project.Data;
 using Foodbank_Project.Services.Scraping;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 #endregion
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("IdentityContextConnection");;
+
+builder.Services.AddDbContext<IdentityContext>(options =>
+    options.UseSqlServer(connectionString));;
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<IdentityContext>();;
 
 builder.Services.AddRazorPages();
 
