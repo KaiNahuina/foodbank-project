@@ -60,24 +60,25 @@ p {
 }
 
 .text-box {
-    color: red; 
+    color: black; 
     border: 1px solid;
+    border-style:groove;
 }
 
-imageL {
-    width:100%;
-}
-
-imageM {
-    width:75%;
-}
-
-imageS {
+.imageL {
     width:50%;
 }
 
+.imageM {
+    width:50%;
+}
+
+.imageS {
+    width:40%;
+}
+
 recipe-icons{
-    width: 20%;
+    width: 30%;
 }
 
 .map-iframe {
@@ -96,6 +97,26 @@ input[type=text] {
     margin: 8px 0;
     box-sizing: border-box;
 }
+
+
+
+.row {
+    display: flex;
+    border-color: black;
+    border-width: 1em;
+}
+.column{
+    float:left;
+    width:50%;
+    text-align:center;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
 
 
 
