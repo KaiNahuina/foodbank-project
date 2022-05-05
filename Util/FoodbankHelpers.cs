@@ -1,12 +1,14 @@
 ﻿using System.Collections;
+using System.Collections.ObjectModel;
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Foodbank_Project.Util;
 
 public static class FoodbankHelpers
 {
-    public static Foodbank Convert(Models.External.Foodbank externalFoodbank)
+    public static Foodbank? Convert(Models.External.Foodbank externalFoodbank)
     {
         var foodbank = new Foodbank
         {
@@ -46,88 +48,148 @@ public static class FoodbankHelpers
             foodbank.Locations.Add(location);
         }
 
-        foodbank.FoodbankNeeds = new List<FoodbankNeed>();
+        foodbank.Needs = new List<Need>();
         var needs = externalFoodbank.Needs?.NeedsStr?.Split("\r\n") ?? Array.Empty<string>();
-        foreach (var needsStr in needs)
+        foreach (var need in needs)
         {
-            var internalNeed = new Need
-            {
-                NeedStr = needsStr
-            };
-            if (internalNeed.NeedStr == "Unknown") internalNeed.NeedStr = null;
-
-            var internalNeeds = new FoodbankNeed
-            {
-                Need = internalNeed,
-                Foodbank = foodbank
-            };
-
-            internalNeed.FoodbankNeeds = new List<FoodbankNeed>();
-            internalNeed.FoodbankNeeds.Add(internalNeeds);
-            foodbank.FoodbankNeeds.Add(internalNeeds);
+            foodbank.Needs.Add(need == "Unknown" ? new Need { NeedStr = null } : new Need { NeedStr = need });
         }
 
         return foodbank;
     }
 
-    // minor case of insanity here
-    // Uses Reflection.Emit :(
-    public static void MergeToEntity(Foodbank target, Foodbank from, FoodbankContext ctx)
+    public static Foodbank? InsertOrUpdate(Foodbank target, FoodbankContext ctx, CancellationToken cancellationToken)
     {
-        MergeProperties(target, from, "FoodbankId");
-
-        // merge locations 
-        if (from.Locations != null)
-        {
-            foreach (var fromLocation in from.Locations)
-            {
-                Location? found = null;
-                if (target.Locations is not null)
+        /*
+                MergeProperties(target, from, "FoodbankId");
+        
+                // merge locations 
+                if (from.Locations != null)
                 {
-                    foreach (var targetLocation in target.Locations)
+                    foreach (var fromLocation in from.Locations)
                     {
-                        if (targetLocation.Slug == fromLocation.Slug)
+                        Location? found = null;
+                        if (target.Locations is not null)
                         {
-                            found = targetLocation;
+                            foreach (var targetLocation in target.Locations)
+                            {
+                                if (targetLocation.Slug == fromLocation.Slug)
+                                {
+                                    found = targetLocation;
+                                }
+                            }
+        
+                            if (found != null)
+                            {
+                                MergeProperties(found, fromLocation, "LocationId");
+                            }
+                            else
+                            {
+                                target.Locations.Remove(fromLocation);
+                            }
                         }
                     }
-
-                    if (found != null)
-                    {
-                        MergeProperties(found, fromLocation, "LocationId");
-                    }
-                    else
-                    {
-                        target.Locations.Remove(fromLocation);
-                    }
                 }
-            }
+        
+                // clear all target needs
+                target.FoodbankNeeds?.Clear();
+        
+                if (from.FoodbankNeeds != null)
+                    foreach (var fromFoodbankNeed in from.FoodbankNeeds)
+                    {
+                        var need = NeedsHelper.GetNeed(fromFoodbankNeed.Need?.NeedStr, ctx);
+        
+                        if (need is null)
+                        {
+                            target.FoodbankNeeds?.Add(fromFoodbankNeed);
+                        }
+                        else
+                        {
+                            fromFoodbankNeed.Need = need;
+                            target.FoodbankNeeds?.Add(fromFoodbankNeed);
+                        }
+                        
+                    }
+                */
+        
+        ctx.ChangeTracker.Clear(); // recreating context is a pain, clearing is easier since we are scope
+
+        var dbFoodbank = ctx.Foodbanks!.Include(f => f.Locations).
+            Include(f => f.Needs).FirstOrDefault((f) => f.Slug == target.Slug);
+
+        if (dbFoodbank is not null && dbFoodbank.Protected)
+        {
+            return default;
         }
 
-        foreach (var fneed in from.FoodbankNeeds)
+
+        if (dbFoodbank is null)
         {
-            foreach (var tneed in target.FoodbankNeeds)
-            {
-                
-            }
+            target.Needs = CompletePartialNeeds(target.Needs, ctx);
+            target.Locations = CompletePartialLocations(target.Locations, ctx);
+
+            target.FoodbankId = null;
+
+            ctx.Foodbanks!.Update(target);
+
+            ctx.SaveChanges();
+            return target;
+        }
+        else
+        {
+            target.FoodbankId = dbFoodbank.FoodbankId;
+            
+            target.Needs = CompletePartialNeeds(target.Needs, ctx);
+            target.Locations = CompletePartialLocations(target.Locations, ctx);
+            
+            ctx.Entry(dbFoodbank).CurrentValues.SetValues(target);
+
+            ctx.SaveChanges();
+            return dbFoodbank;
         }
     }
     
-    private static void MergeProperties<T>(T target, T from, string exclude)
+    private static ICollection<Need> CompletePartialNeeds(ICollection<Need> needs, FoodbankContext ctx)
     {
-        Type t = typeof(Foodbank);
-
-        var properties = t.GetProperties().Where(prop =>
-            prop.CanRead && prop.CanWrite && prop.PropertyType != typeof(ICollection));
-
-        foreach (var prop in properties)
+        ICollection<Need> completeNeeds = new Collection<Need>();
+        foreach (var need in needs.ToArray())
         {
-            var value = prop.GetValue(from, null);
-            var value2 = prop.GetValue(target, null);
-            if (prop.Name == exclude && value != value2)
+            var dbNeed = ctx.Needs!.FirstOrDefault(n => n.NeedStr == need.NeedStr);
+            if (dbNeed is null)
             {
-                prop.SetValue(target, value, null);
+                completeNeeds.Add(need);
+            }
+            else
+            {
+                need.NeedId = dbNeed.NeedId;
+                need.Foodbanks = dbNeed.Foodbanks;
+                ctx.Entry(dbNeed).CurrentValues.SetValues(need);
+                completeNeeds.Add(dbNeed);
             }
         }
+        ctx.SaveChanges();
+        return completeNeeds;
     }
+    
+    private static ICollection<Location> CompletePartialLocations(ICollection<Location> locations, FoodbankContext ctx)
+    {
+        ICollection<Location> completeLocations = new Collection<Location>();
+        foreach (var location in locations.ToArray())
+        {
+            var dbLocation = ctx.Locations!.FirstOrDefault(l => l.Slug == location.Slug);
+            if (dbLocation is null)
+            {
+                completeLocations.Add(location);
+            }
+            else
+            {
+                location.LocationId = dbLocation.LocationId;
+                location.Foodbank = dbLocation.Foodbank;
+                ctx.Entry(dbLocation).CurrentValues.SetValues(location);
+                completeLocations.Add(dbLocation);
+            }
+        }
+        ctx.SaveChanges();
+        return completeLocations;
+    } 
 }

@@ -2,10 +2,10 @@
 
 public class Foodbank
 {
-    public ICollection<Location>? Locations;
+    public ICollection<Location> Locations;
 
     // ReSharper disable once UnusedMember.Global
-    public int FoodbankId { get; set; }
+    public int? FoodbankId { get; set; }
 
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public string? Name { get; set; }
@@ -62,7 +62,7 @@ public class Foodbank
 
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public Provider Provider { get; set; }
-    public ICollection<FoodbankNeed>? FoodbankNeeds { get; set; }
+    public ICollection<Need> Needs { get; set; }
 
     public override bool Equals(object? obj)
     {

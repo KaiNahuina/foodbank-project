@@ -14,7 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<FoodbankContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Foodbanks") ?? string.Empty));
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Foodbanks") ?? string.Empty);
+    options.EnableSensitiveDataLogging(true);
+});
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

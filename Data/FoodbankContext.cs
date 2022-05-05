@@ -22,9 +22,6 @@ public sealed class FoodbankContext : DbContext
     public DbSet<Location>? Locations { get; set; }
 
     // ReSharper disable once UnusedMember.Global
-    public DbSet<FoodbankNeed>? FoodbankNeeds { get; set; }
-
-    // ReSharper disable once UnusedMember.Global
     public DbSet<Need>? Needs { get; set; }
 
 
@@ -33,25 +30,14 @@ public sealed class FoodbankContext : DbContext
         modelBuilder.Entity<Foodbank>(f => f.HasKey(pl => pl.FoodbankId));
         modelBuilder.Entity<Location>(f => f.HasKey(pl => pl.LocationId));
         modelBuilder.Entity<Need>(f => f.HasKey(pl => pl.NeedId));
-        
+
+        modelBuilder.Entity<Foodbank>().Property(f => f.FoodbankId).ValueGeneratedOnAdd();
+        modelBuilder.Entity<Location>().Property(f => f.LocationId).ValueGeneratedOnAdd();
+        modelBuilder.Entity<Need>().Property(f => f.NeedId).ValueGeneratedOnAdd();
         
         modelBuilder.Entity<Location>()
-            .HasOne(fl => fl.Foodbank)
-            .WithMany(f => f.Locations)
-            .HasForeignKey(fl => fl.FoodbankId);
-
-        modelBuilder.Entity<FoodbankNeed>().HasKey(fn => new { fn.FoodbankId, fn.NeedId });
-
-        modelBuilder.Entity<FoodbankNeed>()
-            .HasOne(fn => fn.Foodbank)
-            .WithMany(f => f.FoodbankNeeds)
-            .HasForeignKey(fn => fn.FoodbankId);
-
-        modelBuilder.Entity<FoodbankNeed>()
-            .HasOne(fn => fn.Need)
-            .WithMany(n => n.FoodbankNeeds)
-            .HasForeignKey(n => n.NeedId);
-
+            .HasOne(l => l.Foodbank)
+            .WithMany(f => f.Locations);
 
         modelBuilder.Entity<Foodbank>().Property(f => f.Name).IsRequired();
         modelBuilder.Entity<Foodbank>().Property(f => f.Slug).IsRequired();
@@ -64,6 +50,7 @@ public sealed class FoodbankContext : DbContext
         modelBuilder.Entity<Foodbank>().Property(f => f.Network).IsRequired();
         modelBuilder.Entity<Foodbank>().Property(f => f.Created).IsRequired();
         modelBuilder.Entity<Foodbank>().Property(f => f.Protected).IsRequired();
+        modelBuilder.Entity<Foodbank>().Property(f => f.FoodbankId).IsRequired();
 
 
         modelBuilder.Entity<Location>().Property(fl => fl.Slug).IsRequired();
@@ -71,5 +58,9 @@ public sealed class FoodbankContext : DbContext
         modelBuilder.Entity<Location>().Property(fl => fl.LatLng).IsRequired();
         modelBuilder.Entity<Location>().Property(fl => fl.Address).IsRequired();
         modelBuilder.Entity<Location>().Property(fl => fl.Postcode).IsRequired();
+        modelBuilder.Entity<Location>().Property(fl => fl.LocationId).IsRequired();
+        
+        
+        modelBuilder.Entity<Need>().Property(n => n.NeedId).IsRequired();
     }
 }
