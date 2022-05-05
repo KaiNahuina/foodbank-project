@@ -12,6 +12,10 @@ html {
     font-family: 'Capsmall';
     src: url('/fonts/Capsmall.ttf') format('truetype');
 }
+@font-face {
+    font-family: 'Gogh-ExtraBold';
+    src: url('/fonts/Gogh-ExtraBold.otf') format('opentype');
+}
 
 
 html {
@@ -21,52 +25,57 @@ html {
 
 body {
     margin-bottom: 60px;
-    background-color: #f6faf2;
+    background-color: #f4faed;
 }
-
 
 h1 { /*Page Headers*/
     font-family: 'Capsmall';
     font-size: 3em;
-    color: #00008B;
+    color: #115649;
 }
 
 h2 { /*Sub Headers*/
     font-family: 'Capsmall';
     font-size: 2.5em;
-    color: #115649;
+    color: #00008B;
     /* custom font but smaller*/
 }
 
 h3 { /*Section Headings for content*/
+    font-family: Gogh-ExtraBold;
     font-size: 2em;
     color: black;
 }
 
 p {
-    font-family: sans-serif;
+    font-family: Gogh-ExtraBold;
     font-size: 1em;
     color: black;
+    background-color: white;
+    overflow: auto;
 }
 
 
 
 .button {
     background-color: #8bc349;     
-    border-radius: 10px;            /*border curve*/
-    box-shadow: 3px 3px #808080;    /*current background effect*/
+    border-radius: 5px;            /*border curve*/
+    box-shadow: 2px 2px #808080;    /*current background effect*/
     text-align: center;
     display: inline inline-block;
 }
 
 .text-box {
-    color: black; 
+    color: black;
     border: 1px solid;
-    border-style:groove;
+    padding: 15px;
+    border-radius: 6px;
+    box-shadow: 1em 1em 1.2em rgb(0 0 0 / 10%);
+    overflow: auto;
 }
 
 .imageL {
-    width:50%;
+    width:60%;
 }
 
 .imageM {
