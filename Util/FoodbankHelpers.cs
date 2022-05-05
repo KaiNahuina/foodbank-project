@@ -58,7 +58,7 @@ public static class FoodbankHelpers
         return foodbank;
     }
 
-    public static Foodbank? InsertOrUpdate(Foodbank target, FoodbankContext ctx, CancellationToken cancellationToken)
+    public  static async Task<Foodbank> InsertOrUpdate(Foodbank target, FoodbankContext ctx, CancellationToken cancellationToken)
     {
         /*
                 MergeProperties(target, from, "FoodbankId");
@@ -114,8 +114,7 @@ public static class FoodbankHelpers
         
         ctx.ChangeTracker.Clear(); // recreating context is a pain, clearing is easier since we are scope
 
-        var dbFoodbank = ctx.Foodbanks!.Include(f => f.Locations).
-            Include(f => f.Needs).FirstOrDefault((f) => f.Slug == target.Slug);
+         var dbFoodbank = await ctx.Foodbanks!.FirstOrDefaultAsync((f) => f.Slug == target.Slug, cancellationToken);
 
         if (dbFoodbank is not null && dbFoodbank.Protected)
         {
@@ -125,36 +124,36 @@ public static class FoodbankHelpers
 
         if (dbFoodbank is null)
         {
-            target.Needs = CompletePartialNeeds(target.Needs, ctx);
-            target.Locations = CompletePartialLocations(target.Locations, ctx);
+            target.Needs = await CompletePartialNeeds(target.Needs, ctx, cancellationToken);
+            target.Locations = await CompletePartialLocations(target.Locations, ctx, cancellationToken);
 
             target.FoodbankId = null;
 
             ctx.Foodbanks!.Update(target);
 
-            ctx.SaveChanges();
+            await ctx.SaveChangesAsync(cancellationToken);
             return target;
         }
         else
         {
             target.FoodbankId = dbFoodbank.FoodbankId;
             
-            target.Needs = CompletePartialNeeds(target.Needs, ctx);
-            target.Locations = CompletePartialLocations(target.Locations, ctx);
+            target.Needs = await CompletePartialNeeds(target.Needs, ctx, cancellationToken);
+            target.Locations = await CompletePartialLocations(target.Locations, ctx, cancellationToken);
             
             ctx.Entry(dbFoodbank).CurrentValues.SetValues(target);
 
-            ctx.SaveChanges();
+            await ctx.SaveChangesAsync(cancellationToken);
             return dbFoodbank;
         }
     }
     
-    private static ICollection<Need> CompletePartialNeeds(ICollection<Need> needs, FoodbankContext ctx)
+    private static async Task<ICollection<Need>> CompletePartialNeeds(ICollection<Need> needs, FoodbankContext ctx, CancellationToken cancellationToken)
     {
         ICollection<Need> completeNeeds = new Collection<Need>();
         foreach (var need in needs.ToArray())
         {
-            var dbNeed = ctx.Needs!.FirstOrDefault(n => n.NeedStr == need.NeedStr);
+            var dbNeed = await ctx.Needs!.FirstOrDefaultAsync(n => n.NeedStr == need.NeedStr, cancellationToken: cancellationToken);
             if (dbNeed is null)
             {
                 completeNeeds.Add(need);
@@ -167,16 +166,16 @@ public static class FoodbankHelpers
                 completeNeeds.Add(dbNeed);
             }
         }
-        ctx.SaveChanges();
+        await ctx.SaveChangesAsync(cancellationToken);
         return completeNeeds;
     }
     
-    private static ICollection<Location> CompletePartialLocations(ICollection<Location> locations, FoodbankContext ctx)
+    private static async Task<ICollection<Location>> CompletePartialLocations(ICollection<Location> locations, FoodbankContext ctx, CancellationToken cancellationToken)
     {
         ICollection<Location> completeLocations = new Collection<Location>();
         foreach (var location in locations.ToArray())
         {
-            var dbLocation = ctx.Locations!.FirstOrDefault(l => l.Slug == location.Slug);
+            var dbLocation = await ctx.Locations!.FirstOrDefaultAsync(l => l.Slug == location.Slug, cancellationToken: cancellationToken);
             if (dbLocation is null)
             {
                 completeLocations.Add(location);
@@ -189,7 +188,7 @@ public static class FoodbankHelpers
                 completeLocations.Add(dbLocation);
             }
         }
-        ctx.SaveChanges();
+        await ctx.SaveChangesAsync(cancellationToken);
         return completeLocations;
     } 
 }

@@ -60,7 +60,7 @@ public class GiveFoodApiService : BackgroundService
                 case ServiceHelpers.ResultWrapper<List<Models.External.Foodbank>>.Code.Success:
                 {
                     _logger.LogInformation("Successfully got {Count} foodbanks", resultWrapper.Result?.Count);
-                    //dev onyl !!!
+                    //dev only !!!
                     //resultWrapper.Result.RemoveRange(25, resultWrapper.Result.Count-25);
                     for (int i = 0; i < resultWrapper.Result?.Count; i++)
                     {
@@ -69,9 +69,7 @@ public class GiveFoodApiService : BackgroundService
                             async (token) =>
                                 await GetFoodbank<Models.External.Foodbank>(resultWrapper.Result[i].Urls?.Self ?? "",
                                     token));
-
                         
-
                         switch (resultWrapperInner.ResultCode)
                         {
                             case ServiceHelpers.ResultWrapper<Models.External.Foodbank>.Code.Success:
@@ -84,7 +82,7 @@ public class GiveFoodApiService : BackgroundService
 
                                 Foodbank? internalFoodbank = FoodbankHelpers.Convert(resultWrapper.Result?[i]);
 
-                                internalFoodbank = FoodbankHelpers.InsertOrUpdate(internalFoodbank, _ctx, stoppingToken);
+                                internalFoodbank = await FoodbankHelpers.InsertOrUpdate(internalFoodbank, _ctx, stoppingToken);
                                 
                                 
                                 await _ctx.SaveChangesAsync(stoppingToken);
@@ -115,6 +113,8 @@ public class GiveFoodApiService : BackgroundService
 
                     }
 
+                    _logger.LogInformation("Service run complete!");
+                    
                     break;
                 }
                 case ServiceHelpers.ResultWrapper<List<Models.External.Foodbank>>.Code.Timeout:
