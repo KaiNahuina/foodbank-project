@@ -8,15 +8,12 @@ using Microsoft.AspNetCore.Identity;
 #endregion
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("IdentityContextConnection");;
 
 builder.Services.AddDbContext<IdentityContext>(options =>
-    options.UseSqlServer(connectionString));;
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Identity")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<IdentityContext>();;
-
-builder.Services.AddRazorPages();
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<IdentityContext>();
 
 builder.Services.AddDbContext<FoodbankContext>(options =>
 {
@@ -24,11 +21,25 @@ builder.Services.AddDbContext<FoodbankContext>(options =>
     options.EnableSensitiveDataLogging();
 });
 
+
+builder.Services.AddRazorPages();
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddHostedService<GiveFoodApiService>();
 
 var app = builder.Build();
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var dataFContext = scope.ServiceProvider.GetRequiredService<FoodbankContext>();
+    var dataIContext = scope.ServiceProvider.GetRequiredService<IdentityContext>();
+    dataFContext.Database.Migrate();
+    dataIContext.Database.Migrate();
+}
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

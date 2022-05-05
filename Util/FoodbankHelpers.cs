@@ -61,58 +61,7 @@ public static class FoodbankHelpers
 
     public static async Task InsertOrUpdate(Foodbank target, FoodbankContext ctx, CancellationToken cancellationToken)
     {
-        /*
-                MergeProperties(target, from, "FoodbankId");
         
-                // merge locations 
-                if (from.Locations != null)
-                {
-                    foreach (var fromLocation in from.Locations)
-                    {
-                        Location? found = null;
-                        if (target.Locations is not null)
-                        {
-                            foreach (var targetLocation in target.Locations)
-                            {
-                                if (targetLocation.Slug == fromLocation.Slug)
-                                {
-                                    found = targetLocation;
-                                }
-                            }
-        
-                            if (found != null)
-                            {
-                                MergeProperties(found, fromLocation, "LocationId");
-                            }
-                            else
-                            {
-                                target.Locations.Remove(fromLocation);
-                            }
-                        }
-                    }
-                }
-        
-                // clear all target needs
-                target.FoodbankNeeds?.Clear();
-        
-                if (from.FoodbankNeeds != null)
-                    foreach (var fromFoodbankNeed in from.FoodbankNeeds)
-                    {
-                        var need = NeedsHelper.GetNeed(fromFoodbankNeed.Need?.NeedStr, ctx);
-        
-                        if (need is null)
-                        {
-                            target.FoodbankNeeds?.Add(fromFoodbankNeed);
-                        }
-                        else
-                        {
-                            fromFoodbankNeed.Need = need;
-                            target.FoodbankNeeds?.Add(fromFoodbankNeed);
-                        }
-                        
-                    }
-                */
-
         ctx.ChangeTracker.Clear(); // recreating context is a pain, clearing is easier since we are scope
 
         var dbFoodbank = await ctx.Foodbanks!.FirstOrDefaultAsync(f => f.Slug == target.Slug, cancellationToken);

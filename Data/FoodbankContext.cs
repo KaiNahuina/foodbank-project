@@ -12,7 +12,6 @@ public sealed class FoodbankContext : DbContext
     public FoodbankContext(DbContextOptions<FoodbankContext> options)
         : base(options)
     {
-        Database.EnsureCreated();
     }
 
     // ReSharper disable once UnusedMember.Global
