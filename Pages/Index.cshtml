@@ -1,7 +1,6 @@
 ﻿@page
 @model IndexModel
 @{
-    await Html.RenderPartialAsync("Shared/_LoginPartial");
 }
 <div class="text-center">
     <h1 class="display-4">Index Page</h1>
@@ -22,13 +21,13 @@ Whether it be a few cans of beans or a £10 donation, every little bit helps kee
 
 <input type="text" class="user-input-text "placeholder="Please enter your postcode 🔎"> 
 
-<img class="imageL" src="/img/14stripe1-superJumbo.jpg" alt="Test Image"/> 
+<img class="imageL img-fluid" src="/img/14stripe1-superJumbo.jpg" alt="Test Image"/> 
 <button class="button"> Button Text </button>
 
 <div id="map" class="map"></div>
 
-<img class="imageL" src="/img/14stripe1-superJumbo.jpg" alt="Test Image"/> 
-
+<img class="imageL img-fluid" src="/img/14stripe1-superJumbo.jpg" alt="Test Image"/> 
+ 
 <script type="text/javascript">
     var map = new ol.Map({
     target: 'map',

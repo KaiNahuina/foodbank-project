@@ -61,5 +61,6 @@ public sealed class FoodbankContext : DbContext
 
 
         modelBuilder.Entity<Need>().Property(n => n.NeedId).IsRequired();
+        
     }
 }
