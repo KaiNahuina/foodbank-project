@@ -15,4 +15,92 @@ html {
 
 body {
     margin-bottom: 60px;
+    
 }
+
+.ql {
+    margin: 150px;
+}
+
+.ql .left {
+    display: inline-block;
+    margin-right: 150px;
+    color: yellow;
+}
+
+.ql .mid {
+    display: inline-block;
+    margin-left: 200px;
+    margin-right: 150px;
+}
+
+.ql .right {
+    display: inline-block;
+    margin-left: 200px;
+}
+
+.txt-intro {
+    display: inline block;
+    margin: 150px;
+    text-align:center;
+}
+
+.sub3{
+    //display: inline-block;
+    margin: 100px;
+    clear:both;
+    text-align:center;
+}
+
+.suggestions {
+    display:inline-block;
+    margin: 100px;  
+}
+
+.suggestions .box1 {
+    padding: 75px;
+    display: inline-block;
+    border-style: solid;
+    border-color: blue;
+}
+
+.suggestions .box2 {
+    padding: 75px;
+    display: inline-block;
+    border-style: solid;
+    border-color: blue;
+}
+
+.suggestions .box3 {
+    padding: 75px;
+    display: inline-block;
+    border-style: solid;
+    border-color: blue;
+}
+
+.suggestions .box4 {
+    padding: 75px;
+    display: inline-block;
+    border-style: solid;
+    border-color: blue;
+}
+
+.suggestions .box5 {
+    padding: 75px;
+    display: inline-block;
+    border-style: solid;
+    border-color: blue;
+}
+
+.suggestions .box6 {
+    padding: 75px;
+    display: inline-block;
+    border-style: solid;
+    border-color: blue;
+}
+
+
+
+
+
+
