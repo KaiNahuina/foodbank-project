@@ -30,19 +30,22 @@ public class ServiceHelperTests
             yield return new object[] { 6512, 90000 };
         }
 
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
-    
-    
+
+
     [Theory]
     [ClassData(typeof(TimeoutTaskTimoutSet))]
     public async void TimeoutTask(int timeout, int taskDuration)
     {
-        var result = await ServiceHelpers.TimeoutTask(timeout, CancellationToken.None, async (token) =>
+        var result = await ServiceHelpers.TimeoutTask(timeout, async token =>
         {
             await Task.Delay(taskDuration, token);
             return true;
-        });
+        }, CancellationToken.None);
         Assert.Equal(new ServiceHelpers.ResultWrapper<bool>
         {
             ResultCode = ServiceHelpers.ResultWrapper<bool>.Code.Timeout,
@@ -54,39 +57,31 @@ public class ServiceHelperTests
     [Fact]
     public async void ErroredTask_Exception()
     {
-        var result = await ServiceHelpers.TimeoutTask(1000, CancellationToken.None, async (token) =>
-        {
-            throw new Exception("Some error occured");
-#pragma warning disable CS0162
-            return true;
-#pragma warning restore CS0162
-        });
+        var result = await ServiceHelpers.TimeoutTask<bool>(1000, _ => throw new Exception("Some error occured"),
+            CancellationToken.None);
         Assert.Equal(ServiceHelpers.ResultWrapper<bool>.Code.Errored, result.ResultCode);
     }
-    
+
     [Fact]
     public async void ErroredTask_Result()
     {
-        var result = await ServiceHelpers.TimeoutTask(1000, CancellationToken.None, async (token) =>
-        {
-            throw new Exception("Some error occured");
-            return true;
-        });
+        var result = await ServiceHelpers.TimeoutTask<bool>(1000, _ => throw new Exception("Some error occured"),
+            CancellationToken.None);
         Assert.False(result.Result);
     }
-    
+
     [Fact]
     public async void CancelledTask_Result()
     {
-        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        
+        var cancellationTokenSource = new CancellationTokenSource();
+
         cancellationTokenSource.Cancel();
-        
-        var result = await ServiceHelpers.TimeoutTask(1000, cancellationTokenSource.Token, async (token) =>
+
+        var result = await ServiceHelpers.TimeoutTask(1000, async _ =>
         {
-            await Task.Delay(500);
+            await Task.Delay(500, _);
             return true;
-        });
+        }, cancellationTokenSource.Token);
 
         Assert.False(result.Result);
     }

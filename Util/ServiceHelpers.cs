@@ -1,4 +1,8 @@
-﻿using System.Text;
+﻿#region
+
+using System.Text;
+
+#endregion
 
 namespace Foodbank_Project.Util;
 
@@ -8,7 +12,6 @@ public static class ServiceHelpers
     {
         public ResultWrapper()
         {
-
             Result = default;
             ResultCode = Code.NotRun;
             Ex = null;
@@ -20,9 +23,14 @@ public static class ServiceHelpers
 
         public enum Code
         {
-            Success, Timeout, Errored, NotRun, NoErrorNoRun, Cancelled
+            Success,
+            Timeout,
+            Errored,
+            NotRun,
+            NoErrorNoRun,
+            Cancelled
         }
-        
+
         public override string ToString()
         {
             StringBuilder sb = new();
@@ -38,8 +46,8 @@ public static class ServiceHelpers
         }
     }
 
-    public static async Task<ResultWrapper<T>> TimeoutTask<T>(int timeoutMs, CancellationToken cancellationToken,
-        Func<CancellationToken, Task<T>> target)
+    public static async Task<ResultWrapper<T>> TimeoutTask<T>(int timeoutMs,
+        Func<CancellationToken, Task<T>> target, CancellationToken cancellationToken)
     {
         var cancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         var task = Task.Run(() => target(cancellation.Token), cancellation.Token);
@@ -70,7 +78,7 @@ public static class ServiceHelpers
             AttemptCancel(cancellation);
             return new ResultWrapper<T>
             {
-                ResultCode = ResultWrapper<T>.Code.NoErrorNoRun,
+                ResultCode = ResultWrapper<T>.Code.NoErrorNoRun
             };
         }
         catch (TaskCanceledException)

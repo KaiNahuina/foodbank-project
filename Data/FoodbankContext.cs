@@ -12,7 +12,6 @@ public sealed class FoodbankContext : DbContext
     public FoodbankContext(DbContextOptions<FoodbankContext> options)
         : base(options)
     {
-        this.Database.EnsureCreated();
     }
 
     // ReSharper disable once UnusedMember.Global
@@ -34,7 +33,7 @@ public sealed class FoodbankContext : DbContext
         modelBuilder.Entity<Foodbank>().Property(f => f.FoodbankId).ValueGeneratedOnAdd();
         modelBuilder.Entity<Location>().Property(f => f.LocationId).ValueGeneratedOnAdd();
         modelBuilder.Entity<Need>().Property(f => f.NeedId).ValueGeneratedOnAdd();
-        
+
         modelBuilder.Entity<Location>()
             .HasOne(l => l.Foodbank)
             .WithMany(f => f.Locations);
@@ -59,8 +58,8 @@ public sealed class FoodbankContext : DbContext
         modelBuilder.Entity<Location>().Property(fl => fl.Address).IsRequired();
         modelBuilder.Entity<Location>().Property(fl => fl.Postcode).IsRequired();
         modelBuilder.Entity<Location>().Property(fl => fl.LocationId).IsRequired();
-        
-        
+
+
         modelBuilder.Entity<Need>().Property(n => n.NeedId).IsRequired();
     }
 }
