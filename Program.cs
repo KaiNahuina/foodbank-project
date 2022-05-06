@@ -12,7 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<IdentityContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Identity")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<IdentityUser>(options => {
+    options.SignIn.RequireConfirmedAccount = false;
+})
     .AddEntityFrameworkStores<IdentityContext>();
 
 builder.Services.AddDbContext<FoodbankContext>(options =>
@@ -21,6 +23,11 @@ builder.Services.AddDbContext<FoodbankContext>(options =>
     options.EnableSensitiveDataLogging();
 });
 
+
+builder.Services.AddAuthorization(options =>
+{
+
+});
 
 builder.Services.AddRazorPages();
 

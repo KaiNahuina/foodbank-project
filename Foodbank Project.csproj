@@ -39,8 +39,4 @@
         <None Include=".gitlab\auto-deploy-values.yaml" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Pages\Admin" />
-    </ItemGroup>
-
 </Project>
