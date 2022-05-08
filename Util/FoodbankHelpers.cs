@@ -59,7 +59,7 @@ public static class FoodbankHelpers
         return foodbank;
     }
 
-    public static async Task InsertOrUpdate(Foodbank target, FoodbankContext ctx, CancellationToken cancellationToken)
+    public static async Task InsertOrUpdate(Foodbank target, ApplicationContext ctx, CancellationToken cancellationToken)
     {
         
         ctx.ChangeTracker.Clear(); // recreating context is a pain, clearing is easier since we are scope
@@ -92,7 +92,7 @@ public static class FoodbankHelpers
         await ctx.SaveChangesAsync(cancellationToken);
     }
 
-    private static async Task<ICollection<Need>> CompletePartialNeeds(IEnumerable<Need> needs, FoodbankContext ctx,
+    private static async Task<ICollection<Need>> CompletePartialNeeds(IEnumerable<Need> needs, ApplicationContext ctx,
         CancellationToken cancellationToken)
     {
         ICollection<Need> completeNeeds = new Collection<Need>();
@@ -118,7 +118,7 @@ public static class FoodbankHelpers
     }
 
     private static async Task<ICollection<Location>> CompletePartialLocations(IEnumerable<Location> locations,
-        FoodbankContext ctx, CancellationToken cancellationToken)
+        ApplicationContext ctx, CancellationToken cancellationToken)
     {
         ICollection<Location> completeLocations = new Collection<Location>();
         foreach (var location in locations.ToArray())

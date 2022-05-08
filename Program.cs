@@ -1,6 +1,7 @@
 #region
 
 using Foodbank_Project.Data;
+using Foodbank_Project.Models;
 using Foodbank_Project.Services.Scraping;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
@@ -9,15 +10,15 @@ using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<IdentityContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Identity")));
+builder.Services.AddDbContext<ApplicationContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDb") ?? string.Empty));;
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<IdentityContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationContext>();;
 
-builder.Services.AddDbContext<FoodbankContext>(options =>
+builder.Services.AddDbContext<ApplicationContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Foodbanks") ?? string.Empty);
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDb") ?? string.Empty);
     options.EnableSensitiveDataLogging();
 });
 
@@ -33,10 +34,8 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var dataFContext = scope.ServiceProvider.GetRequiredService<FoodbankContext>();
-    var dataIContext = scope.ServiceProvider.GetRequiredService<IdentityContext>();
+    var dataFContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
     dataFContext.Database.Migrate();
-    dataIContext.Database.Migrate();
 }
 
 

@@ -1,15 +1,17 @@
 ﻿#region
 
 using Foodbank_Project.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 #endregion
 
 namespace Foodbank_Project.Data;
 
-public sealed class FoodbankContext : DbContext
+public class ApplicationContext : IdentityDbContext<IdentityUser>
 {
-    public FoodbankContext(DbContextOptions<FoodbankContext> options)
+    public ApplicationContext(DbContextOptions<ApplicationContext> options)
         : base(options)
     {
     }
@@ -61,6 +63,8 @@ public sealed class FoodbankContext : DbContext
 
 
         modelBuilder.Entity<Need>().Property(n => n.NeedId).IsRequired();
+        
+        base.OnModelCreating(modelBuilder);
         
     }
 }

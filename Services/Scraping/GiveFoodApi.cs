@@ -21,14 +21,14 @@ public class GiveFoodApiService : BackgroundService
     private readonly HttpClient _httpClient = new();
     /* A stopwatch that is used to measure the time it takes to get a response from the API. */
 
-    private readonly FoodbankContext _ctx;
+    private readonly ApplicationContext _ctx;
 
     /* Creating a new instance of the class, and setting the logger and configuration variables which are injected from builder.Services */
     public GiveFoodApiService(ILoggerFactory logger, IConfiguration configuration, IServiceProvider service)
     {
         _logger = logger.CreateLogger("Services.GiveFoodApi");
         _config = configuration.GetSection("Services:GiveFoodApi");
-        _ctx = service.CreateScope().ServiceProvider.GetRequiredService<FoodbankContext>();
+        _ctx = service.CreateScope().ServiceProvider.GetRequiredService<ApplicationContext>();
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
