@@ -9,19 +9,19 @@
 
 <div class="ql">
     <div class="left">
-        <button type="button">Button1</button>
+        <button class="button" type="button">Button1</button>
     </div>
 
     <div class="mid">
-        <button type="button">Button2</button>
+        <button class="button" type="button">Button2</button>
     </div>
 
     <div class="right">
-        <button type="button">Button3</button>
+        <button class="button" type="button">Button3</button>
     </div>
 </div>
 
-<!--Replace with fragment-->
+<!--Replace with fragment Suggestion: if we are going to have a carousel it may be best to have it as a fixed part of the page.-->
 <div class="txt-intro">
     <p>intro text that explains stuff to the user what we do and all that good stuff</p>
     <p>intro text that explains stuff to the user what we do and all that good stuff</p>
@@ -56,37 +56,26 @@
         <span class="visually-hidden">Next</span>
     </button>
 </div>
-
+<!--Suggestion: this can be the editable part of the site. Alternatively here we can add the find a foodbank section as the client requested-->
 <div class="sub3">
     <h3>Subheading</h3>
 </div>
-<div class="suggestions">
-    <div class="box1">
-        <p>You can do this one thing if you want</p>
-    </div>
-
-    <div class="box2">
-        <p>You can do this one thing if you want</p>
-    </div>
-
-    <div class="box3">
-        <p>You can do this one thing if you want</p>
-    </div>
-
-    <div class="box4">
-        <p>You can do this one thing if you want</p>
-    </div>
-
-    <div class="box5">
-        <p>You can do this one thing if you want</p>
-    </div>
-
-    <div class="box6">
-        <p>You can do this one thing if you want</p>
-    </div>
+<div>
+    <form>
+        <div class="mb-3">
+            <label for="searchFoodbank" class="form-label">Find your nearest Foodbank</label>
+            <input type="text" class="form-control" id="searchFoodbank" placeholder="Enter postcode" aria-describedby="searchBank" />
+            <div id="searchBank" class="form-text">Enter your postcode to find the nearest foodbank.</div>
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="consentLoc" />
+            <label class="form-check-label" for="consentLoc">I consent to fb finder to locate me</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
 </div>
 <!--End of fragment-->
 
-<div class="donate">
-    <button type="button">DONATE</button>
+<div class="donate d-lg-grid">
+    <button class="button" type="button">DONATE</button>
 </div>

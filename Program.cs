@@ -35,7 +35,6 @@ using (var scope = app.Services.CreateScope())
 {
     var dataFContext = scope.ServiceProvider.GetRequiredService<FoodbankContext>();
     var dataIContext = scope.ServiceProvider.GetRequiredService<IdentityContext>();
-    dataFContext.Database.Migrate();
     dataIContext.Database.Migrate();
 }
 
