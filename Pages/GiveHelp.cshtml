@@ -1,17 +1,40 @@
 ﻿@page
-@model GetHelpModel
+@model GiveHelpModel
 @{
     ViewData["Title"] = "Give Help";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Give Help Page</h1>
+    <h1 class="display-4">Ways to Help</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-5 align-self-start">
+            <div class="m-2 col-4">
+                <button type="button" class="btn btn-lg btn-success">Donate Funds</button>
+            </div>
+            <div class="m-2">
+                <button type="button" class="btn btn-lg btn-success">Donate Food</button>
+            </div>
+            <div class="m-2">
+                <button type="button" class="btn btn-lg btn-success">Volunteering</button>
+            </div>
+            <div class="m-2">
+                <button type="button" class="btn btn-lg btn-success">Fundraising</button>
+            </div>
+        </div>
+        <div class="col-3 align-self-center">
+             <figure class="text-center">
+                 <p class="lead"><em>There are several ways</em></p>
+                 <p class="lead"><em>help can be given, from donating funds</em></p>
+                 <p class="lead"><em>to donating food or volunteering.</em></p>
+                 <p class="lead"><em>Click one of the options of the menu</em></p>
+                 <p class="lead"><em>on the left for more details</em></p>
+             </figure>
+        </div>
+    </div>
 </div>
 
-<h2>Give Help</h2>
-<p>
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-    when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-    remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
-    software like Aldus PageMaker including versions of Lorem Ipsum.
-</p>
+<div>
+    <img src="~/Images/freepic.png" class="img-fluid rounded mx-auto d-block" alt="parcel" />
+</div>
