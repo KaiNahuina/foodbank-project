@@ -7,27 +7,24 @@
     <h1 class="display-4">Welcome to Foodbank finder</h1>
 </div>
 
-<div class="ql">
-    <div class="left">
-        <button class="button" type="button">Button1</button>
-    </div>
-
-    <div class="mid">
-        <button class="button" type="button">Button2</button>
-    </div>
-
-    <div class="right">
-        <button class="button" type="button">Button3</button>
-    </div>
+<div>
+    <form>
+        <div class="mb-3">
+            <label for="searchFoodbank" class="form-label">Find your nearest Foodbank</label>
+            <input type="text" class="form-control" id="searchFoodbank" placeholder="Enter postcode" aria-describedby="searchBank" />
+            <div id="searchBank" class="form-text">Enter your postcode to find the nearest foodbank.</div>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
 </div>
 
 <!--Replace with fragment Suggestion: if we are going to have a carousel it may be best to have it as a fixed part of the page.-->
 <div class="txt-intro">
-    <p>intro text that explains stuff to the user what we do and all that good stuff</p>
-    <p>intro text that explains stuff to the user what we do and all that good stuff</p>
-    <p>intro text that explains stuff to the user what we do and all that good stuff</p>
-    <p>intro text that explains stuff to the user what we do and all that good stuff</p>
-    <p>intro text that explains stuff to the user what we do and all that good stuff</p>
+    <p class="h4">The economic situation has made it so more and more people are in need of assistance</p>
+    <p class="h4">with fullfilling their basic needs. This has resulted into the dramatic increase</p>
+    <p class="h4">of people looking for and using foodbanks. Accross the country many of these foodbanks</p>
+    <p class="h4">have risen to the challenge of helping the public in these trying times</p>
+    <p class="h4">Here you can find the most up to date database of foodbanks all across the UK</p>
 </div>
 
 <div id="intro-car" class="carousel slide" data-bs-ride="carousel">
@@ -58,22 +55,10 @@
 </div>
 <!--Suggestion: this can be the editable part of the site. Alternatively here we can add the find a foodbank section as the client requested-->
 <div class="sub3">
-    <h3>Subheading</h3>
+    <h3>How can I help?</h3>
 </div>
-<div>
-    <form>
-        <div class="mb-3">
-            <label for="searchFoodbank" class="form-label">Find your nearest Foodbank</label>
-            <input type="text" class="form-control" id="searchFoodbank" placeholder="Enter postcode" aria-describedby="searchBank" />
-            <div id="searchBank" class="form-text">Enter your postcode to find the nearest foodbank.</div>
-        </div>
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="consentLoc" />
-            <label class="form-check-label" for="consentLoc">I consent to fb finder to locate me</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Search</button>
-    </form>
-</div>
+
+
 <!--End of fragment-->
 
 <div class="donate d-lg-grid">
