@@ -47,7 +47,8 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
         modelBuilder.Entity<Foodbank>().Property(f => f.Postcode).IsRequired();
         modelBuilder.Entity<Foodbank>().Property(f => f.Closed).IsRequired();
         modelBuilder.Entity<Foodbank>().Property(f => f.Country).IsRequired();
-        modelBuilder.Entity<Foodbank>().Property(f => f.LatLng).IsRequired();
+        modelBuilder.Entity<Foodbank>().Property(f => f.Lat).IsRequired();
+        modelBuilder.Entity<Foodbank>().Property(f => f.Lng).IsRequired();
         modelBuilder.Entity<Foodbank>().Property(f => f.Network).IsRequired();
         modelBuilder.Entity<Foodbank>().Property(f => f.Created).IsRequired();
         modelBuilder.Entity<Foodbank>().Property(f => f.Protected).IsRequired();
@@ -56,7 +57,8 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
 
         modelBuilder.Entity<Location>().Property(fl => fl.Slug).IsRequired();
         modelBuilder.Entity<Location>().Property(fl => fl.Name).IsRequired();
-        modelBuilder.Entity<Location>().Property(fl => fl.LatLng).IsRequired();
+        modelBuilder.Entity<Location>().Property(fl => fl.Lat).IsRequired();
+        modelBuilder.Entity<Location>().Property(fl => fl.Lng).IsRequired();
         modelBuilder.Entity<Location>().Property(fl => fl.Address).IsRequired();
         modelBuilder.Entity<Location>().Property(fl => fl.Postcode).IsRequired();
         modelBuilder.Entity<Location>().Property(fl => fl.LocationId).IsRequired();

@@ -25,7 +25,8 @@ public static class FoodbankHelpers
             Postcode = externalFoodbank.Postcode,
             Closed = externalFoodbank.Closed,
             Country = externalFoodbank.Country,
-            LatLng = externalFoodbank.LatLng,
+            Lat = externalFoodbank.LatLng?.Split(",")[0],
+            Lng = externalFoodbank.LatLng?.Split(",")[1],
             Network = externalFoodbank.Network,
             Created = externalFoodbank.Created,
             Homepage = externalFoodbank.Urls?.Homepage,
@@ -40,7 +41,8 @@ public static class FoodbankHelpers
             var location = new Location
             {
                 Address = item.Address,
-                LatLng = item.LatLng,
+                Lat = item.LatLng?.Split(",")[0],
+                Lng = item.LatLng?.Split(",")[1],
                 Name = item.Name,
                 Slug = item.Slug,
                 Postcode = item.Postcode,
