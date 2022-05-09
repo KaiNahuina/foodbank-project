@@ -48,10 +48,10 @@ build:
     -
   script:
     - dotnet restore
-    - dotnet publish "Foodbank Project.csproj" -c debug -r win-x64 --self-contained --no-restore
-    - dotnet publish "Foodbank Project.csproj" -c debug -r linux-x64 --self-contained --no-restore
-    - dotnet publish "Foodbank Project.csproj" -c release -r win-x64 --self-contained --no-restore
-    - dotnet publish "Foodbank Project.csproj" -c release -r linux-x64 --self-contained --no-restore
+    - dotnet publish "Foodbank Project.csproj" -c debug -r win-x64 --no-restore
+    - dotnet publish "Foodbank Project.csproj" -c debug -r linux-x64 --no-restore
+    - dotnet publish "Foodbank Project.csproj" -c release -r win-x64 --no-restore
+    - dotnet publish "Foodbank Project.csproj" -c release -r linux-x64 --no-restore
     #- apt-get update
     #- apt-get install -y zip
     #- mkdir -p bin/final
