@@ -2,7 +2,7 @@
 
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
-using Foodbank_Project.Services.Scraping;
+using Foodbank_Project.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
@@ -13,8 +13,25 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDb") ?? string.Empty));;
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationContext>();;
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = true;
+})
+    .AddRoles<IdentityRole>()
+    .AddDefaultTokenProviders()
+    .AddEntityFrameworkStores<ApplicationContext>();
+
+builder.Services.ConfigureApplicationCookie(options =>
+    {
+        // cookies are not edible 
+    options.Cookie.HttpOnly = true;
+    options.LoginPath = "/Admin/Account/Login";
+    options.LogoutPath = "/Admin/Account/Logout";
+    options.AccessDeniedPath = "/Admin/Account/Denied";
+    options.SlidingExpiration = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+});
+
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
 {
@@ -23,7 +40,11 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 });
 
 
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeFolder("/Admin");
+    options.Conventions.AllowAnonymousToFolder("/Admin/Account");
+});
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -32,13 +53,29 @@ builder.Services.AddHostedService<GiveFoodApiService>();
 var app = builder.Build();
 
 
+
 using (var scope = app.Services.CreateScope())
 {
-    var dataFContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-    dataFContext.Database.Migrate();
+    var conext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+    conext.Database.Migrate();
 }
 
-
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        await SeedData.SeedRolesAsync(userManager, roleManager);
+        await SeedData.SeedBasicUserAsync(userManager, roleManager);
+        await SeedData.SeedAdminUserAsync(userManager, roleManager);
+    }
+    catch (Exception)
+    {
+        throw;
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -56,8 +93,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();

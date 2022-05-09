@@ -62,7 +62,6 @@ public static class FoodbankHelpers
     public static async Task InsertOrUpdate(Foodbank target, ApplicationContext ctx, CancellationToken cancellationToken)
     {
         
-        ctx.ChangeTracker.Clear(); // recreating context is a pain, clearing is easier since we are scope
 
         var dbFoodbank = await ctx.Foodbanks!.FirstOrDefaultAsync(f => f.Slug == target.Slug, cancellationToken);
 

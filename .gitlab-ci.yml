@@ -37,6 +37,7 @@ build_docker:
       --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
       --destination "$CI_APPLICATION_REPOSITORY:$CI_APPLICATION_TAG"
       --destination "$CI_APPLICATION_REPOSITORY:latest"
+      --cache
       --use-new-run # experimental
       --snapshotMode=redo # experimental
 
