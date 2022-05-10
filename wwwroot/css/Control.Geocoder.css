@@ -126,8 +126,8 @@
 }
 
 #map {
-    height: 90%;
-    width: 50%;
+    height: 35vw;
+    width: 70vw;
     margin: auto;
-    padding-top: 5%;
+    margin-top: 2%;
 }

@@ -12,20 +12,43 @@
 
 
 <!-- Credit Leaflet, open street map, novatim, leaflet search controll -->
-
+<h1>This is a test heading for spacing</h1>
 <div id="map"></div>
 
     <script type="text/javascript">
+        var foodbankIcon = L.icon({
+            iconUrl: '/Images/leaf.png',//https://www.flaticon.com/free-icon/leaf_892917?term=leaf&page=1&position=3&page=1&position=3&related_id=892917&origin=tag
+
+            iconSize:     [30, 30], // size of the icon
+            iconAnchor:   [0, 30], // point of the icon which will correspond to marker's location
+            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+      });
+
+      var warehouseIcon = L.icon({
+            iconUrl: '/Images/warehouse.png',//https://www.flaticon.com/free-icon/leaf_892917?term=leaf&page=1&position=3&page=1&position=3&related_id=892917&origin=tag
+
+            iconSize:     [50, 50], // size of the icon
+            iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
+            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+      });
+
+
+
       var map = L.map('map').setView([ 54.596442,  -3.9], 6);
   
-      var marker2 = L.marker([51.5, -0.09]).addTo(map);         //marker point
+      var marker2 = L.marker([51.5, -0.09], {icon:foodbankIcon}).addTo(map);         //marker point
 
-      var circle = L.circle([51.508, -0.11], {
-    color: 'red',
-    fillColor: '#f03',
-    fillOpacity: 0.5,
-    radius: 500
-}).addTo(map);
+      var marker3 = L.marker([51.5, -1], {icon:warehouseIcon}).addTo(map);         //marker point
+      
+      //var top5closest1 = L.marker([this.long, this.lat]).addTo(map);         //not sure how to do this yet 
+      
+      var circle = L.circle([51.508, -0.11], {                  //circle around a point with a raidus
+                                                                //could be useful for colision points ? e.g if marker is inside circle display else hide 
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: 500
+        }).addTo(map);
 
       var geocoder = L.Control.Geocoder.nominatim();            //the type of geocoder used 
       if (typeof URLSearchParams !== 'undefined' && location.search) {
@@ -41,8 +64,8 @@
       }
 
       var control = L.Control.geocoder({  //set the geocoder search type
-        query: 'Moon',
-        placeholder: 'Search here...',
+        //query: 'Moon',
+        placeholder: 'Search Postcode or Address',
         geocoder: geocoder
       })
       .on('markgeocode', function(e) {
@@ -52,7 +75,7 @@
  
       })
       .addTo(map);
-      var marker;
+      var marker;                                   //need to control the ammount it zooms in 
 
       L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
