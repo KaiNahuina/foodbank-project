@@ -38,9 +38,9 @@
 
       var map = L.map('map').setView([ 54.596442,  -3.9], 6);
   
-      var marker2 = L.marker([51.5, -0.09], {icon:foodbankIcon}).addTo(map).bindPopup('THIS IS THE FOODBANK');         //marker point
+      var marker2 = L.marker([51.5, -0.09], {icon:foodbankIcon}).addTo(map).bindPopup('THIS IS THE FOODBANK');         //marker point    these need to have alt text aswell
 
-      var marker3 = L.marker([51.5, -1], {icon:warehouseIcon}).addTo(map).bindPopup('THIS IS THE WAREHOUSE');;         //marker point
+      var marker3 = L.marker([51.5, -1], {icon:warehouseIcon}).addTo(map).bindPopup('THIS IS THE WAREHOUSE');;         //marker point    these need to have alt text aswell
       
       //var top5closest1 = L.marker([this.long, this.lat]).addTo(map);         //not sure how to do this yet 
       
@@ -93,6 +93,9 @@
         console.log(e);
         console.log(e.geocode.center.lat);          //outputs the latitude 
         console.log(e.geocode.center.lng);          //outputs the longitude
+
+        var usersLatitude = e.geocode.center.lat;
+        var usersLongitude = e.geocode.center.lng;
  
       })
       .addTo(map);
