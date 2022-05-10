@@ -18,7 +18,8 @@ public class Location
     public string? Postcode { get; set; }
 
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
-    public string? LatLng { get; set; }
+    public string? Lat { get; set; }
+    public string? Lng { get; set; }
 
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public string? Phone { get; set; }
@@ -28,6 +29,6 @@ public class Location
 
     public override bool Equals(object? obj)
     {
-        return obj is Location location && location.LocationId == this.LocationId;
+        return obj is Location location && location.LocationId == LocationId;
     }
 }

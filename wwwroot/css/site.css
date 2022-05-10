@@ -1,12 +1,23 @@
 html {
-    font-size: 14px;
+    font-size: 14px; /*These need to become changeable once edited*/
 }
 
 @media (min-width: 768px) {
     html {
-        font-size: 16px;
+        font-size: 16px; /*These need to become changeable once edited*/
     }
 }
+
+//@font-face {
+    //font-family: 'Capsmall';
+    //src: url('/fonts/Capsmall.ttf') format('truetype');
+//}
+
+//@font-face {
+    //font-family: 'Gogh-ExtraBold';
+    //src: url('/fonts/Gogh-ExtraBold.otf') format('opentype');
+//}
+
 
 html {
     position: relative;
@@ -15,4 +26,148 @@ html {
 
 body {
     margin-bottom: 60px;
+    background-color: #f4faed;
+}
+
+h1 { /*Page Headers*/
+    font-family: 'Capsmall';
+    font-size: 3em;
+    color: #115649;
+}
+
+h2 { /*Sub Headers*/
+    font-family: 'Capsmall';
+    font-size: 2.5em;
+    color: #00008B;
+    /* custom font but smaller*/
+}
+
+h3 { /*Section Headings for content*/
+    font-family: Gogh-ExtraBold;
+    font-size: 2em;
+    color: black;
+}
+
+p {
+    font-family: Gogh-ExtraBold;
+    font-size: 1em;
+    color: black;
+    background-color: white;
+    overflow: auto;
+}
+
+.nav-link{
+    font-size: 1.5em;
+    color:green;
+    
+}
+
+.button {
+    background-color: #8bc349;
+    border-radius: 5px; /*border curve*/
+    box-shadow: 2px 2px #808080; /*current background effect*/
+    text-align: center;
+    display: inline inline-block;
+}
+
+.text-box {
+    color: black;
+    background-color:white;
+    border: 1px solid;
+    padding: 15px;
+    border-radius: 6px;
+    box-shadow: 1em 1em 1.2em rgb(0 0 0 / 10%);
+    overflow: auto;
+}
+
+.imageL {
+    width: 60%;
+}
+
+.imageM {
+    width: 50%;
+}
+
+.imageS {
+    width: 40%;
+}
+.imageLogo {
+    width:20%;
+}
+
+recipe-icons {
+    width: 30%;
+}
+
+.map-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+}
+
+input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+
+
+.row {
+    display: flex;
+    border-color: black;
+    border-width: 1em;
+}
+
+.column {
+    float: left;
+    width: 50%;
+    text-align: center;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.ql {
+    margin: 50px;
+    align-content: flex-start;
+}
+
+    .ql .left {
+        margin: 25px;
+    }
+
+    .ql .mid {
+        margin: 25px;
+    }
+
+    .ql .right {
+        margin: 25px;
+    }
+
+.txt-intro {
+    display: inline block;
+    margin: 150px;
+    text-align: center;
+}
+
+.sub3 {
+    //display: inline-block;
+    margin: 100px;
+    clear: both;
+    text-align: center;
+}
+
+
+.donate {
+    display: inline-block;
+    margin-top: 75px;
 }

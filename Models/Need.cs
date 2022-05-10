@@ -7,5 +7,5 @@ public class Need
 
     public string? NeedStr { get; set; }
 
-    public List<Foodbank> Foodbanks { get; set; } = new List<Foodbank>();
+    public List<Foodbank> Foodbanks { get; set; } = new();
 }

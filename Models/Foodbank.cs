@@ -43,21 +43,24 @@ public class Foodbank
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public string? Country { get; set; }
 
+    public Status Status { get; set; }
+
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
-    public string? LatLng { get; set; }
+    public string? Lat { get; set; }
+    public string? Lng { get; set; }
 
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public string? Network { get; set; }
 
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public DateTime? Created { get; set; }
-    
+
     public string? Homepage { get; set; }
-    
+
     public string? ShoppingList { get; set; }
-    
+
     public string? CharityNumber { get; set; }
-    
+
     public string? CharityRegisterUrl { get; set; }
 
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
@@ -66,6 +69,6 @@ public class Foodbank
 
     public override bool Equals(object? obj)
     {
-        return obj is Foodbank foodbank && foodbank.FoodbankId == this.FoodbankId;
+        return obj is Foodbank foodbank && foodbank.FoodbankId == FoodbankId;
     }
 }

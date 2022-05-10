@@ -1,14 +1,17 @@
-﻿using System.Collections;
+﻿#region
+
 using System.Collections.ObjectModel;
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
 using Microsoft.EntityFrameworkCore;
 
+#endregion
+
 namespace Foodbank_Project.Util;
 
 public static class FoodbankHelpers
 {
-    public static Foodbank? Convert(Models.External.Foodbank externalFoodbank)
+    public static Foodbank Convert(Models.External.Foodbank externalFoodbank)
     {
         var foodbank = new Foodbank
         {
@@ -22,7 +25,8 @@ public static class FoodbankHelpers
             Postcode = externalFoodbank.Postcode,
             Closed = externalFoodbank.Closed,
             Country = externalFoodbank.Country,
-            LatLng = externalFoodbank.LatLng,
+            Lat = externalFoodbank.LatLng?.Split(",")[0],
+            Lng = externalFoodbank.LatLng?.Split(",")[1],
             Network = externalFoodbank.Network,
             Created = externalFoodbank.Created,
             Homepage = externalFoodbank.Urls?.Homepage,
@@ -37,7 +41,8 @@ public static class FoodbankHelpers
             var location = new Location
             {
                 Address = item.Address,
-                LatLng = item.LatLng,
+                Lat = item.LatLng?.Split(",")[0],
+                Lng = item.LatLng?.Split(",")[1],
                 Name = item.Name,
                 Slug = item.Slug,
                 Postcode = item.Postcode,
@@ -51,75 +56,18 @@ public static class FoodbankHelpers
         foodbank.Needs = new List<Need>();
         var needs = externalFoodbank.Needs?.NeedsStr?.Split("\r\n") ?? Array.Empty<string>();
         foreach (var need in needs)
-        {
             foodbank.Needs.Add(need == "Unknown" ? new Need { NeedStr = null } : new Need { NeedStr = need });
-        }
 
         return foodbank;
     }
 
-    public  static async Task<Foodbank> InsertOrUpdate(Foodbank target, FoodbankContext ctx, CancellationToken cancellationToken)
+    public static async Task InsertOrUpdate(Foodbank target, ApplicationContext ctx, CancellationToken cancellationToken)
     {
-        /*
-                MergeProperties(target, from, "FoodbankId");
         
-                // merge locations 
-                if (from.Locations != null)
-                {
-                    foreach (var fromLocation in from.Locations)
-                    {
-                        Location? found = null;
-                        if (target.Locations is not null)
-                        {
-                            foreach (var targetLocation in target.Locations)
-                            {
-                                if (targetLocation.Slug == fromLocation.Slug)
-                                {
-                                    found = targetLocation;
-                                }
-                            }
-        
-                            if (found != null)
-                            {
-                                MergeProperties(found, fromLocation, "LocationId");
-                            }
-                            else
-                            {
-                                target.Locations.Remove(fromLocation);
-                            }
-                        }
-                    }
-                }
-        
-                // clear all target needs
-                target.FoodbankNeeds?.Clear();
-        
-                if (from.FoodbankNeeds != null)
-                    foreach (var fromFoodbankNeed in from.FoodbankNeeds)
-                    {
-                        var need = NeedsHelper.GetNeed(fromFoodbankNeed.Need?.NeedStr, ctx);
-        
-                        if (need is null)
-                        {
-                            target.FoodbankNeeds?.Add(fromFoodbankNeed);
-                        }
-                        else
-                        {
-                            fromFoodbankNeed.Need = need;
-                            target.FoodbankNeeds?.Add(fromFoodbankNeed);
-                        }
-                        
-                    }
-                */
-        
-        ctx.ChangeTracker.Clear(); // recreating context is a pain, clearing is easier since we are scope
 
-         var dbFoodbank = await ctx.Foodbanks!.FirstOrDefaultAsync((f) => f.Slug == target.Slug, cancellationToken);
+        var dbFoodbank = await ctx.Foodbanks!.FirstOrDefaultAsync(f => f.Slug == target.Slug, cancellationToken);
 
-        if (dbFoodbank is not null && dbFoodbank.Protected)
-        {
-            return default;
-        }
+        if (dbFoodbank is not null && dbFoodbank.Protected) return;
 
 
         if (dbFoodbank is null)
@@ -132,28 +80,27 @@ public static class FoodbankHelpers
             ctx.Foodbanks!.Update(target);
 
             await ctx.SaveChangesAsync(cancellationToken);
-            return target;
+            return;
         }
-        else
-        {
-            target.FoodbankId = dbFoodbank.FoodbankId;
-            
-            target.Needs = await CompletePartialNeeds(target.Needs, ctx, cancellationToken);
-            target.Locations = await CompletePartialLocations(target.Locations, ctx, cancellationToken);
-            
-            ctx.Entry(dbFoodbank).CurrentValues.SetValues(target);
 
-            await ctx.SaveChangesAsync(cancellationToken);
-            return dbFoodbank;
-        }
+        target.FoodbankId = dbFoodbank.FoodbankId;
+
+        target.Needs = await CompletePartialNeeds(target.Needs, ctx, cancellationToken);
+        target.Locations = await CompletePartialLocations(target.Locations, ctx, cancellationToken);
+
+        ctx.Entry(dbFoodbank).CurrentValues.SetValues(target);
+
+        await ctx.SaveChangesAsync(cancellationToken);
     }
-    
-    private static async Task<ICollection<Need>> CompletePartialNeeds(ICollection<Need> needs, FoodbankContext ctx, CancellationToken cancellationToken)
+
+    private static async Task<ICollection<Need>> CompletePartialNeeds(IEnumerable<Need> needs, ApplicationContext ctx,
+        CancellationToken cancellationToken)
     {
         ICollection<Need> completeNeeds = new Collection<Need>();
         foreach (var need in needs.ToArray())
         {
-            var dbNeed = await ctx.Needs!.FirstOrDefaultAsync(n => n.NeedStr == need.NeedStr, cancellationToken: cancellationToken);
+            var dbNeed = await ctx.Needs!.FirstOrDefaultAsync(n => n.NeedStr == need.NeedStr,
+                cancellationToken);
             if (dbNeed is null)
             {
                 completeNeeds.Add(need);
@@ -166,16 +113,19 @@ public static class FoodbankHelpers
                 completeNeeds.Add(dbNeed);
             }
         }
+
         await ctx.SaveChangesAsync(cancellationToken);
         return completeNeeds;
     }
-    
-    private static async Task<ICollection<Location>> CompletePartialLocations(ICollection<Location> locations, FoodbankContext ctx, CancellationToken cancellationToken)
+
+    private static async Task<ICollection<Location>> CompletePartialLocations(IEnumerable<Location> locations,
+        ApplicationContext ctx, CancellationToken cancellationToken)
     {
         ICollection<Location> completeLocations = new Collection<Location>();
         foreach (var location in locations.ToArray())
         {
-            var dbLocation = await ctx.Locations!.FirstOrDefaultAsync(l => l.Slug == location.Slug, cancellationToken: cancellationToken);
+            var dbLocation = await ctx.Locations!.FirstOrDefaultAsync(l => l.Slug == location.Slug,
+                cancellationToken);
             if (dbLocation is null)
             {
                 completeLocations.Add(location);
@@ -188,7 +138,8 @@ public static class FoodbankHelpers
                 completeLocations.Add(dbLocation);
             }
         }
+
         await ctx.SaveChangesAsync(cancellationToken);
         return completeLocations;
-    } 
+    }
 }

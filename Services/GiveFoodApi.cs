@@ -10,7 +10,7 @@ using Newtonsoft.Json.Serialization;
 
 #endregion
 
-namespace Foodbank_Project.Services.Scraping;
+namespace Foodbank_Project.Services;
 
 public class GiveFoodApiService : BackgroundService
 {
@@ -24,14 +24,14 @@ public class GiveFoodApiService : BackgroundService
     private readonly HttpClient _httpClient = new();
     /* A stopwatch that is used to measure the time it takes to get a response from the API. */
 
-    private readonly FoodbankContext _ctx;
+    private readonly ApplicationContext _ctx;
 
     /* Creating a new instance of the class, and setting the logger and configuration variables which are injected from builder.Services */
     public GiveFoodApiService(ILoggerFactory logger, IConfiguration configuration, IServiceProvider service)
     {
         _logger = logger.CreateLogger("Services.GiveFoodApi");
         _config = configuration.GetSection("Services:GiveFoodApi");
-        _ctx = service.CreateScope().ServiceProvider.GetRequiredService<FoodbankContext>();
+        _ctx = service.CreateScope().ServiceProvider.GetRequiredService<ApplicationContext>();
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -51,10 +51,11 @@ public class GiveFoodApiService : BackgroundService
 
             _logger.LogInformation("Service run started");
 
-            var resultWrapper = await ServiceHelpers.TimeoutTask(_config.GetValue<int>("Timeout") * 1000, stoppingToken,
+            var resultWrapper = await ServiceHelpers.TimeoutTask(_config.GetValue<int>("Timeout") * 1000,
                 async (token) =>
                     await GetFoodbank<List<Models.External.Foodbank>>("https://www.givefood.org.uk/api/2/foodbanks/",
-                        token));
+                        token), stoppingToken);
+
             switch (resultWrapper.ResultCode)
             {
                 case ServiceHelpers.ResultWrapper<List<Models.External.Foodbank>>.Code.Success:
@@ -65,10 +66,10 @@ public class GiveFoodApiService : BackgroundService
                     for (int i = 0; i < resultWrapper.Result?.Count; i++)
                     {
                         var resultWrapperInner = await ServiceHelpers.TimeoutTask(
-                            _config.GetValue<int>("Timeout") * 1000, stoppingToken,
+                            _config.GetValue<int>("Timeout") * 1000,
                             async (token) =>
                                 await GetFoodbank<Models.External.Foodbank>(resultWrapper.Result[i].Urls?.Self ?? "",
-                                    token));
+                                    token), stoppingToken);
                         
                         switch (resultWrapperInner.ResultCode)
                         {
@@ -82,7 +83,9 @@ public class GiveFoodApiService : BackgroundService
 
                                 Foodbank? internalFoodbank = FoodbankHelpers.Convert(resultWrapper.Result?[i]);
 
-                                internalFoodbank = await FoodbankHelpers.InsertOrUpdate(internalFoodbank, _ctx, stoppingToken);
+                                internalFoodbank.Status = Status.Approved;
+
+                                await FoodbankHelpers.InsertOrUpdate(internalFoodbank, _ctx, stoppingToken);
                                 
                                 
                                 await _ctx.SaveChangesAsync(stoppingToken);
