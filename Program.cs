@@ -40,6 +40,11 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 });
 
 
+builder.Services.AddAuthorization(options =>
+{
+
+});
+
 builder.Services.AddRazorPages(options =>
 {
     options.Conventions.AuthorizeFolder("/Admin");
