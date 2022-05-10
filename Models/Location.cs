@@ -1,4 +1,6 @@
-﻿namespace Foodbank_Project.Models;
+﻿using NetTopologySuite.Geometries;
+
+namespace Foodbank_Project.Models;
 
 public class Location
 {
@@ -18,8 +20,7 @@ public class Location
     public string? Postcode { get; set; }
 
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
-    public string? Lat { get; set; }
-    public string? Lng { get; set; }
+    public Point? Coord { get; set; }
 
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public string? Phone { get; set; }
