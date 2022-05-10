@@ -56,7 +56,11 @@ p {
     overflow: auto;
 }
 
-
+.nav-link{
+    font-size: 1.5em;
+    color:green;
+    
+}
 
 .button {
     background-color: #8bc349;
@@ -68,6 +72,7 @@ p {
 
 .text-box {
     color: black;
+    background-color:white;
     border: 1px solid;
     padding: 15px;
     border-radius: 6px;
@@ -85,6 +90,9 @@ p {
 
 .imageS {
     width: 40%;
+}
+.imageLogo {
+    width:20%;
 }
 
 recipe-icons {
