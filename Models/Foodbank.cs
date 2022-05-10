@@ -43,6 +43,8 @@ public class Foodbank
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public string? Country { get; set; }
 
+    public Status Status { get; set; }
+
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public string? Lat { get; set; }
     public string? Lng { get; set; }

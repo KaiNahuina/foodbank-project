@@ -25,20 +25,36 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
     // ReSharper disable once UnusedMember.Global
     public DbSet<Need>? Needs { get; set; }
 
+    public DbSet<Content>? Contents { get; set; }
+
+    public DbSet<Recipe>? Recipes { get; set; }
+
+    public DbSet<RecipeCategory> RecipeCategories { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Foodbank>(f => f.HasKey(pl => pl.FoodbankId));
         modelBuilder.Entity<Location>(f => f.HasKey(pl => pl.LocationId));
         modelBuilder.Entity<Need>(f => f.HasKey(pl => pl.NeedId));
+        modelBuilder.Entity<Content>(f => f.HasKey(pl => pl.ContentId));
+        modelBuilder.Entity<Recipe>(f => f.HasKey(pl => pl.RecipeId));
+        modelBuilder.Entity<RecipeCategory>(f => f.HasKey(pl => pl.RecipeCategoryId));
 
         modelBuilder.Entity<Foodbank>().Property(f => f.FoodbankId).ValueGeneratedOnAdd();
         modelBuilder.Entity<Location>().Property(f => f.LocationId).ValueGeneratedOnAdd();
         modelBuilder.Entity<Need>().Property(f => f.NeedId).ValueGeneratedOnAdd();
+        modelBuilder.Entity<Recipe>().Property(f => f.RecipeId).ValueGeneratedOnAdd();
+        modelBuilder.Entity<Content>().Property(f => f.ContentId).ValueGeneratedOnAdd();
+        modelBuilder.Entity<RecipeCategory>().Property(f => f.RecipeCategoryId).ValueGeneratedOnAdd();
 
         modelBuilder.Entity<Location>()
             .HasOne(l => l.Foodbank)
             .WithMany(f => f.Locations);
+
+        modelBuilder.Entity<Recipe>()
+            .HasOne(l => l.Category)
+            .WithMany(f => f.Recipes);
 
         modelBuilder.Entity<Foodbank>().Property(f => f.Name).IsRequired();
         modelBuilder.Entity<Foodbank>().Property(f => f.Slug).IsRequired();
@@ -53,6 +69,7 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
         modelBuilder.Entity<Foodbank>().Property(f => f.Created).IsRequired();
         modelBuilder.Entity<Foodbank>().Property(f => f.Protected).IsRequired();
         modelBuilder.Entity<Foodbank>().Property(f => f.FoodbankId).IsRequired();
+        modelBuilder.Entity<Foodbank>().Property(f => f.Status).IsRequired();
 
 
         modelBuilder.Entity<Location>().Property(fl => fl.Slug).IsRequired();
@@ -63,9 +80,16 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
         modelBuilder.Entity<Location>().Property(fl => fl.Postcode).IsRequired();
         modelBuilder.Entity<Location>().Property(fl => fl.LocationId).IsRequired();
 
-
         modelBuilder.Entity<Need>().Property(n => n.NeedId).IsRequired();
-        
+
+        modelBuilder.Entity<Recipe>().Property(fl => fl.Blob).IsRequired();
+        modelBuilder.Entity<Recipe>().Property(fl => fl.Name).IsRequired();
+
+        modelBuilder.Entity<Content>().Property(fl => fl.Blob).IsRequired();
+        modelBuilder.Entity<Content>().Property(fl => fl.Name).IsRequired();
+
+        modelBuilder.Entity<RecipeCategory>().Property(fl => fl.Name).IsRequired();
+
         base.OnModelCreating(modelBuilder);
         
     }

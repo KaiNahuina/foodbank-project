@@ -36,7 +36,7 @@ public class GiveFoodApiService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        bool skipped = false;
+        bool skipped = true;
         _logger.LogInformation("Service started. Runs every {Stamp}",
             TimeSpan.FromSeconds(_config.GetValue<int>("Interval")).ToString(@"h\hm\ms\s"));
         _httpClient.Timeout = TimeSpan.FromSeconds(_config.GetValue<int>("Timeout"));
@@ -82,6 +82,8 @@ public class GiveFoodApiService : BackgroundService
                                     resultWrapper.Result?.Count);
 
                                 Foodbank? internalFoodbank = FoodbankHelpers.Convert(resultWrapper.Result?[i]);
+
+                                internalFoodbank.Status = Status.Approved;
 
                                 await FoodbankHelpers.InsertOrUpdate(internalFoodbank, _ctx, stoppingToken);
                                 
