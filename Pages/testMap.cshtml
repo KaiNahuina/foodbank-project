@@ -16,6 +16,8 @@
 <div id="map"></div>
 
     <script type="text/javascript">
+
+        
         var foodbankIcon = L.icon({
             iconUrl: '/Images/leaf.png',//https://www.flaticon.com/free-icon/leaf_892917?term=leaf&page=1&position=3&page=1&position=3&related_id=892917&origin=tag
 
@@ -36,9 +38,9 @@
 
       var map = L.map('map').setView([ 54.596442,  -3.9], 6);
   
-      var marker2 = L.marker([51.5, -0.09], {icon:foodbankIcon}).addTo(map);         //marker point
+      var marker2 = L.marker([51.5, -0.09], {icon:foodbankIcon}).addTo(map).bindPopup('THIS IS THE FOODBANK');         //marker point
 
-      var marker3 = L.marker([51.5, -1], {icon:warehouseIcon}).addTo(map);         //marker point
+      var marker3 = L.marker([51.5, -1], {icon:warehouseIcon}).addTo(map).bindPopup('THIS IS THE WAREHOUSE');;         //marker point
       
       //var top5closest1 = L.marker([this.long, this.lat]).addTo(map);         //not sure how to do this yet 
       
@@ -49,6 +51,25 @@
             fillOpacity: 0.5,
             radius: 500
         }).addTo(map);
+        
+      map.locate({setView: true, maxZoom: 14});       //allow permission to locate you on the page, press the lock in the top right and reset permission to get back to the view(NEED TO MAKE IT REQUEST EACH TIME ?)
+      
+      //function onLocationFound(e) {
+      //      var radius = e.accuracy;
+
+      //      L.marker(e.latlng).addTo(map)
+      //          .bindPopup("You are within " + radius + " meters from this point").openPopup();          this will draw a circle around the location you are when you allow permission within a certain accuracy 
+
+      //      L.circle(e.latlng, radius).addTo(map);
+      //  }
+
+      //  map.on('locationfound', onLocationFound);
+
+      //  function onLocationError(e) {
+      //          alert(e.message);
+      //      }
+
+      //  map.on('locationerror', onLocationError);
 
       var geocoder = L.Control.Geocoder.nominatim();            //the type of geocoder used 
       if (typeof URLSearchParams !== 'undefined' && location.search) {
@@ -81,22 +102,26 @@
         attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
 
-      map.on('click', function(e) {
-        geocoder.reverse(e.latlng, map.options.crs.scale(map.getZoom()), function(results) {
-          var r = results[0];
-          if (r) {
-            if (marker) {
-              marker
-                .setLatLng(r.center)
-                .setPopupContent(r.html || r.name)
-                .openPopup();
-            } else {
-              marker = L.marker(r.center)
-                .bindPopup(r.name)
-                .addTo(map)
-                .openPopup();
-            }
-          }
-        });
-      });
+      //map.on('click', function(e) {
+      //  geocoder.reverse(e.latlng, map.options.crs.scale(map.getZoom()), function(results) {
+      //    var r = results[0];
+      //    if (r) {
+      //      if (marker) {
+      //        marker
+      //          .setLatLng(r.center)
+      //          .setPopupContent(r.html || r.name)                        //commented out because we dont need to be able to click on random points on the map for its location 
+      //          .openPopup();
+      //      } else {
+      //        marker = L.marker(r.center)
+      //          .bindPopup(r.name)
+      //          .addTo(map)
+      //          .openPopup();
+      //      }
+      //    }
+      //  });
+      //});
+
+
+
+      
     </script>
