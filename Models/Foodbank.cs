@@ -4,7 +4,7 @@ namespace Foodbank_Project.Models;
 
 public class Foodbank
 {
-    public ICollection<Location> Locations;
+    public ICollection<Location> Locations { get; set; }
 
     // ReSharper disable once UnusedMember.Global
     public int? FoodbankId { get; set; }
