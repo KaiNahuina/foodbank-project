@@ -176,6 +176,10 @@ input[type=text] {
     margin-top: 75px;
 }
 
+a:hover {
+    background: #c9c8c7;
+}
+
 /*Get Help attributes*/
 .imageGH {
     width: 40%;
