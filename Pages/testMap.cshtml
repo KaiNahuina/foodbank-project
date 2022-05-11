@@ -35,6 +35,8 @@
 
     var userInputForLocation = document.getElementById('searchFoodbank').value;
     console.log(userInputForLocation); //if we give this data before the page loads it should display the corret infomation
+
+    
     
     var foodbankIcon = L.icon({
           iconUrl: '/Images/leaf.png',//https://www.flaticon.com/free-icon/leaf_892917?term=leaf&page=1&position=3&page=1&position=3&related_id=892917&origin=tag
@@ -89,6 +91,10 @@
     .addTo(map);
     var marker;                                   //need to control the ammount it zooms in 
 
+
+    geocoder.geocode(userInputForLocation, function(ctx){control._geocodeResultSelected(ctx[0])})
+
+ 
     
 
     L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
