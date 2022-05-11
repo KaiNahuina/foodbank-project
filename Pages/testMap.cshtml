@@ -10,20 +10,21 @@
 <script src="~/js/Control.Geocoder.js"></script> 
 
 
-<!-- Credit Leaflet, open street map, novatim, leaflet search controll -->
+<!-- Credit Leaflet, open street map, nomiatim, leaflet search controll -->
 <div class="container">
     <div class="row">
         <div class="col col-4">
             <p> </p>
         </div>
         <div class="col col-5">
-            <form>
+            <form >
                 <div class="mb-3">
                     <label for="searchFoodbank" class="form-label">Find your nearest Foodbank</label>
                     <input type="text" class="form-control" value="@RouteData.Values["Location"]" id="searchFoodbank" placeholder="Enter postcode" aria-describedby="searchBank" />
                     <div id="searchBank" class="form-text"></div>  <!-- we need to save this and push it to the map-->
                 </div>
                 <button type="submit" class="btn btn-primary">Search</button>
+                @Html.AntiForgeryToken()
             </form>
         </div>
     </div>
@@ -87,15 +88,27 @@
     .on('markgeocode', function(e) {
       var usersLatitude = e.geocode.center.lat;
       var usersLongitude = e.geocode.center.lng;
+      console.log(e.geocode.center.lat);
+      console.log(e.geocode.center.lng);
+      console.log(JSON.stringify({Lat: usersLatitude, Lng: usersLongitude}));
+
+      $.ajax({
+          type: "POST",
+          url: '/testMap?handler=Coord',
+          data: JSON.stringify({Lat: usersLatitude, Lng: usersLongitude}),
+          beforeSend: function(xhr){
+              xhr.setRequestHeader("RequestVerificationToken", $('input[name="__RequestVerificationToken"]').val());
+          },
+          contentType: "application/json; charset=utf-8",
+          dataType: "json"
+      }).done(function(data){
+          console.log(data)
+      })
     })
     .addTo(map);
     var marker;                                   //need to control the ammount it zooms in 
 
-
     geocoder.geocode(userInputForLocation, function(ctx){control._geocodeResultSelected(ctx[0])})
-
- 
-    
 
     L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
