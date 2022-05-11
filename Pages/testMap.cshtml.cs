@@ -30,10 +30,17 @@ namespace Foodbank_Project.Pages
         }
 
         public class Coords { public double Lat { get; set; } public double Lng { get; set; } }
-        public IActionResult OnPostCoord([FromBody] Coords obj)
+        public async Task<IActionResult> OnPostCoordAsync([FromBody] Coords obj)
         {
-            var origin = Point(obj.Lat, obj.Lng);
-            return new JsonResult("Hi there!");
+            var origin = new NetTopologySuite.Geometries.Point(obj.Lng, obj.Lat) { SRID = 4326 };
+
+            var foodBankLocations = await _ctx
+                .Locations.AsNoTracking()
+                .Select(l => new {place = l, Distance = l.Coord.Distance(origin) }).ToListAsync();
+
+            var top5Locations = foodBankLocations.OrderBy(l => l.Distance).Take(5).ToList();
+
+            return new JsonResult(top5Locations);
         }
     }
 }
