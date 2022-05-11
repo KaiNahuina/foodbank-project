@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{Location?}"
 @model Foodbank_Project.Pages.testMapModel
 @{
 }
@@ -10,121 +10,89 @@
 <script src="~/js/Control.Geocoder.js"></script> 
 
 
-
 <!-- Credit Leaflet, open street map, novatim, leaflet search controll -->
-<h1>This is a test heading for spacing</h1>
+<div class="container">
+    <div class="row">
+        <div class="col col-4">
+            <p> </p>
+        </div>
+        <div class="col col-5">
+            <form>
+                <div class="mb-3">
+                    <label for="searchFoodbank" class="form-label">Find your nearest Foodbank</label>
+                    <input type="text" class="form-control" value="@RouteData.Values["Location"]" id="searchFoodbank" placeholder="Enter postcode" aria-describedby="searchBank" />
+                    <div id="searchBank" class="form-text"></div>  <!-- we need to save this and push it to the map-->
+                </div>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div id="map"></div>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        
-        var foodbankIcon = L.icon({
-            iconUrl: '/Images/leaf.png',//https://www.flaticon.com/free-icon/leaf_892917?term=leaf&page=1&position=3&page=1&position=3&related_id=892917&origin=tag
+    var userInputForLocation = document.getElementById('searchFoodbank').value;
+    console.log(userInputForLocation); //if we give this data before the page loads it should display the corret infomation
+    
+    var foodbankIcon = L.icon({
+          iconUrl: '/Images/leaf.png',//https://www.flaticon.com/free-icon/leaf_892917?term=leaf&page=1&position=3&page=1&position=3&related_id=892917&origin=tag
 
-            iconSize:     [30, 30], // size of the icon
-            iconAnchor:   [0, 30], // point of the icon which will correspond to marker's location
-            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-      });
+          iconSize:     [30, 30], 
+          iconAnchor:   [0, 30], 
+          popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
 
-      var warehouseIcon = L.icon({
-            iconUrl: '/Images/warehouse.png',//https://www.flaticon.com/free-icon/leaf_892917?term=leaf&page=1&position=3&page=1&position=3&related_id=892917&origin=tag
+    var warehouseIcon = L.icon({
+          iconUrl: '/Images/warehouse.png',//copy righted dont use for final
 
-            iconSize:     [50, 50], // size of the icon
-            iconAnchor:   [25, 50], // point of the icon which will correspond to marker's location
-            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-      });
+          iconSize:     [50, 50], 
+          iconAnchor:   [25, 50], 
+          popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
 
-
-
-      var map = L.map('map').setView([ 54.596442,  -3.9], 6);
+    var map = L.map('map').setView([ 54.596442,  -3.9], 6);
   
-      var marker2 = L.marker([51.5, -0.09], {icon:foodbankIcon}).addTo(map).bindPopup('THIS IS THE FOODBANK');         //marker point    these need to have alt text aswell
+    var marker2 = L.marker([51.5, -0.09], {icon:foodbankIcon}).addTo(map).bindPopup('THIS IS THE FOODBANK');         //marker point    these need to have alt text aswell
 
-      var marker3 = L.marker([51.5, -1], {icon:warehouseIcon}).addTo(map).bindPopup('THIS IS THE WAREHOUSE');;         //marker point    these need to have alt text aswell
+    var marker3 = L.marker([51.5, -1], {icon:warehouseIcon}).addTo(map).bindPopup('THIS IS THE WAREHOUSE');         //marker point    these need to have alt text aswell
       
       //var top5closest1 = L.marker([this.long, this.lat]).addTo(map);         //not sure how to do this yet 
       
-      var circle = L.circle([51.508, -0.11], {                  //circle around a point with a raidus
-                                                                //could be useful for colision points ? e.g if marker is inside circle display else hide 
-            color: 'red',
-            fillColor: '#f03',
-            fillOpacity: 0.5,
-            radius: 500
-        }).addTo(map);
         
-      map.locate({setView: true, maxZoom: 14});       //allow permission to locate you on the page, press the lock in the top right and reset permission to get back to the view(NEED TO MAKE IT REQUEST EACH TIME ?)
-      
-      //function onLocationFound(e) {
-      //      var radius = e.accuracy;
+    map.locate({setView: true, maxZoom: 14});       //allow permission to locate you on the page, press the lock in the top right and reset permission to get back to the view(NEED TO MAKE IT REQUEST EACH TIME ?)
 
-      //      L.marker(e.latlng).addTo(map)
-      //          .bindPopup("You are within " + radius + " meters from this point").openPopup();          this will draw a circle around the location you are when you allow permission within a certain accuracy 
-
-      //      L.circle(e.latlng, radius).addTo(map);
-      //  }
-
-      //  map.on('locationfound', onLocationFound);
-
-      //  function onLocationError(e) {
-      //          alert(e.message);
-      //      }
-
-      //  map.on('locationerror', onLocationError);
-
-      var geocoder = L.Control.Geocoder.nominatim();            //the type of geocoder used 
-      if (typeof URLSearchParams !== 'undefined' && location.search) {
+    var geocoder = L.Control.Geocoder.nominatim();            //the type of geocoder used 
+    if (typeof URLSearchParams !== 'undefined' && location.search) {
         // parse /?geocoder=nominatim from URL
-        var params = new URLSearchParams(location.search);
-        var geocoderString = params.get('geocoder');
-        if (geocoderString && L.Control.Geocoder[geocoderString]) {
-          console.log('Using geocoder', geocoderString);
-          geocoder = L.Control.Geocoder[geocoderString]();
-        } else if (geocoderString) {
-          console.warn('Unsupported geocoder', geocoderString);
-        }
+      var params = new URLSearchParams(location.search);
+      var geocoderString = params.get('geocoder');
+      if (geocoderString && L.Control.Geocoder[geocoderString]) {
+        console.log('Using geocoder', geocoderString);
+        geocoder = L.Control.Geocoder[geocoderString]();
+      } else if (geocoderString) {
+        console.warn('Unsupported geocoder', geocoderString);
       }
+    }
 
-      var control = L.Control.geocoder({  //set the geocoder search type
-        //query: 'Moon',
-        placeholder: 'Search Postcode or Address',
-        geocoder: geocoder
-      })
-      .on('markgeocode', function(e) {
-        console.log(e);
-        console.log(e.geocode.center.lat);          //outputs the latitude 
-        console.log(e.geocode.center.lng);          //outputs the longitude
+    var control = L.Control.geocoder({  //set the geocoder search type
+        //query: userInputForLocation,   //we will need this to input our own data
+                            //we need to type a call back function to input
+      placeholder: 'Search Postcode or Address',
+      geocoder: geocoder  //this tells use the standard of searching
+    })
+    .on('markgeocode', function(e) {
+      var usersLatitude = e.geocode.center.lat;
+      var usersLongitude = e.geocode.center.lng;
+    })
+    .addTo(map);
+    var marker;                                   //need to control the ammount it zooms in 
 
-        var usersLatitude = e.geocode.center.lat;
-        var usersLongitude = e.geocode.center.lng;
- 
-      })
-      .addTo(map);
-      var marker;                                   //need to control the ammount it zooms in 
+    
 
-      L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
+    L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
-      //map.on('click', function(e) {
-      //  geocoder.reverse(e.latlng, map.options.crs.scale(map.getZoom()), function(results) {
-      //    var r = results[0];
-      //    if (r) {
-      //      if (marker) {
-      //        marker
-      //          .setLatLng(r.center)
-      //          .setPopupContent(r.html || r.name)                        //commented out because we dont need to be able to click on random points on the map for its location 
-      //          .openPopup();
-      //      } else {
-      //        marker = L.marker(r.center)
-      //          .bindPopup(r.name)
-      //          .addTo(map)
-      //          .openPopup();
-      //      }
-      //    }
-      //  });
-      //});
-
-
-
-      
-    </script>
+</script>
