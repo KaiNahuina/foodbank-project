@@ -1,13 +1,13 @@
 ﻿@page "{Location?}"
-@model Foodbank_Project.Pages.testMapModel
+@model testMapModel
 @{
 }
-<link rel="stylesheet" href="~/css/Control.Geocoder.css" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css" />
+<link rel="stylesheet" href="~/css/Control.Geocoder.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css"/>
 
 
 <script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
-<script src="~/js/Control.Geocoder.js"></script> 
+<script src="~/js/Control.Geocoder.js"></script>
 
 
 <!-- Credit Leaflet, open street map, nomiatim, leaflet search controll -->
@@ -20,8 +20,8 @@
             <form >
                 <div class="mb-3">
                     <label for="searchFoodbank" class="form-label">Find your nearest Foodbank</label>
-                    <input type="text" class="form-control" value="@RouteData.Values["Location"]" id="searchFoodbank" placeholder="Enter postcode" aria-describedby="searchBank" />
-                    <div id="searchBank" class="form-text"></div>  <!-- we need to save this and push it to the map-->
+                    <input type="text" class="form-control" value="@RouteData.Values["Location"]" id="searchFoodbank" placeholder="Enter postcode" aria-describedby="searchBank"/>
+                    <div id="searchBank" class="form-text"></div> <!-- we need to save this and push it to the map-->
                 </div>
                 <button type="submit" class="btn btn-primary">Search</button>
                 @Html.AntiForgeryToken()

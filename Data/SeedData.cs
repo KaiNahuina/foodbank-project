@@ -1,64 +1,66 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿#region
 
-namespace Foodbank_Project.Data
+using Microsoft.AspNetCore.Identity;
+
+#endregion
+
+namespace Foodbank_Project.Data;
+
+public class SeedData
 {
-    public class SeedData
-    {
-
-        public static async Task SeedRolesAsync(UserManager<IdentityUser> userManager,
+    public static async Task SeedRolesAsync(UserManager<IdentityUser> userManager,
         RoleManager<IdentityRole> roleManager)
-        {
-            await roleManager.CreateAsync(new IdentityRole("FoodbankAdmin"));
-            await roleManager.CreateAsync(new IdentityRole("SiteAdmin"));
-            await roleManager.CreateAsync(new IdentityRole("FoodbanksAdmin"));
-            await roleManager.CreateAsync(new IdentityRole("UsersAdmin"));
-            await roleManager.CreateAsync(new IdentityRole("ContentAdmin"));
-            await roleManager.CreateAsync(new IdentityRole("RecipeAdmin"));
-            await roleManager.CreateAsync(new IdentityRole("LoggingAdmin"));
-        }
+    {
+        await roleManager.CreateAsync(new IdentityRole("FoodbankAdmin"));
+        await roleManager.CreateAsync(new IdentityRole("SiteAdmin"));
+        await roleManager.CreateAsync(new IdentityRole("FoodbanksAdmin"));
+        await roleManager.CreateAsync(new IdentityRole("UsersAdmin"));
+        await roleManager.CreateAsync(new IdentityRole("ContentAdmin"));
+        await roleManager.CreateAsync(new IdentityRole("RecipeAdmin"));
+        await roleManager.CreateAsync(new IdentityRole("LoggingAdmin"));
+    }
 
 
-        public static async Task SeedBasicUserAsync(UserManager<IdentityUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+    public static async Task SeedBasicUserAsync(UserManager<IdentityUser> userManager,
+        RoleManager<IdentityRole> roleManager)
+    {
+        // Seed Basic User
+        var defaultUser = new IdentityUser
         {
-            // Seed Basic User
-            var defaultUser = new IdentityUser
+            UserName = "user@user.com",
+            Email = "user@user.com",
+            EmailConfirmed = true,
+            PhoneNumberConfirmed = true
+        };
+        if (userManager.Users.All(u => u.Id != defaultUser.Id))
+        {
+            var user = await userManager.FindByEmailAsync(defaultUser.Email);
+            if (user == null)
             {
-                UserName = "user@user.com",
-                Email = "user@user.com",
-                EmailConfirmed = true,
-                PhoneNumberConfirmed = true
-            };
-            if (userManager.Users.All(u => u.Id != defaultUser.Id))
-            {
-                var user = await userManager.FindByEmailAsync(defaultUser.Email);
-                if (user == null)
-                {
-                    await userManager.CreateAsync(defaultUser, "236!User?339");
-                    await userManager.AddToRoleAsync(defaultUser, "FoodbankAdmin");
-                }
+                await userManager.CreateAsync(defaultUser, "236!User?339");
+                await userManager.AddToRoleAsync(defaultUser, "FoodbankAdmin");
             }
         }
+    }
 
-        public static async Task SeedAdminUserAsync(UserManager<IdentityUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+    public static async Task SeedAdminUserAsync(UserManager<IdentityUser> userManager,
+        RoleManager<IdentityRole> roleManager)
+    {
+        // Seed SuperAdmin User
+        var defaultUser = new IdentityUser
         {
-            // Seed SuperAdmin User
-            var defaultUser = new IdentityUser
+            UserName = "admin@admin.com",
+            Email = "admin@admin.com",
+            EmailConfirmed = true,
+            PhoneNumberConfirmed = true
+        };
+        if (userManager.Users.All(u => u.Id != defaultUser.Id))
+        {
+            var user = await userManager.FindByEmailAsync(defaultUser.Email);
+            if (user == null)
             {
-                UserName = "admin@admin.com",
-                Email = "admin@admin.com",
-                EmailConfirmed = true,
-                PhoneNumberConfirmed = true
-            };
-            if (userManager.Users.All(u => u.Id != defaultUser.Id))
-            {
-                var user = await userManager.FindByEmailAsync(defaultUser.Email);
-                if (user == null)
-                {
-                    await userManager.CreateAsync(defaultUser, "236!Admin?339");
-                    await userManager.AddToRoleAsync(defaultUser, "SiteAdmin");
-                }
+                await userManager.CreateAsync(defaultUser, "236!Admin?339");
+                await userManager.AddToRoleAsync(defaultUser, "SiteAdmin");
             }
         }
     }

@@ -1,33 +1,33 @@
+#region
+
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace Foodbank_Project.Pages.Admin
+#endregion
+
+namespace Foodbank_Project.Pages.Admin;
+
+public class IndexModel : PageModel
 {
+    private readonly ApplicationContext _ctx;
 
-    public class IndexModel : PageModel
+    public IList<Foodbank> Foodbanks;
+
+    public IndexModel(ApplicationContext ctx)
     {
-        private readonly ApplicationContext _ctx;
+        _ctx = ctx;
+    }
 
-        public IList<Foodbank> Foodbanks;
+    public async Task OnGetAsync()
+    {
+        var foodbankQue = from f in _ctx.Foodbanks
+            where f.Status == Status.UnConfirmed
+            select f;
 
-        public IndexModel(ApplicationContext ctx)
-        {
-            _ctx = ctx;
-        }
+        // do sort and filter shizzle here
 
-        public async Task OnGetAsync()
-        {
-            IQueryable<Foodbank> foodbankQue = from f in _ctx.Foodbanks
-                                               where f.Status == Status.UnConfirmed
-                                             select f;
-
-            // do sort and filter shizzle here
-
-            Foodbanks = await foodbankQue.AsNoTracking().ToListAsync();
-
-        }
+        Foodbanks = await foodbankQue.AsNoTracking().ToListAsync();
     }
 }

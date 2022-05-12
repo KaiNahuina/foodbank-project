@@ -89,6 +89,5 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
         modelBuilder.Entity<RecipeCategory>().Property(fl => fl.Name).IsRequired();
 
         base.OnModelCreating(modelBuilder);
-        
     }
 }
