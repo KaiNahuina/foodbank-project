@@ -25,7 +25,6 @@ html {
 }
 
 body {
-    margin-bottom: 60px;
     background-color: #f4faed;
 }
 
@@ -43,9 +42,15 @@ h2 { /*Sub Headers*/
 }
 
 h3 { /*Section Headings for content*/
-    font-family: Gogh-ExtraBold;
+    font-family: 'Capsmall';
     font-size: 2em;
     color: black;
+}
+
+h4 {
+    font-family: 'Capsmall';
+    color: black;
+    font-size: 1.5em;
 }
 
 p {
@@ -166,8 +171,31 @@ input[type=text] {
     text-align: center;
 }
 
-
 .donate {
     display: inline-block;
     margin-top: 75px;
 }
+
+a:hover {
+    background: #c9c8c7;
+}
+
+/*Get Help attributes*/
+.imageGH {
+    width: 40%;
+    display:block;
+    margin-left: auto;
+    margin-right:auto
+}
+
+.spacingT {
+    padding-top: 30px;
+}
+.spacingB {
+    padding-bottom: 30px;
+}
+
+.grid {
+    align-self:center;
+}
+

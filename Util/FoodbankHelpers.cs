@@ -25,8 +25,7 @@ public static class FoodbankHelpers
             Postcode = externalFoodbank.Postcode,
             Closed = externalFoodbank.Closed,
             Country = externalFoodbank.Country,
-            Lat = externalFoodbank.LatLng?.Split(",")[0],
-            Lng = externalFoodbank.LatLng?.Split(",")[1],
+            Coord = new NetTopologySuite.Geometries.Point(double.Parse(externalFoodbank.LatLng?.Split(",")[1]), double.Parse(externalFoodbank.LatLng?.Split(",")[0])) { SRID = 4326 },
             Network = externalFoodbank.Network,
             Created = externalFoodbank.Created,
             Homepage = externalFoodbank.Urls?.Homepage,
@@ -41,8 +40,7 @@ public static class FoodbankHelpers
             var location = new Location
             {
                 Address = item.Address,
-                Lat = item.LatLng?.Split(",")[0],
-                Lng = item.LatLng?.Split(",")[1],
+                Coord = new NetTopologySuite.Geometries.Point(double.Parse(item.LatLng?.Split(",")[1]), double.Parse(item.LatLng?.Split(",")[0])) { SRID = 4326 },
                 Name = item.Name,
                 Slug = item.Slug,
                 Postcode = item.Postcode,

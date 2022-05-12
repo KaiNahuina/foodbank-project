@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NetTopologySuite.Geometries;
 
 #nullable disable
 
@@ -68,6 +69,10 @@ namespace Foodbank_Project.Migrations
                         .IsRequired()
                         .HasColumnType("bit");
 
+                    b.Property<Point>("Coord")
+                        .IsRequired()
+                        .HasColumnType("geography");
+
                     b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -81,14 +86,6 @@ namespace Foodbank_Project.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Homepage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Lat")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Lng")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -145,16 +142,12 @@ namespace Foodbank_Project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Point>("Coord")
+                        .IsRequired()
+                        .HasColumnType("geography");
+
                     b.Property<int?>("FoodbankId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Lat")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Lng")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()

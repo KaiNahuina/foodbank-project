@@ -10,8 +10,12 @@ using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<ApplicationContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDb") ?? string.Empty));;
+builder.Services.AddDbContext<ApplicationContext>(options => {
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDb") ?? string.Empty, x =>
+    {
+        x.UseNetTopologySuite();
+    });
+});
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {

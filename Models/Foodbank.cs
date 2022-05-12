@@ -1,8 +1,10 @@
-﻿namespace Foodbank_Project.Models;
+﻿using NetTopologySuite.Geometries;
+
+namespace Foodbank_Project.Models;
 
 public class Foodbank
 {
-    public ICollection<Location> Locations;
+    public ICollection<Location> Locations { get; set; }
 
     // ReSharper disable once UnusedMember.Global
     public int? FoodbankId { get; set; }
@@ -46,8 +48,7 @@ public class Foodbank
     public Status Status { get; set; }
 
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
-    public string? Lat { get; set; }
-    public string? Lng { get; set; }
+    public Point? Coord { get; set; } 
 
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public string? Network { get; set; }
