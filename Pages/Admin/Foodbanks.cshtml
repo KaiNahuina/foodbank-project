@@ -4,4 +4,46 @@
     ViewData["Title"] = "Foodbanks - Admin";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1>Foodbanks</h1>
+
+<div class="bg-light shadow-lg">
+    <table class="table table-striped table-hover w-100">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
+            <th scope="col">Submitted</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        @if (Model.Foodbanks.Count != 0)
+        {
+            @foreach (var item in Model.Foodbanks)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Created)
+                    </td>
+                    <td>
+                        <a asp-page="./Foodbank" asp-route-id="@item.FoodbankId">Edit</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+        <tr>
+            <td colspan="4">Nothing to display...</td>
+        </tr>
+        }
+        
+        </tbody>
+    </table>
+</div>
