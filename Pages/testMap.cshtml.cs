@@ -36,7 +36,6 @@ namespace Foodbank_Project.Pages
         public async Task<JsonResult> OnPostCoordAsync([FromBody] Coords obj)
         {
             var origin = new NetTopologySuite.Geometries.Point(obj.Lng, obj.Lat) { SRID = 4326 };
-            //System.Diagnostics.Debug.WriteLine("This is the origin point" + origin);
 
             var foodBankLocations = await _ctx
                 .Locations.AsNoTracking()
@@ -55,19 +54,7 @@ namespace Foodbank_Project.Pages
 
             var top5Locations = foodBankLocations.OrderBy(l => l.Distance).Take(5).ToList();
 
-            Debug.WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-
-            Debug.WriteLine("This is the count for top5Locations size" + top5Locations.Count);
-            for (int i = 0; i < top5Locations.Count; i++)
-            {
-                System.Diagnostics.Debug.WriteLine(top5Locations[i]);
-            }
-
-            //return Json(new { list = top5Locations }, JsonRequestBehavior.AllowGet);
             return new JsonResult(top5Locations);
-            //return (IActionResult)top5Locations;
-            //return new Json(new { list = top5Locations }, JsonRequestBehavior.AllowGet);
         }
-
     }
 }

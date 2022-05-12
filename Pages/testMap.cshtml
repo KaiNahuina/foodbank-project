@@ -32,13 +32,14 @@
 
 <div id="map"></div>
 
+<!-- we make the top 5 list in the c# pages so it should be as simple as grabbing them and putting it into a list-->
+
 <script type="text/javascript">
+    
 
     var userInputForLocation = document.getElementById('searchFoodbank').value;
-    console.log(userInputForLocation); //if we give this data before the page loads it should display the corret infomation
+    console.log(userInputForLocation);
 
-    
-    
     var foodbankIcon = L.icon({
           iconUrl: '/Images/leaf.png',//https://www.flaticon.com/free-icon/leaf_892917?term=leaf&page=1&position=3&page=1&position=3&related_id=892917&origin=tag
 
@@ -56,6 +57,10 @@
     });
 
     var map = L.map('map').setView([ 54.596442,  -3.9], 6);
+
+    var layerGroup = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+
+    map.addLayer(layerGroup);
   
     var marker2 = L.marker([51.5, -0.09], {icon:foodbankIcon}).addTo(map).bindPopup('THIS IS THE FOODBANK');         //marker point    these need to have alt text aswell
 
@@ -86,7 +91,9 @@
                             //we need to type a call back function to input
       placeholder: 'Search Postcode or Address',
       geocoder: geocoder  //this tells use the standard of searching
+
     })
+
     .on('markgeocode', function(e) {
       var usersLatitude = e.geocode.center.lat;
       var usersLongitude = e.geocode.center.lng;
@@ -105,12 +112,23 @@
 
           dataType: 'json',
           success: function (result){
-             alert("We are trying to return something");
-             alert("This is the data returned" + result)
-
-             for(var i =0; i < result.list.length; i++){
-                 alert(result.list[i].point);
+             //layerGroup.clearLayers();    this is the clear function but need to decide where it should go
+             var closest5Markers = [];
+             var iterator = 0;
+             for(const element of result){
+                 closest5Markers[iterator] = L.marker([element.coord.lat, element.coord.lng], {icon:foodbankIcon}).bindPopup(element.name.toString() + " " + element.distance.toString() + " " + '<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley">Click here to learn more</a>"');    //need to figure out how to new line these and format the distance so we get no deciamals
+                 iterator++;
+                 //.on('mouseover', onClick);
+                 //console.log(element.distance);
+                 console.log(element.name);
+                 //console.log(element.id);
+                 //console.log(element.address);
+                 //console.log(element.coord.lat);
+                 //console.log(element.coord.lng);
              }
+             var layerGroup = L.layerGroup([closest5Markers[0],closest5Markers[1],closest5Markers[2],closest5Markers[3],closest5Markers[4]]);
+             layerGroup.addTo(map);
+
           },
           error: function(xhr, status, err) {
               alert("We weren't unable to return any data")
@@ -128,4 +146,7 @@
       attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
+    function onClick(e) {
+        alert("This is clickable")
+    }
 </script>
