@@ -20,8 +20,8 @@
             <form >
                 <div class="mb-3">
                     <label for="searchFoodbank" class="form-label">Find your nearest Foodbank</label>
-                    <input type="text" class="form-control" value="@RouteData.Values["Location"]" id="searchFoodbank" placeholder="Enter postcode" aria-describedby="searchBank" />
-                    <div id="searchBank" class="form-text"></div>  <!-- we need to save this and push it to the map-->
+                    <input type="text" class="form-control" value="@RouteData.Values["Location"]" id="searchFoodbank" placeholder="DONT USE THIS TO SEARCH FOR A FOODBANK" aria-describedby="searchBank" />     <!--this needs to be here but hidden on the page or something -->
+                    <div id="searchBank" class="form-text"></div> 
                 </div>
                 <button type="submit" class="btn btn-primary">Search</button>
                 @Html.AntiForgeryToken()
@@ -37,7 +37,7 @@
 <script type="text/javascript">
     
 
-    var userInputForLocation = document.getElementById('searchFoodbank').value;
+    var userInputForLocation = document.getElementById('searchFoodbank').value; //change grab to grab from the other box ?
     console.log(userInputForLocation);
 
     var foodbankIcon = L.icon({
@@ -55,20 +55,14 @@
           iconAnchor:   [25, 50], 
           popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
     });
+    
 
     var map = L.map('map').setView([ 54.596442,  -3.9], 6);
+    
+    var featureGroup = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
 
-    var layerGroup = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-
-    map.addLayer(layerGroup);
+    map.addLayer(featureGroup);
   
-    var marker2 = L.marker([51.5, -0.09], {icon:foodbankIcon}).addTo(map).bindPopup('THIS IS THE FOODBANK');         //marker point    these need to have alt text aswell
-
-    var marker3 = L.marker([51.5, -1], {icon:warehouseIcon}).addTo(map).bindPopup('THIS IS THE WAREHOUSE');         //marker point    these need to have alt text aswell
-      
-      //var top5closest1 = L.marker([this.long, this.lat]).addTo(map);         //not sure how to do this yet 
-      
-        
     map.locate({setView: true, maxZoom: 14});       //allow permission to locate you on the page, press the lock in the top right and reset permission to get back to the view(NEED TO MAKE IT REQUEST EACH TIME ?)
 
     var geocoder = L.Control.Geocoder.nominatim();            //the type of geocoder used 
@@ -87,10 +81,9 @@
 
 
     var control = L.Control.geocoder({  //set the geocoder search type
-       query: userInputForLocation,   //we will need this to input our own data
-                            //we need to type a call back function to input
+      query: userInputForLocation,   //we will need this to input our own data                    //we need to type a call back function to input
       placeholder: 'Search Postcode or Address',
-      geocoder: geocoder  //this tells use the standard of searching
+      geocoder: geocoder,  //this tells use the standard of searching
 
     })
 
@@ -98,47 +91,44 @@
       var usersLatitude = e.geocode.center.lat;
       var usersLongitude = e.geocode.center.lng;
       console.log(JSON.stringify({Lat: usersLatitude, Lng: usersLongitude}));
-
+      control._expand();
       $.ajax({
           type: "POST",         //on post gets us a return but on get doesnt 
           url: '/testMap?handler=Coord',
           data: JSON.stringify({Lat: usersLatitude, Lng: usersLongitude}),
           contentType: "application/json; charset=utf-8",
-
           beforeSend: function(xhr){
               xhr.setRequestHeader("RequestVerificationToken", $('input[name="__RequestVerificationToken"]').val());            //debug wont write if this isnt here
           },
           
-
           dataType: 'json',
           success: function (result){
              //layerGroup.clearLayers();    this is the clear function but need to decide where it should go
              var closest5Markers = [];
              var iterator = 0;
              for(const element of result){
-                 closest5Markers[iterator] = L.marker([element.coord.lat, element.coord.lng], {icon:foodbankIcon}).bindPopup(element.name.toString() + " " + element.distance.toString() + " " + '<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley">Click here to learn more</a>"');    //need to figure out how to new line these and format the distance so we get no deciamals
+                 closest5Markers[iterator] = L.marker([element.coord.lat, element.coord.lng], {icon:foodbankIcon}).bindPopup(element.name.toString() + " <br> " + element.distance.toString() + " <br> " + '<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley">Click here to learn more</a>');    //need to figure out how to new line these and format the distance so we get no deciamals
                  iterator++;
-                 //.on('mouseover', onClick);
                  //console.log(element.distance);
-                 console.log(element.name);
+                 //console.log(element.name);
                  //console.log(element.id);
                  //console.log(element.address);
                  //console.log(element.coord.lat);
                  //console.log(element.coord.lng);
              }
-             var layerGroup = L.layerGroup([closest5Markers[0],closest5Markers[1],closest5Markers[2],closest5Markers[3],closest5Markers[4]]);
-             layerGroup.addTo(map);
-
+             var featureGroup = L.featureGroup([closest5Markers[0],closest5Markers[1],closest5Markers[2],closest5Markers[3],closest5Markers[4]]);
+             featureGroup.addTo(map);
+             //var testResult = featureGroup.getBounds();
+             //map.fitBounds(testResult);                   //This might zoom in on the group of markers better but gotta figure it out
           },
           error: function(xhr, status, err) {
               alert("We weren't unable to return any data")
               alert(err.toString(), 'Error - LoadListItemsHelper');
           }
-          //window.alert("This is the data returned" + data.toString())
       });
     })
     .addTo(map);
-    var marker;                                   //need to control the ammount it zooms in 
+    var marker;                                   //need to control the ammount it zooms in because right now its very zoomed
 
     geocoder.geocode(userInputForLocation, function(ctx){control._geocodeResultSelected(ctx[0])})
 
@@ -146,7 +136,4 @@
       attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    function onClick(e) {
-        alert("This is clickable")
-    }
 </script>

@@ -41,7 +41,7 @@ namespace Foodbank_Project.Pages
                 .Locations.AsNoTracking()
                 .Select(l => new
                 {
-                    Distance = l.Coord.Distance(origin),
+                    Distance = l.Coord.Distance(origin),        //this needs its decimal points removing 
                     Name = l.Name,
                     Id = l.LocationId,
                     Address = l.Address,
