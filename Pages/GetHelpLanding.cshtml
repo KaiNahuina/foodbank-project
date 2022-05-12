@@ -1,0 +1,63 @@
+﻿@page
+@model Foodbank_Project.Pages.GetHelpLandingModel
+@{
+    ViewData["Title"] = "Get Help";
+}
+
+
+<form method="post">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="m-2 d-grid">
+                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelpLanding">Find&nbsp;a&nbsp;Foodbank</a>
+                </div>
+                <div class="m-2 d-grid">
+                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelpVoucher">How&nbsp;the System&nbsp;Works</a>
+                </div>
+                <div class="m-2 d-grid">
+                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/Index">Home</a>
+                </div>
+
+            </div>
+            <div class="col-sm-6 text-center">
+                <h1 class="display-4">Find a Foodbank</h1>
+            </div>
+            <div class="col-md-36 text-center">
+                <h1 class="display-4"></h1>
+            </div>
+        </div>
+    </div>
+   
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3>Find your nearest Foodbank</h3>
+
+                <div>
+                    <form>
+                        <div class="mb-3">
+                            
+                            <input type="text" class="form-control" id="searchFoodbank" placeholder="Enter town or postcode" aria-describedby="searchBank" />
+                           
+                        </div>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
+                </div>
+
+            </div>
+            <div class="col-sm-6">
+
+              
+                <div class="image-box">
+                    <img src="~/Images/dummyMap.jpg" class="img-fluid rounded mx-auto d-block " alt="random image of a map" />
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</form>
+
+
