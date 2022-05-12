@@ -90,22 +90,34 @@
     .on('markgeocode', function(e) {
       var usersLatitude = e.geocode.center.lat;
       var usersLongitude = e.geocode.center.lng;
-      console.log(e.geocode.center.lat);
-      console.log(e.geocode.center.lng);
       console.log(JSON.stringify({Lat: usersLatitude, Lng: usersLongitude}));
 
       $.ajax({
-          type: "POST",
+          type: "POST",         //on post gets us a return but on get doesnt 
           url: '/testMap?handler=Coord',
           data: JSON.stringify({Lat: usersLatitude, Lng: usersLongitude}),
-          beforeSend: function(xhr){
-              xhr.setRequestHeader("RequestVerificationToken", $('input[name="__RequestVerificationToken"]').val());
-          },
           contentType: "application/json; charset=utf-8",
-          dataType: "json"
-      }).done(function(data){
-          console.log(data)
-      })
+
+          beforeSend: function(xhr){
+              xhr.setRequestHeader("RequestVerificationToken", $('input[name="__RequestVerificationToken"]').val());            //debug wont write if this isnt here
+          },
+          
+
+          dataType: 'json',
+          success: function (result){
+             alert("We are trying to return something");
+             alert("This is the data returned" + result)
+
+             for(var i =0; i < result.list.length; i++){
+                 alert(result.list[i].point);
+             }
+          },
+          error: function(xhr, status, err) {
+              alert("We weren't unable to return any data")
+              alert(err.toString(), 'Error - LoadListItemsHelper');
+          }
+          //window.alert("This is the data returned" + data.toString())
+      });
     })
     .addTo(map);
     var marker;                                   //need to control the ammount it zooms in 

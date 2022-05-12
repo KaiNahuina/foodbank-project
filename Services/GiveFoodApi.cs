@@ -44,7 +44,7 @@ public class GiveFoodApiService : BackgroundService
                 await Task.Delay(_config.GetValue<int>("Interval") * 1000, stoppingToken);
             }
 
-            skipped = true;
+            skipped = false;
 
             _logger.LogInformation("Service run started");
 

@@ -3,6 +3,7 @@ using Foodbank_Project.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace Foodbank_Project.Pages
 {
@@ -13,6 +14,7 @@ namespace Foodbank_Project.Pages
         public string? Location { get; set; }
 
         public ICollection<Location> Locations { get; set; }
+
 
         public testMapModel(ApplicationContext ctx)
         {
@@ -30,17 +32,31 @@ namespace Foodbank_Project.Pages
         }
 
         public class Coords { public double Lat { get; set; } public double Lng { get; set; } }
+
         public async Task<IActionResult> OnPostCoordAsync([FromBody] Coords obj)
         {
             var origin = new NetTopologySuite.Geometries.Point(obj.Lng, obj.Lat) { SRID = 4326 };
+            //System.Diagnostics.Debug.WriteLine("This is the origin point" + origin);
 
             var foodBankLocations = await _ctx
                 .Locations.AsNoTracking()
-                .Select(l => new {place = l, Distance = l.Coord.Distance(origin) }).ToListAsync();
+                .Select(l => new { Place = l, Distance = l.Coord.Distance(origin) }).ToListAsync();
 
             var top5Locations = foodBankLocations.OrderBy(l => l.Distance).Take(5).ToList();
 
+            Debug.WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
+            Debug.WriteLine("This is the count for top5Locations size" + top5Locations.Count);
+            for (int i = 0; i < top5Locations.Count; i++)
+            {
+                System.Diagnostics.Debug.WriteLine(top5Locations[i]);
+            }
+
+            //return Json(new { list = top5Locations }, JsonRequestBehavior.AllowGet);
             return new JsonResult(top5Locations);
+            //return (IActionResult)top5Locations;
+            //return new Json(new { list = top5Locations }, JsonRequestBehavior.AllowGet);
         }
+
     }
 }
