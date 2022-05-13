@@ -36,27 +36,13 @@
 
             <h1>5 closest Foodbanks</h1>
             <div class="foodbank-list">
-                <div class="m-2 d-grid" id="FoodbankClosest1">
-
-                </div>
-                <div class="m-2 d-grid" id="FoodbankClosest2">
-
-                </div>
-                <div class="m-2 d-grid" id="FoodbankClosest3">
-
-                </div>
-                <div class="m-2 d-grid" id="FoodbankClosest4">
-
-                </div>
-                <div class="m-2 d-grid" id="FoodbankClosest5">
-
-                </div>
+                <div class="m-2 d-grid" id="FoodbankClosest1"></div>
+                <div class="m-2 d-grid" id="FoodbankClosest2"></div>
+                <div class="m-2 d-grid" id="FoodbankClosest3"> </div>
+                <div class="m-2 d-grid" id="FoodbankClosest4"></div>
+                <div class="m-2 d-grid" id="FoodbankClosest5"></div>
             </div>
 
-
-
-            <!-- clickable list of 5 foodbanks-->
-            
         </div>
         <div class="col-sm-9">
             <form class="visually-hidden">
@@ -139,7 +125,7 @@
 
                      var currentFoodbank = "#FoodbankClosest" + (iterator+1);
                      console.log(currentFoodbank);
-                     $(currentFoodbank).html("<p>" + element.name.toString() + "<br>" + element.address.toString() + "<br>" + element.distance.toString() + "</p>");
+                     $(currentFoodbank).html("<p>" + element.name.toString() + "<br>" + element.address.toString() + "<br>" + element.distance.toString() + " <br> " + " <a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'>Click here to learn more</a>" + "</p>");
                      //we want the number of the iterator
                      iterator++;
 
