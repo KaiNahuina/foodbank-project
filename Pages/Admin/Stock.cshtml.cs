@@ -23,7 +23,7 @@ public class StockModel : PageModel
     public async Task OnGetAsync()
     {
         var needQue = from f in _ctx.Needs
-            select f;
+                      select f;
 
         // do sort and filter shizzle here
 
