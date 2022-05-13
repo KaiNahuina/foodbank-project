@@ -1,11 +1,11 @@
 #region
 
+using Foodbank_Project.Util;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Foodbank_Project.Util;
 using Xunit;
 
 #endregion

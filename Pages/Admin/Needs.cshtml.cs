@@ -27,13 +27,16 @@ public class StockModel : PageModel
         _ctx = ctx;
     }
 
-    public async Task OnGetAsync([FromQuery(Name = "OrderBy")]string orderBy,
-        [FromQuery(Name = "OrderDirection")]string orderDirection,
-        [FromQuery(Name = "Search")]string search, [FromQuery(Name = "Page")]string page)
+    public async Task OnGetAsync([FromQuery(Name = "OrderBy")]string? orderBy,
+        [FromQuery(Name = "OrderDirection")]string? orderDirection,
+        [FromQuery(Name = "Search")]string? search, [FromQuery(Name = "Page")]string? page)
     {
         OrderBy = string.IsNullOrEmpty(orderBy) ? "Count" : orderBy;
         OrderDirection = string.IsNullOrEmpty(orderDirection) ? "Desc" : orderDirection;
-        Page = string.IsNullOrEmpty(page) && int.TryParse(page, out Page) ? 1 : int.Parse(page);
+        if (!int.TryParse(page, out Page))
+        {
+            Page = 1;
+        }
 
         var needQue = (from f in _ctx.Needs
             select f).AsNoTracking()
