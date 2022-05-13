@@ -26,27 +26,8 @@
 
 <div id="map"></div>
 
-<form meathod="Post">
-    <div class="foodbank-list-section">
-        <h2>Foodbank List </h2>
-
-        @foreach(var foodbank in Model.Locations)
-        {
-            <p>@foodbank.Name</p>
-            <p>@foodbank.Address</p>
-            <p>@foodbank.distance</p>
-            <a asp-page="" asp-route-foodbank-id="@foodbank.LocationId">Click here to Learn More</a>
-
-        }
-    </div>
-</form>
-
-<!-- we make the top 5 list in the c# pages so it should be as simple as grabbing them and putting it into a list-->
 
 <script type="text/javascript">
-
-    var userInputForLocation = document.getElementById('searchFoodbank').value; //change grab to grab from the other box ?
-    console.log(userInputForLocation);
 
     var foodbankIcon = L.icon({
           iconUrl: '/Images/leaf.png',//https://www.flaticon.com/free-icon/leaf_892917?term=leaf&page=1&position=3&page=1&position=3&related_id=892917&origin=tag
@@ -73,7 +54,9 @@
   
     map.locate({setView: true, maxZoom: 14});       //allow permission to locate you on the page, press the lock in the top right and reset permission to get back to the view(NEED TO MAKE IT REQUEST EACH TIME ?)
 
-    var geocoder = L.Control.Geocoder.nominatim();            //the type of geocoder used 
+    var geocoder = L.Control.Geocoder.nominatim({
+         geocodingQueryParams: {countrycodes: 'gb'}
+    });           //the type of geocoder used 
     if (typeof URLSearchParams !== 'undefined' && location.search) {
         // parse /?geocoder=nominatim from URL
       var params = new URLSearchParams(location.search);
@@ -86,7 +69,7 @@
       }
     }
 
-
+    var markerGroup;
 
     var control = L.Control.geocoder({  //set the geocoder search type
         query: "@Html.DisplayFor(model => model.Location)",
@@ -95,10 +78,11 @@
         geocoder: geocoder  //this tells use the standard of searching
     })
 
+    
+
     .on('markgeocode', function(e) {
       var usersLatitude = e.geocode.center.lat;
       var usersLongitude = e.geocode.center.lng;
-      console.log(JSON.stringify({Lat: usersLatitude, Lng: usersLongitude}));
       control._expand();
       $.ajax({
           type: "POST",         //on post gets us a return but on get doesnt 
@@ -111,9 +95,14 @@
           
           dataType: 'json',
           success: function (result){
-             //layerGroup.clearLayers();    this is the clear function but need to decide where it should go
+              if (markerGroup != null) {
+                  markerGroup.clearLayers();
+              }
+              
+             // featureGroup.clearLayers();
              var closest5Markers = [];
              var iterator = 0;
+             //append them
              for(const element of result){
                  closest5Markers[iterator] = L.marker([element.coord.lat, element.coord.lng], {icon:foodbankIcon}).bindPopup(element.name.toString() + " <br> " + element.distance.toString() + " <br> " + '<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley">Click here to learn more</a>');    //need to figure out how to new line these and format the distance so we get no deciamals
                  iterator++;
@@ -124,8 +113,14 @@
                  //console.log(element.coord.lat);
                  //console.log(element.coord.lng);
              }
-             var featureGroup = L.featureGroup([closest5Markers[0],closest5Markers[1],closest5Markers[2],closest5Markers[3],closest5Markers[4]]);
-             featureGroup.addTo(map);
+             markerGroup = L.featureGroup([closest5Markers[0],closest5Markers[1],closest5Markers[2],closest5Markers[3],closest5Markers[4]]);
+             map.addLayer(markerGroup);
+
+
+             if (history.pushState) {
+                var newurl = window.location.protocol + "//" + window.location.host + '/testMap/' + control._input.value;   //change testmap name
+                window.history.pushState({path:newurl},'',newurl);
+            }
              //var testResult = featureGroup.getBounds();
              //map.fitBounds(testResult);                   //This might zoom in on the group of markers better but gotta figure it out
           },
