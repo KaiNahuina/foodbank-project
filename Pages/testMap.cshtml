@@ -32,10 +32,24 @@
 
 <div id="map"></div>
 
+<form meathod="Post">
+    <div class="foodbank-list-section">
+        <h2>Foodbank List </h2>
+
+        @foreach(var foodbank in Model.Locations)
+        {
+            <p>@foodbank.Name</p>
+            <p>@foodbank.Address</p>
+            <p>@foodbank.distance</p>
+            <a asp-page="" asp-route-foodbank-id="@foodbank.LocationId">Click here to Learn More</a>
+
+        }
+    </div>
+</form>
+
 <!-- we make the top 5 list in the c# pages so it should be as simple as grabbing them and putting it into a list-->
 
 <script type="text/javascript">
-    
 
     var userInputForLocation = document.getElementById('searchFoodbank').value; //change grab to grab from the other box ?
     console.log(userInputForLocation);
@@ -128,8 +142,10 @@
       });
     })
     .addTo(map);
+    control._expand()
     var marker;                                   //need to control the ammount it zooms in because right now its very zoomed
 
+    
     geocoder.geocode(userInputForLocation, function(ctx){control._geocodeResultSelected(ctx[0])})
 
     L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
