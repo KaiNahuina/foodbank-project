@@ -23,8 +23,8 @@ public class IndexModel : PageModel
     public async Task OnGetAsync()
     {
         var foodbankQue = from f in _ctx.Foodbanks
-                          where f.Status == Status.UnConfirmed
-                          select f;
+            where f.Status == Status.UnConfirmed
+            select f;
 
         // do sort and filter shizzle here
 

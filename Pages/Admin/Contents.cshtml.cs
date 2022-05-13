@@ -23,7 +23,7 @@ public class ContentModel : PageModel
     public async Task OnGetAsync()
     {
         var foodbankQue = from f in _ctx.Contents
-                          select f;
+            select f;
 
         // do sort and filter shizzle here
 

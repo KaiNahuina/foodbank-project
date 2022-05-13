@@ -1,11 +1,14 @@
+#region
+
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Foodbank_Project.Pages
+#endregion
+
+namespace Foodbank_Project.Pages;
+
+public class GetHelpVoucherModel : PageModel
 {
-    public class GetHelpVoucherModel : PageModel
+    public void OnGet()
     {
-        public void OnGet()
-        {
-        }
     }
 }

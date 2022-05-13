@@ -5,12 +5,12 @@
 
 #region
 
+using System.ComponentModel.DataAnnotations;
+using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 #endregion
 
@@ -75,10 +75,7 @@ public class ResetPasswordModel : PageModel
 
     public IActionResult OnGet(string code = null)
     {
-        if (code == null)
-        {
-            return BadRequest("A code must be supplied for password reset.");
-        }
+        if (code == null) return BadRequest("A code must be supplied for password reset.");
 
         Input = new InputModel
         {

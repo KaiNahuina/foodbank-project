@@ -1,10 +1,10 @@
 ﻿#region
 
+using System.Collections.ObjectModel;
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
-using System.Collections.ObjectModel;
 using Location = Foodbank_Project.Models.Location;
 
 #endregion
@@ -28,8 +28,8 @@ public static class FoodbankHelpers
             Closed = externalFoodbank.Closed,
             Country = externalFoodbank.Country,
             Coord = new Point(double.Parse(externalFoodbank.LatLng?.Split(",")[1]),
-                double.Parse(externalFoodbank.LatLng?.Split(",")[0]))
-            { SRID = 4326 },
+                    double.Parse(externalFoodbank.LatLng?.Split(",")[0]))
+                { SRID = 4326 },
             Network = externalFoodbank.Network,
             Created = externalFoodbank.Created,
             Homepage = externalFoodbank.Urls?.Homepage,
@@ -45,7 +45,7 @@ public static class FoodbankHelpers
             {
                 Address = item.Address,
                 Coord = new Point(double.Parse(item.LatLng?.Split(",")[1]), double.Parse(item.LatLng?.Split(",")[0]))
-                { SRID = 4326 },
+                    { SRID = 4326 },
                 Name = item.Name,
                 Slug = item.Slug,
                 Postcode = item.Postcode,

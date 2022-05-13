@@ -4,7 +4,6 @@ using Foodbank_Project.Data;
 using Foodbank_Project.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 
 #endregion
@@ -27,22 +26,20 @@ public class StockModel : PageModel
         _ctx = ctx;
     }
 
-    public async Task OnGetAsync([FromQuery(Name = "OrderBy")]string? orderBy,
-        [FromQuery(Name = "OrderDirection")]string? orderDirection,
-        [FromQuery(Name = "Search")]string? search, [FromQuery(Name = "Page")]string? page)
+    public async Task OnGetAsync([FromQuery(Name = "OrderBy")] string? orderBy,
+        [FromQuery(Name = "OrderDirection")] string? orderDirection,
+        [FromQuery(Name = "Search")] string? search, [FromQuery(Name = "Page")] string? page)
     {
         OrderBy = string.IsNullOrEmpty(orderBy) ? "Count" : orderBy;
         OrderDirection = string.IsNullOrEmpty(orderDirection) ? "Desc" : orderDirection;
-        if (!int.TryParse(page, out Page))
-        {
-            Page = 1;
-        }
+        if (!int.TryParse(page, out Page)) Page = 1;
 
         var needQue = (from f in _ctx.Needs
-            select f).AsNoTracking()
+                select f).AsNoTracking()
             .Include(n => n.Foodbanks)
             .OrderByDescending(n => n.Foodbanks.Count)
-            .Where(n => n.NeedStr != null).Where(n => string.IsNullOrEmpty(search) || n.NeedStr.Contains(search) || n.NeedId.Equals(search));
+            .Where(n => n.NeedStr != null).Where(n =>
+                string.IsNullOrEmpty(search) || n.NeedStr.Contains(search) || n.NeedId.Equals(search));
 
         // do sort and filter shizzle here
 

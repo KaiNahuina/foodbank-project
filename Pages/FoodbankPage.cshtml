@@ -1,20 +1,22 @@
 ﻿@page
-@model Foodbank_Project.Pages.FoodbankPageModel
+@model FoodbankPageModel
 @{
     ViewData["Title"] = "Foodbank Page";
 }
 
 
 <div class="text-center ">
-    <p>Disclaimer: Vouchers may be required to access the bank. <a href="/GetHelp">Learn more here.</a>
-      </p>
+    <p>
+        Disclaimer: Vouchers may be required to access the bank. <a href="/GetHelp">Learn more here.</a>
+    </p>
 </div>
 
 <div class="text-center">
     <h1 class="display-4">Foodbank Name</h1>
 </div>
 
-<div class="container mt-2 spacingB"> @*Or container-fluid*@
+<div class="container mt-2 spacingB">
+    @*Or container-fluid*@
     <div class="row grid">
         <div class="col-sm-6 spacingT">
             <p class="text-box">
@@ -31,14 +33,13 @@
         </div>
 
 
-
     </div>
 </div>
 
 
 <div class="container mt-2 spacingB spacingT">
     <div class="row grid">
-        <div class"col-l-12">
+        <div class="col-l-12">
             <div class="text-box">
                 Map goes here
             </div>
@@ -48,13 +49,9 @@
 </div>
 
 
-
-
-
-
- <div class="text-center">
-            <h2 class="display-4">Special Notes</h2>
- </div>
+<div class="text-center">
+    <h2 class="display-4">Special Notes</h2>
+</div>
 
 <div class="container mt-2" id="sn">
     <div class="row grid">
@@ -63,7 +60,7 @@
 
         </div>
         <div class="col-sm-4 spacingT">
-                <p class="text-box">Opening hours</p>
+            <p class="text-box">Opening hours</p>
         </div>
     </div>
 

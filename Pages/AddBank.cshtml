@@ -1,5 +1,5 @@
 ﻿@page
-@model Foodbank_Project.Pages.AddBankModel
+@model AddBankModel
 @{
     ViewData["Title"] = "Add foodbank";
 }
@@ -10,7 +10,8 @@
 
 <div class="container">
     <div class="d-grid col-7 mx-auto">
-        <p class="h6 text-box">We are glad that you have decided to register your foodbank with us please fill up the required fields
+        <p class="h6 text-box">
+            We are glad that you have decided to register your foodbank with us please fill up the required fields
             and press the submit button. Please bear in mind that "Foodbank finder" reserves the right to accept or reject your submission. You
             will recieve an email with our decision soon after you submitted. NOTE: the fields with a star are mandatory
         </p>
@@ -23,39 +24,39 @@
             <div class="col-6 d-grid mx-auto">
                 <div class="mb-3">
                     <label for="fbName" class="form-label">Enter the name of your foodbank/charity *</label>
-                    <input type="text" class="form-control" id="fbName" placeholder="ex: West Cheshire Foodbank" />
+                    <input type="text" class="form-control" id="fbName" placeholder="ex: West Cheshire Foodbank"/>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Contact Email *</label>
-                    <input type="email" class="form-control" id="fbEmail" placeholder="ex: brelan@yahoo.co.uk" aria-describedby="emInst" />
+                    <input type="email" class="form-control" id="fbEmail" placeholder="ex: brelan@yahoo.co.uk" aria-describedby="emInst"/>
                     <div id="emInst" class="form-text">This will be the E-mail we'll use to comunicate with you</div>
                 </div>
                 <div class="mb-3">
                     <label for="charNo" class="form-label">Charity No (if applicable)</label>
-                    <input type="number" class="form-control" id=charno placeholder="ex: 1234567" aria-describedby="measure" />
-                    <div id=measure class="form-text">If you are not a registered charity you may need to provide proof of identity</div>
+                    <input type="number" class="form-control" id="charno" placeholder="ex: 1234567" aria-describedby="measure"/>
+                    <div id="measure" class="form-text">If you are not a registered charity you may need to provide proof of identity</div>
                 </div>
             </div>
             <div class="col-6 d-grid mx-auto">
                 <div class="mb-3">
                     <label for="add1" class="form-label">Address line 1 *</label>
-                    <input  type="text" class="form-control" id="add1" placeholder="ex: exton park 33" />
+                    <input type="text" class="form-control" id="add1" placeholder="ex: exton park 33"/>
                 </div>
                 <div class="mb-3">
                     <label for="add2" class="form-label">Address line 2 </label>
-                    <input type="text" class="form-control" id="add2" placeholder="ex: Flat 4" />
+                    <input type="text" class="form-control" id="add2" placeholder="ex: Flat 4"/>
                 </div>
                 <div class="mb-3">
                     <label for="city" class="form-label">City *</label>
-                    <input type="text" class="form-control" id="cit" placeholder="ex: Chester" />
+                    <input type="text" class="form-control" id="cit" placeholder="ex: Chester"/>
                 </div>
                 <div class="mb-3">
                     <label for="region" class="form-label">Region</label>
-                    <input type="text" class="form-control" id="reg" placeholder="ex: Cheshire" />
+                    <input type="text" class="form-control" id="reg" placeholder="ex: Cheshire"/>
                 </div>
                 <div class="mb-3">
                     <label for="pc" class="form-label">PostCode *</label>
-                    <input type="text" class="form-control" id="po" placeholer="ex: 1AB 2CD" />
+                    <input type="text" class="form-control" id="po" placeholer="ex: 1AB 2CD"/>
                 </div>
             </div>
         </div>
@@ -63,12 +64,12 @@
             <div class="col-6 d-grid">
                 <div class="mb-3">
                     <label for="pho" class="form-label">Phone number</label>
-                    <input type="text" class="form-control" id="pho" placeholder="ex 123456789877" aria-describedby="phor" />
+                    <input type="text" class="form-control" id="pho" placeholder="ex 123456789877" aria-describedby="phor"/>
                     <div id="phor" class="form-text">This will be your contact phone for general enquiries from the public</div>
                 </div>
                 <div class="mb-3">
                     <label for="url" class="form-label">Website URL</label>
-                    <input type="url" class="form-control" id="website" placeholder="ex: https://www.salvationarmy.org.uk" />
+                    <input type="url" class="form-control" id="website" placeholder="ex: https://www.salvationarmy.org.uk"/>
                 </div>
             </div>
             <div class="col-6 d-grid">
@@ -92,30 +93,30 @@
             </div>
             <div class="col-3 d-grid mx-auto">
                 <label for="openClose" class="form-label">Opening</label>
-                <input type="time" class="form-control" id="monOpen" placeholder="ex: 8:00 AM" />
-                <input type="time" class="form-control" id="tueOpen" placeholder="ex: 8:00 AM" />
-                <input type="time" class="form-control" id="wedOpen" placeholder="ex: 8:00 AM" />
-                <input type="time" class="form-control" id="thuOpen" placeholder="ex: 8:00 AM" />
-                <input type="time" class="form-control" id="friOpen" placeholder="ex: 8:00 AM" />
-                <input type="time" class="form-control" id="satOpen" placeholder="ex: 8:00 AM" />
-                <input type="time" class="form-control" id="sunOpen" placeholder="ex: 8:00 AM" />
+                <input type="time" class="form-control" id="monOpen" placeholder="ex: 8:00 AM"/>
+                <input type="time" class="form-control" id="tueOpen" placeholder="ex: 8:00 AM"/>
+                <input type="time" class="form-control" id="wedOpen" placeholder="ex: 8:00 AM"/>
+                <input type="time" class="form-control" id="thuOpen" placeholder="ex: 8:00 AM"/>
+                <input type="time" class="form-control" id="friOpen" placeholder="ex: 8:00 AM"/>
+                <input type="time" class="form-control" id="satOpen" placeholder="ex: 8:00 AM"/>
+                <input type="time" class="form-control" id="sunOpen" placeholder="ex: 8:00 AM"/>
             </div>
             <div class="col-3 d-grid mx-auto">
                 <label for="closeOpen" class="form-label">Closing</label>
-                <input type="time" class="form-control" id="monClose" placeholder="ex: 5:00 PM" />
-                <input type="time" class="form-control" id="tueClose" placeholder="ex: 5:00 PM" />
-                <input type="time" class="form-control" id="wedClose" placeholder="ex: 5:00 PM" />
-                <input type="time" class="form-control" id="thuClose" placeholder="ex: 5:00 PM" />
-                <input type="time" class="form-control" id="friClose" placeholder="ex: 5:00 PM" />
-                <input type="time" class="form-control" id="satClose" placeholder="ex: 5:00 PM" />
-                <input type="time" class="form-control" id="sunClose" placeholder="ex: 5:00 PM" />
+                <input type="time" class="form-control" id="monClose" placeholder="ex: 5:00 PM"/>
+                <input type="time" class="form-control" id="tueClose" placeholder="ex: 5:00 PM"/>
+                <input type="time" class="form-control" id="wedClose" placeholder="ex: 5:00 PM"/>
+                <input type="time" class="form-control" id="thuClose" placeholder="ex: 5:00 PM"/>
+                <input type="time" class="form-control" id="friClose" placeholder="ex: 5:00 PM"/>
+                <input type="time" class="form-control" id="satClose" placeholder="ex: 5:00 PM"/>
+                <input type="time" class="form-control" id="sunClose" placeholder="ex: 5:00 PM"/>
             </div>
         </div>
         <div class="row">
             <div class="col-5">
                 <div class="mb-3">
                     <label for="social" class="form-label">Social media link</label>
-                    <input type="url" class="form-control" id="socMed" placeholder="https://facebook.com/northChurch23" aria-describedby="soclin" />
+                    <input type="url" class="form-control" id="socMed" placeholder="https://facebook.com/northChurch23" aria-describedby="soclin"/>
                     <div id="soclin" class="form-text">Link to your main social media account</div>
                 </div>
             </div>
@@ -123,7 +124,7 @@
         <div class="row">
             <div class="col-9 d-grid mx-auto">
                 <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="consent" />
+                    <input type="checkbox" class="form-check-input" id="consent"/>
                     <label class="form-check label" for="consent">I consent to let foodbank finder collect and display the provided information</label>
                 </div>
             </div>
@@ -131,8 +132,9 @@
         <div class="row">
             <div class="col-9 d-grid mx-auto">
                 <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="confirm" />
-                    <label class="form-check label" for="confirm">I confirm that the provided information is true and will be held accountable
+                    <input type="checkbox" class="form-check-input" id="confirm"/>
+                    <label class="form-check label" for="confirm">
+                        I confirm that the provided information is true and will be held accountable
                         if I am found to have provided false or erronous information
                     </label>
                 </div>

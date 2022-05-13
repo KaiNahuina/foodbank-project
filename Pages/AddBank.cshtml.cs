@@ -1,12 +1,14 @@
-using Microsoft.AspNetCore.Mvc;
+#region
+
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Foodbank_Project.Pages
+#endregion
+
+namespace Foodbank_Project.Pages;
+
+public class AddBankModel : PageModel
 {
-    public class AddBankModel : PageModel
+    public void OnGet()
     {
-        public void OnGet()
-        {
-        }
     }
 }
