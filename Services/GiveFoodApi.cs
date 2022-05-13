@@ -1,9 +1,10 @@
 ﻿#region
 
+using System.Net.Http.Headers;
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
 using Foodbank_Project.Util;
-using System.Net.Http.Headers;
+using Foodbank = Foodbank_Project.Models.External.Foodbank;
 
 #endregion
 
@@ -33,107 +34,103 @@ public class GiveFoodApiService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        bool skipped = true;
+        var skipped = true;
         _logger.LogInformation("Service started. Runs every {Stamp}",
             TimeSpan.FromSeconds(_config.GetValue<int>("Interval")).ToString(@"h\hm\ms\s"));
         _httpClient.Timeout = TimeSpan.FromSeconds(_config.GetValue<int>("Timeout"));
         while (!stoppingToken.IsCancellationRequested)
         {
-            if (skipped)
-            {
-                await Task.Delay(_config.GetValue<int>("Interval") * 1000, stoppingToken);
-            }
+            if (skipped) await Task.Delay(_config.GetValue<int>("Interval") * 1000, stoppingToken);
 
             skipped = false;
 
             _logger.LogInformation("Service run started");
 
             var resultWrapper = await ServiceHelpers.TimeoutTask(_config.GetValue<int>("Timeout") * 1000,
-                async (token) =>
-                    await GetFoodbank<List<Models.External.Foodbank>>("https://www.givefood.org.uk/api/2/foodbanks/",
+                async token =>
+                    await GetFoodbank<List<Foodbank>>("https://www.givefood.org.uk/api/2/foodbanks/",
                         token), stoppingToken);
 
             switch (resultWrapper.ResultCode)
             {
-                case ServiceHelpers.ResultWrapper<List<Models.External.Foodbank>>.Code.Success:
+                case ServiceHelpers.ResultWrapper<List<Foodbank>>.Code.Success:
+                {
+                    _logger.LogInformation("Successfully got {Count} foodbanks", resultWrapper.Result?.Count);
+                    //dev only !!!
+                    //resultWrapper.Result.RemoveRange(25, resultWrapper.Result.Count-25);
+                    for (var i = 0; i < resultWrapper.Result?.Count; i++)
                     {
-                        _logger.LogInformation("Successfully got {Count} foodbanks", resultWrapper.Result?.Count);
-                        //dev only !!!
-                        //resultWrapper.Result.RemoveRange(25, resultWrapper.Result.Count-25);
-                        for (int i = 0; i < resultWrapper.Result?.Count; i++)
+                        var resultWrapperInner = await ServiceHelpers.TimeoutTask(
+                            _config.GetValue<int>("Timeout") * 1000,
+                            async token =>
+                                await GetFoodbank<Foodbank>(resultWrapper.Result[i].Urls?.Self ?? "",
+                                    token), stoppingToken);
+
+                        switch (resultWrapperInner.ResultCode)
                         {
-                            var resultWrapperInner = await ServiceHelpers.TimeoutTask(
-                                _config.GetValue<int>("Timeout") * 1000,
-                                async (token) =>
-                                    await GetFoodbank<Models.External.Foodbank>(resultWrapper.Result[i].Urls?.Self ?? "",
-                                        token), stoppingToken);
-
-                            switch (resultWrapperInner.ResultCode)
+                            case ServiceHelpers.ResultWrapper<Foodbank>.Code.Success:
                             {
-                                case ServiceHelpers.ResultWrapper<Models.External.Foodbank>.Code.Success:
-                                    {
-                                        resultWrapper.Result?[i].Merge(resultWrapperInner.Result!);
-                                        _logger.LogInformation(
-                                            "Successfully added locations for {Name}({Self}) [{I} of {Count}]",
-                                            resultWrapper.Result?[i].Name, resultWrapper.Result?[i].Urls?.Self, i + 1,
-                                            resultWrapper.Result?.Count);
+                                resultWrapper.Result?[i].Merge(resultWrapperInner.Result!);
+                                _logger.LogInformation(
+                                    "Successfully added locations for {Name}({Self}) [{I} of {Count}]",
+                                    resultWrapper.Result?[i].Name, resultWrapper.Result?[i].Urls?.Self, i + 1,
+                                    resultWrapper.Result?.Count);
 
-                                        Foodbank? internalFoodbank = FoodbankHelpers.Convert(resultWrapper.Result?[i]);
+                                var internalFoodbank = FoodbankHelpers.Convert(resultWrapper.Result?[i]);
 
-                                        internalFoodbank.Status = Status.Approved;
+                                internalFoodbank.Status = Status.Approved;
 
-                                        await FoodbankHelpers.InsertOrUpdate(internalFoodbank, _ctx, stoppingToken);
+                                await FoodbankHelpers.InsertOrUpdate(internalFoodbank, _ctx, stoppingToken);
 
 
-                                        await _ctx.SaveChangesAsync(stoppingToken);
+                                await _ctx.SaveChangesAsync(stoppingToken);
 
-                                        break;
-                                    }
-                                case ServiceHelpers.ResultWrapper<Models.External.Foodbank>.Code.Timeout:
-                                    {
-                                        _logger.LogWarning("Service run failed for {Url}! Timeout occured! Will be rescheduled",
-                                            resultWrapper.Result[i].Urls?.Self ?? "");
-                                        break;
-                                    }
-                                case ServiceHelpers.ResultWrapper<Models.External.Foodbank>.Code.Errored:
-                                    {
-                                        _logger.LogWarning(
-                                            "Service run failed for {0}! Error occured! Will be rescheduled {Exception}",
-                                            resultWrapper.Result[i].Urls?.Self ?? "", resultWrapper.Ex?.ToString() ?? "");
-                                        break;
-                                    }
-                                case ServiceHelpers.ResultWrapper<Models.External.Foodbank>.Code.Cancelled:
-                                    {
-                                        _logger.LogWarning(
-                                            "Service run failed for {0}! Cancellation occured! Will be rescheduled {Ex}",
-                                            resultWrapper.Result[i].Urls?.Self ?? "", resultWrapper.Ex?.ToString() ?? "");
-                                        break;
-                                    }
+                                break;
                             }
-
+                            case ServiceHelpers.ResultWrapper<Foodbank>.Code.Timeout:
+                            {
+                                _logger.LogWarning("Service run failed for {Url}! Timeout occured! Will be rescheduled",
+                                    resultWrapper.Result[i].Urls?.Self ?? "");
+                                break;
+                            }
+                            case ServiceHelpers.ResultWrapper<Foodbank>.Code.Errored:
+                            {
+                                _logger.LogWarning(
+                                    "Service run failed for {0}! Error occured! Will be rescheduled {Exception}",
+                                    resultWrapper.Result[i].Urls?.Self ?? "", resultWrapper.Ex?.ToString() ?? "");
+                                break;
+                            }
+                            case ServiceHelpers.ResultWrapper<Foodbank>.Code.Cancelled:
+                            {
+                                _logger.LogWarning(
+                                    "Service run failed for {0}! Cancellation occured! Will be rescheduled {Ex}",
+                                    resultWrapper.Result[i].Urls?.Self ?? "", resultWrapper.Ex?.ToString() ?? "");
+                                break;
+                            }
                         }
+                    }
 
-                        _logger.LogInformation("Service run complete!");
+                    _logger.LogInformation("Service run complete!");
 
-                        break;
-                    }
-                case ServiceHelpers.ResultWrapper<List<Models.External.Foodbank>>.Code.Timeout:
-                    {
-                        _logger.LogWarning("Service run failed! Timeout occured! Will be rescheduled");
-                        break;
-                    }
-                case ServiceHelpers.ResultWrapper<List<Models.External.Foodbank>>.Code.Errored:
-                    {
-                        _logger.LogWarning("Service run failed! Error occured! Will be rescheduled {Exception}",
-                            resultWrapper.Ex);
-                        break;
-                    }
-                case ServiceHelpers.ResultWrapper<List<Models.External.Foodbank>>.Code.Cancelled:
-                    {
-                        _logger.LogWarning("Service run failed! Cancellation occured! Will be rescheduled {Exception}",
-                            resultWrapper.Ex);
-                        break;
-                    }
+                    break;
+                }
+                case ServiceHelpers.ResultWrapper<List<Foodbank>>.Code.Timeout:
+                {
+                    _logger.LogWarning("Service run failed! Timeout occured! Will be rescheduled");
+                    break;
+                }
+                case ServiceHelpers.ResultWrapper<List<Foodbank>>.Code.Errored:
+                {
+                    _logger.LogWarning("Service run failed! Error occured! Will be rescheduled {Exception}",
+                        resultWrapper.Ex);
+                    break;
+                }
+                case ServiceHelpers.ResultWrapper<List<Foodbank>>.Code.Cancelled:
+                {
+                    _logger.LogWarning("Service run failed! Cancellation occured! Will be rescheduled {Exception}",
+                        resultWrapper.Ex);
+                    break;
+                }
             }
 
             await Task.Delay(100, stoppingToken);
@@ -141,7 +138,7 @@ public class GiveFoodApiService : BackgroundService
     }
 
     /// <summary>
-    /// > The Dispose() function is called when the service is stopped
+    ///     > The Dispose() function is called when the service is stopped
     /// </summary>
     public override void Dispose()
     {
@@ -152,12 +149,12 @@ public class GiveFoodApiService : BackgroundService
     }
 
     /// <summary>
-    /// This function makes an HTTP GET request to the specified URL, and returns the response as a JSON object
+    ///     This function makes an HTTP GET request to the specified URL, and returns the response as a JSON object
     /// </summary>
     /// <param name="url">The URL to the API endpoint</param>
     /// <param name="cancellationToken">This is a token that can be used to cancel the request.</param>
     /// <returns>
-    /// A Task&lt;T&gt; that contains reading asynchronous execution
+    ///     A Task&lt;T&gt; that contains reading asynchronous execution
     /// </returns>
     private async Task<T> GetFoodbank<T>(string url, CancellationToken cancellationToken)
     {
@@ -170,5 +167,4 @@ public class GiveFoodApiService : BackgroundService
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadAsAsync<T>(cancellationToken);
     }
-
 }

@@ -1,13 +1,13 @@
 ﻿@page "{Location?}"
-@model Foodbank_Project.Pages.testMapModel
+@model testMapModel
 @{
 }
-<link rel="stylesheet" href="~/css/Control.Geocoder.css" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css" />
+<link rel="stylesheet" href="~/css/Control.Geocoder.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css"/>
 
 
 <script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
-<script src="~/js/Control.Geocoder.js"></script> 
+<script src="~/js/Control.Geocoder.js"></script>
 
 
 <!-- Credit Leaflet, open street map, nomiatim, leaflet search controll -->
@@ -18,12 +18,6 @@
         </div>
         <div class="col col-5">
             <form >
-                <div class="mb-3">
-                    <label for="searchFoodbank" class="form-label">Find your nearest Foodbank</label>
-                    <input type="text" class="form-control" value="@RouteData.Values["Location"]" id="searchFoodbank" placeholder="DONT USE THIS TO SEARCH FOR A FOODBANK" aria-describedby="searchBank" />     <!--this needs to be here but hidden on the page or something -->
-                    <div id="searchBank" class="form-text"></div> 
-                </div>
-                <button type="submit" class="btn btn-primary">Search</button>
                 @Html.AntiForgeryToken()
             </form>
         </div>
@@ -95,10 +89,10 @@
 
 
     var control = L.Control.geocoder({  //set the geocoder search type
-      query: userInputForLocation,   //we will need this to input our own data                    //we need to type a call back function to input
-      placeholder: 'Search Postcode or Address',
-      geocoder: geocoder,  //this tells use the standard of searching
-
+        query: "@Html.DisplayFor(model => model.Location)",
+        collapsed: false,
+        placeholder: 'Search Postcode or Address',
+        geocoder: geocoder  //this tells use the standard of searching
     })
 
     .on('markgeocode', function(e) {
@@ -142,11 +136,11 @@
       });
     })
     .addTo(map);
-    control._expand()
-    var marker;                                   //need to control the ammount it zooms in because right now its very zoomed
-
     
-    geocoder.geocode(userInputForLocation, function(ctx){control._geocodeResultSelected(ctx[0])})
+    control._expand();
+    var marker;                                   //need to control the ammount it zooms in 
+
+    geocoder.geocode("@Html.DisplayFor(model => model.Location)", function(ctx){control._geocodeResultSelected(ctx[0])})
 
     L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'

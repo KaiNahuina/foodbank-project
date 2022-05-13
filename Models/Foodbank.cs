@@ -1,4 +1,8 @@
-﻿using NetTopologySuite.Geometries;
+﻿#region
+
+using NetTopologySuite.Geometries;
+
+#endregion
 
 namespace Foodbank_Project.Models;
 
@@ -48,7 +52,7 @@ public class Foodbank
     public Status Status { get; set; }
 
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
-    public Point? Coord { get; set; } 
+    public Point? Coord { get; set; }
 
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public string? Network { get; set; }

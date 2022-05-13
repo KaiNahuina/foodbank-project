@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite.Geometries;
+using Location = Foodbank_Project.Models.Location;
 
 #endregion
 
@@ -25,7 +27,8 @@ public static class FoodbankHelpers
             Postcode = externalFoodbank.Postcode,
             Closed = externalFoodbank.Closed,
             Country = externalFoodbank.Country,
-            Coord = new NetTopologySuite.Geometries.Point(double.Parse(externalFoodbank.LatLng?.Split(",")[1]), double.Parse(externalFoodbank.LatLng?.Split(",")[0])) { SRID = 4326 },
+            Coord = new Point(double.Parse(externalFoodbank.LatLng?.Split(",")[1]),
+                double.Parse(externalFoodbank.LatLng?.Split(",")[0])) { SRID = 4326 },
             Network = externalFoodbank.Network,
             Created = externalFoodbank.Created,
             Homepage = externalFoodbank.Urls?.Homepage,
@@ -40,7 +43,8 @@ public static class FoodbankHelpers
             var location = new Location
             {
                 Address = item.Address,
-                Coord = new NetTopologySuite.Geometries.Point(double.Parse(item.LatLng?.Split(",")[1]), double.Parse(item.LatLng?.Split(",")[0])) { SRID = 4326 },
+                Coord = new Point(double.Parse(item.LatLng?.Split(",")[1]), double.Parse(item.LatLng?.Split(",")[0]))
+                    { SRID = 4326 },
                 Name = item.Name,
                 Slug = item.Slug,
                 Postcode = item.Postcode,
@@ -59,10 +63,9 @@ public static class FoodbankHelpers
         return foodbank;
     }
 
-    public static async Task InsertOrUpdate(Foodbank target, ApplicationContext ctx, CancellationToken cancellationToken)
+    public static async Task InsertOrUpdate(Foodbank target, ApplicationContext ctx,
+        CancellationToken cancellationToken)
     {
-        
-
         var dbFoodbank = await ctx.Foodbanks!.FirstOrDefaultAsync(f => f.Slug == target.Slug, cancellationToken);
 
         if (dbFoodbank is not null && dbFoodbank.Protected) return;

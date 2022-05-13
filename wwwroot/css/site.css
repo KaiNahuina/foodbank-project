@@ -51,10 +51,10 @@ p {
     overflow: auto;
 }
 
-.nav-link{
+.nav-link {
     font-size: 1.5em;
-    color:green;
-    
+    color: green;
+
 }
 
 .button {
@@ -67,7 +67,7 @@ p {
 
 .text-box {
     color: black;
-    background-color:white;
+    background-color: white;
     border: 1px solid;
     padding: 15px;
     border-radius: 6px;
@@ -86,8 +86,9 @@ p {
 .imageS {
     width: 40%;
 }
+
 .imageLogo {
-    width:20%;
+    width: 20%;
 }
 
 recipe-icons {
@@ -110,7 +111,6 @@ input[type=text] {
     margin: 8px 0;
     box-sizing: border-box;
 }
-
 
 
 .row {
@@ -136,17 +136,17 @@ input[type=text] {
     align-content: flex-start;
 }
 
-    .ql .left {
-        margin: 25px;
-    }
+.ql .left {
+    margin: 25px;
+}
 
-    .ql .mid {
-        margin: 25px;
-    }
+.ql .mid {
+    margin: 25px;
+}
 
-    .ql .right {
-        margin: 25px;
-    }
+.ql .right {
+    margin: 25px;
+}
 
 .txt-intro {
     display: inline block;
@@ -155,7 +155,7 @@ input[type=text] {
 }
 
 .sub3 {
-    //display: inline-block;
+/ / display: inline-block;
     margin: 100px;
     clear: both;
     text-align: center;
@@ -173,19 +173,20 @@ a:hover {
 /*Get Help attributes*/
 .imageGH {
     width: 40%;
-    display:block;
+    display: block;
     margin-left: auto;
-    margin-right:auto
+    margin-right: auto
 }
 
 .spacingT {
     padding-top: 30px;
 }
+
 .spacingB {
     padding-bottom: 30px;
 }
 
 .grid {
-    align-self:center;
+    align-self: center;
 }
 

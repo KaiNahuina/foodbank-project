@@ -1,9 +1,8 @@
-﻿namespace Foodbank_Project.Models
+﻿namespace Foodbank_Project.Models;
+
+public enum Status
 {
-    public enum Status
-    {
-        UnConfirmed,
-        Approved,
-        Denied
-    }
+    UnConfirmed,
+    Approved,
+    Denied
 }
