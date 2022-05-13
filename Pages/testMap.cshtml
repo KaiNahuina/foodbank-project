@@ -18,12 +18,6 @@
         </div>
         <div class="col col-5">
             <form >
-                <div class="mb-3">
-                    <label for="searchFoodbank" class="form-label">Find your nearest Foodbank</label>
-                    <input type="text" class="form-control" value="@RouteData.Values["Location"]" id="searchFoodbank" placeholder="Enter postcode" aria-describedby="searchBank"/>
-                    <div id="searchBank" class="form-text"></div> <!-- we need to save this and push it to the map-->
-                </div>
-                <button type="submit" class="btn btn-primary">Search</button>
                 @Html.AntiForgeryToken()
             </form>
         </div>
@@ -33,11 +27,6 @@
 <div id="map"></div>
 
 <script type="text/javascript">
-
-    var userInputForLocation = document.getElementById('searchFoodbank').value;
-    console.log(userInputForLocation); //if we give this data before the page loads it should display the corret infomation
-
-    
     
     var foodbankIcon = L.icon({
           iconUrl: '/Images/leaf.png',//https://www.flaticon.com/free-icon/leaf_892917?term=leaf&page=1&position=3&page=1&position=3&related_id=892917&origin=tag
@@ -82,10 +71,10 @@
 
 
     var control = L.Control.geocoder({  //set the geocoder search type
-       query: userInputForLocation,   //we will need this to input our own data
-                            //we need to type a call back function to input
-      placeholder: 'Search Postcode or Address',
-      geocoder: geocoder  //this tells use the standard of searching
+        query: "@Html.DisplayFor(model => model.Location)",
+        collapsed: false,
+        placeholder: 'Search Postcode or Address',
+        geocoder: geocoder  //this tells use the standard of searching
     })
     .on('markgeocode', function(e) {
       var usersLatitude = e.geocode.center.lat;
@@ -108,9 +97,11 @@
       })
     })
     .addTo(map);
+    
+    control._expand();
     var marker;                                   //need to control the ammount it zooms in 
 
-    geocoder.geocode(userInputForLocation, function(ctx){control._geocodeResultSelected(ctx[0])})
+    geocoder.geocode("@Html.DisplayFor(model => model.Location)", function(ctx){control._geocodeResultSelected(ctx[0])})
 
     L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
