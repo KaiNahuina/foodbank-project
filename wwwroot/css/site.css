@@ -81,12 +81,13 @@ p {
 
 .text-box {
     color: black;
-    background-color:white;
+    background-color: white;
     border: 1px solid;
     padding: 15px;
     border-radius: 6px;
     box-shadow: 1em 1em 1.2em rgb(0 0 0 / 10%);
     overflow: auto;
+    border-color: #198754;
 }
 .image-box {
    
