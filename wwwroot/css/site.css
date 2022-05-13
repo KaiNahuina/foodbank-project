@@ -57,7 +57,7 @@ p {
     font-family: Gogh-ExtraBold;
     font-size: 1em;
     color: black;
-    background-color: white;
+    background-color: none;
     overflow: auto;
 }
 
@@ -68,7 +68,7 @@ p {
 }
 
 .button {
-    background-color: #8bc349;
+    background-color: forestgreen;
     border-radius: 5px; /*border curve*/
     box-shadow: 2px 2px #808080; /*current background effect*/
     text-align: center;
@@ -179,6 +179,20 @@ input[type=text] {
 a:hover {
     background: #c9c8c7;
 }
+.Previous {
+    background-color: forestgreen;
+    color: white;
+    border: 2px solid black;
+    padding: 3px;
+}
+
+/*.RecipeImages{
+    height:100px;
+    width:100px;
+    padding: 10px;
+    position: fixed;
+}*/
+
 
 /*Get Help attributes*/
 .imageGH {
