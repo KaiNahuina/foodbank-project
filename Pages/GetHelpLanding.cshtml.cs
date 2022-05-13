@@ -45,7 +45,7 @@ namespace Foodbank_Project.Pages
                 .Locations.AsNoTracking()
                 .Select(l => new
                 {
-                    Distance = l.Coord.Distance(origin),
+                    Distance = (int)Math.Round(l.Coord.Distance(origin)),
                     l.Name,
                     Id = l.LocationId,
                     l.Address,

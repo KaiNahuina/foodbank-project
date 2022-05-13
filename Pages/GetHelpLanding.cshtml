@@ -75,7 +75,7 @@
         var featureGroup = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
         map.addLayer(featureGroup);
 
-        map.locate({setView: true, maxZoom: 14});
+        //map.locate({setView: true, maxZoom: 14}); asks the user for their location
         var geocoder = L.Control.Geocoder.nominatim({
              geocodingQueryParams: {countrycodes: 'gb,im,gg,je'}
         });
@@ -105,7 +105,7 @@
           control._expand();
           $.ajax({
               type: "POST",
-              url: '/testMap?handler=Coord',
+              url: '/GetHelpLanding?handler=Coord',
               data: JSON.stringify({Lat: usersLatitude, Lng: usersLongitude}),
               contentType: "application/json; charset=utf-8",
               beforeSend: function(xhr){
@@ -121,12 +121,8 @@
                  var iterator = 0;
 
                  for(const element of result){
-                     closest5Markers[iterator] = L.marker([element.coord.lat, element.coord.lng], {icon:foodbankIcon}).bindPopup(element.name.toString() + " <br> " + element.distance.toString() + " <br> " + '<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley">Click here to learn more</a>');    //need to figure out how to new line these and format the distance so we get no deciamals
-
-                     var currentFoodbank = "#FoodbankClosest" + (iterator+1);
-                     console.log(currentFoodbank);
-                     $(currentFoodbank).html("<p>" + element.name.toString() + "<br>" + element.address.toString() + "<br>" + element.distance.toString() + " <br> " + " <a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'>Click here to learn more</a>" + "</p>");
-                     //we want the number of the iterator
+                     closest5Markers[iterator] = L.marker([element.coord.lat, element.coord.lng], {icon:foodbankIcon}).bindPopup(element.name.toString() + " <br> " + element.distance.toString() + "m away<br> " + '<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley">Click here to learn more</a>');    //need to figure out how to new line these and format the distance so we get no deciamals
+                     $("#FoodbankClosest" + (iterator+1)).html("<p>" + element.name.toString() + "<br>" + element.address.toString() + "<br>" + element.distance.toString() + "m away <br> " + " <a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'>Click here to learn more</a>" + "</p>");
                      iterator++;
 
                      //document.getElementById("Testcontainer").innerHTML += element.name.toString() + "<br";
