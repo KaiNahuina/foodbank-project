@@ -17,7 +17,7 @@ html {
 body {
     background-color: #f4faed;
 }
-
+zzz
 h1 { /*Page Headers*/
     font-family: 'Capsmall';
     font-size: 3em;
@@ -62,7 +62,7 @@ p {
     border-radius: 5px; /*border curve*/
     box-shadow: 2px 2px #808080; /*current background effect*/
     text-align: center;
-    display: inline inline-block;
+    display: inline-block;
 }
 
 .text-box {
@@ -149,7 +149,7 @@ input[type=text] {
 }
 
 .txt-intro {
-    display: inline block;
+    display: inline-block;
     margin: 150px;
     text-align: center;
 }

@@ -1,0 +1,82 @@
+﻿@page
+@model StockModel
+@{
+    ViewData["Title"] = "Needs - Admin";
+}
+
+<h1>Foodbank Needs:</h1>
+
+<div class="bg-light shadow-lg">
+    
+    <div class="p-3 d-flex flex-row align-items-center">
+        <input class="me-3" placeholder="Search columns..."/>
+        <button class="btn btn-success">Search</button>
+    </div>
+    
+    <table class="table table-striped table-hover w-100">
+        <thead>
+        <tr>
+            @if (Model.OrderBy == "Name")
+            {
+                @if (Model.OrderDirection == "Asc")
+                {
+                    <th scope="col" style="width: 75%;"><a asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a></th>
+                    <th scope="col" style="width: 100%;"><a asp-route-OrderBy="Count" asp-route-OrderDirection="Desc">Count</a></th>
+                }
+                else
+                {
+                    <th scope="col" style="width: 75%;"><a asp-route-OrderBy="Name" asp-route-OrderDirection="Asc">Name</a></th>
+                    <th scope="col" style="width: 100%;"><a asp-route-OrderBy="Count" asp-route-OrderDirection="Desc">Count</a></th>
+                }
+                
+            }
+            else
+            {
+                @if (Model.OrderDirection == "Asc")
+                {
+                    <th scope="col" style="width: 75%;"><a asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a></th>
+                    <th scope="col" style="width: 100%;"><a asp-route-OrderBy="Count" asp-route-OrderDirection="Desc">Count</a></th>
+                }
+                else
+                {
+                    <th scope="col" style="width: 75%;"><a asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a></th>
+                    <th scope="col" style="width: 100%;"><a asp-route-OrderBy="Count" asp-route-OrderDirection="Asc">Count</a></th>
+                }
+            }
+            <th scope="col" style="width: 100%;">Action</th>
+            
+        </tr>
+        </thead>
+        <tbody>
+        @if (Model.Needs.Count != 0)
+        {
+            @foreach (var item in Model.Needs)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NeedStr)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Foodbanks.Count)
+                    </td>
+                    <td>
+                        <a asp-page="./Need" asp-route-id="@item.NeedId">Edit</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4">Nothing to display...</td>
+            </tr>
+        }
+
+        </tbody>
+    </table>
+    <div class="p-3 d-flex flex-row align-items-center">
+        <button class="btn">Previous</button>
+        <button class="btn">Next</button>
+        <span>Page number: @Html.DisplayFor(model => model.Page)</span>
+    </div>
+</div>
