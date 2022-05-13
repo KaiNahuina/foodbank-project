@@ -25,24 +25,45 @@
                 </div>
 
             </div>
-            <div class="col-sm-6 text-center">
+            <div class="col-sm-9 text-center">
                 <h1 class="display-4">Find a Foodbank</h1>
-            </div>
-            <div class="col-md-36 text-center">
-                <h1 class="display-4"></h1>
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-3"> </div>
-        <div class="col-sm-8">
+        <div class="col-md-3"> 
+
+            <h1>5 closest Foodbanks</h1>
+            <div class="foodbank-list">
+                <div class="m-2 d-grid" id="FoodbankClosest1">
+
+                </div>
+                <div class="m-2 d-grid" id="FoodbankClosest2">
+
+                </div>
+                <div class="m-2 d-grid" id="FoodbankClosest3">
+
+                </div>
+                <div class="m-2 d-grid" id="FoodbankClosest4">
+
+                </div>
+                <div class="m-2 d-grid" id="FoodbankClosest5">
+
+                </div>
+            </div>
+
+
+
+            <!-- clickable list of 5 foodbanks-->
+            
+        </div>
+        <div class="col-sm-9">
             <form class="visually-hidden">
                 @Html.AntiForgeryToken()
             </form>
 
             <div id="map"></div>
-
         </div>
     </div>
 
@@ -70,7 +91,7 @@
 
         map.locate({setView: true, maxZoom: 14});
         var geocoder = L.Control.Geocoder.nominatim({
-             geocodingQueryParams: {countrycodes: 'gb'}
+             geocodingQueryParams: {countrycodes: 'gb,im,gg,je'}
         });
         if (typeof URLSearchParams !== 'undefined' && location.search) {
           var params = new URLSearchParams(location.search);
@@ -112,10 +133,17 @@
                   }
                  var closest5Markers = [];
                  var iterator = 0;
-                 //append them
+
                  for(const element of result){
                      closest5Markers[iterator] = L.marker([element.coord.lat, element.coord.lng], {icon:foodbankIcon}).bindPopup(element.name.toString() + " <br> " + element.distance.toString() + " <br> " + '<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley">Click here to learn more</a>');    //need to figure out how to new line these and format the distance so we get no deciamals
+
+                     var currentFoodbank = "#FoodbankClosest" + (iterator+1);
+                     console.log(currentFoodbank);
+                     $(currentFoodbank).html("<p>" + element.name.toString() + "<br>" + element.address.toString() + "<br>" + element.distance.toString() + "</p>");
+                     //we want the number of the iterator
                      iterator++;
+
+                     //document.getElementById("Testcontainer").innerHTML += element.name.toString() + "<br";
                      //console.log(element.distance);
                      //console.log(element.name);
                      //console.log(element.id);
@@ -128,7 +156,7 @@
 
 
                  if (history.pushState) {
-                    var newurl = window.location.protocol + "//" + window.location.host + '/testMap/' + control._input.value;   //change testmap name
+                    var newurl = window.location.protocol + "//" + window.location.host + '/GetHelpLanding/' + control._input.value;   //change testmap name
                     window.history.pushState({path:newurl},'',newurl);
                 }
               },
