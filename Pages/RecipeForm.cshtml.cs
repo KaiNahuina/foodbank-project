@@ -1,4 +1,4 @@
-﻿#region
+#region
 
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Foodbank_Project.Pages;
 
-public class TemplateModel : PageModel
+public class RecipeFormModel : PageModel
 {
     public void OnGet()
     {

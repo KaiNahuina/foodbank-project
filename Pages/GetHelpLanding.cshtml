@@ -1,14 +1,19 @@
-﻿@page
-@model Foodbank_Project.Pages.GetHelpLandingModel
+﻿@page "{Location?}"
+@model GetHelpLandingModel
 @{
     ViewData["Title"] = "Get Help";
 }
+<link rel="stylesheet" href="~/css/Control.Geocoder.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css"/>
 
+
+<script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
+<script src="~/js/Control.Geocoder.js"></script>
 
 <form method="post">
     <div class="container mt-5">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="m-2 d-grid">
                     <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelpLanding">Find&nbsp;a&nbsp;Foodbank</a>
                 </div>
@@ -20,44 +25,138 @@
                 </div>
 
             </div>
-            <div class="col-sm-6 text-center">
+            <div class="col-sm-9 text-center">
                 <h1 class="display-4">Find a Foodbank</h1>
             </div>
-            <div class="col-md-36 text-center">
-                <h1 class="display-4"></h1>
-            </div>
         </div>
     </div>
-   
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-sm-6">
-                <h3>Find your nearest Foodbank</h3>
 
-                <div>
-                    <form>
-                        <div class="mb-3">
-                            
-                            <input type="text" class="form-control" id="searchFoodbank" placeholder="Enter town or postcode" aria-describedby="searchBank" />
-                           
-                        </div>
-                        <button type="submit" class="btn btn-primary">Search</button>
-                    </form>
-                </div>
+    <div class="row">
+        <div class="col-md-3">
 
+            <h1>5 closest Foodbanks</h1>
+            <div class="foodbank-list">
+                <div class="m-2 d-grid" id="FoodbankClosest1"></div>
+                <div class="m-2 d-grid" id="FoodbankClosest2"></div>
+                <div class="m-2 d-grid" id="FoodbankClosest3"> </div>
+                <div class="m-2 d-grid" id="FoodbankClosest4"></div>
+                <div class="m-2 d-grid" id="FoodbankClosest5"></div>
             </div>
-            <div class="col-sm-6">
-
-              
-                <div class="image-box">
-                    <img src="~/Images/dummyMap.jpg" class="img-fluid rounded mx-auto d-block " alt="random image of a map" />
-                </div>
-
-            </div>
-
 
         </div>
+        <div class="col-sm-9">
+            <form class="visually-hidden">
+                @Html.AntiForgeryToken()
+            </form>
+
+            <div id="map"></div>
+        </div>
     </div>
+
+
+    <script type="text/javascript">
+
+        var foodbankIcon = L.icon({
+              iconUrl: '/Images/leaf.png',//https://www.flaticon.com/free-icon/leaf_892917?term=leaf&page=1&position=3&page=1&position=3&related_id=892917&origin=tag
+              iconSize:     [30, 30],
+              iconAnchor:   [0, 30],
+              popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+        });
+
+        var warehouseIcon = L.icon({
+              iconUrl: '/Images/warehouse.png',//copy righted dont use for final
+              iconSize:     [50, 50],
+              iconAnchor:   [25, 50],
+              popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+        });
+
+        var map = L.map('map').setView([ 54.596442,  -3.9], 6);
+
+        var featureGroup = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+        map.addLayer(featureGroup);
+
+        //map.locate({setView: true, maxZoom: 14}); asks the user for their location
+        var geocoder = L.Control.Geocoder.nominatim({
+             geocodingQueryParams: {countrycodes: 'gb,im,gg,je'}
+        });
+        if (typeof URLSearchParams !== 'undefined' && location.search) {
+          var params = new URLSearchParams(location.search);
+          var geocoderString = params.get('geocoder');
+          if (geocoderString && L.Control.Geocoder[geocoderString]) {
+            console.log('Using geocoder', geocoderString);
+            geocoder = L.Control.Geocoder[geocoderString]();
+          } else if (geocoderString) {
+            console.warn('Unsupported geocoder', geocoderString);
+          }
+        }
+
+        var markerGroup;
+
+        var control = L.Control.geocoder({
+            query: "@Html.DisplayFor(model => model.Location)",
+            collapsed: false,
+            placeholder: 'Search Postcode or Address',
+            geocoder: geocoder
+        })
+
+        .on('markgeocode', function(e) {
+          var usersLatitude = e.geocode.center.lat;
+          var usersLongitude = e.geocode.center.lng;
+          control._expand();
+          $.ajax({
+              type: "POST",
+              url: '/GetHelpLanding?handler=Coord',
+              data: JSON.stringify({Lat: usersLatitude, Lng: usersLongitude}),
+              contentType: "application/json; charset=utf-8",
+              beforeSend: function(xhr){
+                  xhr.setRequestHeader("RequestVerificationToken", $('input[name="__RequestVerificationToken"]').val());
+              },
+
+              dataType: 'json',
+              success: function (result){
+                  if (markerGroup != null) {
+                      markerGroup.clearLayers();
+                  }
+                 var closest5Markers = [];
+                 var iterator = 0;
+
+                 for(const element of result){
+                     closest5Markers[iterator] = L.marker([element.coord.lat, element.coord.lng], {icon:foodbankIcon}).bindPopup(element.name.toString() + " <br> " + element.distance.toString() + "m away<br> " + '<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley">Click here to learn more</a>');    //need to figure out how to new line these and format the distance so we get no deciamals
+                     $("#FoodbankClosest" + (iterator+1)).html("<p>" + element.name.toString() + "<br>" + element.address.toString() + "<br>" + element.distance.toString() + "m away <br> " + " <a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'>Click here to learn more</a>" + "</p>");
+                     iterator++;
+
+                     //document.getElementById("Testcontainer").innerHTML += element.name.toString() + "<br";
+                     //console.log(element.distance);
+                     //console.log(element.name);
+                     //console.log(element.id);
+                     //console.log(element.address);
+                     //console.log(element.coord.lat);
+                     //console.log(element.coord.lng);
+                 }
+                 markerGroup = L.featureGroup([closest5Markers[0],closest5Markers[1],closest5Markers[2],closest5Markers[3],closest5Markers[4]]);
+                 map.addLayer(markerGroup);
+
+
+                 if (history.pushState) {
+                    var newurl = window.location.protocol + "//" + window.location.host + '/GetHelpLanding/' + control._input.value;   //change testmap name
+                    window.history.pushState({path:newurl},'',newurl);
+                }
+              },
+              error: function(xhr, status, err) {
+                  alert("We weren't unable to return any data")
+                  alert(err.toString(), 'Error - LoadListItemsHelper');
+              }
+          });
+        })
+        .addTo(map);
+
+        control._expand();
+
+        geocoder.geocode("@Html.DisplayFor(model => model.Location)", function(ctx){control._geocodeResultSelected(ctx[0])})
+
+        L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+    </script>
 </form>
-
-

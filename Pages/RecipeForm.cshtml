@@ -1,0 +1,29 @@
+﻿@page
+@model RecipeFormModel
+@{
+    ViewData["Title"] = "Recipe Form";
+}
+
+<div class="row">
+    <div class="text-center">
+        <h1>Add A Recipe</h1>
+    </div>
+
+    <div class="col-sm-2">
+        <a href="/Recipes" class="Previous">&laquo; Back</a>
+    </div>
+
+</div>
+
+<form>
+    <label for="RecipeName">Recipe Name:</label><br/>
+    <input type="text" name="RecipeName"/><br/>
+
+    <label for="Ingredients">Ingredients</label>
+    <input type="text" name="Ingredients"/><br/>
+
+    <label for="RecipeInstruction">Recipe Instructions:</label><br/>
+    <input type="text" name="RecipeInstruction"/><br/>
+
+    <input type="submit"/>
+</form>

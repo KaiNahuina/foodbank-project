@@ -1,13 +1,12 @@
-﻿namespace Foodbank_Project.Models
+﻿namespace Foodbank_Project.Models;
+
+public class Recipe
 {
-    public class Recipe
-    {
-        public int RecipeId { get; set; }
+    public int RecipeId { get; set; }
 
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        public string? Blob { get; set; }
+    public string? Blob { get; set; }
 
-        public RecipeCategory? Category { get; set; }
-    }
+    public RecipeCategory? Category { get; set; }
 }

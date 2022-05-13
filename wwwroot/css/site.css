@@ -8,16 +8,6 @@ html {
     }
 }
 
-//@font-face {
-    //font-family: 'Capsmall';
-    //src: url('/fonts/Capsmall.ttf') format('truetype');
-//}
-
-//@font-face {
-    //font-family: 'Gogh-ExtraBold';
-    //src: url('/fonts/Gogh-ExtraBold.otf') format('opentype');
-//}
-
 
 html {
     position: relative;
@@ -28,6 +18,7 @@ body {
     background-color: #f4faed;
 }
 
+zzz
 h1 { /*Page Headers*/
     font-family: 'Capsmall';
     font-size: 3em;
@@ -61,37 +52,39 @@ p {
     font-family: Gogh-ExtraBold;
     font-size: 1em;
     color: black;
-    background-color: white;
+    background-color: none;
     overflow: auto;
 }
 
-.nav-link{
+.nav-link {
     font-size: 1.5em;
-    color:green;
-    
+    color: green;
+
 }
 
 .button {
-    background-color: #8bc349;
+    background-color: forestgreen;
     border-radius: 5px; /*border curve*/
     box-shadow: 2px 2px #808080; /*current background effect*/
     text-align: center;
-    display: inline inline-block;
+    display: inline-block;
 }
 
 .text-box {
     color: black;
-    background-color:white;
+    background-color: white;
     border: 1px solid;
     padding: 15px;
     border-radius: 6px;
     box-shadow: 1em 1em 1.2em rgb(0 0 0 / 10%);
     overflow: auto;
+    border-color: #198754;
 }
+
 .image-box {
-   
-    
-    align-items:center;
+
+
+    align-items: center;
     border-radius: 6px;
     box-shadow: 1em 1em 1.2em rgb(0 0 0 / 10%);
     overflow: auto;
@@ -108,8 +101,9 @@ p {
 .imageS {
     width: 40%;
 }
+
 .imageLogo {
-    width:20%;
+    width: 20%;
 }
 
 recipe-icons {
@@ -132,7 +126,6 @@ recipe-icons {
     margin: 8px 0;
     box-sizing: border-box;
 }
-
 
 
 .row {
@@ -158,26 +151,26 @@ recipe-icons {
     align-content: flex-start;
 }
 
-    .ql .left {
-        margin: 25px;
-    }
+.ql .left {
+    margin: 25px;
+}
 
-    .ql .mid {
-        margin: 25px;
-    }
+.ql .mid {
+    margin: 25px;
+}
 
-    .ql .right {
-        margin: 25px;
-    }
+.ql .right {
+    margin: 25px;
+}
 
 .txt-intro {
-    display: inline block;
+    display: inline-block;
     margin: 150px;
     text-align: center;
 }
 
 .sub3 {
-    //display: inline-block;
+/ / display: inline-block;
     margin: 100px;
     clear: both;
     text-align: center;
@@ -192,22 +185,38 @@ a:hover {
     background: #c9c8c7;
 }
 
+.Previous {
+    background-color: forestgreen;
+    color: white;
+    border: 2px solid black;
+    padding: 3px;
+}
+
+/*.RecipeImages{
+    height:100px;
+    width:100px;
+    padding: 10px;
+    position: fixed;
+}*/
+
+
 /*Get Help attributes*/
 .imageGH {
     width: 40%;
-    display:block;
+    display: block;
     margin-left: auto;
-    margin-right:auto
+    margin-right: auto
 }
 
 .spacingT {
     padding-top: 30px;
 }
+
 .spacingB {
     padding-bottom: 30px;
 }
 
 .grid {
-    align-self:center;
+    align-self: center;
 }
 

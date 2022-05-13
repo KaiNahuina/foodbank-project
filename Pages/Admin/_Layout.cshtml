@@ -4,34 +4,39 @@
 
 <div class="h-100 d-flex flex-row">
     <ul class="nav flex-column mt-5 sticky-top">
-          <li class="nav-item">
+        <li class="nav-item">
             <a class="nav-link active" aria-current="page" asp-page="/Admin/Index">
-             Dashboard
+                Dashboard
             </a>
-          </li>
-          <li class="nav-item">
+        </li>
+        <li class="nav-item">
             <a class="nav-link" asp-page="/Admin/Foodbanks">
-             Foodbanks
+                Foodbanks
             </a>
-          </li>
-          <li class="nav-item">
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-page="/Admin/Needs">
+                Needs
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" asp-page="/Admin/Users">
-              Users
+                Users
             </a>
-          </li>
-          <li class="nav-item">
+        </li>
+        <li class="nav-item">
             <a class="nav-link" asp-page="/Admin/Recipes">
-              Recipes
+                Recipes
             </a>
-          </li>
-          <li class="nav-item">
+        </li>
+        <li class="nav-item">
             <a class="nav-link" asp-page="/Admin/Content">
-              Content
+                Content
             </a>
-          </li>
-        </ul>
+        </li>
+    </ul>
 
     <div class="px-5 flex-fill pt-5">
-        @RenderBody()        
+        @RenderBody()
     </div>
 </div>
