@@ -17,6 +17,6 @@ public class IndexModel : PageModel
 
     public RedirectToPageResult OnPost()
     {
-        return RedirectToPage("/testMap", new { Location });
+        return RedirectToPage("/GetHelpLanding", new { Location });
     }
 }
