@@ -4,13 +4,37 @@
     ViewData["Title"] = "Needs - Admin";
 }
 
-<h1>Foodbank Needs:</h1>
+<h1 class="text-start">Foodbank Needs:</h1>
 
 <div class="bg-light shadow-lg">
-
-    <div class="p-3 d-flex flex-row align-items-center">
-        <input class="me-3" placeholder="Search columns..."/>
-        <button class="btn btn-success">Search</button>
+    <div class="p-3 d-flex flex-row align-items-center justify-content-between">
+        <div>
+            <form method="get" class="d-flex flex-row align-items-center">
+                <input class="me-3" placeholder="Search columns..." name="Search" value="@Model.Search"/>
+                <button type="submit" class="btn btn-success me-3">Search</button>
+            </form>
+        </div>
+        <div class="d-flex flex-row align-items-center justify-content-between">
+            @{
+                var hasPrev = Model.HasPrevPage ? "" : "disabled";
+                var hasNext = Model.HasNextPage ? "" : "disabled";
+            }
+            <form method="get">
+                <input name="OrderBy" type="hidden" value="@Model.OrderBy">
+                <input name="OrderDirection" type="hidden" value="@Model.OrderDirection">
+                <input name="Search" type="hidden" value="@Model.Search">
+                <input name="Page" type="hidden" value="@(Model.Page - 1)">
+                <button class="btn btn-success p-2 me-3 @hasPrev">Previous</button>
+            </form>
+            <form method="get">
+                <input name="OrderBy" type="hidden" value="@Model.OrderBy">
+                <input name="OrderDirection" type="hidden" value="@Model.OrderDirection">
+                <input name="Search" type="hidden" value="@Model.Search">
+                <input name="Page" type="hidden" value="@(Model.Page + 1)">
+                <button class="btn btn-success p-2 me-3 @hasNext">Next</button>
+            </form>
+            <span>Page: @Html.DisplayFor(model => model.Page)</span>
+        </div>
     </div>
 
     <table class="table table-striped table-hover w-100">
@@ -21,40 +45,34 @@
                 @if (Model.OrderDirection == "Asc")
                 {
                     <th scope="col" style="width: 75%;">
-                        <a asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
-                    </th>
-                    <th scope="col" style="width: 100%;">
-                        <a asp-route-OrderBy="Count" asp-route-OrderDirection="Desc">Count</a>
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name &uarr;</a>
                     </th>
                 }
                 else
                 {
                     <th scope="col" style="width: 75%;">
-                        <a asp-route-OrderBy="Name" asp-route-OrderDirection="Asc">Name</a>
-                    </th>
-                    <th scope="col" style="width: 100%;">
-                        <a asp-route-OrderBy="Count" asp-route-OrderDirection="Desc">Count</a>
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="Asc">Name &darr;</a>
                     </th>
                 }
+                <th scope="col" style="width: 100%;">
+                    <a asp-route-Search="@Model.Search" asp-route-OrderBy="Count" asp-route-OrderDirection="Desc">Count</a>
+                </th>
             }
             else
             {
+                <th scope="col" style="width: 75%;">
+                    <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
+                </th>
                 @if (Model.OrderDirection == "Asc")
                 {
-                    <th scope="col" style="width: 75%;">
-                        <a asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
-                    </th>
                     <th scope="col" style="width: 100%;">
-                        <a asp-route-OrderBy="Count" asp-route-OrderDirection="Desc">Count</a>
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Count" asp-route-OrderDirection="Desc">Count &uarr;</a>
                     </th>
                 }
                 else
                 {
-                    <th scope="col" style="width: 75%;">
-                        <a asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
-                    </th>
                     <th scope="col" style="width: 100%;">
-                        <a asp-route-OrderBy="Count" asp-route-OrderDirection="Asc">Count</a>
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Count" asp-route-OrderDirection="Asc">Count &darr;</a>
                     </th>
                 }
             }
@@ -90,13 +108,4 @@
         </tbody>
         @* TODO: Fix me *@
     </table>
-    <div class="p-3 d-flex flex-row align-items-center">
-        <button class="btn btn-success p-2 me-3">
-            <a asp-route-page="@Model.Page - 1">Previous</a>
-        </button>
-        <button class="btn btn-success p-2 me-3">
-            <a asp-route-page="@Model.Page + 1">Next</a>
-        </button>
-        <span>Page number: @Html.DisplayFor(model => model.Page)</span>
-    </div>
 </div>

@@ -60,7 +60,7 @@
               iconUrl: '/Images/leaf.png',//https://www.flaticon.com/free-icon/leaf_892917?term=leaf&page=1&position=3&page=1&position=3&related_id=892917&origin=tag
               iconSize:     [30, 30],
               iconAnchor:   [0, 30],
-              popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+              popupAnchor:  [15, -30] // point from which the popup should open relative to the iconAnchor
         });
 
         var warehouseIcon = L.icon({
@@ -135,7 +135,7 @@
                  }
                  markerGroup = L.featureGroup([closest5Markers[0],closest5Markers[1],closest5Markers[2],closest5Markers[3],closest5Markers[4]]);
                  map.addLayer(markerGroup);
-
+                 map.fitBounds([markerGroup.getBounds().pad(0.2), e.bbox]);
 
                  if (history.pushState) {
                     var newurl = window.location.protocol + "//" + window.location.host + '/GetHelpLanding/' + control._input.value;   //change testmap name

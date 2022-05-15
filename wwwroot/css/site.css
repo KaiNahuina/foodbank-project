@@ -18,16 +18,15 @@ body {
     background-color: #f4faed;
 }
 
-zzz
 h1 { /*Page Headers*/
-    font-family: 'Capsmall';
+    font-family: 'Capsmall', serif;
     font-size: 3em;
     color: #115649;
     text-align: center;
 }
 
 h2 { /*Sub Headers*/
-    font-family: 'Capsmall';
+    font-family: 'Capsmall', serif;
     font-size: 2.5em;
     color: #00008B;
     text-align: center;
@@ -35,24 +34,24 @@ h2 { /*Sub Headers*/
 }
 
 h3 { /*Section Headings for content*/
-    font-family: 'Capsmall';
+    font-family: 'Capsmall', serif;
     font-size: 2em;
     color: black;
     text-align: center;
 }
 
 h4 {
-    font-family: 'Capsmall';
+    font-family: 'Capsmall', serif;
     color: black;
     font-size: 1.5em;
     text-align: center;
 }
 
 p {
-    font-family: Gogh-ExtraBold;
+    font-family: Gogh-ExtraBold, serif;
     font-size: 1em;
     color: black;
-    background-color: none;
+    background-color: unset;
     overflow: auto;
 }
 
@@ -106,7 +105,7 @@ p {
     width: 20%;
 }
 
-recipe-icons {
+.recipe-icons {
     width: 30%;
 }
 

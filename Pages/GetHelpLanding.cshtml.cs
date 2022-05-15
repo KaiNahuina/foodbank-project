@@ -1,6 +1,7 @@
 #region
 
 using Foodbank_Project.Data;
+using Foodbank_Project.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -27,11 +28,6 @@ public class GetHelpLandingModel : PageModel
     public async Task OnGetAsync()
     {
         Location = RouteData.Values?["Location"]?.ToString() ?? null;
-
-
-        var locations = from l in _ctx.Locations select l;
-
-        Locations = await locations.AsNoTracking().ToListAsync();
     }
 
     // DTO
@@ -46,7 +42,7 @@ public class GetHelpLandingModel : PageModel
         var origin = new Point(obj.Lng, obj.Lat) { SRID = 4326 };
 
         var foodBankLocations = await _ctx
-            .Locations.AsNoTracking()
+            .Locations.AsNoTracking().Include(l => l.Foodbank).Where(l => l.Foodbank.Status == Status.Approved)
             .Select(l => new
             {
                 Distance = (int)Math.Round(l.Coord.Distance(origin)),
