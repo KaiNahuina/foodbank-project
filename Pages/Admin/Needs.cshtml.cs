@@ -20,6 +20,10 @@ public class StockModel : PageModel
     public string OrderDirection;
     public string OrderBy;
     public int Page;
+    public string Search;
+    public bool HasPrevPage;
+    public bool HasNextPage;
+    
 
     public StockModel(ApplicationContext ctx)
     {
@@ -30,16 +34,28 @@ public class StockModel : PageModel
         [FromQuery(Name = "OrderDirection")] string? orderDirection,
         [FromQuery(Name = "Search")] string? search, [FromQuery(Name = "Page")] string? page)
     {
+
         OrderBy = string.IsNullOrEmpty(orderBy) ? "Count" : orderBy;
         OrderDirection = string.IsNullOrEmpty(orderDirection) ? "Desc" : orderDirection;
         if (!int.TryParse(page, out Page)) Page = 1;
+        if (string.IsNullOrEmpty(search))
+        {
+            if (string.IsNullOrEmpty(Search))
+            {
+                Search = "";
+            }
+        }
+        else
+        {
+            Search = search;
+        }
 
         var needQue = (from f in _ctx.Needs
                 select f).AsNoTracking()
             .Include(n => n.Foodbanks)
             .OrderByDescending(n => n.Foodbanks.Count)
             .Where(n => n.NeedStr != null).Where(n =>
-                string.IsNullOrEmpty(search) || n.NeedStr.Contains(search) || n.NeedId.Equals(search));
+                string.IsNullOrEmpty(Search) || n.NeedStr.Contains(Search) || n.NeedId.Equals(Search));
 
         // do sort and filter shizzle here
 
@@ -83,6 +99,10 @@ public class StockModel : PageModel
             }
         }
 
-        Needs = await needQue.Take(25).ToListAsync();
+        HasPrevPage = Page > 1;
+
+        HasNextPage = Page < (int)Math.Ceiling(await needQue.CountAsync() / 25d);
+
+        Needs = await needQue.Skip((Page - 1) * 25).Take(25).ToListAsync();
     }
 }
