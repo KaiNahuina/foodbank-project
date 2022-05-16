@@ -1,7 +1,7 @@
 ﻿@page "{id:int}"
-@model FoodbankPageModel
+@model DistributionPageModel
 @{
-    ViewData["Title"] = "Foodbank Page";
+    ViewData["Title"] = "Distribution Page";
 }
 <link rel="stylesheet" href="~/css/Control.Geocoder.css"/>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css"/>
@@ -18,7 +18,7 @@
 
 <form method="post">
     <div class="text-center">
-        <h1 class="display-4"><b>Name: </b>@Html.DisplayFor(modelItem => modelItem.Location.Name)</h1>
+        <h1 class="display-4"><b>Name: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank.Name)</h1>
     </div>
 
     <div class="row">
@@ -26,32 +26,19 @@
             <div class="row">
                 <div class="col-sm-4">
                     <h3>name and address</h3>
-                    <p class="text-box"><b>Address: </b>@Html.DisplayFor(modelItem => modelItem.Location.Address) <br/> 
+                    <p class="text-box"><b>Address: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank.Address) <br/> 
                                         <b>Postcode: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank.Country) <br/>
-                                        <b>Postcode: </b>@Html.DisplayFor(modelItem => modelItem.Location.Postcode) <br/> </p>
+                                        <b>Postcode: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank.Postcode) <br/> </p>
                 </div>
                 <div class="col-sm-4">
                     <h3>Contact Infomation</h3>
                     <p class="text-box"><b>Email Address: </b> @Html.DisplayFor(modelItem => modelItem.Foodbank.Email) <br/> 
                                         <b>Website site/Facebook: </b> @Html.DisplayFor(modelItem => modelItem.Foodbank.Homepage) <br/> 
-                                        <b>Phone Number: </b> @Html.DisplayFor(modelItem => modelItem.Location.Phone) <br/> 
+                                        <b>Phone Number: </b> @Html.DisplayFor(modelItem => modelItem.Foodbank.Phone) <br/> 
                                         <b>Network: </b> @Html.DisplayFor(modelItem => modelItem.Foodbank.Network) </p>
                 </div>
                 <div class="col-sm-2">
-                    @if (@Model.Foodbank.Network == "Trussell Trust")
-                        {
-                            <img id="trusselTrust" src="~/img/TTLogo.jpg"/>
-                        }
-                    @if (@Model.Foodbank.Network == "IFAN")
-                        {
-                            <img id="IFAN" src="~/img/IFANLogo.jpg"/>
-                        }
-                    @if (@Model.Foodbank.Network == "Independent")
-                        {
-                            <img id="Independent" src="~/img/independent.jpg"/>
-                        }
-                    
-                    <h3></h3>
+                    <h3>This is a picture(display image depending on string returned)e.g ifan or independent</h3>
                 </div>
             </div>
         </div>
