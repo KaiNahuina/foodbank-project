@@ -49,19 +49,30 @@ public static class FoodbankHelpers
                 Name = item.Name,
                 Slug = item.Slug,
                 Postcode = item.Postcode,
-                Phone = item.Phone,
+                Phone = item.Phone?.Replace("%2F", " / ").Replace("or", " / "),
                 Foodbank = foodbank
             };
 
             foodbank.Locations.Add(location);
         }
+        
+        foodbank.Locations.Add(new Location
+        {
+            Address = foodbank.Address,
+            Coord = foodbank.Coord,
+            Name = foodbank.Name,
+            Slug = foodbank.Slug,
+            Postcode = foodbank.Postcode,
+            Phone = foodbank.Phone,
+            Foodbank = foodbank
+        });
 
         foodbank.Needs = new List<Need>();
         var needs = externalFoodbank.Needs?.NeedsStr?.Split("\r\n") ?? Array.Empty<string>();
         foreach (var need in needs)
         {
-            var trim_need = need.Replace("\u200B", "");
-            foodbank.Needs.Add(trim_need == "Unknown" || string.IsNullOrWhiteSpace(trim_need) ? new Need { NeedStr = null } : new Need { NeedStr = trim_need });
+            var trimNeed = need.Replace("\u200B", "");
+            foodbank.Needs.Add(trimNeed == "Unknown" || string.IsNullOrWhiteSpace(trimNeed) ? new Need { NeedStr = null } : new Need { NeedStr = trimNeed });
         }
             
 
@@ -71,7 +82,8 @@ public static class FoodbankHelpers
     public static async Task InsertOrUpdate(Foodbank target, ApplicationContext ctx,
         CancellationToken cancellationToken)
     {
-        var dbFoodbank = await ctx.Foodbanks!.FirstOrDefaultAsync(f => f.Slug == target.Slug, cancellationToken);
+        var dbFoodbank = await ctx.Foodbanks!.Include(f => f.Locations)
+            .Include(f => f.Needs).FirstOrDefaultAsync(f => f.Slug == target.Slug && f.Postcode == target.Postcode && f.Phone == target.Phone, cancellationToken);
 
         if (dbFoodbank is not null && dbFoodbank.Protected) return;
 
@@ -95,6 +107,20 @@ public static class FoodbankHelpers
         target.Locations = await CompletePartialLocations(target.Locations, ctx, cancellationToken);
 
         ctx.Entry(dbFoodbank).CurrentValues.SetValues(target);
+
+        dbFoodbank.Locations.Clear();
+        dbFoodbank.Needs.Clear();
+
+
+        foreach (var location in target.Locations)
+        {
+            dbFoodbank.Locations.Add(location);
+        }
+
+        foreach (var need in target.Needs)
+        {
+            dbFoodbank.Needs.Add(need);
+        }
 
         await ctx.SaveChangesAsync(cancellationToken);
     }
@@ -130,7 +156,7 @@ public static class FoodbankHelpers
         ICollection<Location> completeLocations = new Collection<Location>();
         foreach (var location in locations.ToArray())
         {
-            var dbLocation = await ctx.Locations!.FirstOrDefaultAsync(l => l.Slug == location.Slug,
+            var dbLocation = await ctx.Locations!.FirstOrDefaultAsync(l => l.Slug == location.Slug && l.Postcode == location.Postcode && l.Phone == location.Phone,
                 cancellationToken);
             if (dbLocation is null)
             {

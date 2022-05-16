@@ -34,7 +34,7 @@ public class GiveFoodApiService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var skipped = true;
+        var skipped = false;
         _logger.LogInformation("Service started. Runs every {Stamp}",
             TimeSpan.FromSeconds(_config.GetValue<int>("Interval")).ToString(@"h\hm\ms\s"));
         _httpClient.Timeout = TimeSpan.FromSeconds(_config.GetValue<int>("Timeout"));
@@ -42,7 +42,7 @@ public class GiveFoodApiService : BackgroundService
         {
             if (skipped) await Task.Delay(_config.GetValue<int>("Interval") * 1000, stoppingToken);
 
-            skipped = false;
+            skipped = true;
 
             _logger.LogInformation("Service run started");
 
