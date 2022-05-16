@@ -18,25 +18,18 @@ public class GetHelpLandingModel : PageModel
 
     private readonly ApplicationContext _ctx;
 
-    public string? Location { get; set; }
-
-    public ICollection<Location> Locations { get; set; }
-
     public GetHelpLandingModel(ApplicationContext ctx)
     {
         _ctx = ctx;
     }
 
+    public string? Location { get; set; }
+
+    public ICollection<Location> Locations { get; set; }
+
     public async Task OnGetAsync()
     {
         Location = RouteData.Values?["Location"]?.ToString() ?? null;
-    }
-
-    // DTO
-    public class Coords
-    {
-        public double Lat { get; set; }
-        public double Lng { get; set; }
     }
 
     public async Task<JsonResult> OnPostCoordAsync([FromBody] Coords obj)

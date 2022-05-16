@@ -15,8 +15,8 @@ namespace Foodbank_Project.Areas.Identity.Pages.Account.Manage;
 
 public class Disable2faModel : PageModel
 {
-    private readonly UserManager<IdentityUser> _userManager;
     private readonly ILogger<Disable2faModel> _logger;
+    private readonly UserManager<IdentityUser> _userManager;
 
     public Disable2faModel(
         UserManager<IdentityUser> userManager,

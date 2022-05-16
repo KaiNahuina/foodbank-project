@@ -13,19 +13,19 @@ namespace Foodbank_Project.Pages.Admin;
 public class StockModel : PageModel
 {
     private readonly ApplicationContext _ctx;
+    public bool HasNextPage;
+    public bool HasPrevPage;
+    public int MaxPages;
 
     public IList<Need> Needs;
+    public string OrderBy;
 
 
     public string OrderDirection;
-    public string OrderBy;
     public int Page;
     public string Search;
-    public bool HasPrevPage;
-    public bool HasNextPage;
     public int TotalItems;
-    public int MaxPages;
-    
+
 
     public StockModel(ApplicationContext ctx)
     {
@@ -36,16 +36,12 @@ public class StockModel : PageModel
         [FromQuery(Name = "OrderDirection")] string? orderDirection,
         [FromQuery(Name = "Search")] string? search, [FromQuery(Name = "Page")] string? page)
     {
-
         OrderBy = string.IsNullOrEmpty(orderBy) ? "Count" : orderBy;
         OrderDirection = string.IsNullOrEmpty(orderDirection) ? "Desc" : orderDirection;
         if (!int.TryParse(page, out Page)) Page = 1;
         if (string.IsNullOrEmpty(search))
         {
-            if (string.IsNullOrEmpty(Search))
-            {
-                Search = "";
-            }
+            if (string.IsNullOrEmpty(Search)) Search = "";
         }
         else
         {
@@ -105,7 +101,7 @@ public class StockModel : PageModel
 
         TotalItems = await needQue.CountAsync();
         MaxPages = (int)Math.Ceiling(TotalItems / 25d);
-        
+
         HasNextPage = Page < MaxPages;
 
         Needs = await needQue.Skip((Page - 1) * 25).Take(25).ToListAsync();

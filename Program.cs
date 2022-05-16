@@ -39,7 +39,7 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 });
 
 
-builder.Services.AddAuthorization(options => { });
+builder.Services.AddAuthorization();
 
 builder.Services.AddRazorPages(options =>
 {
@@ -56,8 +56,8 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var conext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-    conext.Database.Migrate();
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+    context.Database.Migrate();
 }
 
 using (var scope = app.Services.CreateScope())

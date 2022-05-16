@@ -15,8 +15,8 @@ namespace Foodbank_Project.Areas.Identity.Pages.Account;
 
 public class LogoutModel : PageModel
 {
-    private readonly SignInManager<IdentityUser> _signInManager;
     private readonly ILogger<LogoutModel> _logger;
+    private readonly SignInManager<IdentityUser> _signInManager;
 
     public LogoutModel(SignInManager<IdentityUser> signInManager, ILogger<LogoutModel> logger)
     {

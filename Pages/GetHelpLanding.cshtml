@@ -75,7 +75,7 @@
 
         var map = L.map('map').setView([ 54.596442,  -3.9], 6);
 
-        var featureGroup = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+        var featureGroup = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
         map.addLayer(featureGroup);
 
         //map.locate({setView: true, maxZoom: 14}); asks the user for their location
@@ -99,7 +99,7 @@
             query: "@Html.DisplayFor(model => model.Location)",
             collapsed: false,
             placeholder: 'Search Postcode or Address',
-            geocoder: geocoder
+            geocoder
         })
 
         .on('markgeocode', function(e) {
@@ -111,12 +111,12 @@
               url: '/GetHelpLanding?handler=Coord',
               data: JSON.stringify({Lat: usersLatitude, Lng: usersLongitude}),
               contentType: "application/json; charset=utf-8",
-              beforeSend: function(xhr){
+              beforeSend (xhr){
                   xhr.setRequestHeader("RequestVerificationToken", $('input[name="__RequestVerificationToken"]').val());
               },
 
               dataType: 'json',
-              success: function (result){
+              success (result){
                   if (markerGroup != null) {
                       markerGroup.clearLayers();
                   }
@@ -145,8 +145,8 @@
                     window.history.pushState({path:newurl},'',newurl);
                 }
               },
-              error: function(xhr, status, err) {
-                  alert("We weren't unable to return any data")
+              error (xhr, status, err){
+                  alert("We weren't unable to return any data");
                   alert(err.toString(), 'Error - LoadListItemsHelper');
               }
           });
@@ -155,7 +155,7 @@
 
         control._expand();
 
-        geocoder.geocode("@Html.DisplayFor(model => model.Location)", function(ctx){control._geocodeResultSelected(ctx[0])})
+        geocoder.geocode("@Html.DisplayFor(model => model.Location)", function(ctx){control._geocodeResultSelected(ctx[0])});
 
         L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'

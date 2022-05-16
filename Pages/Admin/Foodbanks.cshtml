@@ -47,75 +47,75 @@
         @* </tr> *@
         @* </thead> *@
         <thead>
-                <tr>
-                    @{
-                        var direction = Model.OrderDirection == "Asc" ? "Desc" : "Asc";
-                        var arrow = direction == "Asc" ? "&darr;" : "&uarr;";
-                    }
+        <tr>
+            @{
+                var direction = Model.OrderDirection == "Asc" ? "Desc" : "Asc";
+                var arrow = direction == "Asc" ? "&darr;" : "&uarr;";
+            }
 
-                    @switch (Model.OrderBy)
-                    {
-                        case "Name":
-                            <th scope="col" style="width: 15%;">
-                                <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="@direction">Name @Html.Raw(@arrow)</a>
-                            </th>
-                            <th scope="col" style="width: 50%;">
-                                <a asp-route-Search="@Model.Search" asp-route-OrderBy="Address" asp-route-OrderDirection="Desc">Address</a>
-                            </th>
-                            <th scope="col" style="width: 20%;">
-                                <a asp-route-Search="@Model.Search" asp-route-OrderBy="Submitted" asp-route-OrderDirection="Desc">Submitted</a>
-                            </th>
-                            <th scope="col" style="width: 35%;">
-                                <a asp-route-Search="@Model.Search" asp-route-OrderBy="Locations" asp-route-OrderDirection="Desc">Locations</a>
-                            </th>
-                            break;
-                        case "Address":
-                            <th scope="col" style="width: 15%;">
-                                <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
-                            </th>
-                            <th scope="col" style="width: 50%;">
-                                <a asp-route-Search="@Model.Search" asp-route-OrderBy="Address" asp-route-OrderDirection="@direction">Address @Html.Raw(@arrow)</a>
-                            </th>
-                            <th scope="col" style="width: 20%;">
-                                <a asp-route-Search="@Model.Search" asp-route-OrderBy="Submitted" asp-route-OrderDirection="Desc">Submitted</a>
-                            </th>
-                            <th scope="col" style="width: 35%;">
-                                <a asp-route-Search="@Model.Search" asp-route-OrderBy="Locations" asp-route-OrderDirection="Desc">Locations</a>
-                            </th>
-                            break;
-                        case "Submitted":
-                            <th scope="col" style="width: 15%;">
-                                <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
-                            </th>
-                            <th scope="col" style="width: 50%;">
-                                <a asp-route-Search="@Model.Search" asp-route-OrderBy="Address" asp-route-OrderDirection="Desc">Address</a>
-                            </th>
-                            <th scope="col" style="width: 20%;">
-                                <a asp-route-Search="@Model.Search" asp-route-OrderBy="Submitted" asp-route-OrderDirection="@direction">Submitted @Html.Raw(@arrow)</a>
-                            </th>
-                            <th scope="col" style="width: 35%;">
-                                <a asp-route-Search="@Model.Search" asp-route-OrderBy="Locations" asp-route-OrderDirection="Desc">Locations</a>
-                            </th>
-                            break;
-                        case "Locations":
-                            <th scope="col" style="width: 15%;">
-                                <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
-                            </th>
-                            <th scope="col" style="width: 50%;">
-                                <a asp-route-Search="@Model.Search" asp-route-OrderBy="Address" asp-route-OrderDirection="Desc">Address</a>
-                            </th>
-                            <th scope="col" style="width: 20%;">
-                                <a asp-route-Search="@Model.Search" asp-route-OrderBy="Submitted" asp-route-OrderDirection="Desc">Submitted</a>
-                            </th>
-                            <th scope="col" style="width: 35%;">
-                                <a asp-route-Search="@Model.Search" asp-route-OrderBy="Locations" asp-route-OrderDirection="@direction">Locations @Html.Raw(@arrow)</a>
-                            </th>
-                            break;
-                    }
-                    <th scope="col" style="width: 100%;">Action</th>
-        
-                </tr>
-                </thead>
+            @switch (Model.OrderBy)
+            {
+                case "Name":
+                    <th scope="col" style="width: 15%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="@direction">Name @Html.Raw(arrow)</a>
+                    </th>
+                    <th scope="col" style="width: 50%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Address" asp-route-OrderDirection="Desc">Address</a>
+                    </th>
+                    <th scope="col" style="width: 20%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Submitted" asp-route-OrderDirection="Desc">Submitted</a>
+                    </th>
+                    <th scope="col" style="width: 35%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Locations" asp-route-OrderDirection="Desc">Locations</a>
+                    </th>
+                    break;
+                case "Address":
+                    <th scope="col" style="width: 15%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
+                    </th>
+                    <th scope="col" style="width: 50%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Address" asp-route-OrderDirection="@direction">Address @Html.Raw(arrow)</a>
+                    </th>
+                    <th scope="col" style="width: 20%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Submitted" asp-route-OrderDirection="Desc">Submitted</a>
+                    </th>
+                    <th scope="col" style="width: 35%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Locations" asp-route-OrderDirection="Desc">Locations</a>
+                    </th>
+                    break;
+                case "Submitted":
+                    <th scope="col" style="width: 15%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
+                    </th>
+                    <th scope="col" style="width: 50%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Address" asp-route-OrderDirection="Desc">Address</a>
+                    </th>
+                    <th scope="col" style="width: 20%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Submitted" asp-route-OrderDirection="@direction">Submitted @Html.Raw(arrow)</a>
+                    </th>
+                    <th scope="col" style="width: 35%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Locations" asp-route-OrderDirection="Desc">Locations</a>
+                    </th>
+                    break;
+                case "Locations":
+                    <th scope="col" style="width: 15%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
+                    </th>
+                    <th scope="col" style="width: 50%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Address" asp-route-OrderDirection="Desc">Address</a>
+                    </th>
+                    <th scope="col" style="width: 20%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Submitted" asp-route-OrderDirection="Desc">Submitted</a>
+                    </th>
+                    <th scope="col" style="width: 35%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Locations" asp-route-OrderDirection="@direction">Locations @Html.Raw(arrow)</a>
+                    </th>
+                    break;
+            }
+            <th scope="col" style="width: 100%;">Action</th>
+
+        </tr>
+        </thead>
         <tbody>
         @if (Model.Foodbanks.Count != 0)
         {
