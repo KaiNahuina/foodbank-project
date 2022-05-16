@@ -16,14 +16,24 @@
 </div>
 
 <form>
-    <label for="RecipeName">Recipe Name:</label><br/>
-    <input type="text" name="RecipeName"/><br/>
+    
+    <div class="container spacingB spacingT">
+        <label for="RecipeName">Recipe Name:</label><br/>
+        <input type="text" name="RecipeName"/><br/>
+    </div>
 
-    <label for="Ingredients">Ingredients</label>
-    <input type="text" name="Ingredients"/><br/>
 
-    <label for="RecipeInstruction">Recipe Instructions:</label><br/>
-    <input type="text" name="RecipeInstruction"/><br/>
+    <div class="container spacingB spacingT">
+        <label for="Ingredients">Ingredients</label>
+        <textarea class="form-control" name="Ingredients"></textarea><br/>
+    </div>
+
+
+    <div class="container spacingB spacingT">
+        <label for="RecipeInstruction">Recipe Instructions:</label><br/>
+        <textarea class="form-control" name="RecipeInstructions"></textarea><br/>
+    </div>
+
 
     <input type="submit"/>
 </form>
