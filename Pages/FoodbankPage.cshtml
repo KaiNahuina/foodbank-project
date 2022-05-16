@@ -165,7 +165,7 @@
 
         var map = L.map('map').setView([ 54.596442,  -3.9], 6);
 
-        //L.marker([element.coord.lat, element.coord.lng], {icon:foodbankIcon}).bindPopup(element.name.toString() + " <br> " + element.distance.toString() + "m away<br> " + '<a href="/FoodbankPage/'+ element.id +'">Click here to learn more</a>');
+        L.marker([@Html.DisplayFor(modelItem => modelItem.Foodbank.Coord.Y), @Html.DisplayFor(modelItem => modelItem.Foodbank.Coord.X)], {icon:foodbankIcon}).bindPopup("This is a test");
 
         var featureGroup = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
         map.addLayer(featureGroup);
