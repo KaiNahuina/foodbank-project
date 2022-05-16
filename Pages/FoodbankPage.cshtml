@@ -180,7 +180,7 @@
 
         var locationMarker = L.marker([@Html.Raw(Model.Location.Coord.Y),@Html.Raw(Model.Location.Coord.X)], {icon:foodbankIcon}).bindPopup("<a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'>Click here for directions</a>").addTo(map);;
 
-        map.setView([@Html.Raw(Model.Location.Coord.Y),@Html.Raw(Model.Location.Coord.X)], 12);
+        map.setView([@Html.Raw(Model.Location.Coord.Y),@Html.Raw(Model.Location.Coord.X)], 15);
 
         var geocoder = L.Control.Geocoder.nominatim({
              geocodingQueryParams: {countrycodes: 'gb,im,gg,je'}
