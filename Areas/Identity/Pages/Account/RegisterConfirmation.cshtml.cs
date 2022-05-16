@@ -20,8 +20,8 @@ namespace Foodbank_Project.Areas.Identity.Pages.Account;
 [AllowAnonymous]
 public class RegisterConfirmationModel : PageModel
 {
-    private readonly UserManager<IdentityUser> _userManager;
     private readonly IEmailSender _sender;
+    private readonly UserManager<IdentityUser> _userManager;
 
     public RegisterConfirmationModel(UserManager<IdentityUser> userManager, IEmailSender sender)
     {

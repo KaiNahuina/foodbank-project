@@ -48,7 +48,7 @@
             @if (Model.OrderBy == "Name")
             {
                 <th scope="col" style="width: 75%;">
-                    <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="@direction">Name @Html.Raw(@arrow)</a>
+                    <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="@direction">Name @Html.Raw(arrow)</a>
                 </th>
                 <th scope="col" style="width: 100%;">
                     <a asp-route-Search="@Model.Search" asp-route-OrderBy="Count" asp-route-OrderDirection="Desc">Count</a>
@@ -60,7 +60,7 @@
                     <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
                 </th>
                 <th scope="col" style="width: 100%;">
-                    <a asp-route-Search="@Model.Search" asp-route-OrderBy="Count" asp-route-OrderDirection="@direction">Count @Html.Raw(@arrow)</a>
+                    <a asp-route-Search="@Model.Search" asp-route-OrderBy="Count" asp-route-OrderDirection="@direction">Count @Html.Raw(arrow)</a>
                 </th>
             }
             <th scope="col" style="width: 100%;">Action</th>

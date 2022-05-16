@@ -15,15 +15,15 @@ public class FoodbanksModel : PageModel
     private readonly ApplicationContext _ctx;
 
     public IList<Foodbank> Foodbanks;
-    
-    public string OrderDirection;
+    public bool HasNextPage;
+    public bool HasPrevPage;
+    public int MaxPages;
     public string OrderBy;
+
+    public string OrderDirection;
     public int Page;
     public string Search;
-    public bool HasPrevPage;
-    public bool HasNextPage;
     public int TotalItems;
-    public int MaxPages;
 
     public FoodbanksModel(ApplicationContext ctx)
     {
@@ -34,16 +34,12 @@ public class FoodbanksModel : PageModel
         [FromQuery(Name = "OrderDirection")] string? orderDirection,
         [FromQuery(Name = "Search")] string? search, [FromQuery(Name = "Page")] string? page)
     {
-
         OrderBy = string.IsNullOrEmpty(orderBy) ? "Locations" : orderBy;
         OrderDirection = string.IsNullOrEmpty(orderDirection) ? "Desc" : orderDirection;
         if (!int.TryParse(page, out Page)) Page = 1;
         if (string.IsNullOrEmpty(search))
         {
-            if (string.IsNullOrEmpty(Search))
-            {
-                Search = "";
-            }
+            if (string.IsNullOrEmpty(Search)) Search = "";
         }
         else
         {
@@ -54,7 +50,8 @@ public class FoodbanksModel : PageModel
                 select f).AsNoTracking().Include(f => f.Locations)
             .OrderByDescending(n => n.Name)
             .Where(n =>
-                string.IsNullOrEmpty(Search) || n.Name.Contains(Search) || n.Address.Contains(Search) || n.Postcode.Contains(Search)
+                string.IsNullOrEmpty(Search) || n.Name.Contains(Search) || n.Address.Contains(Search) ||
+                n.Postcode.Contains(Search)
                 || n.FoodbankId.ToString() == Search);
 
         // do sort and filter shizzle here
@@ -123,7 +120,7 @@ public class FoodbanksModel : PageModel
 
         TotalItems = await foodbankQue.CountAsync();
         MaxPages = (int)Math.Ceiling(TotalItems / 25d);
-        
+
         HasNextPage = Page < MaxPages;
 
         Foodbanks = await foodbankQue.Skip((Page - 1) * 25).Take(25).ToListAsync();

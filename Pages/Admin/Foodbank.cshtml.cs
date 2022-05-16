@@ -13,12 +13,12 @@ public class FoodbankModel : PageModel
 {
     private readonly ApplicationContext _ctx;
 
-    public Foodbank Foodbank { get; set; }
-
     public FoodbankModel(ApplicationContext ctx)
     {
         _ctx = ctx;
     }
+
+    public Foodbank Foodbank { get; set; }
 
     public async Task OnGetAsync()
     {
