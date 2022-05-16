@@ -55,4 +55,9 @@ public class GetHelpLandingModel : PageModel
 
         return new JsonResult(top5Locations);
     }
+    public class Coords
+    {
+        public double Lat { get; set; }
+        public double Lng { get; set; }
+    }
 }

@@ -167,9 +167,6 @@
 
         L.marker([@Html.DisplayFor(modelItem => modelItem.Foodbank.Coord.Y), @Html.DisplayFor(modelItem => modelItem.Foodbank.Coord.X)], {icon:foodbankIcon}).bindPopup("This is a test");
 
-        var featureGroup = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
-        map.addLayer(featureGroup);
-
         var geocoder = L.Control.Geocoder.nominatim({
              geocodingQueryParams: {countrycodes: 'gb,im,gg,je'}
         });
@@ -183,13 +180,6 @@
             console.warn('Unsupported geocoder', geocoderString);
           }
         }
-
-        var control = L.Control.geocoder({
-            query: "@Html.DisplayFor(model => model.Location)",
-            collapsed: false,
-            placeholder: 'Search Postcode or Address',
-            geocoder
-        })
 
         L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
