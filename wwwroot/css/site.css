@@ -101,6 +101,10 @@ p {
     width: 40%;
 }
 
+.imageMini {
+    width: 20%;
+}
+
 .imageLogo {
     width: 20%;
 }
@@ -221,3 +225,6 @@ a:hover {
     align-self: center;
 }
 
+.noUnderlines{
+    text-decoration: none;
+}
