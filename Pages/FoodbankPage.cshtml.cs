@@ -15,6 +15,7 @@ public class FoodbankPageModel : PageModel
 {
     private readonly ApplicationContext _ctx;
 
+    public Foodbank Foodbank { get; set; }
     public Location Location { get; set; }
 
     public FoodbankPageModel(ApplicationContext ctx)
@@ -24,9 +25,11 @@ public class FoodbankPageModel : PageModel
 
     public async Task OnGetAsync([FromRoute(Name = "id")]int location)
     {
-        Location = await _ctx
-            .Locations.AsNoTracking().Include(l => l.Foodbank).Where(l => l.Foodbank.Status == Status.Approved)
-            .Where(l => l.LocationId == location).FirstAsync();
+        var locale = _ctx.Locations.AsNoTracking().Where(l => l.LocationId == location);
+        Location = await locale.FirstAsync();
+
+        var foodbank = locale.Include(l => l.Foodbank).ThenInclude(f => f.Locations).Select(l => l.Foodbank);
+        Foodbank = await foodbank.FirstAsync();
 
     }
 
