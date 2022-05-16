@@ -59,7 +59,11 @@ public static class FoodbankHelpers
         foodbank.Needs = new List<Need>();
         var needs = externalFoodbank.Needs?.NeedsStr?.Split("\r\n") ?? Array.Empty<string>();
         foreach (var need in needs)
-            foodbank.Needs.Add(need == "Unknown" ? new Need { NeedStr = null } : new Need { NeedStr = need });
+        {
+            var trim_need = need.Replace("\u200B", "");
+            foodbank.Needs.Add(trim_need == "Unknown" || string.IsNullOrWhiteSpace(trim_need) ? new Need { NeedStr = null } : new Need { NeedStr = trim_need });
+        }
+            
 
         return foodbank;
     }
