@@ -27,7 +27,7 @@
                 <div class="col-sm-4">
                     <h3>name and address</h3>
                     <p class="text-box"><b>Address: </b>@Html.DisplayFor(modelItem => modelItem.Location.Address) <br/> 
-                                        <b>Postcode: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank.Country) <br/>
+                                        <b>Country: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank.Country) <br/>
                                         <b>Postcode: </b>@Html.DisplayFor(modelItem => modelItem.Location.Postcode) <br/> </p>
                 </div>
                 <div class="col-sm-4">
@@ -163,14 +163,14 @@
     <script type="text/javascript">
 
         var foodbankIcon = L.icon({
-              iconUrl: '/Images/leaf.png',//https://www.flaticon.com/free-icon/leaf_892917?term=leaf&page=1&position=3&page=1&position=3&related_id=892917&origin=tag
+              iconUrl: '/img/leaf.png',//https://www.flaticon.com/free-icon/leaf_892917?term=leaf&page=1&position=3&page=1&position=3&related_id=892917&origin=tag
               iconSize:     [30, 30],
               iconAnchor:   [0, 30],
               popupAnchor:  [15, -30] // point from which the popup should open relative to the iconAnchor
         });
 
         var warehouseIcon = L.icon({
-              iconUrl: '/Images/warehouse.png',//copy righted dont use for final
+              iconUrl: '/img/warehouse.png',//copy righted dont use for final
               iconSize:     [50, 50],
               iconAnchor:   [25, 50],
               popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
@@ -178,7 +178,9 @@
 
         var map = L.map('map').setView([ 54.596442,  -3.9], 6);
 
-        L.marker([@Html.DisplayFor(modelItem => modelItem.Foodbank.Coord.Y),@Html.DisplayFor(modelItem => modelItem.Foodbank.Coord.X)], {icon:foodbankIcon}).bindPopup("This is a test");
+        var locationMarker = L.marker([@Html.Raw(Model.Location.Coord.Y),@Html.Raw(Model.Location.Coord.X)], {icon:foodbankIcon}).bindPopup("This is a test").addTo(map);;
+
+        map.setView([@Html.Raw(Model.Location.Coord.Y),@Html.Raw(Model.Location.Coord.X)], 12);
 
         var geocoder = L.Control.Geocoder.nominatim({
              geocodingQueryParams: {countrycodes: 'gb,im,gg,je'}
