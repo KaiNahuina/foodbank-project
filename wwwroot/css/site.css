@@ -106,7 +106,9 @@ p {
 }
 
 .recipe-icons {
-    width: 30%;
+    height: 175px;
+    width: 175px;
+    
 }
 
 .map-iframe {
