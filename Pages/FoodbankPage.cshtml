@@ -59,7 +59,7 @@
 
     <div class="row">
         <div class="col-sm-12">
-            <h3>Directions for map</h3> <!-- link that sends them to google with their lat and long as a search function-->
+            <h3><a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'>Click here for directions</a></h3> <!-- link that sends them to google with their lat and long as a search function-->
         </div>
     </div>
 
@@ -178,7 +178,7 @@
 
         var map = L.map('map').setView([ 54.596442,  -3.9], 6);
 
-        var locationMarker = L.marker([@Html.Raw(Model.Location.Coord.Y),@Html.Raw(Model.Location.Coord.X)], {icon:foodbankIcon}).bindPopup("This is a test").addTo(map);;
+        var locationMarker = L.marker([@Html.Raw(Model.Location.Coord.Y),@Html.Raw(Model.Location.Coord.X)], {icon:foodbankIcon}).bindPopup("<a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'>Click here for directions</a>").addTo(map);;
 
         map.setView([@Html.Raw(Model.Location.Coord.Y),@Html.Raw(Model.Location.Coord.X)], 12);
 
