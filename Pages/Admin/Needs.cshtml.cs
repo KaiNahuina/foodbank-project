@@ -23,6 +23,8 @@ public class StockModel : PageModel
     public string Search;
     public bool HasPrevPage;
     public bool HasNextPage;
+    public int TotalItems;
+    public int MaxPages;
     
 
     public StockModel(ApplicationContext ctx)
@@ -55,7 +57,7 @@ public class StockModel : PageModel
             .Include(n => n.Foodbanks)
             .OrderByDescending(n => n.Foodbanks.Count)
             .Where(n => n.NeedStr != null).Where(n =>
-                string.IsNullOrEmpty(Search) || n.NeedStr.Contains(Search) || n.NeedId.Equals(Search));
+                string.IsNullOrEmpty(Search) || n.NeedStr.Contains(Search) || n.NeedId.ToString() == Search);
 
         // do sort and filter shizzle here
 
@@ -101,7 +103,10 @@ public class StockModel : PageModel
 
         HasPrevPage = Page > 1;
 
-        HasNextPage = Page < (int)Math.Ceiling(await needQue.CountAsync() / 25d);
+        TotalItems = await needQue.CountAsync();
+        MaxPages = (int)Math.Ceiling(TotalItems / 25d);
+        
+        HasNextPage = Page < MaxPages;
 
         Needs = await needQue.Skip((Page - 1) * 25).Take(25).ToListAsync();
     }
