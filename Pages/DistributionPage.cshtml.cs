@@ -11,14 +11,14 @@ using Location = Foodbank_Project.Models.Location;
 
 namespace Foodbank_Project.Pages;
 
-public class FoodbankPageModel : PageModel
+public class DistributionPageModel : PageModel
 {
     private readonly ApplicationContext _ctx;
 
     public Foodbank Foodbank { get; set; }
     public Location Location { get; set; }
 
-    public FoodbankPageModel(ApplicationContext ctx)
+    public DistributionPageModel(ApplicationContext ctx)
     {
         _ctx = ctx;
     }

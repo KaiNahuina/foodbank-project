@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
+using System.Collections.ObjectModel;
 using Location = Foodbank_Project.Models.Location;
 
 #endregion
@@ -14,6 +15,7 @@ namespace Foodbank_Project.Pages;
 
 public class GetHelpLandingModel : PageModel
 {
+
     private readonly ApplicationContext _ctx;
 
     public GetHelpLandingModel(ApplicationContext ctx)
@@ -47,14 +49,12 @@ public class GetHelpLandingModel : PageModel
                     Lat = l.Coord.Y,
                     Lng = l.Coord.X
                 }
-            }).ToListAsync();
+            }).ToArrayAsync();
 
         var top5Locations = foodBankLocations.OrderBy(l => l.Distance).Take(5).ToList();
 
         return new JsonResult(top5Locations);
     }
-
-    // DTO
     public class Coords
     {
         public double Lat { get; set; }
