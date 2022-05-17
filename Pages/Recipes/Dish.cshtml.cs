@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Foodbank_Project.Pages
+namespace Foodbank_Project.Pages.Recipes
 {
-    public class HalalRecipesModel : PageModel
+    public class DishModel : PageModel
     {
         public void OnGet()
         {
