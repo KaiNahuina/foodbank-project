@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 #endregion
 
-namespace Foodbank_Project.Pages.Recipes.IndexModel;
+namespace Foodbank_Project.Pages.Recipes;
 
 public class IndexModel : PageModel
 {
