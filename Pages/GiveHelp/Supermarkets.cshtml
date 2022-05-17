@@ -1,0 +1,44 @@
+﻿@page
+@model SupermarketsModel
+@{
+    ViewData["Title"] = "Donate Food to Supermarkets";
+}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="m-2 d-grid">
+                <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GiveHelp/GiveHelpFoodbank">Donate&nbspTo Foodbank</a>
+            </div>
+            <div class="m-2 d-grid">
+                <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GiveHelp/Supermarket">Donate&nbsp;To Supermarket&nbsp;Point</a>
+            </div>
+            <div class="m-2 d-grid">
+                <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GiveHelp/Index">Give&nbsp;Help Another&nbsp;Way</a>
+            </div>
+
+
+        </div>
+        <div class="col-sm-8 text-center">
+            <h1 class="display-4">Donate Food at Supermarket Collection Points</h1>
+        </div>
+        <div class="col-md-36 text-center">
+            <h1 class="display-4"></h1>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <figure class="text-center">
+                <p class=" text-box h4">
+                    Many supermarkets have collection points where you can donate food to a foodbank. Supermarkets form partnerships with foodbanks and associated organizations to distribute donations to those collection points to the foodbanks that may need it the most. Bear in mind that supermarkets require that the food you donate be from their stores or, alternatively be presented in a certain condition such as being wrapped or sealed.
+                </p>
+            </figure>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <img src="/img/SupermarketLogos.jpg" class="img-fluid rounded mx-auto d-block image-box" alt="Supermarket Logos"/>
+</div>

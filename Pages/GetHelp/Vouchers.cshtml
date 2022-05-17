@@ -1,0 +1,101 @@
+﻿@page
+@model VoucherModel
+@{
+    ViewData["Title"] = "Voucher System";
+}
+
+
+<form method="post">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="m-2 d-grid">
+                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelp/Index">Find&nbsp;a&nbsp;Foodbank</a>
+                </div>
+                <div class="m-2 d-grid">
+                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelp/Vouchers">How&nbsp;the System&nbsp;Works</a>
+                </div>
+                <div class="m-2 d-grid">
+                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/Index">Home</a>
+                </div>
+
+            </div>
+            <div class="col-sm-6 text-center">
+                <h1 class="display-4">How the Foodbank System Works</h1>
+            </div>
+            <div class="col-md-36 text-center">
+                <h1 class="display-4"></h1>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<div class="container mt-2 spacingT">
+    <div class="row grid">
+        <div class="col-sm spacingT">
+            <h3 class="spacingB">Step 1:Find A Foodbank</h3>
+            <p class="text-box">
+                Locate your nearest foodbank by clicking "Find a Foodbank" above. Most foodbanks require a referral and a voucher before food can be collected
+            </p>
+        </div>
+
+        <div class="col-sm spacingT">
+            <h3 class="spacingB">Step 2: Obtain A Voucher</h3>
+            <p class="text-box">
+                Referrals for obtaining a voucher can be found from various local and national authorities such as
+                local councils, Health clinics. The and Citizen Advice Bureau will have a list of issuing authorities for your area. Their telephone numbers are below.
+            </p>
+        </div>
+
+        <div class="col-sm spacingT">
+            <h3 class="spacingB">Step 3: Get Food</h3>
+            <p class="text-box">After obtaining a voucher find your preferred foodbank and arrive during their particular opening hours.</p>
+        </div>
+
+
+    </div>
+
+</div>
+
+
+@*Phone numbers/contacts*@
+
+<div class="container mt-3">
+    <div class="row">
+
+        <div class="col-sm-4 spacingT">
+            <h3 class="text-center">England and Wales</h3>
+            <h3 class="text-center">0808 208 2138</h3>
+
+            <div class="image-box d-flex justify-content-center align-items-center">
+                <img src="/img/EnW.png" alt="Citizens Advice Logo" style="width:75px;height:75px"/>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4 spacingT">
+            <h3 class="text-center">Northern Ireland</h3>
+            <h3 class="text-center">0800 915 4604</h3>
+
+            @*            <div class="imageGH spacingB">
+*@
+            <div class="image-box d-flex justify-content-center align-items-center">
+                <img src="/img/NorthIreland.png" alt="Advice NI Logo" style="width:150px;height:75px"/>
+            </div>
+
+
+        </div>
+
+        <div class="col-sm-4 spacingT">
+            <h3 class="text-center">Scotland</h3>
+            <h3 class="text-center">0800 028 1456</h3>
+
+            <div class="image-box d-flex justify-content-center align-items-center">
+                <img src="/img/Scotland.png" alt="Citizens Advice Scotland Logo" style="width:75px;height:75px"/>
+            </div>
+        </div>
+
+    </div>
+
+</div>
