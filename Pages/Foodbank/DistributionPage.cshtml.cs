@@ -1,21 +1,19 @@
 #region
 
 using Foodbank_Project.Data;
-using Foodbank_Project.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using NetTopologySuite.Geometries;
 using Location = Foodbank_Project.Models.Location;
 #endregion
 
-namespace Foodbank_Project.Pages;
+namespace Foodbank_Project.Pages.Foodbank;
 
 public class DistributionPageModel : PageModel
 {
     private readonly ApplicationContext _ctx;
 
-    public Foodbank Foodbank { get; set; }
+    public Models.Foodbank Foodbank { get; set; }
     public Location Location { get; set; }
 
     public DistributionPageModel(ApplicationContext ctx)

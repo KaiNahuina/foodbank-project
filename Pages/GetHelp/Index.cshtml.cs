@@ -11,14 +11,14 @@ using Location = Foodbank_Project.Models.Location;
 
 #endregion
 
-namespace Foodbank_Project.Pages;
+namespace Foodbank_Project.Pages.GetHelp;
 
-public class GetHelpLandingModel : PageModel
+public class IndexModel : PageModel
 {
 
     private readonly ApplicationContext _ctx;
 
-    public GetHelpLandingModel(ApplicationContext ctx)
+    public IndexModel(ApplicationContext ctx)
     {
         _ctx = ctx;
     }

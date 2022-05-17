@@ -1,5 +1,5 @@
 ﻿@page
-@model GiveHelpSupermarketsModel
+@model SupermarketsModel
 @{
     ViewData["Title"] = "Donate Food to Supermarkets";
 }
@@ -7,13 +7,13 @@
     <div class="row">
         <div class="col-md-3">
             <div class="m-2 d-grid">
-                <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GiveHelpFoodbank">Donate&nbspTo Foodbank</a>
+                <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GiveHelp/GiveHelpFoodbank">Donate&nbspTo Foodbank</a>
             </div>
             <div class="m-2 d-grid">
-                <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GiveHelpSupermarket">Donate&nbsp;To Supermarket&nbsp;Point</a>
+                <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GiveHelp/Supermarket">Donate&nbsp;To Supermarket&nbsp;Point</a>
             </div>
             <div class="m-2 d-grid">
-                <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GiveHelp">Give&nbsp;Help Another&nbsp;Way</a>
+                <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GiveHelp/Index">Give&nbsp;Help Another&nbsp;Way</a>
             </div>
 
 
@@ -40,5 +40,5 @@
 </div>
 
 <div class="container">
-    <img src="~/img/SupermarketLogos.jpg" class="img-fluid rounded mx-auto d-block image-box" alt="Supermarket Logos"/>
+    <img src="/img/SupermarketLogos.jpg" class="img-fluid rounded mx-auto d-block image-box" alt="Supermarket Logos"/>
 </div>
