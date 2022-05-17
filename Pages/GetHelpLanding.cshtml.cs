@@ -16,25 +16,18 @@ public class GetHelpLandingModel : PageModel
 {
     private readonly ApplicationContext _ctx;
 
-    public string? Location { get; set; }
-
-    public ICollection<Location> Locations { get; set; }
-
     public GetHelpLandingModel(ApplicationContext ctx)
     {
         _ctx = ctx;
     }
 
+    public string? Location { get; set; }
+
+    public ICollection<Location> Locations { get; set; }
+
     public async Task OnGetAsync()
     {
         Location = RouteData.Values?["Location"]?.ToString() ?? null;
-    }
-
-    // DTO
-    public class Coords
-    {
-        public double Lat { get; set; }
-        public double Lng { get; set; }
     }
 
     public async Task<JsonResult> OnPostCoordAsync([FromBody] Coords obj)
@@ -59,5 +52,12 @@ public class GetHelpLandingModel : PageModel
         var top5Locations = foodBankLocations.OrderBy(l => l.Distance).Take(5).ToList();
 
         return new JsonResult(top5Locations);
+    }
+
+    // DTO
+    public class Coords
+    {
+        public double Lat { get; set; }
+        public double Lng { get; set; }
     }
 }

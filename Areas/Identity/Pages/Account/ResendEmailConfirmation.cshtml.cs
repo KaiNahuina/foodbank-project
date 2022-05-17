@@ -22,8 +22,8 @@ namespace Foodbank_Project.Areas.Identity.Pages.Account;
 [AllowAnonymous]
 public class ResendEmailConfirmationModel : PageModel
 {
-    private readonly UserManager<IdentityUser> _userManager;
     private readonly IEmailSender _emailSender;
+    private readonly UserManager<IdentityUser> _userManager;
 
     public ResendEmailConfirmationModel(UserManager<IdentityUser> userManager, IEmailSender emailSender)
     {
@@ -37,21 +37,6 @@ public class ResendEmailConfirmationModel : PageModel
     /// </summary>
     [BindProperty]
     public InputModel Input { get; set; }
-
-    /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
-    /// </summary>
-    public class InputModel
-    {
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-    }
 
     public void OnGet()
     {
@@ -83,5 +68,20 @@ public class ResendEmailConfirmationModel : PageModel
 
         ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
         return Page();
+    }
+
+    /// <summary>
+    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+    ///     directly from your code. This API may change or be removed in future releases.
+    /// </summary>
+    public class InputModel
+    {
+        /// <summary>
+        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+        ///     directly from your code. This API may change or be removed in future releases.
+        /// </summary>
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
     }
 }
