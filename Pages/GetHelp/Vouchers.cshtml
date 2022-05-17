@@ -1,5 +1,5 @@
 ﻿@page
-@model GetHelpVoucherModel
+@model VoucherModel
 @{
     ViewData["Title"] = "Voucher System";
 }
@@ -10,10 +10,10 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="m-2 d-grid">
-                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelpLanding">Find&nbsp;a&nbsp;Foodbank</a>
+                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelp/Index">Find&nbsp;a&nbsp;Foodbank</a>
                 </div>
                 <div class="m-2 d-grid">
-                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelpVoucher">How&nbsp;the System&nbsp;Works</a>
+                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelp/Vouchers">How&nbsp;the System&nbsp;Works</a>
                 </div>
                 <div class="m-2 d-grid">
                     <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/Index">Home</a>
@@ -69,7 +69,7 @@
             <h3 class="text-center">0808 208 2138</h3>
 
             <div class="image-box d-flex justify-content-center align-items-center">
-                <img src="~/img/EnW.png" alt="Citizens Advice Logo" style="width:75px;height:75px"/>
+                <img src="/img/EnW.png" alt="Citizens Advice Logo" style="width:75px;height:75px"/>
             </div>
 
         </div>
@@ -81,7 +81,7 @@
             @*            <div class="imageGH spacingB">
 *@
             <div class="image-box d-flex justify-content-center align-items-center">
-                <img src="~/img/NorthIreland.png" alt="Advice NI Logo" style="width:150px;height:75px"/>
+                <img src="/img/NorthIreland.png" alt="Advice NI Logo" style="width:150px;height:75px"/>
             </div>
 
 
@@ -92,7 +92,7 @@
             <h3 class="text-center">0800 028 1456</h3>
 
             <div class="image-box d-flex justify-content-center align-items-center">
-                <img src="~/img/Scotland.png" alt="Citizens Advice Scotland Logo" style="width:75px;height:75px"/>
+                <img src="/img/Scotland.png" alt="Citizens Advice Scotland Logo" style="width:75px;height:75px"/>
             </div>
         </div>
 

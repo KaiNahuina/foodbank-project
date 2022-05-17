@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 #endregion
 
-namespace Foodbank_Project.Pages;
+namespace Foodbank_Project.Pages.GetHelp;
 
-public class GetHelpVoucherModel : PageModel
+public class VoucherModel : PageModel
 {
     public void OnGet()
     {

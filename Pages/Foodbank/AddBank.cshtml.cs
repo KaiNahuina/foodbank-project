@@ -7,14 +7,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 #endregion
 
-namespace Foodbank_Project.Pages;
+namespace Foodbank_Project.Pages.Foodbank;
 
 public class AddBankModel : PageModel
 {
 
     private ApplicationContext _ap;
 
-    public Foodbank foodbank { get; set; }
+    public Models.Foodbank foodbank { get; set; }
 
     private Need need { get; set; }
 

@@ -1,10 +1,9 @@
 using Foodbank_Project.Data;
-using Foodbank_Project.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace Foodbank_Project.Pages
+namespace Foodbank_Project.Pages.Foodbank
 {
     public class EditBankModel : PageModel
     {
@@ -14,7 +13,7 @@ namespace Foodbank_Project.Pages
             _ap = ap;
         }
 
-        public Foodbank foodEdit { get; set; }
+        public Models.Foodbank foodEdit { get; set; }
 
         public async Task<IActionResult> OnPostSaveAsync()
         {

@@ -1,24 +1,24 @@
 ﻿@page "{Location?}"
-@model GetHelpLandingModel
+@model IndexModel
 @{
     ViewData["Title"] = "Get Help";
 }
-<link rel="stylesheet" href="~/css/Control.Geocoder.css"/>
+<link rel="stylesheet" href="/css/Control.Geocoder.css"/>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css"/>
 
 
 <script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
-<script src="~/js/Control.Geocoder.js"></script>
+<script src="/js/Control.Geocoder.js"></script>
 
 <form method="post">
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-3">
                 <div class="m-2 d-grid">
-                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelpLanding">Find&nbsp;a&nbsp;Foodbank</a>
+                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelp/Index">Find&nbsp;a&nbsp;Foodbank</a>
                 </div>
                 <div class="m-2 d-grid">
-                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelpVoucher">How&nbsp;the System&nbsp;Works</a>
+                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelp/Vouchers">How&nbsp;the System&nbsp;Works</a>
                 </div>
                 <div class="m-2 d-grid">
                     <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/Index">Home</a>
@@ -108,7 +108,7 @@
           control._expand();
           $.ajax({
               type: "POST",
-              url: '/GetHelpLanding?handler=Coord',
+              url: '/GetHelp/Index?handler=Coord',
               data: JSON.stringify({Lat: usersLatitude, Lng: usersLongitude}),
               contentType: "application/json; charset=utf-8",
               beforeSend (xhr){
@@ -124,8 +124,8 @@
                  var iterator = 0;
 
                  for(const element of result){
-                     closest5Markers[iterator] = L.marker([element.coord.lat, element.coord.lng], {icon:foodbankIcon}).bindPopup(element.name.toString() + " <br> " + element.distance.toString() + "m away<br> " + '<a href="/FoodbankPage/'+ element.id +'">Click here to learn more</a>');    //need to figure out how to new line these and format the distance so we get no deciamals
-                     $("#FoodbankClosest" + (iterator+1)).html("<p>" + element.name.toString() + "<br>" + element.address.toString() + "<br>" + element.distance.toString() + "m away <br> " + ' <a href="/FoodbankPage/'+ element.id + '">Click here to learn more</a>' + "</p>");
+                     closest5Markers[iterator] = L.marker([element.coord.lat, element.coord.lng], {icon:foodbankIcon}).bindPopup(element.name.toString() + " <br> " + element.distance.toString() + "m away<br> " + '<a href="/Foodbank/Index/'+ element.id +'">Click here to learn more</a>');    //need to figure out how to new line these and format the distance so we get no deciamals
+                     $("#FoodbankClosest" + (iterator+1)).html("<p>" + element.name.toString() + "<br>" + element.address.toString() + "<br>" + element.distance.toString() + "m away <br> " + ' <a href="/Foodbank/Index/'+ element.id + '">Click here to learn more</a>' + "</p>");
                      iterator++;
 
                      //document.getElementById("Testcontainer").innerHTML += element.name.toString() + "<br";
@@ -141,7 +141,7 @@
                  map.fitBounds([markerGroup.getBounds().pad(0.2), e.bbox]);
 
                  if (history.pushState) {
-                    var newurl = window.location.protocol + "//" + window.location.host + '/GetHelpLanding/' + control._input.value;   //change testmap name
+                    var newurl = window.location.protocol + "//" + window.location.host + '/GetHelp/Index/' + control._input.value;   //change testmap name
                     window.history.pushState({path:newurl},'',newurl);
                 }
               },

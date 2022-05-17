@@ -13,7 +13,7 @@ public class IndexModel : PageModel
 {
     private readonly ApplicationContext _ctx;
 
-    public IList<Foodbank> Foodbanks;
+    public IList<Models.Foodbank> Foodbanks;
 
     public IndexModel(ApplicationContext ctx)
     {
