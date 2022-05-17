@@ -1,5 +1,6 @@
 ﻿#region
 
+using System.ComponentModel.DataAnnotations;
 using NetTopologySuite.Geometries;
 
 #endregion

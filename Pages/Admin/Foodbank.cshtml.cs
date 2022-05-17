@@ -1,6 +1,7 @@
 #region
 
 using Foodbank_Project.Data;
+using Foodbank_Project.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,7 @@ public class FoodbankModel : PageModel
     {
         var id = int.Parse(RouteData.Values["id"] as string);
         var foodbanks = from f in _ctx.Foodbanks where f.FoodbankId == id select f;
+
 
         Foodbank = await foodbanks.AsNoTracking().Include(f => f.Locations).Include(f => f.Needs).FirstAsync();
     }
