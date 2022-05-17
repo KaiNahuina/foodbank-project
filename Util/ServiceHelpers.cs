@@ -8,44 +8,6 @@ namespace Foodbank_Project.Util;
 
 public static class ServiceHelpers
 {
-    public struct ResultWrapper<T>
-    {
-        public ResultWrapper()
-        {
-            Result = default;
-            ResultCode = Code.NotRun;
-            Ex = null;
-        }
-
-        public Code ResultCode;
-        public T? Result;
-        public Exception? Ex;
-
-        public enum Code
-        {
-            Success,
-            Timeout,
-            Errored,
-            NotRun,
-            NoErrorNoRun,
-            Cancelled
-        }
-
-        public override string ToString()
-        {
-            StringBuilder sb = new();
-            sb.Append("ResultWrapper<");
-            sb.Append(typeof(T));
-            sb.AppendLine(">:");
-            sb.Append("    Result: ");
-            sb.AppendLine(Result?.ToString() ?? "");
-            sb.Append("    Code: ");
-            sb.AppendLine(ResultCode.ToString());
-            if (Ex != null) sb.AppendLine(Ex.ToString());
-            return sb.ToString();
-        }
-    }
-
     public static async Task<ResultWrapper<T>> TimeoutTask<T>(int timeoutMs,
         Func<CancellationToken, Task<T>> target, CancellationToken cancellationToken)
     {
@@ -129,5 +91,43 @@ public static class ServiceHelpers
             // silently kill error
         }
         // rethrow exception to preserve stack
+    }
+
+    public struct ResultWrapper<T>
+    {
+        public ResultWrapper()
+        {
+            Result = default;
+            ResultCode = Code.NotRun;
+            Ex = null;
+        }
+
+        public Code ResultCode;
+        public T? Result;
+        public Exception? Ex;
+
+        public enum Code
+        {
+            Success,
+            Timeout,
+            Errored,
+            NotRun,
+            NoErrorNoRun,
+            Cancelled
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new();
+            sb.Append("ResultWrapper<");
+            sb.Append(typeof(T));
+            sb.AppendLine(">:");
+            sb.Append("    Result: ");
+            sb.AppendLine(Result?.ToString() ?? "");
+            sb.Append("    Code: ");
+            sb.AppendLine(ResultCode.ToString());
+            if (Ex != null) sb.AppendLine(Ex.ToString());
+            return sb.ToString();
+        }
     }
 }

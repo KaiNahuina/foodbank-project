@@ -12,17 +12,17 @@ namespace Foodbank_Project.Services;
 
 public class GiveFoodApiService : BackgroundService
 {
-    /* Creating a logger that will be used to log information about the service. */
-    private readonly ILogger _logger;
-
     /* A reference to the configuration file. */
     private readonly IConfiguration _config;
-
-    /* Creating a new instance of the HttpClient class. */
-    private readonly HttpClient _httpClient = new();
     /* A stopwatch that is used to measure the time it takes to get a response from the API. */
 
     private readonly ApplicationContext _ctx;
+
+    /* Creating a new instance of the HttpClient class. */
+    private readonly HttpClient _httpClient = new();
+
+    /* Creating a logger that will be used to log information about the service. */
+    private readonly ILogger _logger;
 
     /* Creating a new instance of the class, and setting the logger and configuration variables which are injected from builder.Services */
     public GiveFoodApiService(ILoggerFactory logger, IConfiguration configuration, IServiceProvider service)
@@ -34,7 +34,7 @@ public class GiveFoodApiService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var skipped = true;
+        var skipped = false;
         _logger.LogInformation("Service started. Runs every {Stamp}",
             TimeSpan.FromSeconds(_config.GetValue<int>("Interval")).ToString(@"h\hm\ms\s"));
         _httpClient.Timeout = TimeSpan.FromSeconds(_config.GetValue<int>("Timeout"));
@@ -42,7 +42,7 @@ public class GiveFoodApiService : BackgroundService
         {
             if (skipped) await Task.Delay(_config.GetValue<int>("Interval") * 1000, stoppingToken);
 
-            skipped = false;
+            skipped = true;
 
             _logger.LogInformation("Service run started");
 
@@ -63,7 +63,7 @@ public class GiveFoodApiService : BackgroundService
                         var resultWrapperInner = await ServiceHelpers.TimeoutTask(
                             _config.GetValue<int>("Timeout") * 1000,
                             async token =>
-                                await GetFoodbank<Foodbank>(resultWrapper.Result[i].Urls?.Self ?? "",
+                                await GetFoodbank<Foodbank>(resultWrapper.Result?[i].Urls?.Self ?? "",
                                     token), stoppingToken);
 
                         switch (resultWrapperInner.ResultCode)
@@ -90,21 +90,21 @@ public class GiveFoodApiService : BackgroundService
                             case ServiceHelpers.ResultWrapper<Foodbank>.Code.Timeout:
                             {
                                 _logger.LogWarning("Service run failed for {Url}! Timeout occured! Will be rescheduled",
-                                    resultWrapper.Result[i].Urls?.Self ?? "");
+                                    resultWrapper.Result?[i].Urls?.Self ?? "");
                                 break;
                             }
                             case ServiceHelpers.ResultWrapper<Foodbank>.Code.Errored:
                             {
                                 _logger.LogWarning(
-                                    "Service run failed for {0}! Error occured! Will be rescheduled {Exception}",
-                                    resultWrapper.Result[i].Urls?.Self ?? "", resultWrapper.Ex?.ToString() ?? "");
+                                    "Service run failed for {Url}! Error occured! Will be rescheduled {Exception}",
+                                    resultWrapper.Result?[i].Urls?.Self ?? "", resultWrapper.Ex?.ToString() ?? "");
                                 break;
                             }
                             case ServiceHelpers.ResultWrapper<Foodbank>.Code.Cancelled:
                             {
                                 _logger.LogWarning(
-                                    "Service run failed for {0}! Cancellation occured! Will be rescheduled {Ex}",
-                                    resultWrapper.Result[i].Urls?.Self ?? "", resultWrapper.Ex?.ToString() ?? "");
+                                    "Service run failed for {Url}! Cancellation occured! Will be rescheduled {Ex}",
+                                    resultWrapper.Result?[i].Urls?.Self ?? "", resultWrapper.Ex?.ToString() ?? "");
                                 break;
                             }
                         }
