@@ -16,8 +16,8 @@ namespace Foodbank_Project.Areas.Identity.Pages.Account.Manage;
 
 public class DownloadPersonalDataModel : PageModel
 {
-    private readonly UserManager<IdentityUser> _userManager;
     private readonly ILogger<DownloadPersonalDataModel> _logger;
+    private readonly UserManager<IdentityUser> _userManager;
 
     public DownloadPersonalDataModel(
         UserManager<IdentityUser> userManager,

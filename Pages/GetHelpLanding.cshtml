@@ -38,7 +38,7 @@
             <div class="foodbank-list">
                 <div class="m-2 d-grid" id="FoodbankClosest1"></div>
                 <div class="m-2 d-grid" id="FoodbankClosest2"></div>
-                <div class="m-2 d-grid" id="FoodbankClosest3"> </div>
+                <div class="m-2 d-grid" id="FoodbankClosest3"></div>
                 <div class="m-2 d-grid" id="FoodbankClosest4"></div>
                 <div class="m-2 d-grid" id="FoodbankClosest5"></div>
             </div>
@@ -49,7 +49,10 @@
                 @Html.AntiForgeryToken()
             </form>
 
-            <div id="map"></div>
+            <div id="map" style="height: 33.75vw;
+                                 width: 60vw;
+                                 margin: auto;
+                                 margin-top: 2%;"></div>
         </div>
     </div>
 
@@ -57,14 +60,14 @@
     <script type="text/javascript">
 
         var foodbankIcon = L.icon({
-              iconUrl: '/Images/leaf.png',//https://www.flaticon.com/free-icon/leaf_892917?term=leaf&page=1&position=3&page=1&position=3&related_id=892917&origin=tag
+              iconUrl: '/img/leaf.png',//https://www.flaticon.com/free-icon/leaf_892917?term=leaf&page=1&position=3&page=1&position=3&related_id=892917&origin=tag
               iconSize:     [30, 30],
               iconAnchor:   [0, 30],
               popupAnchor:  [15, -30] // point from which the popup should open relative to the iconAnchor
         });
 
         var warehouseIcon = L.icon({
-              iconUrl: '/Images/warehouse.png',//copy righted dont use for final
+              iconUrl: '/img/warehouse.png',//copy righted dont use for final
               iconSize:     [50, 50],
               iconAnchor:   [25, 50],
               popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
@@ -72,7 +75,7 @@
 
         var map = L.map('map').setView([ 54.596442,  -3.9], 6);
 
-        var featureGroup = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+        var featureGroup = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
         map.addLayer(featureGroup);
 
         //map.locate({setView: true, maxZoom: 14}); asks the user for their location
@@ -96,7 +99,7 @@
             query: "@Html.DisplayFor(model => model.Location)",
             collapsed: false,
             placeholder: 'Search Postcode or Address',
-            geocoder: geocoder
+            geocoder
         })
 
         .on('markgeocode', function(e) {
@@ -108,12 +111,12 @@
               url: '/GetHelpLanding?handler=Coord',
               data: JSON.stringify({Lat: usersLatitude, Lng: usersLongitude}),
               contentType: "application/json; charset=utf-8",
-              beforeSend: function(xhr){
+              beforeSend (xhr){
                   xhr.setRequestHeader("RequestVerificationToken", $('input[name="__RequestVerificationToken"]').val());
               },
 
               dataType: 'json',
-              success: function (result){
+              success (result){
                   if (markerGroup != null) {
                       markerGroup.clearLayers();
                   }
@@ -121,8 +124,8 @@
                  var iterator = 0;
 
                  for(const element of result){
-                     closest5Markers[iterator] = L.marker([element.coord.lat, element.coord.lng], {icon:foodbankIcon}).bindPopup(element.name.toString() + " <br> " + element.distance.toString() + "m away<br> " + '<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley">Click here to learn more</a>');    //need to figure out how to new line these and format the distance so we get no deciamals
-                     $("#FoodbankClosest" + (iterator+1)).html("<p>" + element.name.toString() + "<br>" + element.address.toString() + "<br>" + element.distance.toString() + "m away <br> " + " <a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'>Click here to learn more</a>" + "</p>");
+                     closest5Markers[iterator] = L.marker([element.coord.lat, element.coord.lng], {icon:foodbankIcon}).bindPopup(element.name.toString() + " <br> " + element.distance.toString() + "m away<br> " + '<a href="/FoodbankPage/'+ element.id +'">Click here to learn more</a>');    //need to figure out how to new line these and format the distance so we get no deciamals
+                     $("#FoodbankClosest" + (iterator+1)).html("<p>" + element.name.toString() + "<br>" + element.address.toString() + "<br>" + element.distance.toString() + "m away <br> " + ' <a href="/FoodbankPage/'+ element.id + '">Click here to learn more</a>' + "</p>");
                      iterator++;
 
                      //document.getElementById("Testcontainer").innerHTML += element.name.toString() + "<br";
@@ -142,8 +145,8 @@
                     window.history.pushState({path:newurl},'',newurl);
                 }
               },
-              error: function(xhr, status, err) {
-                  alert("We weren't unable to return any data")
+              error (xhr, status, err){
+                  alert("We weren't unable to return any data");
                   alert(err.toString(), 'Error - LoadListItemsHelper');
               }
           });
@@ -152,7 +155,7 @@
 
         control._expand();
 
-        geocoder.geocode("@Html.DisplayFor(model => model.Location)", function(ctx){control._geocodeResultSelected(ctx[0])})
+        geocoder.geocode("@Html.DisplayFor(model => model.Location)", function(ctx){control._geocodeResultSelected(ctx[0])});
 
         L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'

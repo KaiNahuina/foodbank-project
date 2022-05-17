@@ -15,9 +15,9 @@ namespace Foodbank_Project.Areas.Identity.Pages.Account.Manage;
 
 public class ResetAuthenticatorModel : PageModel
 {
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
     private readonly ILogger<ResetAuthenticatorModel> _logger;
+    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly UserManager<IdentityUser> _userManager;
 
     public ResetAuthenticatorModel(
         UserManager<IdentityUser> userManager,

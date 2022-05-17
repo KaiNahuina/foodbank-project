@@ -101,12 +101,18 @@ p {
     width: 40%;
 }
 
+.imageMini {
+    width: 20%;
+}
+
 .imageLogo {
     width: 20%;
 }
 
 .recipe-icons {
-    width: 30%;
+    height: 175px;
+    width: 175px;
+    
 }
 
 .map-iframe {
@@ -219,3 +225,6 @@ a:hover {
     align-self: center;
 }
 
+.noUnderlines{
+    text-decoration: none;
+}

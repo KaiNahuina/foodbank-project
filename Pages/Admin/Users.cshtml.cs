@@ -10,8 +10,8 @@ namespace Foodbank_Project.Pages.Admin;
 
 public class UsersModel : PageModel
 {
-    private readonly UserManager<IdentityUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly UserManager<IdentityUser> _userManager;
 
     public IList<IdentityUser> Users;
 
