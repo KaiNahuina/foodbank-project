@@ -1,0 +1,14 @@
+#region
+
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+#endregion
+
+namespace Foodbank_Project.Pages.GiveHelp;
+
+public class VolunteeringModel : PageModel
+{
+    public void OnGet()
+    {
+    }
+}

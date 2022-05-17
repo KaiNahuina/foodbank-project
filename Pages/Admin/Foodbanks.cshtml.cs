@@ -14,7 +14,7 @@ public class FoodbanksModel : PageModel
 {
     private readonly ApplicationContext _ctx;
 
-    public IList<Foodbank> Foodbanks;
+    public IList<Models.Foodbank> Foodbanks;
     public bool HasNextPage;
     public bool HasPrevPage;
     public int MaxPages;

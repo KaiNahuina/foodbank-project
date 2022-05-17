@@ -1,7 +1,6 @@
 #region
 
 using Foodbank_Project.Data;
-using Foodbank_Project.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +17,7 @@ public class FoodbankModel : PageModel
         _ctx = ctx;
     }
 
-    public Foodbank Foodbank { get; set; }
+    public Models.Foodbank Foodbank { get; set; }
 
     public async Task OnGetAsync()
     {

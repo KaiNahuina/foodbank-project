@@ -1,0 +1,49 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Give Help";
+}
+
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="m-2 d-grid">
+                <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GiveHelp/DonateMoney">Donate&nbsp;Funds</a>
+            </div>
+            <div class="m-2 d-grid">
+                <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GiveHelp/Supermarkets">Donate&nbsp;Food</a>
+            </div>
+            <div class="m-2 d-grid">
+                <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GiveHelp/Volunteering">Volunteering</a>
+            </div>
+            <div class="m-2 d-grid">
+                <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GiveHelp/Fundraising">Fundraising</a>
+            </div>
+
+        </div>
+        <div class="col-sm-6 text-center">
+            <h1 class="display-4">Ways To Help</h1>
+        </div>
+        <div class="col-md-36 text-center">
+            <h1 class="display-4"></h1>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <figure class="text-center">
+                <p class=" text-box h4">
+                    There are several ways help can be given, from donating funds to donating food or volunteering.
+                    Click one of the options of the menu above left for more details
+                </p>
+            </figure>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <img src="/img/give-help-ver2.png" class="img-fluid rounded mx-auto d-block" alt="parcel"/>
+</div>
