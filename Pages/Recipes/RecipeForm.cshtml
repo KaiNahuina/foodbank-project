@@ -14,26 +14,32 @@
     </div>
 
 </div>
+<form method="POST" enctype="multipart/form-data">
 
-<form>
-    
     <div class="container spacingB spacingT">
-        <label for="RecipeName">Recipe Name:</label><br/>
-        <input type="text" name="RecipeName"/><br/>
+        <label for="RecipeName">Recipe Name:</label><br />
+        <input asp-for="Recipe.Name" type="text"  /><br />
     </div>
 
 
     <div class="container spacingB spacingT">
         <label for="Ingredients">Ingredients</label>
-        <textarea class="form-control" name="Ingredients"></textarea><br/>
-    </div>
+       <textarea asp-for="Recipe.Ingredients"type="text" class="form-control" ></textarea><br />
+@*        <input asp-for="Recipe.Ingredients"type="text" class="form-control" ><br />
+*@    </div>
 
 
     <div class="container spacingB spacingT">
-        <label for="RecipeInstruction">Recipe Instructions:</label><br/>
-        <textarea class="form-control" name="RecipeInstructions"></textarea><br/>
+        <label for="RecipeMethod">Recipe Method:</label><br />
+        <textarea asp-for="Recipe.Method"type="text" class="form-control"></textarea><br />
     </div>
 
+    <div>
+        Upload Image: (Image size should be 300x300)<br />
+        <input type="file" id="file 1"
+               asp-for="Image"
+               multiple="multiple" />
+    </div>
 
-    <input type="submit"/>
+    <input type="submit" />
 </form>

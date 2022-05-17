@@ -80,7 +80,8 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
 
         modelBuilder.Entity<Need>().Property(n => n.NeedId).IsRequired();
 
-        modelBuilder.Entity<Recipe>().Property(fl => fl.Blob).IsRequired();
+        modelBuilder.Entity<Recipe>().Property(fl => fl.Method).IsRequired();
+        modelBuilder.Entity<Recipe>().Property(fl => fl.Ingredients).IsRequired();
         modelBuilder.Entity<Recipe>().Property(fl => fl.Name).IsRequired();
 
         modelBuilder.Entity<Content>().Property(fl => fl.Blob).IsRequired();

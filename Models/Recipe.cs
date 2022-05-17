@@ -6,7 +6,8 @@ public class Recipe
 
     public string Name { get; set; }
 
-    public string? Blob { get; set; }
+    public string Ingredients { get; set; }
+    public string Method { get; set; }
     public byte[] Image { get; set; }
 
     public RecipeCategory? Category { get; set; }
