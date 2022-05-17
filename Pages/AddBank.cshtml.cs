@@ -18,7 +18,9 @@ public class AddBankModel : PageModel
 
     private Need need { get; set; }
 
-    public string needs;
+    public IList<string> needs;
+
+    private string indNeed;
 
     public string add1;
 
@@ -50,6 +52,10 @@ public class AddBankModel : PageModel
         }
         fullAddress = $"{add1} {add2} {city} {region}";
         foodbank.Address = fullAddress;
+        for(int i = 0; i < needs.Count; i++)
+        {
+            need.NeedStr = needs[i];
+        }
         foodbank.Closed = false;
         foodbank.Status = Status.UnConfirmed;
         _ap.Foodbanks.Add(foodbank);
