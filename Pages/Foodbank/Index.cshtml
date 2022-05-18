@@ -40,25 +40,20 @@
                 <div class="col-sm-2">
                     @if (@Model.Foodbank.Network == "Trussell Trust")
                         {
-                            <img id="trusselTrust" src="/img/TT-Logo.jpg"/>
+                            <img id="trusselTrust" src="/img/TT-Logo.jpg" style="width: 50%;height: 50%"/>
                         }
                     @if (@Model.Foodbank.Network == "IFAN")
                         {
-                            <img id="IFAN" src="/img/IFAN-Logo.jpg"/>
+                            <img id="IFAN" src="/img/IFAN-Logo.jpg" style="width: 50%;height: 50%"/>
                         }
                     @if (@Model.Foodbank.Network == "Independent")
                         {
-                            <img id="Independent" src="/img/Independent-logo.jpg"/>
+                            <img id="Independent" src="/img/Independent-logo.jpg" style="width: 50%;height: 50%"/>
                         }
                     
                     <h3></h3>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <h1>@Html.DisplayFor(modelItem => modelItem.Foodbank.FoodbankId)</h1>
         </div>
     </div>
     <div class="row">
@@ -80,8 +75,13 @@
 
     <div class="row">
         <div class="col-sm-6">
-            <h1>Special Notes</h1> <!-- another for each loop that keeps doing <br> for each new item-->
-            <p class="text-box">@Html.DisplayFor(modelItem => modelItem.Foodbank.ShoppingList)</p>
+            <h1>Foodbank Needs</h1> <!-- another for each loop that keeps doing <br> for each new item-->
+            <p class="text-box">
+                @foreach(var need in Model.Foodbank.Needs)
+                {
+                    @Html.DisplayFor(modelItem => need.NeedStr) <br />
+                }
+            </p>
         </div>
         <div class="col-sm-4">
             <h1>Opening hours</h1>
