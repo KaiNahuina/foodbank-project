@@ -2,6 +2,7 @@
 
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
+using Foodbank_Project.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NetTopologySuite.Geometries;
@@ -19,21 +20,13 @@ public class AddBankModel : PageModel
 
     [BindProperty]
     public Models.Foodbank foodbank { get; set; }
+    public float lat { get; set; }
+    public float lng { get; set; }
 
     public AddBankModel(ApplicationContext ap)
     {
         _ap = ap;
     }
-
-    public class Coords
-    {
-        public double Lat { get; set; }
-        public double Lng { get; set; }
-    }
-
-    public double lat;
-
-    public double lng;
 
     public void onGet()
     {
@@ -43,22 +36,29 @@ public class AddBankModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
-        
-        var geoLoc = new Point(lng, lat) { SRID = 4326 };
+        var geoLoc = new Point(lat, lng) { SRID = 4326 };
         Trace.WriteLine(geoLoc.ToString());
-        foodbank.Slug = foodbank.Name.ToLower();
         foodbank.Coord = geoLoc;
         foodbank.Closed = false;
         foodbank.Protected = true;
+        foodbank.Created = DateTime.Now;
 
-
-        ModelState.ClearValidationState(nameof(foodbank));
-        if (!TryValidateModel(foodbank, nameof(foodbank)))
+        foodbank = FoodbankHelpers.ApplySlug(foodbank);
+        foodbank = FoodbankHelpers.ApplyFinalize(foodbank);
+        ModelState.ClearValidationState(nameof(Foodbank));
+        if (!TryValidateModel(foodbank, nameof(Foodbank)))
         {
+            var errors = ModelState.Select(x => x.Value.Errors).Where(y => y.Count > 0).ToList();
             return Page();
         }
         _ap.Foodbanks.Add(foodbank);
         await _ap.SaveChangesAsync();
         return RedirectToPage("/Index");
+    }
+
+    public class Coords
+    {
+        public double Lat { get; set; }
+        public double Lng { get; set; }
     }
 }
