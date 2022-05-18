@@ -40,15 +40,15 @@
                 <div class="col-sm-2">
                     @if (@Model.Foodbank.Network == "Trussell Trust")
                         {
-                            <img id="trusselTrust" src="/img/TT-Logo.jpg" style="width: 50%;height: 50%"/>
+                            <img id="trusselTrust" src="/img/TT-Logo.jpg" style="width: 70%;height: 70%"/>
                         }
                     @if (@Model.Foodbank.Network == "IFAN")
                         {
-                            <img id="IFAN" src="/img/IFAN-Logo.jpg" style="width: 50%;height: 50%"/>
+                            <img id="IFAN" src="/img/IFAN-Logo.jpg" style="width: 70%;height: 70%"/>
                         }
                     @if (@Model.Foodbank.Network == "Independent")
                         {
-                            <img id="Independent" src="/img/Independent-logo.jpg" style="width: 50%;height: 50%"/>
+                            <img id="Independent" src="/img/Independent-logo.jpg" style="width: 70%;height: 70%"/>
                         }
                     
                     <h3></h3>
@@ -77,9 +77,15 @@
         <div class="col-sm-6">
             <h1>Foodbank Needs</h1> <!-- another for each loop that keeps doing <br> for each new item-->
             <p class="text-box">
-                @foreach(var need in Model.Foodbank.Needs)
+                @if (Model.Foodbank.Needs.Count == 0 || Model.Foodbank.Needs.All( n => n.NeedStr is null))
                 {
-                    @Html.DisplayFor(modelItem => need.NeedStr) <br />
+                    <p>This foodbank has no needs</p>
+                }
+                else{
+                    @foreach(var need in Model.Foodbank.Needs)
+                    {
+                        @Html.DisplayFor(modelItem => need.NeedStr) <br />
+                    }
                 }
             </p>
         </div>
