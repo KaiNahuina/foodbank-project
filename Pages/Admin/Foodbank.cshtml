@@ -90,11 +90,99 @@ else
                 <input class="form-control" value="@Model.Foodbank.Phone" asp-for="Foodbank.Phone"/><br/>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                <label asp-for="Foodbank.Homepage"></label>
+            </div>
+            <div class="col-8">
+                <input class="form-control" value="@Model.Foodbank.Homepage" asp-for="Foodbank.Homepage"/><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label asp-for="Foodbank.Network"></label>
+            </div>
+            <div class="col-8">
+                <input class="form-control" value="@Model.Foodbank.Network" asp-for="Foodbank.Network"/><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label asp-for="Foodbank.Notes"></label>
+            </div>
+            <div class="col-8">
+                <input class="form-control" value="@Model.Foodbank.Notes" asp-for="Foodbank.Notes"/><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label asp-for="Foodbank.Closed"></label>
+            </div>
+            <div class="col-8 form-control-lg form-check form-switch d-flex justify-content-center">
+                <input class="form-check-input" placeholder="@Model.Foodbank.Closed" asp-for="Foodbank.Closed"/><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label>Lat</label>
+            </div>
+            <div class="col-8">
+                <input class="form-control" value="@Model.Lat" asp-for="Lat"/><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label>Lng</label>
+            </div>
+            <div class="col-8">
+                <input class="form-control" value="@Model.Lng" asp-for="Lng"/><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label asp-for="Foodbank.CharityNumber"></label>
+            </div>
+            <div class="col-8">
+                <input class="form-control" value="@Model.Foodbank.CharityNumber" asp-for="Foodbank.CharityNumber"/><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label asp-for="Foodbank.CharityRegisterUrl"></label>
+            </div>
+            <div class="col-8">
+                <input class="form-control" value="@Model.Foodbank.CharityRegisterUrl" asp-for="Foodbank.CharityRegisterUrl"/><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label asp-for="Foodbank.Slug"></label>
+            </div>
+            <div class="col-8">
+                <input class="form-control" value="@Model.Foodbank.Slug" asp-for="Foodbank.Slug"/><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label asp-for="Foodbank.Protected"></label>
+            </div>
+            <div class="col-8 form-control-lg form-check form-switch d-flex justify-content-center">
+                <input class="form-check-input" placeholder="@Model.Foodbank.Protected" asp-for="Foodbank.Protected"/><br/>
+            </div>
+        </div>
+        
         
 
-        <div class="d-flex justify-content-end flex-row">
-            <button name="Action" value="Update" type="submit" class="btn btn-success">Save</button>
-            <button name="Action" value="Delete" type="submit" class="btn btn-danger">Delete</button>
+        <div class="d-flex justify-content-end flex-row ">
+            @if (Model.Action == "Create")
+            {
+                <button name="Action" value="Create" type="submit" class="btn btn-success me-3">Create</button>
+            }
+            else
+            {
+                <button name="Action" value="Update" type="submit" class="btn btn-success me-3">Save</button>
+                <button name="Action" value="Delete" type="submit" class="btn btn-danger">Delete</button>
+            }
         </div>
         
     </form>

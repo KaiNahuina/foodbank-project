@@ -2,9 +2,11 @@
 
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
+using Foodbank_Project.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite.Geometries;
 
 #endregion
 
@@ -22,33 +24,52 @@ public class FoodbankModel : PageModel
 
     [BindProperty]
     public Models.Foodbank Foodbank { get; set; }
+    [BindProperty]
+    public double Lat { get; set; }
+    [BindProperty]
+    public double Lng { get; set; }
 
-    public async Task OnGetAsync([FromQuery(Name = "Action")]string action)
+    public async Task OnGetAsync([FromQuery(Name = "Action")]string? action)
     {
-        if (action != "Create")
+        Action = action ?? "Update";
+        if (Action != "Create")
         {
             var id = int.Parse(RouteData.Values["id"] as string);
             var foodbanks = from f in _ctx.Foodbanks where f.FoodbankId == id select f;
 
 
             Foodbank = await foodbanks.AsNoTracking().Include(f => f.Locations).Include(f => f.Needs).FirstAsync();
+            Lat = Foodbank.Coord.Y;
+            Lng = Foodbank.Coord.X;
         }
         else
         {
-            Action = "Create";
             Foodbank = new Models.Foodbank();
+            Foodbank.Created = DateTime.Now;
         }
 
     }
 
 
-    public async Task<RedirectToPageResult> OnPostAsync([FromQuery(Name = "Action")] string action)
+    public async Task<RedirectToPageResult> OnPostAsync([FromQuery(Name = "Action")] string? action)
     {
-        if (Action != "Delete")
+        Action = action ?? Request.Form["Action"].ToString() ?? "Update";
+        if (Action == "Delete")
         {
             _ctx.Remove(Foodbank);
-            await _ctx.SaveChangesAsync();
         }
+        else if(Action == "Create")
+        {
+            Foodbank.Coord = new Point(Lng, Lat) { SRID = 4326 };
+            Foodbank.Provider = Provider.Internal;
+            Foodbank = FoodbankHelpers.ApplyFinalize(Foodbank);
+            _ctx.Foodbanks?.Update(Foodbank);
+        }else if(Action == "Update")
+        {
+            Foodbank.Coord = new Point(Lng, Lat) { SRID = 4326 };
+            _ctx.Foodbanks?.Update(Foodbank);
+        }
+        await _ctx.SaveChangesAsync();
         return RedirectToPage("./Foodbanks");
     }
 }
