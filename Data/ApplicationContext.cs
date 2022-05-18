@@ -50,11 +50,13 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
 
         modelBuilder.Entity<Location>()
             .HasOne(l => l.Foodbank)
-            .WithMany(f => f.Locations);
+            .WithMany(f => f.Locations)
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Recipe>()
             .HasMany(l => l.Category)
             .WithMany(f => f.Recipes);
+        
 
         modelBuilder.Entity<Foodbank>().Property(f => f.Name).IsRequired();
         modelBuilder.Entity<Foodbank>().Property(f => f.Slug).IsRequired();

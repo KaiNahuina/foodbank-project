@@ -108,7 +108,7 @@
           control._expand();
           $.ajax({
               type: "POST",
-              url: '/GetHelp/Index?handler=Coord',
+              url: '/GetHelp/Index',
               data: JSON.stringify({Lat: usersLatitude, Lng: usersLongitude}),
               contentType: "application/json; charset=utf-8",
               beforeSend (xhr){
@@ -141,7 +141,7 @@
                  map.fitBounds([markerGroup.getBounds().pad(0.2), e.bbox]);
 
                  if (history.pushState) {
-                    var newurl = window.location.protocol + "//" + window.location.host + '/GetHelp/Index/' + control._input.value;   //change testmap name
+                    var newurl = window.location.protocol + "//" + window.location.host + '/GetHelp/Index/?Location=' + control._input.value;   //change testmap name
                     window.history.pushState({path:newurl},'',newurl);
                 }
               },
