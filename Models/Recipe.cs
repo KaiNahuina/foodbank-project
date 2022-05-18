@@ -10,6 +10,7 @@ public class Recipe
     public string Method { get; set; }
     public string? Notes { get; set; }
     public byte[]? Image { get; set; }
+    public Status? Status { get; set; }
 
-    public RecipeCategory? Category { get; set; }
+    public ICollection<RecipeCategory>? Category { get; set; }
 }

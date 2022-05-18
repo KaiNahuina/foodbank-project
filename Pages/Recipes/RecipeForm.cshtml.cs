@@ -16,6 +16,7 @@ public class RecipeFormModel : PageModel
     [BindProperty]
     public  IFormFile Image { get; set; }
 
+    public ICollection<RecipeCategory> Categories { get; set; }
 
 
     private ApplicationContext _ctx;
@@ -24,6 +25,13 @@ public class RecipeFormModel : PageModel
     {
         _ctx = ctx;
     }
+
+    public void OnGet()
+    {
+        Categories = _ctx.RecipeCategories.ToArray();
+    }
+    
+
     public async Task<IActionResult> OnPostAsync()
     {
         
@@ -33,10 +41,8 @@ public class RecipeFormModel : PageModel
             Recipe.Image = ms.ToArray();
             ms.Close();
             ms.Dispose();
-        Recipe.Category = new RecipeCategory
-        {
-            Name = "Test"
-        };
+
+
 
         ModelState.ClearValidationState(nameof(Recipe));
         if (!TryValidateModel(Recipe, nameof(Recipe)))
