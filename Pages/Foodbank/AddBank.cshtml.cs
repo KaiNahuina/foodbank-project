@@ -4,6 +4,9 @@ using Foodbank_Project.Data;
 using Foodbank_Project.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using NetTopologySuite.Geometries;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 
 #endregion
 
@@ -14,55 +17,43 @@ public class AddBankModel : PageModel
 
     private ApplicationContext _ap;
 
+    [BindProperty]
     public Models.Foodbank foodbank { get; set; }
-
-    private Need need { get; set; }
-
-    public IList<string> needs;
-
-    private string indNeed;
-
-    public string add1;
-
-    public string? add2;
-
-    public string city;
-
-    public string? region;
-
-    private string fullAddress;
-
-    public string opening;
-
-    public string closing;
-
-    private Tuple<string> openingTimes;
-
 
     public AddBankModel(ApplicationContext ap)
     {
         _ap = ap;
     }
 
-    public async Task<IActionResult> OnPost()
+    public class Coords
     {
-        if(!ModelState.IsValid)
+        public double Lat { get; set; }
+        public double Lng { get; set; }
+    }
+
+    public double lat;
+
+    public double lng;
+
+    public void onGet()
+    {
+        foodbank.Protected = false;
+        foodbank.Status = Status.UnConfirmed;
+    }
+
+    public async Task<IActionResult> onPostAsync()
+    {
+        if (!ModelState.IsValid)
         {
             return Page();
         }
-        fullAddress = $"{add1} {add2} {city} {region}";
-        foodbank.Address = fullAddress;
-        for(int i = 0; i < needs.Count; i++)
-        {
-            need.NeedStr = needs[i];
-        }
+        var geoLoc = new Point(lng, lat) { SRID = 4326 };
+        Trace.WriteLine(geoLoc.ToString());
+        foodbank.Slug = foodbank.Name.ToLower();
+        foodbank.Coord = geoLoc;
         foodbank.Closed = false;
-        foodbank.Status = Status.UnConfirmed;
         _ap.Foodbanks.Add(foodbank);
         await _ap.SaveChangesAsync();
         return RedirectToPage("/Index");
-    }
-    public void OnGet()
-    {
     }
 }

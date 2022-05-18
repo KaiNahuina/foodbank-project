@@ -19,7 +19,6 @@
 </div>
 
 <form method="post">
-    <div asp-validation-summary="All"></div>
     <div class="container">
         <div class="row">
             <div class="col-6 d-grid mx-auto">
@@ -40,24 +39,12 @@
             </div>
             <div class="col-6 d-grid mx-auto">
                 <div class="mb-3">
-                    <label for="add1" class="form-label">Address line 1 *</label>
-                    <input asp-for="add1" type="text" class="form-control" id="add1" placeholder="ex: exton park 33"/>
+                    <label for="addresss" class="form-label">Type your address as shown in the example</label>
+                    <input asp-for="foodbank.Address" type="text" class="form-control" id="add" placeholder="address1, address2(if relevant), city" />
                 </div>
                 <div class="mb-3">
-                    <label for="add2" class="form-label">Address line 2 </label>
-                    <input asp-for="add2" type="text" class="form-control" id="add2" placeholder="ex: Flat 4"/>
-                </div>
-                <div class="mb-3">
-                    <label for="city" class="form-label">City *</label>
-                    <input asp-for="city" type="text" class="form-control" id="cit" placeholder="ex: Chester"/>
-                </div>
-                <div class="mb-3">
-                    <label for="region" class="form-label">Region</label>
-                    <input asp-for="region" type="text" class="form-control" id="reg" placeholder="ex: Cheshire"/>
-                </div>
-                <div class="mb-3">
-                    <label for="pc" class="form-label">PostCode *</label>
-                    <input asp-for="foodbank.Postcode" type="text" class="form-control" id="po" placeholer="ex: 1AB 2CD"/>
+                    <label for="postcode" class="form-label">Type your post code</label>
+                    <input asp-for="foodbank.Postcode" type="text" class="form-control" id="pho" placeholder="1AB 5CD" />
                 </div>
             </div>
         </div>
@@ -77,7 +64,7 @@
                 <div class="col-10">
                     <h4> </h4>
                 </div>
-                <div class="col-9">
+                <div class="col-4">
                     <select asp-for="foodbank.Country"class="form-select" aria-label="Country">
                         <option selected>Country</option>
                         <option value="England">England</option>
@@ -89,59 +76,30 @@
                         <option value="Isle of Man">Isle of Man</option>
                     </select>
                 </div>
-                <div class="col-9">
-                <select asp-for="foodbank.Network" class="form-select" aria-label="Network or association">
-                    <option selected>Select the network you are associated with</option>
-                    <option value="Trussel Trust">Trussel Trust</option>
-                    <option value="IFAN">IFAN</option>
-                    <option value="Independent">Independent</option>
-                </select>
-            </div>
-            </div>
-        </div>
-        <!--<div class="row">
-            <div class="col-3 d-grid mx-auto">
-                <label for="Opening" class="form-label">Opening Hours</label>
-                <label for="Mon" class="form-label">Monday:</label>
-                <label for="Mon" class="form-label">Tuesday:</label>
-                <label for="Mon" class="form-label">Wednesday:</label>
-                <label for="Mon" class="form-label">Thursday:</label>
-                <label for="Mon" class="form-label">Friday:</label>
-                <label for="Mon" class="form-label">Saturday:</label>
-                <label for="Mon" class="form-label">Sunday:</label>
-            </div>
-            <div class="col-3 d-grid mx-auto">
-                <label for="openClose" class="form-label">Opening</label>
-                <input asp-for="opening" type="time" class="form-control" id="monOpen" placeholder="ex: 8:00 AM"/>
-                <input type="time" class="form-control" id="tueOpen" placeholder="ex: 8:00 AM"/>
-                <input type="time" class="form-control" id="wedOpen" placeholder="ex: 8:00 AM"/>
-                <input type="time" class="form-control" id="thuOpen" placeholder="ex: 8:00 AM"/>
-                <input type="time" class="form-control" id="friOpen" placeholder="ex: 8:00 AM"/>
-                <input type="time" class="form-control" id="satOpen" placeholder="ex: 8:00 AM"/>
-                <input type="time" class="form-control" id="sunOpen" placeholder="ex: 8:00 AM"/>
-            </div>
-            <div class="col-3 d-grid mx-auto">
-                <label for="closeOpen" class="form-label">Closing</label>
-                <input asp-for="closing" type="time" class="form-control" id="monClose" placeholder="ex: 5:00 PM"/>
-                <input type="time" class="form-control" id="tueClose" placeholder="ex: 5:00 PM"/>
-                <input type="time" class="form-control" id="wedClose" placeholder="ex: 5:00 PM"/>
-                <input type="time" class="form-control" id="thuClose" placeholder="ex: 5:00 PM"/>
-                <input type="time" class="form-control" id="friClose" placeholder="ex: 5:00 PM"/>
-                <input type="time" class="form-control" id="satClose" placeholder="ex: 5:00 PM"/>
-                <input type="time" class="form-control" id="sunClose" placeholder="ex: 5:00 PM"/>
-            </div>
-        </div>-->
-        <div class="row mt-4">
-            <div class="col-5">
-                <select asp-for="foodbank.Network" class="form-select" aria-label="Network or association">
-                    <option selected>Select the network you are associated with</option>
-                    <option value="Trussel Trust">Trussel Trust</option>
-                    <option value="IFAN">IFAN</option>
-                    <option value="Independent">Independent</option>
-                </select>
+                <div class="col-4">
+                    <select asp-for="foodbank.Network" class="form-select" aria-label="Network or association">
+                        <option selected>Select the network you are associated with</option>
+                        <option value="Trussel Trust">Trussel Trust</option>
+                        <option value="IFAN">IFAN</option>
+                        <option value="Independent">Independent</option>
+                    </select>
+                </div>
+                <div class="col-4">
+                    <label for="since" class="form-label">Date stablished</label>
+                    <input asp-for="foodbank.Created" type="datetime" class="form-control" id="dacre" />
+                </div>
             </div>
         </div>
         <div class="row mt-2">
+            <div class="col-5 d-grid mx-auto">
+                <div class="mb-3">
+                    <label for="cortemp" class="form-label">(Temporal) input coordinates</label>
+                    <input asp-for="lat" type="float" class="form-control" id="longi" />
+                    <input asp-for="lng" type="float" class="form-control" id="lati" />
+                </div>
+            </div>
+        </div>
+        <!--<div class="row mt-2">
             <div class="d-grid col-6 mx-auto">
                 <label for="needs" class="form-label">Main or urgent needs for your foodbank</label>
                 <input asp-for="needs" type="text" class="form-control" id="ne1" placeholder="Item 1" />
@@ -151,7 +109,7 @@
                 <input asp-for="needs" type="text" class="form-control" id="ne5" placeholder="Item 5" />
                 <input asp-for="needs" type="text" class="form-control" id="ne6" placeholder="Item 6" />
             </div>
-        </div>
+        </div>-->
         <div class="row mt-3">
             <div class="col-9 d-grid mx-auto">
                 <div class="mb-3 form-check">
@@ -165,15 +123,14 @@
                 <div class="mb-3 form-check">
                     <input type="checkbox" class="form-check-input" id="confirm"/>
                     <label class="form-check label" for="confirm"><strong>
-                        I confirm that the provided information is true and will be held accountable
-                        if I am found to have provided false or erronous information</strong>
+                        I confirm that the provided information is true to the extent of my knowledge</strong>
                     </label>
                 </div>
             </div>
         </div>
         <div class="row gx-5">
             <div class="col-9 d-grid mx-auto">
-                <button type="submit" class="btn btn-outline-success">Submit</button>
+                <input type="submit" class="btn btn-outline-success">
             </div>
         </div>
     </div>
