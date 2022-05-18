@@ -1,5 +1,6 @@
 ﻿#region
 
+using System.ComponentModel.DataAnnotations;
 using NetTopologySuite.Geometries;
 
 #endregion
@@ -8,7 +9,7 @@ namespace Foodbank_Project.Models;
 
 public class Foodbank
 {
-    public ICollection<Location> Locations { get; set; }
+    public ICollection<Location>? Locations { get; set; }
 
     // ReSharper disable once UnusedMember.Global
     public int? FoodbankId { get; set; }
@@ -70,7 +71,7 @@ public class Foodbank
 
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public Provider Provider { get; set; }
-    public ICollection<Need> Needs { get; set; }
+    public ICollection<Need>? Needs { get; set; }
 
     public override bool Equals(object? obj)
     {
