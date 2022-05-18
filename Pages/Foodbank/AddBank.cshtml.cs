@@ -20,7 +20,9 @@ public class AddBankModel : PageModel
 
     [BindProperty]
     public Models.Foodbank foodbank { get; set; }
+    [BindProperty]
     public float lat { get; set; }
+    [BindProperty]
     public float lng { get; set; }
 
     public AddBankModel(ApplicationContext ap)
@@ -36,8 +38,8 @@ public class AddBankModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        
         var geoLoc = new Point(lat, lng) { SRID = 4326 };
-        Trace.WriteLine(geoLoc.ToString());
         foodbank.Coord = geoLoc;
         foodbank.Closed = false;
         foodbank.Protected = true;
