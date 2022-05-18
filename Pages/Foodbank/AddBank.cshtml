@@ -67,6 +67,7 @@
                         <input id="map-lat" asp-for="lat" value="" readonly placeholder="Latitude" />
                         <input id="map-lng" asp-for="lng" value="" readonly placeholder="Longitude" />
                         <input id="map-postcode" asp-for="foodbank.Postcode" value="" readonly placeholder="Postcode" />
+                        <input id="map-address" asp-for="foodbank.Address" value="" readonly placeholder="Address" />
                     </div>
                 </div>
             </div>
@@ -165,6 +166,7 @@
             console.warn('Unsupported geocoder', geocoderString);
           }
         }
+        var ml;
 
         var control = L.Control.geocoder({
             collapsed: false,
@@ -175,13 +177,24 @@
         .on('markgeocode', function(e) {
           var usersLatitude = e.geocode.center.lat;
           var usersLongitude = e.geocode.center.lng;
-          
+          ml = e;
           console.log(e)
-
+          var addressString = "";
           $("#map-lat").val(usersLatitude);
           $("#map-lng").val(usersLongitude);
           $("#map-postcode").val(e.geocode.properties.address.postcode);
+          if (e.geocode.properties.address.house_number != undefined)    { addressString = addressString.concat(e.geocode.properties.address.house_number + ",")}
+          if (e.geocode.properties.address.road != undefined)            { addressString = addressString.concat(e.geocode.properties.address.road + ",")}
+          if (e.geocode.properties.address.neighbourhood != undefined)   { addressString = addressString.concat(e.geocode.properties.address.neighbourhood + ",")}
+          if (e.geocode.properties.address.town != undefined)            { addressString = addressString.concat(e.geocode.properties.address.town + ",")}
+           if (e.geocode.properties.address.suburb != undefined)           { addressString = addressString.concat(e.geocode.properties.address.suburb + ",")}
+          if (e.geocode.properties.address.city != undefined)            { addressString = addressString.concat(e.geocode.properties.address.suburb + ",")}
+          if (e.geocode.properties.address.country != undefined)         { addressString = addressString.concat(e.geocode.properties.address.country + ",")}
 
+          
+
+          console.log(addressString)
+          $("#map-address").val(addressString);
         })
         .addTo(map);
 
