@@ -41,6 +41,7 @@ public class AddBankModel : PageModel
         foodbank.Coord = geoLoc;
         foodbank.Closed = false;
         foodbank.Protected = true;
+        foodbank.Created = DateTime.Now;
 
         foodbank = FoodbankHelpers.ApplySlug(foodbank);
         foodbank = FoodbankHelpers.ApplyFinalize(foodbank);

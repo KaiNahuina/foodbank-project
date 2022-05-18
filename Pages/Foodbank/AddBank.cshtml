@@ -53,21 +53,19 @@
             </div>
             <div class="col-6 d-grid mx-auto">
                 <div class="mb-3">
-                    <label for="addresss" class="form-label">Type your address as shown in the example</label>
-                    <input asp-for="foodbank.Address" type="text" class="form-control" id="add" placeholder="address1, address2(if relevant), city" />
-                </div>
-                <div class="mb-3">
-                    <label for="postcode" class="form-label">Type your post code</label>
-                    <!--<input asp-for="foodbank.Postcode" type="text" class="form-control" id="pc" placeholder="1AB 5CD" /> -->
+                    <label for="postcode" class="form-label">Type your post code in the search box below</label>
                     <div id="map" style="height: 20vw;
                                         width: 40vw;
                                         margin: auto;
                                         margin-top: 2%;"></div>
-                    <div>
+                    
+                    <div class="mb-3 d-grid">
+                        <input id="map-address" asp-for="foodbank.Address" value="" readonly placeholder="Address" />
+                    </div>
+                    <div class="mb-3 invisible">
                         <input id="map-lat" asp-for="lat" value="" readonly placeholder="Latitude" />
                         <input id="map-lng" asp-for="lng" value="" readonly placeholder="Longitude" />
-                        <input id="map-postcode" asp-for="foodbank.Postcode" value="" readonly placeholder="Postcode" />
-                        <input id="map-address" asp-for="foodbank.Address" value="" readonly placeholder="Address" />
+                        <input id="map-postcode" asp-for="foodbank.Postcode" value="" placeholder="Postcode" />
                     </div>
                 </div>
             </div>
@@ -103,10 +101,6 @@
                         <option value="IFAN">IFAN</option>
                         <option value="Independent">Independent</option>
                     </select>
-                </div>
-                <div class="col-4">
-                    <label for="since" class="form-label">Date stablished</label>
-                    <input asp-for="foodbank.Created" type="datetime-local" class="form-control" id="dacre" />
                 </div>
             </div>
         </div>
@@ -187,9 +181,10 @@
           if (e.geocode.properties.address.road != undefined)            { addressString = addressString.concat(e.geocode.properties.address.road + ",")}
           if (e.geocode.properties.address.neighbourhood != undefined)   { addressString = addressString.concat(e.geocode.properties.address.neighbourhood + ",")}
           if (e.geocode.properties.address.town != undefined)            { addressString = addressString.concat(e.geocode.properties.address.town + ",")}
-           if (e.geocode.properties.address.suburb != undefined)           { addressString = addressString.concat(e.geocode.properties.address.suburb + ",")}
-          if (e.geocode.properties.address.city != undefined)            { addressString = addressString.concat(e.geocode.properties.address.suburb + ",")}
-          if (e.geocode.properties.address.country != undefined)         { addressString = addressString.concat(e.geocode.properties.address.country + ",")}
+          if (e.geocode.properties.address.suburb != undefined)          { addressString = addressString.concat(e.geocode.properties.address.suburb + ",")}
+          if (e.geocode.properties.address.city != undefined)            { addressString = addressString.concat(e.geocode.properties.address.city + ",")}
+          if (e.geocode.properties.address.country != undefined)         { addressString = addressString.concat(e.geocode.properties.address.country  + ",")}
+          if (e.geocode.properties.address.state != undefined)           { addressString = addressString.concat(e.geocode.properties.address.state)}
 
           
 
