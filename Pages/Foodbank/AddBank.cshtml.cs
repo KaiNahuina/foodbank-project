@@ -41,17 +41,21 @@ public class AddBankModel : PageModel
         foodbank.Status = Status.UnConfirmed;
     }
 
-    public async Task<IActionResult> onPostAsync()
+    public async Task<IActionResult> OnPostAsync()
     {
-        if (!ModelState.IsValid)
-        {
-            return Page();
-        }
+        
         var geoLoc = new Point(lng, lat) { SRID = 4326 };
         Trace.WriteLine(geoLoc.ToString());
         foodbank.Slug = foodbank.Name.ToLower();
         foodbank.Coord = geoLoc;
         foodbank.Closed = false;
+
+
+        if (!ModelState.IsValid)
+        {
+            return Page();
+        }
+
         _ap.Foodbanks.Add(foodbank);
         await _ap.SaveChangesAsync();
         return RedirectToPage("/Index");
