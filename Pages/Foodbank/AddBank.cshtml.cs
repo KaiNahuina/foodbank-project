@@ -49,13 +49,14 @@ public class AddBankModel : PageModel
         foodbank.Slug = foodbank.Name.ToLower();
         foodbank.Coord = geoLoc;
         foodbank.Closed = false;
+        foodbank.Protected = true;
 
 
-        if (!ModelState.IsValid)
+        ModelState.ClearValidationState(nameof(foodbank));
+        if (!TryValidateModel(foodbank, nameof(foodbank)))
         {
             return Page();
         }
-
         _ap.Foodbanks.Add(foodbank);
         await _ap.SaveChangesAsync();
         return RedirectToPage("/Index");
