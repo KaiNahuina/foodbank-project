@@ -84,6 +84,8 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
         modelBuilder.Entity<Recipe>().Property(fl => fl.Ingredients).IsRequired();
         modelBuilder.Entity<Recipe>().Property(fl => fl.Name).IsRequired();
         modelBuilder.Entity<Recipe>().Property(fl => fl.Status).IsRequired();
+        modelBuilder.Entity<Recipe>().Property(fl => fl.Serves);
+        modelBuilder.Entity<Recipe>().Property(fl => fl.Notes);
 
         modelBuilder.Entity<Content>().Property(fl => fl.Blob).IsRequired();
         modelBuilder.Entity<Content>().Property(fl => fl.Name).IsRequired();
@@ -92,11 +94,35 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
 
         modelBuilder.Entity<RecipeCategory>().HasData(new RecipeCategory { 
             RecipeCategoryId = -1,
-            Name = "Cat1"
+            Name = "Meat"
         }, new RecipeCategory
         {
             RecipeCategoryId = -2,
-            Name = "Cat2"
+            Name = "Vegetarian"
+        }, new RecipeCategory
+        {
+            RecipeCategoryId = -3,
+            Name = "Fish"
+        }, new RecipeCategory
+        {
+            RecipeCategoryId = -4,
+            Name = "Desert"
+        }, new RecipeCategory
+        {
+            RecipeCategoryId = -5,
+            Name = "Soup"
+        }, new RecipeCategory
+        {
+            RecipeCategoryId = -6,
+            Name = "Snack"
+        }, new RecipeCategory
+        {
+            RecipeCategoryId = -7,
+            Name = "Side"
+        }, new RecipeCategory
+        {
+            RecipeCategoryId = -8,
+            Name = "Special Event"
         });
 
         base.OnModelCreating(modelBuilder);
