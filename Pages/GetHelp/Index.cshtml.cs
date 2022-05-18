@@ -27,12 +27,12 @@ public class IndexModel : PageModel
 
     public ICollection<Location> Locations { get; set; }
 
-    public async Task OnGetAsync()
+    public async Task OnGetAsync([FromQuery(Name="Location")]string location)
     {
-        Location = RouteData.Values?["Location"]?.ToString() ?? null;
+        Location = location;
     }
 
-    public async Task<JsonResult> OnPostCoordAsync([FromBody] Coords obj)
+    public async Task<JsonResult> OnPostAsync([FromBody] Coords obj)
     {
         var origin = new Point(obj.Lng, obj.Lat) { SRID = 4326 };
 

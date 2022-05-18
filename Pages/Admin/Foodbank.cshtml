@@ -1,10 +1,19 @@
 ﻿@page "{id:int}"
+@using Foodbank_Project.Models
 @model FoodbankModel
 @{
     ViewData["Title"] = "Foodbank - Admin";
 }
 
-<h1 class="text-start">Edit Foodbank</h1>
+@if (Model.Action != "Create")
+{
+    <h1 class="text-start">Edit Foodbank</h1>
+}
+else
+{
+    <h1 class="text-start">Create Foodbank</h1>
+}
+
 <div class="flex-fill bg-white shadow-lg p-3">
 
     <form method="post" class="container">
@@ -84,39 +93,43 @@
         
 
         <div class="d-flex justify-content-end flex-row">
-            <button type="submit" class="btn btn-success">Save</button>
-            <button class="btn btn-danger">Cancel</button>
+            <button name="Action" value="Update" type="submit" class="btn btn-success">Save</button>
+            <button name="Action" value="Delete" type="submit" class="btn btn-danger">Delete</button>
         </div>
         
     </form>
 
-    <table class="table table-striped table-hover w-100">
-        <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Address</th>
-            <th scope="col">Phone</th>
-            <th scope="col">Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in Model.Foodbank.Locations)
-        {
+    @if (Model.Action != "Create")
+    {
+        <table class="table table-striped table-hover w-100">
+            <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Phone)
-                </td>
-                <td>
-                    Some stuff here
-                </td>
+                <th scope="col">Name</th>
+                <th scope="col">Address</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Action</th>
             </tr>
-        }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.Foodbank.Locations ?? new List<Location>())
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        Some stuff here
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    
 </div>

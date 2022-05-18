@@ -14,9 +14,4 @@ public class IndexModel : PageModel
     public void OnGet()
     {
     }
-
-    public RedirectToPageResult OnPost()
-    {
-        return RedirectToPage("/GetHelp/Index", new { Location });
-    }
 }
