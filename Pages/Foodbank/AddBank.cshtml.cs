@@ -25,6 +25,14 @@ public class AddBankModel : PageModel
     [BindProperty]
     public float lng { get; set; }
 
+    [BindProperty]
+    [Required]
+    public bool consent { get; set; }
+
+    [BindProperty]
+    [Required]
+    public bool confirm { get; set; }
+
     public AddBankModel(ApplicationContext ap)
     {
         _ap = ap;
