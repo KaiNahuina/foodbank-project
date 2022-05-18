@@ -4,6 +4,7 @@ using Foodbank_Project.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 
@@ -12,9 +13,10 @@ using NetTopologySuite.Geometries;
 namespace Foodbank_Project.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220517132954_RecipeBreakdown")]
+    partial class RecipeBreakdown
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -195,7 +197,11 @@ namespace Foodbank_Project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecipeId"), 1L, 1);
 
+                    b.Property<int?>("CategoryRecipeCategoryId")
+                        .HasColumnType("int");
+
                     b.Property<byte[]>("Image")
+                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Ingredients")
@@ -210,17 +216,9 @@ namespace Foodbank_Project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Serves")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
                     b.HasKey("RecipeId");
+
+                    b.HasIndex("CategoryRecipeCategoryId");
 
                     b.ToTable("Recipes");
                 });
@@ -240,18 +238,6 @@ namespace Foodbank_Project.Migrations
                     b.HasKey("RecipeCategoryId");
 
                     b.ToTable("RecipeCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            RecipeCategoryId = -1,
-                            Name = "Cat1"
-                        },
-                        new
-                        {
-                            RecipeCategoryId = -2,
-                            Name = "Cat2"
-                        });
                 });
 
             modelBuilder.Entity("FoodbankNeed", b =>
@@ -467,21 +453,6 @@ namespace Foodbank_Project.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("RecipeRecipeCategory", b =>
-                {
-                    b.Property<int>("CategoryRecipeCategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RecipesRecipeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CategoryRecipeCategoryId", "RecipesRecipeId");
-
-                    b.HasIndex("RecipesRecipeId");
-
-                    b.ToTable("RecipeRecipeCategory");
-                });
-
             modelBuilder.Entity("Foodbank_Project.Models.Location", b =>
                 {
                     b.HasOne("Foodbank_Project.Models.Foodbank", "Foodbank")
@@ -489,6 +460,15 @@ namespace Foodbank_Project.Migrations
                         .HasForeignKey("FoodbankId");
 
                     b.Navigation("Foodbank");
+                });
+
+            modelBuilder.Entity("Foodbank_Project.Models.Recipe", b =>
+                {
+                    b.HasOne("Foodbank_Project.Models.RecipeCategory", "Category")
+                        .WithMany("Recipes")
+                        .HasForeignKey("CategoryRecipeCategoryId");
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("FoodbankNeed", b =>
@@ -557,24 +537,14 @@ namespace Foodbank_Project.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RecipeRecipeCategory", b =>
-                {
-                    b.HasOne("Foodbank_Project.Models.RecipeCategory", null)
-                        .WithMany()
-                        .HasForeignKey("CategoryRecipeCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Foodbank_Project.Models.Recipe", null)
-                        .WithMany()
-                        .HasForeignKey("RecipesRecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Foodbank_Project.Models.Foodbank", b =>
                 {
                     b.Navigation("Locations");
+                });
+
+            modelBuilder.Entity("Foodbank_Project.Models.RecipeCategory", b =>
+                {
+                    b.Navigation("Recipes");
                 });
 #pragma warning restore 612, 618
         }
