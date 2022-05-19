@@ -1,7 +1,7 @@
 ﻿@page "{id:int}"
-@model DistributionPageModel
+@model MainLocationModel
 @{
-    ViewData["Title"] = "Distribution Page";
+    ViewData["Title"] = "Main Location";
 }
 <link rel="stylesheet" href="/css/Control.Geocoder.css"/>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css"/>
@@ -18,18 +18,18 @@
 
 <form method="post">
     <div class="text-center">
-        <h1 class="display-4"><b>Donation Point Name: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank!.Name)</h1>
+        <h1 class="display-4"><b>Main Location Name: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank!.Name)</h1>
     </div>
 
     <div class="row">
         <div class="container mt-2">
             <div class="row">
                 <div class="col-sm-4">
-                    <h3>name and address</h3>
+                    <h3>Address</h3>
                     <p class="text-box">
                         <b>Address: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank!.Address) <br/>
-                        <b>Country: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank!.Country) <br/>
                         <b>Postcode: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank!.Postcode) <br/>
+                        <b>Country: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank!.Country) <br/>
                     </p>
                 </div>
                 <div class="col-sm-4">
@@ -99,6 +99,10 @@
         </div>
     </div>
 
+    <!-- If its a salvation army then don't do this-->
+    <div class="text-center">
+        <h1 class="display-4">Associated Foodbanks</h1>
+    </div>
     <table class="table table-striped table-hover w-100">
         <thead>
         <tr>

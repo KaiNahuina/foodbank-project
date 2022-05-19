@@ -84,7 +84,6 @@
         var markerGroup;
 
         var control = L.Control.geocoder({
-            query: "@Html.DisplayFor(model => model.Location)",
             collapsed: false,
             placeholder: 'Search Postcode or Address',
             geocoder
@@ -122,7 +121,7 @@
                  map.fitBounds([markerGroup.getBounds().pad(0.2), e.bbox]);
 
                  if (history.pushState) {
-                    var newurl = window.location.protocol + "//" + window.location.host + '/GetHelp/Index/?Location=' + control._input.value;   //change testmap name
+                    var newurl = window.location.protocol + "//" + window.location.host + '/Foodbank/DistributionPage/Location?=' + control._input.value;   //change testmap name
                     window.history.pushState({path:newurl},'',newurl);
                 }
               },
@@ -135,8 +134,6 @@
         .addTo(map);
 
         control._expand();
-
-        geocoder.geocode("@Html.DisplayFor(model => model.Location)", function(ctx){control._geocodeResultSelected(ctx[0])});
 
         L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'

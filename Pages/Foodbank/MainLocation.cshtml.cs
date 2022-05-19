@@ -10,11 +10,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Foodbank_Project.Pages.Foodbank;
 
-public class DistributionPageModel : PageModel
+public class MainLocationModel : PageModel
 {
     private readonly ApplicationContext _ctx;
 
-    public DistributionPageModel(ApplicationContext ctx)
+    public MainLocationModel(ApplicationContext ctx)
     {
         _ctx = ctx;
     }
