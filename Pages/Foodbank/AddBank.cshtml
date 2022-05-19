@@ -29,11 +29,6 @@
 
 <form method="post">
     <div asp-validation-summary="All"></div>
-    <span asp-validation-for="confirm"></span>
-    <span asp-validation-for="consent"></span>
-    <span asp-validation-for="foodbank.Name"></span>
-    <span asp-validation-for="foodbank.Email"></span>
-    <span asp-validation-for="foodbank.Postcode"></span>
     <div class="container">
         <div class="row">
             <div class="col-6 d-grid mx-auto">
@@ -134,7 +129,7 @@
         <div class="row mt-3">
             <div class="col-9 d-grid mx-auto">
                 <div class="mb-3 form-check">
-                    <input asp-for="consent" type="checkbox" class="form-check-input" id="consent" data-val-required="Yout need to tick the checkbox to continue"/>
+                    <input asp-for="consent" type="checkbox" class="form-check-input" required id="consent" onchange="this.setCustomValidity(validity.valueMissing ? 'Please indicate that you accept the terms and conditions' : '');"/>
                     <label class="form-check label" for="consent"><strong>I consent to let foodbank finder collect and display the provided information</strong></label>
                 </div>
             </div>
@@ -142,7 +137,7 @@
         <div class="row mb-3">
             <div class="col-9 d-grid mx-auto">
                 <div class="mb-3 form-check">
-                    <input asp-for="confirm" type="checkbox" class="form-check-input" id="confirm" data-val-required="Yout need to tick the checkbox to continue"/>
+                    <input asp-for="confirm" type="checkbox" class="form-check-input" required id="confirm" onchange="this.setCustomValidity(validity.valueMissing ? 'Please indicate that you vouch for the validity of the info' : '');" />
                     <label class="form-check label" for="confirm"><strong>
                         I confirm that the provided information is true to the extent of my knowledge</strong>
                     </label>
@@ -157,7 +152,7 @@
     </div>
 
 
-    
+
 
 <script type="text/javascript">
 
@@ -217,3 +212,9 @@
 
     </script>
 </form>
+
+
+<script>
+    document.getElementById("consent").setCustomValidity("Please indicate that you accept the terms and conditions");
+    document.getElementById("confirm").setCustomValidity("Please indicate that you vouch for the validity of the info");
+</script>
