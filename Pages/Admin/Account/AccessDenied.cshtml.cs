@@ -5,25 +5,15 @@
 
 #region
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 #endregion
 
-namespace Foodbank_Project.Areas.Identity.Pages.Account;
+namespace Foodbank_Project.Pages.Admin.Account;
 
 /// <summary>
 ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
 ///     directly from your code. This API may change or be removed in future releases.
 /// </summary>
-[AllowAnonymous]
-public class ForgotPasswordConfirmation : PageModel
-{
-    /// <summary>
-    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-    ///     directly from your code. This API may change or be removed in future releases.
-    /// </summary>
-    public void OnGet()
-    {
-    }
-}
+public class AccessDeniedModel : PageModel
+{}

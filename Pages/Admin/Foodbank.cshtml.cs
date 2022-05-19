@@ -16,20 +16,18 @@ public class FoodbankModel : PageModel
 {
     private readonly ApplicationContext _ctx;
 
-    public string Action;
+    public string? Action;
+
     public FoodbankModel(ApplicationContext ctx)
     {
         _ctx = ctx;
     }
 
-    [BindProperty]
-    public Models.Foodbank Foodbank { get; set; }
-    [BindProperty]
-    public double Lat { get; set; }
-    [BindProperty]
-    public double Lng { get; set; }
+    [BindProperty] public Models.Foodbank? Foodbank { get; set; }
+    [BindProperty] public double Lat { get; set; }
+    [BindProperty] public double Lng { get; set; }
 
-    public async Task OnGetAsync([FromQuery(Name = "Action")]string? action)
+    public async Task OnGetAsync([FromQuery(Name = "Action")] string? action)
     {
         Action = action ?? "Update";
         if (Action != "Create")
@@ -39,36 +37,52 @@ public class FoodbankModel : PageModel
 
 
             Foodbank = await foodbanks.AsNoTracking().Include(f => f.Locations).Include(f => f.Needs).FirstAsync();
-            Lat = Foodbank.Coord.Y;
+            Lat = Foodbank.Coord!.Y;
             Lng = Foodbank.Coord.X;
         }
         else
         {
-            Foodbank = new Models.Foodbank();
-            Foodbank.Created = DateTime.Now;
+            Foodbank = new Models.Foodbank
+            {
+                Created = DateTime.Now
+            };
         }
-
     }
 
 
     public async Task<RedirectToPageResult> OnPostAsync([FromQuery(Name = "Action")] string? action)
     {
         Action = action ?? Request.Form["Action"].ToString() ?? "Update";
-        if (Action == "Delete")
+        switch (Action)
         {
-            _ctx.Remove(Foodbank);
+            case "Delete":
+                if (Foodbank != null) _ctx.Remove(Foodbank);
+
+                break;
+            case "Create":
+            {
+                if (Foodbank != null)
+                {
+                    Foodbank.Coord = new Point(Lng, Lat) { SRID = 4326 };
+                    Foodbank.Provider = Provider.Internal;
+                    Foodbank = FoodbankHelpers.ApplyFinalize(Foodbank);
+                    _ctx.Foodbanks?.Update(Foodbank);
+                }
+
+                break;
+            }
+            case "Update":
+            {
+                if (Foodbank != null)
+                {
+                    Foodbank.Coord = new Point(Lng, Lat) { SRID = 4326 };
+                    _ctx.Foodbanks?.Update(Foodbank);
+                }
+
+                break;
+            }
         }
-        else if(Action == "Create")
-        {
-            Foodbank.Coord = new Point(Lng, Lat) { SRID = 4326 };
-            Foodbank.Provider = Provider.Internal;
-            Foodbank = FoodbankHelpers.ApplyFinalize(Foodbank);
-            _ctx.Foodbanks?.Update(Foodbank);
-        }else if(Action == "Update")
-        {
-            Foodbank.Coord = new Point(Lng, Lat) { SRID = 4326 };
-            _ctx.Foodbanks?.Update(Foodbank);
-        }
+
         await _ctx.SaveChangesAsync();
         return RedirectToPage("./Foodbanks");
     }

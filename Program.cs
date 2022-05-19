@@ -26,7 +26,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.HttpOnly = true;
     options.LoginPath = "/Admin/Account/Login";
     options.LogoutPath = "/Admin/Account/Logout";
-    options.AccessDeniedPath = "/Admin/Account/Denied";
+    options.AccessDeniedPath = "/Admin/Account/AccessDenied";
     options.SlidingExpiration = true;
     options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
 });

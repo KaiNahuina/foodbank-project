@@ -18,208 +18,207 @@ else
 
 @* Info *@
 <form method="post" class="container">
-        <div class="row">
-            <div class="col">
-                <label>ID</label>
-            </div>
-            <div class="col-8">
-                <input class="form-control" readonly value="@Model.Foodbank.FoodbankId" asp-for="Foodbank.FoodbankId"/><br/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <label asp-for="Foodbank.Name"></label>
-            </div>
-            <div class="col-8">
-                <input class="form-control" value="@Model.Foodbank.Name" asp-for="Foodbank.Name"/><br/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <label asp-for="Foodbank.AltName"></label>
-            </div>
-            <div class="col-8">
-                <input class="form-control" value="@Model.Foodbank.AltName" asp-for="Foodbank.AltName"/><br/>
-            </div>
-        </div>
     <div class="row">
         <div class="col">
-            <label asp-for="Foodbank.Created"></label>
+            <label>ID</label>
         </div>
         <div class="col-8">
-            <input class="form-control" asp-for="Foodbank.Created" value="@Model.Foodbank.Created?.ToString("yyyy-MM-ddTHH:mm:ss")" readonly/><br/>
+            <input class="form-control" readonly value="@Model.Foodbank?.FoodbankId" asp-for="Foodbank!.FoodbankId"/><br/>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <label asp-for="Foodbank.Network"></label>
+            <label asp-for="Foodbank!.Name"></label>
         </div>
         <div class="col-8">
-            <input class="form-control" value="@Model.Foodbank.Network" asp-for="Foodbank.Network"/><br/>
+            <input class="form-control" value="@Model.Foodbank.Name" asp-for="Foodbank!.Name"/><br/>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <label asp-for="Foodbank.Notes"></label>
+            <label asp-for="Foodbank!.AltName"></label>
         </div>
         <div class="col-8">
-            <input class="form-control" value="@Model.Foodbank.Notes" asp-for="Foodbank.Notes"/><br/>
+            <input class="form-control" value="@Model.Foodbank.AltName" asp-for="Foodbank!.AltName"/><br/>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <label asp-for="Foodbank.Closed"></label>
+            <label asp-for="Foodbank!.Created"></label>
+        </div>
+        <div class="col-8">
+            <input class="form-control" asp-for="Foodbank!.Created" value="@Model.Foodbank.Created?.ToString("yyyy-MM-ddTHH:mm:ss")" readonly/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Foodbank!.Network"></label>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Foodbank.Network" asp-for="Foodbank!.Network"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Foodbank!.Notes"></label>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Foodbank.Notes" asp-for="Foodbank!.Notes"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Foodbank!.Closed"></label>
         </div>
         <div class="col-8 form-control-lg form-check form-switch d-flex justify-content-center">
-            <input class="form-check-input" placeholder="@Model.Foodbank.Closed" asp-for="Foodbank.Closed"/><br/>
+            <input class="form-check-input" placeholder="@Model.Foodbank.Closed" asp-for="Foodbank!.Closed"/><br/>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <label asp-for="Foodbank.CharityNumber"></label>
+            <label asp-for="Foodbank!.CharityNumber"></label>
         </div>
         <div class="col-8">
-            <input class="form-control" value="@Model.Foodbank.CharityNumber" asp-for="Foodbank.CharityNumber"/><br/>
+            <input class="form-control" value="@Model.Foodbank.CharityNumber" asp-for="Foodbank!.CharityNumber"/><br/>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <label asp-for="Foodbank.CharityRegisterUrl"></label>
+            <label asp-for="Foodbank!.CharityRegisterUrl"></label>
         </div>
         <div class="col-8">
-            <input class="form-control" value="@Model.Foodbank.CharityRegisterUrl" asp-for="Foodbank.CharityRegisterUrl"/><br/>
+            <input class="form-control" value="@Model.Foodbank.CharityRegisterUrl" asp-for="Foodbank!.CharityRegisterUrl"/><br/>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <label asp-for="Foodbank.Slug"></label>
+            <label asp-for="Foodbank!.Slug"></label>
         </div>
         <div class="col-8">
-            <input class="form-control" value="@Model.Foodbank.Slug" asp-for="Foodbank.Slug"/><br/>
+            <input class="form-control" value="@Model.Foodbank.Slug" asp-for="Foodbank!.Slug"/><br/>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <label asp-for="Foodbank.Protected"></label>
+            <label asp-for="Foodbank!.Protected"></label>
         </div>
         <div class="col-8 form-control-lg form-check form-switch d-flex justify-content-center">
-            <input class="form-check-input" placeholder="@Model.Foodbank.Protected" asp-for="Foodbank.Protected"/><br/>
+            <input class="form-check-input" placeholder="@Model.Foodbank.Protected" asp-for="Foodbank!.Protected"/><br/>
         </div>
     </div>
     @* Location *@
-        <div class="row">
-            <div class="col">
-                <label asp-for="Foodbank.Address"></label>
-            </div>
-            <div class="col-8">
-                <input class="form-control" value="@Model.Foodbank.Address" asp-for="Foodbank.Address"/><br/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <label asp-for="Foodbank.Postcode"></label>
-            </div>
-            <div class="col-8">
-                <input class="form-control" value="@Model.Foodbank.Postcode" asp-for="Foodbank.Postcode"/><br/>
-            </div>
-        </div>
     <div class="row">
         <div class="col">
-            <label asp-for="Foodbank.Country"></label>
+            <label asp-for="Foodbank!.Address"></label>
         </div>
         <div class="col-8">
-            <input class="form-control" value="@Model.Foodbank.Country" asp-for="Foodbank.Country"/><br/>
+            <input class="form-control" value="@Model.Foodbank.Address" asp-for="Foodbank!.Address"/><br/>
         </div>
     </div>
     <div class="row">
-            <div class="col">
-                <label>Lat</label>
-            </div>
-            <div class="col-8">
-                <input class="form-control" value="@Model.Lat" asp-for="Lat"/><br/>
-            </div>
+        <div class="col">
+            <label asp-for="Foodbank!.Postcode"></label>
         </div>
-        <div class="row">
-            <div class="col">
-                <label>Lng</label>
-            </div>
-            <div class="col-8">
-                <input class="form-control" value="@Model.Lng" asp-for="Lng"/><br/>
-            </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Foodbank.Postcode" asp-for="Foodbank!.Postcode"/><br/>
         </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Foodbank!.Country"></label>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Foodbank.Country" asp-for="Foodbank!.Country"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label>Lat</label>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Lat" asp-for="Lat"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label>Lng</label>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Lng" asp-for="Lng"/><br/>
+        </div>
+    </div>
     @* Contact *@
-        <div class="row">
-            <div class="col">
-                <label asp-for="Foodbank.Email"></label>
-            </div>
-            <div class="col-8">
-                <input class="form-control" value="@Model.Foodbank.Email" asp-for="Foodbank.Email"/><br/>
-            </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Foodbank!.Email"></label>
         </div>
-        <div class="row">
-            <div class="col">
-                <label asp-for="Foodbank.Phone"></label>
-            </div>
-            <div class="col-8">
-                <input class="form-control" value="@Model.Foodbank.Phone" asp-for="Foodbank.Phone"/><br/>
-            </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Foodbank.Email" asp-for="Foodbank!.Email"/><br/>
         </div>
-        <div class="row">
-            <div class="col">
-                <label asp-for="Foodbank.Homepage"></label>
-            </div>
-            <div class="col-8">
-                <input class="form-control" value="@Model.Foodbank.Homepage" asp-for="Foodbank.Homepage"/><br/>
-            </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Foodbank!.Phone"></label>
         </div>
-
+        <div class="col-8">
+            <input class="form-control" value="@Model.Foodbank.Phone" asp-for="Foodbank!.Phone"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Foodbank!.Homepage"></label>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Foodbank.Homepage" asp-for="Foodbank!.Homepage"/><br/>
+        </div>
+    </div>
 
 
     <div class="d-flex justify-content-end flex-row ">
-            @if (Model.Action == "Create")
-            {
-                <button name="Action" value="Create" type="submit" class="btn btn-success me-3">Create</button>
-            }
-            else
-            {
-                <button name="Action" value="Update" type="submit" class="btn btn-success me-3">Save</button>
-                <button name="Action" value="Delete" type="submit" class="btn btn-danger">Delete</button>
-            }
-        </div>
-        
-    </form>
+        @if (Model.Action == "Create")
+        {
+            <button name="Action" value="Create" type="submit" class="btn btn-success me-3">Create</button>
+        }
+        else
+        {
+            <button name="Action" value="Update" type="submit" class="btn btn-success me-3">Save</button>
+            <button name="Action" value="Delete" type="submit" class="btn btn-danger">Delete</button>
+        }
+    </div>
 
-    @if (Model.Action != "Create")
-    {
-        <table class="table table-striped table-hover w-100">
-            <thead>
+</form>
+
+@if (Model.Action != "Create")
+{
+    <table class="table table-striped table-hover w-100">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Foodbank!.Locations ?? new List<Location>())
+        {
             <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Address</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Action</th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    Some stuff here
+                </td>
             </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model.Foodbank.Locations ?? new List<Location>())
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Address)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Phone)
-                    </td>
-                    <td>
-                        Some stuff here
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    }
-    
+        }
+        </tbody>
+    </table>
+}
+
 </div>

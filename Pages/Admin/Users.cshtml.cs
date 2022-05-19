@@ -13,7 +13,7 @@ public class UsersModel : PageModel
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<IdentityUser> _userManager;
 
-    public IList<IdentityUser> Users;
+    public IList<IdentityUser>? Users;
 
     public UsersModel(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
     {

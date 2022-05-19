@@ -2,7 +2,6 @@
 
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
-using Foodbank_Project.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -11,13 +10,13 @@ using Location = Foodbank_Project.Models.Location;
 
 #endregion
 
-namespace Foodbank_Project.Pages.GetHelp;
+namespace Foodbank_Project.Pages.GiveHelp;
 
-public class IndexModel : PageModel
+public class FindDistribution : PageModel
 {
     private readonly ApplicationContext _ctx;
 
-    public IndexModel(ApplicationContext ctx)
+    public FindDistribution(ApplicationContext ctx)
     {
         _ctx = ctx;
     }
@@ -26,7 +25,7 @@ public class IndexModel : PageModel
 
     public ICollection<Location>? Locations { get; set; }
 
-    public void OnGetAsync([FromQuery(Name = "Location")] string location)
+    public void OnGet([FromQuery(Name = "Location")] string location)
     {
         Location = location;
     }
@@ -39,7 +38,7 @@ public class IndexModel : PageModel
             .Locations.AsNoTracking().Include(l => l.Foodbank).Where(l => l.Foodbank!.Status == Status.Approved)
             .Select(l => new
             {
-                Distance = (int)Math.Round(l.Coord.ProjectTo(27700).Distance(origin.ProjectTo(27700))),
+                Distance = (int)Math.Round(l.Coord!.Distance(origin)), // constructed from context
                 l.Name,
                 Id = l.LocationId,
                 l.Address,

@@ -18,54 +18,54 @@
 </div>
 
 <form method="post">
-    <input  asp-for="foodEdit.FoodbankId" type="hidden" />
+    <input asp-for="FoodEdit!.FoodbankId" type="hidden"/>
     <div class="container">
         <div class="row">
             <div class="col-6 d-grid mx-auto">
                 <div class="mb-3">
-                    <label for="fbName" class="form-label">Foodbank name</label>
-                    <input asp-for="foodEdit.Name" type="text" class="form-control" id="editName" />
+                    <label asp-for="FoodEdit!.Name" class="form-label">Foodbank name</label>
+                    <input asp-for="FoodEdit!.Name" type="text" class="form-control" id="editName"/>
                 </div>
                 <div class="mb-3">
-                    <label for="email" class="form-label">Contact Email</label>
-                    <input asp-for="foodEdit.Email" type="email" class="form-control" id="editEmail" />
+                    <label asp-for="FoodEdit!.Email" class="form-label">Contact Email</label>
+                    <input asp-for="FoodEdit!.Email" type="email" class="form-control" id="editEmail"/>
                 </div>
                 <div class="mb-3">
-                    <label for="charNo" class="form-label">Charity No </label>
-                    <input asp-for="foodEdit.CharityNumber" type="text" class="form-control" id="editChar" />
+                    <label asp-for="FoodEdit!.CharityNumber" class="form-label">Charity No </label>
+                    <input asp-for="FoodEdit!.CharityNumber" type="text" class="form-control" id="editChar"/>
                 </div>
                 <div class="mb-3">
-                    <label for="regurl" class="form-label">Register URL</label>
-                    <input asp-for="foodEdit.CharityRegisterUrl" type="url" class="form-control" id="editReg" />
+                    <label asp-for="FoodEdit!.CharityRegisterUrl" class="form-label">Register URL</label>
+                    <input asp-for="FoodEdit!.CharityRegisterUrl" type="url" class="form-control" id="editReg"/>
                 </div>
                 <div class="mb-3">
-                    <label for="phone" class="form-label">PhoneNo</label>
-                    <input asp-for="foodEdit.Phone" type="text" class="form-control" id="editPhone" />
+                    <label asp-for="FoodEdit!.Phone" class="form-label">PhoneNo</label>
+                    <input asp-for="FoodEdit!.Phone" type="text" class="form-control" id="editPhone"/>
                 </div>
             </div>
             <div class="col-6 d-grid mx-auto">
                 <div class="mb-3">
-                    <label for="fbAddress" class="form-label">Address</label>
-                    <input asp-for="foodEdit.Address" type="text" class="form-control" id="editAddress" />
+                    <label asp-for="FoodEdit!.Address" class="form-label">Address</label>
+                    <input asp-for="FoodEdit!.Address" type="text" class="form-control" id="editAddress"/>
                 </div>
                 <div class="mb-3">
-                    <label for="fbPost" class="form-label">PostCode</label>
-                    <input asp-for="foodEdit.Postcode" type="text" class="form-control" id="editPost" />
+                    <label asp-for="FoodEdit!.Postcode" class="form-label">PostCode</label>
+                    <input asp-for="FoodEdit!.Postcode" type="text" class="form-control" id="editPost"/>
                 </div>
                 <div class="mb-3">
-                    <label for="web" class="form-label">Website</label>
-                    <input asp-for="foodEdit.Homepage" type="url" class="form-control" id="editSite" />
+                    <label asp-for="FoodEdit!.Homepage" class="form-label">Website</label>
+                    <input asp-for="FoodEdit!.Homepage" type="url" class="form-control" id="editSite"/>
                 </div>
                 <div class="mb-3">
-                    <label for="social" class="form-label">Social media</label>
-                    <input asp-for="foodEdit.Notes" type="text" class="form-control" id="editSocial" />
+                    <label asp-for="FoodEdit!.Notes" class="form-label">Social media</label>
+                    <input asp-for="FoodEdit!.Notes" type="text" class="form-control" id="editSocial"/>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-6 d-grid mx-auto">
                 <div class="col-5">
-                    <select asp-for="foodEdit.Network"class="form-select" aria-label="Network or association">
+                    <select asp-for="FoodEdit!.Network" class="form-select" aria-label="Network or association">
                         <option selected>Network</option>
                         <option value="Trussel Trust">Trussel Trust</option>
                         <option value="IFAN">IFAN</option>
@@ -75,7 +75,7 @@
             </div>
             <div class="col-6 d-grid mx-auto">
                 <div class="col-5">
-                    <select asp-for="foodEdit.Country"class="form-select" aria-label="Country">
+                    <select asp-for="FoodEdit!.Country" class="form-select" aria-label="Country">
                         <option selected>Country</option>
                         <option value="England">England</option>
                         <option value="Scotland">Scotland</option>
