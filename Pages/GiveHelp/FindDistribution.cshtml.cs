@@ -26,7 +26,7 @@ public class FindDistribution : PageModel
         var origin = new Point(obj.Lng, obj.Lat) { SRID = 4326 };
 
         var foodBankLocations = await _ctx
-            .Foodbanks.AsNoTracking().Where(f => f.Status == Status.Approved)
+            .Foodbanks!.AsNoTracking().Where(f => f.Status == Status.Approved)
             .Select(f => new
             {
                 Distance = (int)Math.Round(f.Coord.ProjectTo(27700).Distance(origin.ProjectTo(27700))),
