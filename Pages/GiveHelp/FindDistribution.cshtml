@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="/css/Control.Geocoder.css"/>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css"/>
 
-
 <script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
 <script src="/js/Control.Geocoder.js"></script>
 
@@ -15,56 +14,52 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-3">
-                <div class="m-2 d-grid">
-                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelp/Index">Find&nbsp;a&nbsp;Foodbank</a>
-                </div>
-                <div class="m-2 d-grid">
-                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelp/Vouchers">How&nbsp;the System&nbsp;Works</a>
-                </div>
-                <div class="m-2 d-grid">
-                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/Index">Home</a>
-                </div>
-
+                <div class="m-2 d-grid">    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/Index">Back</a>    </div>
             </div>
+
             <div class="col-sm-9 text-center">
-                <h1 class="display-4">Find a Distribution Center</h1>
+                <h1 class="display-4">Find a Donation Point</h1>
             </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-3">
-
-            <h1>5 closest Distribution Centers</h1>
-            <div class="foodbank-list">
-                <div class="m-2 d-grid" id="FoodbankClosest1"></div>
-                <div class="m-2 d-grid" id="FoodbankClosest2"></div>
-                <div class="m-2 d-grid" id="FoodbankClosest3"></div>
-                <div class="m-2 d-grid" id="FoodbankClosest4"></div>
-                <div class="m-2 d-grid" id="FoodbankClosest5"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form class="visually-hidden">  @Html.AntiForgeryToken()    </form>
+                <div class="image-box" id="map"></div>
             </div>
-
         </div>
-        <div class="col-sm-9">
-            <form class="visually-hidden">
-                @Html.AntiForgeryToken()
-            </form>
+    </div>
 
-            <div id="map" style="height: 33.75vw;
-                                 width: 60vw;
-                                 margin: auto;
-                                 margin-top: 2%;"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-10 d-grid mx-auto">   
+                <h1>5 closest Donation Points</h1>    
+                <div class="text-box" id="FoodbankClosest1"></div>      
+                <div class="text-box" id="FoodbankClosest2"></div>       
+                <div class="text-box" id="FoodbankClosest3"></div>   
+                <div class="text-box" id="FoodbankClosest4"></div>       
+                <div class="text-box" id="FoodbankClosest5"></div> 
+            </div>        
         </div>
     </div>
 
 
     <script type="text/javascript">
 
+        var foodbankIcon = L.icon({
+              iconUrl: '/img/leaf.png',
+              iconSize:     [40, 40],
+              iconAnchor:   [0, 30],
+              popupAnchor:  [15, -30] 
+        });
+
         var warehouseIcon = L.icon({
               iconUrl: '/img/warehouse.png',//copy righted dont use for final
               iconSize:     [50, 50],
               iconAnchor:   [25, 50],
-              popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+              popupAnchor:  [-3, -76]
         });
 
         var map = L.map('map').setView([ 54.596442,  -3.9], 6);
@@ -72,7 +67,6 @@
         var featureGroup = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
         map.addLayer(featureGroup);
 
-        //map.locate({setView: true, maxZoom: 14}); asks the user for their location
         var geocoder = L.Control.Geocoder.nominatim({
              geocodingQueryParams: {countrycodes: 'gb,im,gg,je'}
         });
@@ -114,15 +108,15 @@
                   if (markerGroup != null) {
                       markerGroup.clearLayers();
                   }
+
                  var closest5Markers = [];
                  var iterator = 0;
-
                  for(const element of result){
                      closest5Markers[iterator] = L.marker([element.coord.lat, element.coord.lng], {icon:foodbankIcon}).bindPopup(element.name.toString() + " <br> " + element.distance.toString() + "m away<br> " + '<a href="/Foodbank/Index/'+ element.id +'">Click here to learn more</a>');    //need to figure out how to new line these and format the distance so we get no deciamals
                      $("#FoodbankClosest" + (iterator+1)).html("<p>" + element.name.toString() + "<br>" + element.address.toString() + "<br>" + element.distance.toString() + "m away <br> " + ' <a href="/Foodbank/Index/'+ element.id + '">Click here to learn more</a>' + "</p>");
                      iterator++;
-
                  }
+
                  markerGroup = L.featureGroup([closest5Markers[0],closest5Markers[1],closest5Markers[2],closest5Markers[3],closest5Markers[4]]);
                  map.addLayer(markerGroup);
                  map.fitBounds([markerGroup.getBounds().pad(0.2), e.bbox]);

@@ -1,5 +1,6 @@
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
+using Foodbank_Project.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +35,7 @@ namespace Foodbank_Project.Pages.GiveHelp
                 .Locations.AsNoTracking().Include(l => l.Foodbank).Where(l => l.Foodbank.Status == Status.Approved)
                 .Select(l => new
                 {
-                    Distance = (int)Math.Round(l.Coord.Distance(origin)),
+                    Distance = (int)Math.Round(l.Coord.ProjectTo(27700).Distance(origin.ProjectTo(27700))),
                     l.Name,
                     Id = l.LocationId,
                     l.Address,
