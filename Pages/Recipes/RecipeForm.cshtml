@@ -5,7 +5,6 @@
 }
 
 
-
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-3">
@@ -29,48 +28,49 @@
     <div class="container mt-5T">
 
         <div class="col-md-3">
-            <label for="RecipeName">Recipe Name:</label><br />
-            <input class="text-box" asp-for="Recipe.Name" type="text" /><br />
-            <label for="RecipeServes">Recipe Serves:</label><br />
-            <input class="text-box" asp-for="Recipe.Serves" type="text" /><br />
+            <label asp-for="Recipe.Name">Recipe Name:</label><br/>
+            <input class="text-box" asp-for="Recipe.Name" type="text"/><br/>
+            <label asp-for="Recipe.Serves">Recipe Serves:</label><br/>
+            <input class="text-box" asp-for="Recipe.Serves" type="text"/><br/>
         </div>
 
-        <label for="Categories">Select recipe Categories::</label> <br />
+        <label asp-for="Recipe.Category">Select recipe Categories::</label> <br/>
         <div class="text-box col-md-2">
             @foreach (var category in Model.SelectedCategories)
             {
-                <label>@Html.DisplayFor(model => category.Value.Item1.Name)</label>
-                <input asp-for="SelectedCategories[category.Key].Item2" type="checkbox"> <br />
+                <label>@Html.DisplayFor(model => category.Value.Item1!.Name)</label>
+                <input asp-for="SelectedCategories[category.Key].Item2" type="checkbox">
+                <br/>
             }
 
         </div>
     </div>
     <div class="container  spacingT">
-        <label for="Ingredients">Ingredients:</label>
+        <label asp-for="Recipe.Ingredients">Ingredients:</label>
 
-        <textarea asp-for="Recipe.Ingredients" rows="4" cols="1" class="form-control text-box"></textarea><br />
+        <textarea asp-for="Recipe.Ingredients" rows="4" cols="1" class="form-control text-box"></textarea><br/>
 
     </div>
 
 
     <div class="container">
-        <label for="RecipeMethod">Recipe Method:</label><br />
-        <textarea asp-for="Recipe.Method" rows="4" cols="1" class="form-control text-box"></textarea><br />
+        <label asp-for="Recipe.Method">Recipe Method:</label><br/>
+        <textarea asp-for="Recipe.Method" rows="4" cols="1" class="form-control text-box"></textarea><br/>
     </div>
     <div class="container">
-        <label for="RecipeNotes">Recipe Notes:</label><br />
-        <textarea asp-for="Recipe.Notes" rows="2" cols="1" class="form-control text-box"></textarea><br />
+        <label asp-for="Recipe.Notes">Recipe Notes:</label><br/>
+        <textarea asp-for="Recipe.Notes" rows="2" cols="1" class="form-control text-box"></textarea><br/>
     </div>
 
     <div class="container mt-2">
-        Upload Image: (Image size should be 300x300)<br />
+        Upload Image: (Image size should be 300x300)<br/>
 
         <input class="mt-3 btn btn-lg btn-outline-success" type="file"
-               asp-for="Image" />
+               asp-for="Image"/>
 
-        <br />
-        <input class="mt-3 btn btn-lg btn-outline-success" type="submit" /> <br />
-        <label for="Status">Status is awaiting approval:</label>
+        <br/>
+        <input class="mt-3 btn btn-lg btn-outline-success" type="submit"/> <br/>
+        <label asp-for="Recipe.Status">Status is awaiting approval:</label>
 
     </div>
 </form>

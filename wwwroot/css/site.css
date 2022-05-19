@@ -112,7 +112,7 @@ p {
 .recipe-icons {
     height: 175px;
     width: 175px;
-    
+
 }
 
 .map-iframe {
@@ -225,6 +225,6 @@ a:hover {
     align-self: center;
 }
 
-.noUnderlines{
+.noUnderlines {
     text-decoration: none;
 }

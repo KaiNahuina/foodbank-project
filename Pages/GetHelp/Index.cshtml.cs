@@ -2,12 +2,11 @@
 
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
+using Foodbank_Project.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
-using System.Collections.ObjectModel;
-using Foodbank_Project.Util;
 using Location = Foodbank_Project.Models.Location;
 
 #endregion
@@ -16,7 +15,6 @@ namespace Foodbank_Project.Pages.GetHelp;
 
 public class IndexModel : PageModel
 {
-
     private readonly ApplicationContext _ctx;
 
     public IndexModel(ApplicationContext ctx)
@@ -26,9 +24,9 @@ public class IndexModel : PageModel
 
     public string? Location { get; set; }
 
-    public ICollection<Location> Locations { get; set; }
+    public ICollection<Location>? Locations { get; set; }
 
-    public async Task OnGetAsync([FromQuery(Name="Location")]string location)
+    public void OnGetAsync([FromQuery(Name = "Location")] string location)
     {
         Location = location;
     }
@@ -38,7 +36,7 @@ public class IndexModel : PageModel
         var origin = new Point(obj.Lng, obj.Lat) { SRID = 4326 };
 
         var foodBankLocations = await _ctx
-            .Locations.AsNoTracking().Include(l => l.Foodbank).Where(l => l.Foodbank.Status == Status.Approved)
+            .Locations.AsNoTracking().Include(l => l.Foodbank).Where(l => l.Foodbank!.Status == Status.Approved)
             .Select(l => new
             {
                 Distance = (int)Math.Round(l.Coord.ProjectTo(27700).Distance(origin.ProjectTo(27700))),
@@ -56,6 +54,7 @@ public class IndexModel : PageModel
 
         return new JsonResult(top5Locations);
     }
+
     public class Coords
     {
         public double Lat { get; set; }

@@ -7,76 +7,59 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 #endregion
 
-namespace Foodbank_Project.Pages;
+namespace Foodbank_Project.Pages.Recipes;
 
 public class RecipeFormModel : PageModel
 {
-    [BindProperty]
-    public Models.Recipe Recipe { get; set; } = new();
-    [BindProperty]
-    public  IFormFile Image { get; set; }
-    [BindProperty]
-    public Dictionary<int, Pair<RecipeCategory, bool>> SelectedCategories { get; set; } = new();
-
-
     private ApplicationContext _ctx;
-   
+
     public RecipeFormModel(ApplicationContext ctx)
     {
         _ctx = ctx;
     }
 
-    public class Pair<T1, T2>
-    {
-        public T1 Item1 { get; set; }
-        public T2 Item2 { get; set; }
-    }
+    [BindProperty] public Recipe Recipe { get; set; } = new();
+    [BindProperty] public IFormFile? Image { get; set; }
+    [BindProperty] public Dictionary<int, Pair<RecipeCategory, bool>> SelectedCategories { get; set; } = new();
 
     public void OnGet()
     {
-        foreach(var category in _ctx.RecipeCategories.ToArray())
-        {
-            SelectedCategories.Add(category.RecipeCategoryId, new Pair<RecipeCategory, bool> { Item1 = category, Item2 = false});
-        }
+        foreach (var category in _ctx.RecipeCategories.ToArray())
+            SelectedCategories.Add(category.RecipeCategoryId,
+                new Pair<RecipeCategory, bool> { Item1 = category, Item2 = false });
     }
-    
+
 
     public async Task<IActionResult> OnPostAsync()
     {
-
         foreach (var category in _ctx.RecipeCategories.ToArray())
-        {
             SelectedCategories[category.RecipeCategoryId].Item1 = category;
-        }
 
         Recipe.Category = new List<RecipeCategory>();
 
-        MemoryStream ms = new MemoryStream();
-            Image.CopyTo(ms);
-            Recipe.Image = ms.ToArray();
-            ms.Close();
-            ms.Dispose();
+        var ms = new MemoryStream();
+        await Image?.CopyToAsync(ms)!;
+        Recipe.Image = ms.ToArray();
+        ms.Close();
+        await ms.DisposeAsync();
 
 
-        foreach(var category in SelectedCategories)
-        {
-            if (category.Value.Item2)
-            {
-                Recipe.Category.Add(category.Value.Item1);
-            }
-        }
+        foreach (var category in SelectedCategories.Where(category => category.Value.Item2))
+            Recipe.Category.Add(category.Value.Item1);
 
         Recipe.Status = Status.UnConfirmed;
 
 
         ModelState.ClearValidationState(nameof(Recipe));
-        if (!TryValidateModel(Recipe, nameof(Recipe)))
-        {
-            return Page();
-        }
+        if (!TryValidateModel(Recipe, nameof(Recipe))) return Page();
         _ctx.Recipes?.Update(Recipe);
         await _ctx.SaveChangesAsync();
         return RedirectToPage("/Recipes/RecipeForm");
     }
 
+    public class Pair<T1, T2>
+    {
+        public T1? Item1 { get; set; }
+        public T2? Item2 { get; set; }
+    }
 }

@@ -1,7 +1,6 @@
 #region
 
 using Foodbank_Project.Data;
-using Foodbank_Project.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -14,15 +13,15 @@ public class FoodbanksModel : PageModel
 {
     private readonly ApplicationContext _ctx;
 
-    public IList<Models.Foodbank> Foodbanks;
+    public IList<Models.Foodbank>? Foodbanks;
     public bool HasNextPage;
     public bool HasPrevPage;
     public int MaxPages;
-    public string OrderBy;
+    public string? OrderBy;
 
-    public string OrderDirection;
-    public int Page;
-    public string Search;
+    public string? OrderDirection;
+    public new int Page;
+    public string? Search;
     public int TotalItems;
 
     public FoodbanksModel(ApplicationContext ctx)
@@ -50,67 +49,35 @@ public class FoodbanksModel : PageModel
                 select f).AsNoTracking().Include(f => f.Locations)
             .OrderByDescending(n => n.Name)
             .Where(n =>
-                string.IsNullOrEmpty(Search) || n.Name.Contains(Search) || n.Address.Contains(Search) ||
-                n.Postcode.Contains(Search)
+                string.IsNullOrEmpty(Search) || n.Name!.Contains(Search) || n.Address!.Contains(Search) ||
+                n.Postcode!.Contains(Search)
                 || n.FoodbankId.ToString() == Search);
-
-        // do sort and filter shizzle here
 
         switch (OrderDirection)
         {
             case "Asc":
             {
-                switch (OrderBy)
+                foodbankQue = OrderBy switch
                 {
-                    case "Name":
-                    {
-                        foodbankQue = foodbankQue.OrderBy(n => n.Name);
-                        break;
-                    }
-                    case "Address":
-                    {
-                        foodbankQue = foodbankQue.OrderBy(n => n.Address);
-                        break;
-                    }
-                    case "Submitted":
-                    {
-                        foodbankQue = foodbankQue.OrderBy(n => n.Created);
-                        break;
-                    }
-                    case "Locations":
-                    {
-                        foodbankQue = foodbankQue.OrderBy(n => n.Locations.Count);
-                        break;
-                    }
-                }
+                    "Name" => foodbankQue.OrderBy(n => n.Name),
+                    "Address" => foodbankQue.OrderBy(n => n.Address),
+                    "Submitted" => foodbankQue.OrderBy(n => n.Created),
+                    "Locations" => foodbankQue.OrderBy(n => n.Locations!.Count),
+                    _ => foodbankQue
+                };
 
                 break;
             }
             case "Desc":
             {
-                switch (OrderBy)
+                foodbankQue = OrderBy switch
                 {
-                    case "Name":
-                    {
-                        foodbankQue = foodbankQue.OrderByDescending(n => n.Name);
-                        break;
-                    }
-                    case "Address":
-                    {
-                        foodbankQue = foodbankQue.OrderByDescending(n => n.Address);
-                        break;
-                    }
-                    case "Submitted":
-                    {
-                        foodbankQue = foodbankQue.OrderByDescending(n => n.Created);
-                        break;
-                    }
-                    case "Locations":
-                    {
-                        foodbankQue = foodbankQue.OrderByDescending(n => n.Locations.Count);
-                        break;
-                    }
-                }
+                    "Name" => foodbankQue.OrderByDescending(n => n.Name),
+                    "Address" => foodbankQue.OrderByDescending(n => n.Address),
+                    "Submitted" => foodbankQue.OrderByDescending(n => n.Created),
+                    "Locations" => foodbankQue.OrderByDescending(n => n.Locations!.Count),
+                    _ => foodbankQue
+                };
 
                 break;
             }
@@ -125,5 +92,4 @@ public class FoodbanksModel : PageModel
 
         Foodbanks = await foodbankQue.Skip((Page - 1) * 25).Take(25).ToListAsync();
     }
-    
 }

@@ -17,13 +17,13 @@ public class StockModel : PageModel
     public bool HasPrevPage;
     public int MaxPages;
 
-    public IList<Need> Needs;
-    public string OrderBy;
+    public IList<Need>? Needs;
+    public string? OrderBy;
 
 
-    public string OrderDirection;
-    public int Page;
-    public string Search;
+    public string? OrderDirection;
+    public new int Page;
+    public string? Search;
     public int TotalItems;
 
 
@@ -53,45 +53,30 @@ public class StockModel : PageModel
             .Include(n => n.Foodbanks)
             .OrderByDescending(n => n.Foodbanks.Count)
             .Where(n => n.NeedStr != null).Where(n =>
-                string.IsNullOrEmpty(Search) || n.NeedStr.Contains(Search) || n.NeedId.ToString() == Search);
+                string.IsNullOrEmpty(Search) || n.NeedStr!.Contains(Search) || n.NeedId.ToString() == Search);
 
-        // do sort and filter shizzle here
 
         switch (OrderDirection)
         {
             case "Asc":
             {
-                switch (OrderBy)
+                needQue = OrderBy switch
                 {
-                    case "Name":
-                    {
-                        needQue = needQue.OrderBy(n => n.NeedStr);
-                        break;
-                    }
-                    case "Count":
-                    {
-                        needQue = needQue.OrderBy(n => n.Foodbanks.Count);
-                        break;
-                    }
-                }
+                    "Name" => needQue.OrderBy(n => n.NeedStr),
+                    "Count" => needQue.OrderBy(n => n.Foodbanks.Count),
+                    _ => needQue
+                };
 
                 break;
             }
             case "Desc":
             {
-                switch (OrderBy)
+                needQue = OrderBy switch
                 {
-                    case "Name":
-                    {
-                        needQue = needQue.OrderByDescending(n => n.NeedStr);
-                        break;
-                    }
-                    case "Count":
-                    {
-                        needQue = needQue.OrderByDescending(n => n.Foodbanks.Count);
-                        break;
-                    }
-                }
+                    "Name" => needQue.OrderByDescending(n => n.NeedStr),
+                    "Count" => needQue.OrderByDescending(n => n.Foodbanks.Count),
+                    _ => needQue
+                };
 
                 break;
             }

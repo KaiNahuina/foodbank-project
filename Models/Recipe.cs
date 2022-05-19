@@ -12,7 +12,6 @@ public class Recipe
     public byte[]? Image { get; set; }
     public Status? Status { get; set; }
 
-    
 
     public ICollection<RecipeCategory>? Category { get; set; }
 }
