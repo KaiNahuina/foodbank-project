@@ -3,5 +3,6 @@
 public enum Provider
 {
     // ReSharper disable once UnusedMember.Global
-    GiveFoodApi
+    GiveFoodApi,
+    Internal
 }

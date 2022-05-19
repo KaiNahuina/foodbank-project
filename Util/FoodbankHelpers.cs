@@ -13,6 +13,31 @@ namespace Foodbank_Project.Util;
 
 public static class FoodbankHelpers
 {
+    public static Foodbank ApplySlug(Foodbank foodbank)
+    {
+        foodbank.Slug = foodbank.Name?.ToLower().Replace(" ", "-");
+        return foodbank;
+    }
+
+    public static Foodbank ApplyFinalize(Foodbank foodbank)
+    {
+        foodbank.Locations ??= new List<Location>();
+        foodbank.Needs ??= new List<Need>();
+        
+        foodbank.Locations.Add(new Location
+        {
+            Name = foodbank.Name,
+            Address = foodbank.Address,
+            Coord = foodbank.Coord,
+            Foodbank = foodbank,
+            Phone = foodbank.Phone,
+            Postcode = foodbank.Postcode,
+            Slug = foodbank.Slug
+        });
+
+        return foodbank;
+    }
+    
     public static Foodbank Convert(Models.External.Foodbank externalFoodbank)
     {
         var foodbank = new Foodbank
