@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+using NetTopologySuite.Geometries;
 
 #nullable disable
 
 namespace Foodbank_Project.Migrations
 {
-    public partial class Initial : Migration
+    public partial class RecipeCategoriesAdd : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -48,6 +50,20 @@ namespace Foodbank_Project.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Contents",
+                columns: table => new
+                {
+                    ContentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Blob = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contents", x => x.ContentId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Foodbanks",
                 columns: table => new
                 {
@@ -65,7 +81,8 @@ namespace Foodbank_Project.Migrations
                     Postcode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Closed = table.Column<bool>(type: "bit", nullable: false),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LatLng = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Coord = table.Column<Point>(type: "geography", nullable: false),
                     Network = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Homepage = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -90,6 +107,38 @@ namespace Foodbank_Project.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Needs", x => x.NeedId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RecipeCategories",
+                columns: table => new
+                {
+                    RecipeCategoryId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RecipeCategories", x => x.RecipeCategoryId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Recipes",
+                columns: table => new
+                {
+                    RecipeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Serves = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Ingredients = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Method = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Recipes", x => x.RecipeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -138,8 +187,8 @@ namespace Foodbank_Project.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -183,8 +232,8 @@ namespace Foodbank_Project.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -208,7 +257,7 @@ namespace Foodbank_Project.Migrations
                     Slug = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Postcode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LatLng = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Coord = table.Column<Point>(type: "geography", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FoodbankId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -219,7 +268,8 @@ namespace Foodbank_Project.Migrations
                         name: "FK_Locations_Foodbanks_FoodbankId",
                         column: x => x.FoodbankId,
                         principalTable: "Foodbanks",
-                        principalColumn: "FoodbankId");
+                        principalColumn: "FoodbankId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -244,6 +294,45 @@ namespace Foodbank_Project.Migrations
                         principalTable: "Needs",
                         principalColumn: "NeedId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RecipeRecipeCategory",
+                columns: table => new
+                {
+                    CategoryRecipeCategoryId = table.Column<int>(type: "int", nullable: false),
+                    RecipesRecipeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RecipeRecipeCategory", x => new { x.CategoryRecipeCategoryId, x.RecipesRecipeId });
+                    table.ForeignKey(
+                        name: "FK_RecipeRecipeCategory_RecipeCategories_CategoryRecipeCategoryId",
+                        column: x => x.CategoryRecipeCategoryId,
+                        principalTable: "RecipeCategories",
+                        principalColumn: "RecipeCategoryId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RecipeRecipeCategory_Recipes_RecipesRecipeId",
+                        column: x => x.RecipesRecipeId,
+                        principalTable: "Recipes",
+                        principalColumn: "RecipeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "RecipeCategories",
+                columns: new[] { "RecipeCategoryId", "Name" },
+                values: new object[,]
+                {
+                    { -8, "Special Event" },
+                    { -7, "Side" },
+                    { -6, "Snack" },
+                    { -5, "Soup" },
+                    { -4, "Desert" },
+                    { -3, "Fish" },
+                    { -2, "Vegetarian" },
+                    { -1, "Meat" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -294,6 +383,11 @@ namespace Foodbank_Project.Migrations
                 name: "IX_Locations_FoodbankId",
                 table: "Locations",
                 column: "FoodbankId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RecipeRecipeCategory_RecipesRecipeId",
+                table: "RecipeRecipeCategory",
+                column: "RecipesRecipeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -314,10 +408,16 @@ namespace Foodbank_Project.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Contents");
+
+            migrationBuilder.DropTable(
                 name: "FoodbankNeed");
 
             migrationBuilder.DropTable(
                 name: "Locations");
+
+            migrationBuilder.DropTable(
+                name: "RecipeRecipeCategory");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -330,6 +430,12 @@ namespace Foodbank_Project.Migrations
 
             migrationBuilder.DropTable(
                 name: "Foodbanks");
+
+            migrationBuilder.DropTable(
+                name: "RecipeCategories");
+
+            migrationBuilder.DropTable(
+                name: "Recipes");
         }
     }
 }

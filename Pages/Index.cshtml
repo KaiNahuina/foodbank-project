@@ -4,15 +4,15 @@
     ViewData["Title"] = "Foodbank Finder";
 }
 
-<form method="post">
+<form method="get" asp-page="/GetHelp/Index">
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-3">
                 <div class="m-2 d-grid">
-                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GiveHelp/Index">Get Help</a>
+                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelp/Index">Get Help</a>
                 </div>
                 <div class="m-2 d-grid">
-                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelp/Index">Give Help</a>
+                    <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GiveHelp/Index">Give Help</a>
                 </div>
                 <div class="m-2 d-grid">
                     <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Index">Recipes</a>
@@ -26,20 +26,16 @@
                     <label for="searchFoodbank" class="form-label">
                         <h3>Search for your nearest foodbank</h3>
                     </label>
-                    <input asp-for="Location" type="text" class="form-control" id="searchFoodbank" placeholder="Enter postcode or town" aria-describedby="searchBank" />
+                    <input name="Location" type="text" class="form-control" id="searchFoodbank" placeholder="Enter postcode or town" aria-describedby="searchBank" />
 
                     <div class="mt-3">
                         <button type="submit" class="btn btn-primary">Search</button>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 text-center">
-                <h1 class="display-4"></h1>
-            </div>
         </div>
     </div>
 </form>
-
 
 <!--Replace with fragment Suggestion:
 The carousel supports 5 images in the wwwroot/img folder named carImgX.jpg where X is 1 to 5
@@ -47,13 +43,13 @@ if we are going to have a carousel it may be best to have it as a fixed part of 
 <div class="container mt-4 mb-4">
     <div class="row">
         <div class="col-sm-4">
-            <p class="text-box h4">With costs of living rising everyone is finding it harder to fullfill their basic needs</p>
+            <p class="text-box h4 overflow-hidden">With costs of living rising everyone is finding it harder to fullfill their basic needs</p>
         </div>
         <div class="col-sm-4">
-            <p class="text-box h4">Foodbanks across the country have risen to the challenge of helping the public through these difficult times</p>
+            <p class="text-box h4 overflow-hidden">Foodbanks across the country have risen to the challenge of helping the public through these difficult times</p>
         </div>
         <div class="col-sm-4">
-            <p class="text-box h4">Here you can find and up-to-date database of foodbanks and their distribution centers accross the UK</p>
+            <p class="text-box h4 overflow-hidden">Here you can find and up-to-date database of foodbanks and their distribution centers accross the UK</p>
         </div>
     </div>
 </div>
@@ -142,6 +138,16 @@ if we are going to have a carousel it may be best to have it as a fixed part of 
             </p>
         </div>
     </div>
-
-
 </div>
+
+<div class="container mt-4">
+    <div class="row bg-success" style="--bs-bg-opacity: .5;">
+        <div class="col-9 d-grid mx-auto">
+            <p class="h4 text-center text-light">Register your foodbank into our database and make it easier for people to find you</p>
+            <div class="mt-3 mb-3 d-grid col-5 mx-auto">
+                  <a class="btn btn-primary" asp-area="" asp-page="/Foodbank/AddBank">Register Foodbank</a>
+            </div>
+        </div>
+    </div>
+</div>
+

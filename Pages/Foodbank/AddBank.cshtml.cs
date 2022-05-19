@@ -2,8 +2,12 @@
 
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
+using Foodbank_Project.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using NetTopologySuite.Geometries;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 
 #endregion
 
@@ -14,49 +18,55 @@ public class AddBankModel : PageModel
 
     private ApplicationContext _ap;
 
+    [BindProperty]
     public Models.Foodbank foodbank { get; set; }
+    [BindProperty]
+    public float lat { get; set; }
+    [BindProperty]
+    public float lng { get; set; }
 
-    private Need need { get; set; }
+    [BindProperty]
+    public bool consent { get; set; }
 
-    public string needs;
-
-    public string add1;
-
-    public string? add2;
-
-    public string city;
-
-    public string? region;
-
-    private string fullAddress;
-
-    public string opening;
-
-    public string closing;
-
-    private Tuple<string> openingTimes;
-
+    [BindProperty]
+    public bool confirm { get; set; }
 
     public AddBankModel(ApplicationContext ap)
     {
         _ap = ap;
     }
 
-    public async Task<IActionResult> OnPost()
+    public void onGet()
     {
-        if(!ModelState.IsValid)
+        foodbank.Protected = false;
+        foodbank.Status = Status.UnConfirmed;
+    }
+
+    public async Task<IActionResult> OnPostAsync()
+    {
+        
+        var geoLoc = new Point(lat, lng) { SRID = 4326 };
+        foodbank.Coord = geoLoc;
+        foodbank.Closed = false;
+        foodbank.Protected = true;
+        foodbank.Created = DateTime.Now;
+
+        foodbank = FoodbankHelpers.ApplySlug(foodbank);
+        foodbank = FoodbankHelpers.ApplyFinalize(foodbank);
+        ModelState.ClearValidationState(nameof(Foodbank));
+        if (!TryValidateModel(foodbank, nameof(Foodbank)))
         {
+            var errors = ModelState.Select(x => x.Value.Errors).Where(y => y.Count > 0).ToList();
             return Page();
         }
-        fullAddress = $"{add1} {add2} {city} {region}";
-        foodbank.Address = fullAddress;
-        foodbank.Closed = false;
-        foodbank.Status = Status.UnConfirmed;
         _ap.Foodbanks.Add(foodbank);
         await _ap.SaveChangesAsync();
         return RedirectToPage("/Index");
     }
-    public void OnGet()
+
+    public class Coords
     {
+        public double Lat { get; set; }
+        public double Lng { get; set; }
     }
 }

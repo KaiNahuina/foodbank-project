@@ -13,8 +13,8 @@ using NetTopologySuite.Geometries;
 namespace Foodbank_Project.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220510095114_GeoData")]
-    partial class GeoData
+    [Migration("20220519085619_RecipeCategoriesAdd")]
+    partial class RecipeCategoriesAdd
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -197,20 +197,31 @@ namespace Foodbank_Project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecipeId"), 1L, 1);
 
-                    b.Property<string>("Blob")
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Ingredients")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CategoryRecipeCategoryId")
-                        .HasColumnType("int");
+                    b.Property<string>("Method")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("RecipeId");
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("CategoryRecipeCategoryId");
+                    b.Property<string>("Serves")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("RecipeId");
 
                     b.ToTable("Recipes");
                 });
@@ -230,6 +241,48 @@ namespace Foodbank_Project.Migrations
                     b.HasKey("RecipeCategoryId");
 
                     b.ToTable("RecipeCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            RecipeCategoryId = -1,
+                            Name = "Meat"
+                        },
+                        new
+                        {
+                            RecipeCategoryId = -2,
+                            Name = "Vegetarian"
+                        },
+                        new
+                        {
+                            RecipeCategoryId = -3,
+                            Name = "Fish"
+                        },
+                        new
+                        {
+                            RecipeCategoryId = -4,
+                            Name = "Desert"
+                        },
+                        new
+                        {
+                            RecipeCategoryId = -5,
+                            Name = "Soup"
+                        },
+                        new
+                        {
+                            RecipeCategoryId = -6,
+                            Name = "Snack"
+                        },
+                        new
+                        {
+                            RecipeCategoryId = -7,
+                            Name = "Side"
+                        },
+                        new
+                        {
+                            RecipeCategoryId = -8,
+                            Name = "Special Event"
+                        });
                 });
 
             modelBuilder.Entity("FoodbankNeed", b =>
@@ -445,22 +498,29 @@ namespace Foodbank_Project.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("RecipeRecipeCategory", b =>
+                {
+                    b.Property<int>("CategoryRecipeCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RecipesRecipeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CategoryRecipeCategoryId", "RecipesRecipeId");
+
+                    b.HasIndex("RecipesRecipeId");
+
+                    b.ToTable("RecipeRecipeCategory");
+                });
+
             modelBuilder.Entity("Foodbank_Project.Models.Location", b =>
                 {
                     b.HasOne("Foodbank_Project.Models.Foodbank", "Foodbank")
                         .WithMany("Locations")
-                        .HasForeignKey("FoodbankId");
+                        .HasForeignKey("FoodbankId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Foodbank");
-                });
-
-            modelBuilder.Entity("Foodbank_Project.Models.Recipe", b =>
-                {
-                    b.HasOne("Foodbank_Project.Models.RecipeCategory", "Category")
-                        .WithMany("Recipes")
-                        .HasForeignKey("CategoryRecipeCategoryId");
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("FoodbankNeed", b =>
@@ -529,14 +589,24 @@ namespace Foodbank_Project.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("RecipeRecipeCategory", b =>
+                {
+                    b.HasOne("Foodbank_Project.Models.RecipeCategory", null)
+                        .WithMany()
+                        .HasForeignKey("CategoryRecipeCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Foodbank_Project.Models.Recipe", null)
+                        .WithMany()
+                        .HasForeignKey("RecipesRecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Foodbank_Project.Models.Foodbank", b =>
                 {
                     b.Navigation("Locations");
-                });
-
-            modelBuilder.Entity("Foodbank_Project.Models.RecipeCategory", b =>
-                {
-                    b.Navigation("Recipes");
                 });
 #pragma warning restore 612, 618
         }

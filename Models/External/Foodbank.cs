@@ -28,7 +28,7 @@ public class Foodbank
 
     [JsonProperty("postcode")] public string? Postcode { get; set; }
 
-    [JsonProperty("closed")] public bool? Closed { get; set; }
+    [JsonProperty("closed")] public bool Closed { get; set; }
 
     [JsonProperty("country")] public string? Country { get; set; }
 
@@ -57,7 +57,7 @@ public class Foodbank
         Email ??= giver.Email;
         Address ??= giver.Address;
         Postcode ??= giver.Postcode;
-        Closed ??= giver.Closed;
+        Closed = giver.Closed;
         Country ??= giver.Country;
         LatLng ??= giver.LatLng;
         Network ??= giver.Network;

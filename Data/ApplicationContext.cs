@@ -50,11 +50,13 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
 
         modelBuilder.Entity<Location>()
             .HasOne(l => l.Foodbank)
-            .WithMany(f => f.Locations);
+            .WithMany(f => f.Locations)
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Recipe>()
-            .HasOne(l => l.Category)
+            .HasMany(l => l.Category)
             .WithMany(f => f.Recipes);
+        
 
         modelBuilder.Entity<Foodbank>().Property(f => f.Name).IsRequired();
         modelBuilder.Entity<Foodbank>().Property(f => f.Slug).IsRequired();
@@ -80,13 +82,50 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
 
         modelBuilder.Entity<Need>().Property(n => n.NeedId).IsRequired();
 
-        modelBuilder.Entity<Recipe>().Property(fl => fl.Blob).IsRequired();
+        modelBuilder.Entity<Recipe>().Property(fl => fl.Method).IsRequired();
+        modelBuilder.Entity<Recipe>().Property(fl => fl.Ingredients).IsRequired();
         modelBuilder.Entity<Recipe>().Property(fl => fl.Name).IsRequired();
+        modelBuilder.Entity<Recipe>().Property(fl => fl.Status).IsRequired();
+        modelBuilder.Entity<Recipe>().Property(fl => fl.Serves);
+        modelBuilder.Entity<Recipe>().Property(fl => fl.Notes);
 
         modelBuilder.Entity<Content>().Property(fl => fl.Blob).IsRequired();
         modelBuilder.Entity<Content>().Property(fl => fl.Name).IsRequired();
 
         modelBuilder.Entity<RecipeCategory>().Property(fl => fl.Name).IsRequired();
+
+        modelBuilder.Entity<RecipeCategory>().HasData(new RecipeCategory { 
+            RecipeCategoryId = -1,
+            Name = "Meat"
+        }, new RecipeCategory
+        {
+            RecipeCategoryId = -2,
+            Name = "Vegetarian"
+        }, new RecipeCategory
+        {
+            RecipeCategoryId = -3,
+            Name = "Fish"
+        }, new RecipeCategory
+        {
+            RecipeCategoryId = -4,
+            Name = "Desert"
+        }, new RecipeCategory
+        {
+            RecipeCategoryId = -5,
+            Name = "Soup"
+        }, new RecipeCategory
+        {
+            RecipeCategoryId = -6,
+            Name = "Snack"
+        }, new RecipeCategory
+        {
+            RecipeCategoryId = -7,
+            Name = "Side"
+        }, new RecipeCategory
+        {
+            RecipeCategoryId = -8,
+            Name = "Special Event"
+        });
 
         base.OnModelCreating(modelBuilder);
     }

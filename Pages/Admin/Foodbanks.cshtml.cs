@@ -125,4 +125,5 @@ public class FoodbanksModel : PageModel
 
         Foodbanks = await foodbankQue.Skip((Page - 1) * 25).Take(25).ToListAsync();
     }
+    
 }
