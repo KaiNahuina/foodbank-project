@@ -43,7 +43,7 @@ if we are going to have a carousel it may be best to have it as a fixed part of 
 <div class="container mt-4 mb-4">
     <div class="row">
         <div class="col-sm-4">
-            <p class="text-box h4 overflow-hidden">With costs of living rising everyone is finding it harder to fullfill their basic needs</p>
+            <p class="text-box h4 overflow-hidden">With fluctuations in the costs of living increasing numbers of families and individuals are finding it harder to fullfill their basic living needs</p>
         </div>
         <div class="col-sm-4">
             <p class="text-box h4 overflow-hidden">Foodbanks across the country have risen to the challenge of helping the public through these difficult times</p>
@@ -53,7 +53,17 @@ if we are going to have a carousel it may be best to have it as a fixed part of 
         </div>
     </div>
 </div>
-<div id="intro-car" class="carousel slide col-11 mx-auto image-box" data-bs-ride="carousel">
+<div class="container mt-4 col-10">
+    <div class="row bg-success" style="--bs-bg-opacity: .5;">
+        <div class="col-9 d-grid mx-auto">
+            <p class="h4 text-center text-light">Register your foodbank into our database and make it easier for people to find you</p>
+            <div class="mt-3 mb-3 d-grid col-5 mx-auto">
+                  <a class="btn btn-primary" asp-area="" asp-page="/Foodbank/AddBank">Register Foodbank</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="intro-car" class="carousel slide col-10 mx-auto image-box mt-3" data-bs-ride="carousel">
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#intro-car" data-bs-slide-to="0" class="active bg-primary" aria-current="true" aria-label="slide 1"></button>
         <button class="bg-primary" type="button" data-bs-target="#intro-car" data-bs-slide-to="1" aria-label="slide 2"></button>
@@ -140,14 +150,5 @@ if we are going to have a carousel it may be best to have it as a fixed part of 
     </div>
 </div>
 
-<div class="container mt-4">
-    <div class="row bg-success" style="--bs-bg-opacity: .5;">
-        <div class="col-9 d-grid mx-auto">
-            <p class="h4 text-center text-light">Register your foodbank into our database and make it easier for people to find you</p>
-            <div class="mt-3 mb-3 d-grid col-5 mx-auto">
-                  <a class="btn btn-primary" asp-area="" asp-page="/Foodbank/AddBank">Register Foodbank</a>
-            </div>
-        </div>
-    </div>
-</div>
+
 
