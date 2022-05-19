@@ -61,10 +61,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-sm-6">
-                <h3><a asp-page="/Foodbank/DistributionPage" asp-route-id="@Model.Location.LocationId">Click here for the Distribution Center</a></h3>
-            </div>
-            <div class="col-sm-6">
+            <div class="col-sm-12 mx-auto">
                 <h3><a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'>Click here for directions</a></h3> <!-- link that sends them to google with their lat and long as a search function-->
             </div>
         </div>
@@ -98,6 +95,32 @@
             </div>
         </div>
     </div>
+
+    <table class="table table-striped table-hover w-100">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
+            <th scope="col">Foodbank</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Foodbank.Locations)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    <a asp-page="/Foodbank/Index" asp-route-id="@item.LocationId">View foodbank</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
 
 
     <script type="text/javascript">

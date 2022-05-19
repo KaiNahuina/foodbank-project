@@ -21,14 +21,13 @@ public class DistributionPageModel : PageModel
         _ctx = ctx;
     }
 
-    public async Task OnGetAsync([FromRoute(Name = "id")] int locationid)
+    public async Task OnGetAsync([FromRoute(Name = "id")] int location)
     {
-        var locale = _ctx.Locations.AsNoTracking().Where(l => l.LocationId == locationid);
+        var locale = _ctx.Locations.AsNoTracking().Where(l => l.LocationId == location);
         Location = await locale.FirstAsync();
 
-        var foodbank = locale.Include(l => l.Foodbank).ThenInclude(f => f.Locations).Select(l => l.Foodbank);
+        var foodbank = locale.Include(l => l.Foodbank).ThenInclude(f => f.Locations).Include(l => l.Foodbank).ThenInclude(f => f.Needs).Select(l => l.Foodbank);
         Foodbank = await foodbank.FirstAsync();
-
     }
 
 
