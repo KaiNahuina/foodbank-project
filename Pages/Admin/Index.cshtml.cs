@@ -13,7 +13,7 @@ public class IndexModel : PageModel
 {
     private readonly ApplicationContext _ctx;
 
-    public IList<Models.Foodbank> Foodbanks;
+    public IList<Models.Foodbank>? Foodbanks;
 
     public IndexModel(ApplicationContext ctx)
     {
@@ -26,7 +26,6 @@ public class IndexModel : PageModel
             where f.Status == Status.UnConfirmed
             select f;
 
-        // do sort and filter shizzle here
 
         Foodbanks = await foodbankQue.AsNoTracking().ToListAsync();
     }

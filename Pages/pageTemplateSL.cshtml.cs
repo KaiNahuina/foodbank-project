@@ -6,9 +6,5 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Foodbank_Project.Pages;
 
-public class pageTemplateSLModel : PageModel
-{
-    public void OnGet()
-    {
-    }
-}
+public class PageTemplateSlModel : PageModel
+{}

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 #endregion
 
-namespace Foodbank_Project.Areas.Identity.Pages.Account;
+namespace Foodbank_Project.Pages.Admin.Account;
 
 public class LogoutModel : PageModel
 {
@@ -26,8 +26,8 @@ public class LogoutModel : PageModel
 
     public async Task<IActionResult> OnPost(string returnUrl = null)
     {
+        _logger.LogInformation("User {Name} logged out", _signInManager.Context.User.Identity?.Name);
         await _signInManager.SignOutAsync();
-        _logger.LogInformation("User logged out.");
         if (returnUrl != null)
             return LocalRedirect(returnUrl);
         return RedirectToPage();
