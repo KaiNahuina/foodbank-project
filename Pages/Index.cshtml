@@ -4,7 +4,7 @@
     ViewData["Title"] = "Foodbank Finder";
 }
 
-<form method="post">
+<form method="get" asp-page="/GetHelp/Index">
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-3">
@@ -26,7 +26,7 @@
                     <label for="searchFoodbank" class="form-label">
                         <h3>Search for your nearest foodbank</h3>
                     </label>
-                    <input asp-for="Location" type="text" class="form-control" id="searchFoodbank" placeholder="Enter postcode or town" aria-describedby="searchBank" />
+                    <input name="Location" type="text" class="form-control" id="searchFoodbank" placeholder="Enter postcode or town" aria-describedby="searchBank" />
 
                     <div class="mt-3">
                         <button type="submit" class="btn btn-primary">Search</button>

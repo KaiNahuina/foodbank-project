@@ -214,7 +214,6 @@ namespace Foodbank_Project.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Serves")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
