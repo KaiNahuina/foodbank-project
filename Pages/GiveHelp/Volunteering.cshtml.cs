@@ -7,8 +7,4 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Foodbank_Project.Pages.GiveHelp;
 
 public class VolunteeringModel : PageModel
-{
-    public void OnGet()
-    {
-    }
-}
+{}

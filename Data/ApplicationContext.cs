@@ -29,7 +29,7 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
 
     public DbSet<Recipe>? Recipes { get; set; }
 
-    public DbSet<RecipeCategory> RecipeCategories { get; set; }
+    public DbSet<RecipeCategory>? RecipeCategories { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -56,7 +56,7 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
         modelBuilder.Entity<Recipe>()
             .HasMany(l => l.Category)
             .WithMany(f => f.Recipes);
-        
+
 
         modelBuilder.Entity<Foodbank>().Property(f => f.Name).IsRequired();
         modelBuilder.Entity<Foodbank>().Property(f => f.Slug).IsRequired();
@@ -94,7 +94,8 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
 
         modelBuilder.Entity<RecipeCategory>().Property(fl => fl.Name).IsRequired();
 
-        modelBuilder.Entity<RecipeCategory>().HasData(new RecipeCategory { 
+        modelBuilder.Entity<RecipeCategory>().HasData(new RecipeCategory
+        {
             RecipeCategoryId = -1,
             Name = "Meat"
         }, new RecipeCategory

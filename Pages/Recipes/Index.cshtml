@@ -9,7 +9,6 @@
 }
 
 
-
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-3">
@@ -31,39 +30,40 @@
 
 </div>
 
-<label for="Categories">Select recipe Categories::</label> <br />
+<label>Select recipe Categories::</label> <br/>
 
 
 <div class="container mt-5">
     <div class="row spacingB">
         <div class="container col-md-3 text-center">
-            <a href="/QuickRecipes">
-                <img src="~/img/clock-icon.png" alt="Quick" class="recipe-icons" /><br />
+            <a asp-page="/Recipes">
+                <img src="~/img/clock-icon.png" alt="Quick" class="recipe-icons"/><br/>
                 <a asp-page="/Recipes/Search">
                     <button type="button">Quick Meal</button>
                 </a>
             </a>
         </div>
         <div class="col-md-3 text-center">
-            <a href="/HealthyMeals">
-                <img src="~/img/vegetarian-logo.png" alt="Healthy" class="recipe-icons" /><br />
+            <a asp-page="/Recipes">
+                <img src="~/img/vegetarian-logo.png" alt="Healthy" class="recipe-icons"/><br/>
                 <a asp-page="/Recipes/Search">
                     <button type="button">Healthy Meals</button>
                 </a>
             </a>
         </div>
         <div class="col-md-3 text-center">
-            <a href="/ATW">
-                <img src="~/img/image (1).png" alt="Around the World" class="recipe-icons" /><br />
+            <a asp-page="/Recipes">
+                <img src="~/img/world-icon.png" alt="Around the World" class="recipe-icons"/><br/>
                 <a asp-page="/Recipes/Search">
                     <button type="button">Around the World</button>
                 </a>
             </a>
         </div>
         <div class="col-md-3 text-center">
-            <<a asp-page="/Recipes/RecipeForm">
-                <img src="~/img/image (4).png" alt="Kosher" class="recipe-icons" /><br />
-                <a href="/Recipes/RecipeForm">
+            <
+            <a asp-page="/Recipes/RecipeForm">
+                <img src="~/img/kosher-icon.png" alt="Kosher" class="recipe-icons"/><br/>
+                <a asp-page="/Recipe/RecipeForm">
                     <button type="button">Kosher Meals</button>
                 </a>
             </a>
@@ -76,24 +76,24 @@
     <div class="row spacingB">
         <div class="col-md-3 text-center">
             <a asp-page="/Recipes/Search">
-                <img src="~/img/fmly.jpg" alt="Family" class="recipe-icons" /><br />
-                <a href="/Family">
+                <img src="~/img/family-blue.png" alt="Family" class="recipe-icons"/><br/>
+                <a asp-page="/Recipes/Search">
                     <button type="button">Family Favourites</button>
                 </a>
             </a>
         </div>
         <div class="col-md-3 text-center">
 
-            <a href="/HalalRecipes">
-                <img src="~/img/image (3).png" alt="Halal" class="recipe-icons" /><br />
+            <a asp-page="/Recipes/Search">
+                <img src="~/img/Halal-icon.png" alt="Halal" class="recipe-icons"/><br/>
                 <a asp-page="/Recipes/Search">
                     <button type="button">Halal Meal</button>
                 </a>
             </a>
         </div>
         <div class="col-md-3 text-center">
-            <a href="/VeganRecipes">
-                <img src="~/img/image (2).png" alt="Vegan" class="recipe-icons" /><br />
+            <a asp-page="/Recipes/Search">
+                <img src="~/img/vegetarian-logo.png" alt="Vegan" class="recipe-icons"/><br/>
                 <a asp-page="/Recipes/Search">
                     <button type="button">Vegan Meal</button>
                 </a>
@@ -101,8 +101,8 @@
         </div>
         <div class="col-md-3 text-center">
 
-            <a href="/FakeAway">
-                <img src="~/img/image (1).jpg" alt="Fake-away" class="recipe-icons" /><br />
+            <a asp-page="/Recipes/Search">
+                <img src="~/img/spaghetti.png" alt="Fake-away" class="recipe-icons"/><br/>
                 <a asp-page="/Recipes/Search">
                     <button type="button">Fake away</button>
                 </a>
@@ -116,8 +116,8 @@
     <div class="row d-flex justify-content-center">
         <div class="col-md-3 text-center">
             <a asp-page="/Recipes/Search">
-                <img src="~/images/image.jpg.png" alt="Desserts" class="recipe-icons" /><br />
-                <a href="/Dessert">
+                <img src="~/img/desert-icon.png" alt="Desserts" class="recipe-icons"/><br/>
+                <a asp-page="/Recipes/Search">
                     <button type="button">Desserts</button>
                 </a>
 
@@ -127,10 +127,8 @@
 </div>
 
 
-
-
 <div class="text-center spacingT spacingB">
-    <a href="/RecipeForm">
+    <a asp-page="/Recipe/RecipeForm">
         <button>Donate Recipe</button>
     </a>
 </div>
@@ -145,25 +143,21 @@
     <h2 class="display-4">Cacio E Pepe</h2>
 </div>
 
-@for(int i = 1; i <= 4; i++)
-{
-    
-}
 <div class="row">
     <div class="col-md-6">
         <p>Budget:£7</p>
 
         <p>
-            Ingredients:<br />
-            200g bucatini or spaghetti<br />
-            25g butter<br />
-            2 tsp whole black peppercorns, ground, or 1 tsp freshly ground black pepper<br />
+            Ingredients:<br/>
+            200g bucatini or spaghetti<br/>
+            25g butter<br/>
+            2 tsp whole black peppercorns, ground, or 1 tsp freshly ground black pepper<br/>
             50g pecorino or parmesan, finely grated
         </p>
     </div>
 
     <div class="text-end col-sm-6">
-        <img src="~/img/spaghetti.png" alt="Cacio E Pepe" />
+        <img src="~/img/spaghetti.png" alt="Cacio E Pepe"/>
     </div>
 </div>
 

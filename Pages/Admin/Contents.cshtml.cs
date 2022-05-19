@@ -13,7 +13,7 @@ public class ContentModel : PageModel
 {
     private readonly ApplicationContext _ctx;
 
-    public IList<Content> Contents;
+    public IList<Content>? Contents;
 
     public ContentModel(ApplicationContext ctx)
     {
@@ -25,7 +25,6 @@ public class ContentModel : PageModel
         var foodbankQue = from f in _ctx.Contents
             select f;
 
-        // do sort and filter shizzle here
 
         Contents = await foodbankQue.AsNoTracking()
             .Select(c => new Content { ContentId = c.ContentId, Name = c.Name, Blob = TrimBlob(c.Blob) })
@@ -36,7 +35,7 @@ public class ContentModel : PageModel
     {
         if (blob is null) return "";
         if (blob.Length > 32)
-            return blob.Substring(0, 32) + " ...";
+            return blob[..32] + " ...";
         return blob;
     }
 }

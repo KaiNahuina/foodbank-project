@@ -23,7 +23,7 @@ public static class FoodbankHelpers
     {
         foodbank.Locations ??= new List<Location>();
         foodbank.Needs ??= new List<Need>();
-        
+
         foodbank.Locations.Add(new Location
         {
             Name = foodbank.Name,
@@ -37,7 +37,7 @@ public static class FoodbankHelpers
 
         return foodbank;
     }
-    
+
     public static Foodbank Convert(Models.External.Foodbank externalFoodbank)
     {
         var foodbank = new Foodbank
@@ -137,13 +137,13 @@ public static class FoodbankHelpers
 
         ctx.Entry(dbFoodbank).CurrentValues.SetValues(target);
 
-        dbFoodbank.Locations.Clear();
-        dbFoodbank.Needs.Clear();
+        dbFoodbank.Locations?.Clear();
+        dbFoodbank.Needs?.Clear();
 
 
-        foreach (var location in target.Locations) dbFoodbank.Locations.Add(location);
+        foreach (var location in target.Locations) dbFoodbank.Locations?.Add(location);
 
-        foreach (var need in target.Needs) dbFoodbank.Needs.Add(need);
+        foreach (var need in target.Needs) dbFoodbank.Needs?.Add(need);
 
         await ctx.SaveChangesAsync(cancellationToken);
     }
