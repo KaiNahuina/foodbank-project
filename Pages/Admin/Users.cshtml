@@ -16,9 +16,9 @@
         </tr>
         </thead>
         <tbody>
-        @if (Model.Users.Count != 0)
+        @if (Model.Users?.Count != 0)
         {
-            @foreach (var item in Model.Users)
+            @foreach (var item in Model.Users!)
             {
                 <tr>
                     <td>

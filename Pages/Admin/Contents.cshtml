@@ -17,9 +17,9 @@
         </tr>
         </thead>
         <tbody>
-        @if (Model.Contents.Count != 0)
+        @if (Model.Contents?.Count != 0)
         {
-            @foreach (var item in Model.Contents)
+            @foreach (var item in Model.Contents!)
             {
                 <tr>
                     <td>

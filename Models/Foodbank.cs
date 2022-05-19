@@ -1,6 +1,5 @@
 ﻿#region
 
-using System.ComponentModel.DataAnnotations;
 using NetTopologySuite.Geometries;
 
 #endregion
@@ -24,7 +23,7 @@ public class Foodbank
     public string? Notes { get; set; }
 
     // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
-    public bool Protected { get; set; } = false;
+    public bool Protected { get; set; }
 
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public string? Slug { get; set; }
@@ -72,9 +71,4 @@ public class Foodbank
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public Provider Provider { get; set; }
     public ICollection<Need>? Needs { get; set; }
-
-    public override bool Equals(object? obj)
-    {
-        return obj is Foodbank foodbank && foodbank.FoodbankId == FoodbankId;
-    }
 }

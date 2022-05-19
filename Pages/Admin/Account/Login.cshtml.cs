@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 #endregion
 
-namespace Foodbank_Project.Pages.Admin;
+namespace Foodbank_Project.Pages.Admin.Account;
 
 public class LoginModel : PageModel
 {
@@ -51,7 +51,7 @@ public class LoginModel : PageModel
     {
         if (!string.IsNullOrEmpty(ErrorMessage)) ModelState.AddModelError(string.Empty, ErrorMessage);
 
-        returnUrl ??= Url.Content("/Admin/Index");
+        returnUrl ??= Url.Content("Admin/Index");
 
         // Clear the existing external cookie to ensure a clean login process
         await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
@@ -61,32 +61,29 @@ public class LoginModel : PageModel
 
     public async Task<IActionResult> OnPostAsync(string returnUrl = null)
     {
-        returnUrl ??= Url.Content("/Admin/Index");
+        returnUrl ??= Url.Content("Admin/Index");
 
 
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid) return Page();
+        // This doesn't count login failures towards account lockout
+        // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+        var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, false);
+        if (result.Succeeded)
         {
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, false);
-            if (result.Succeeded)
-            {
-                _logger.LogInformation("User logged in.");
-                return LocalRedirect(returnUrl);
-            }
-
-            if (result.IsLockedOut)
-            {
-                _logger.LogWarning("User account locked out.");
-                return RedirectToPage("./Lockout");
-            }
-
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-            return Page();
+            _logger.LogInformation("User {Name} logged in", _signInManager.Context.User.Identity?.Name);
+            return LocalRedirect(returnUrl);
         }
 
-        // If we got this far, something failed, redisplay form
+        if (result.IsLockedOut)
+        {
+            _logger.LogWarning("User {Name} locked out", _signInManager.Context.User.Identity?.Name);
+            return RedirectToPage("./Lockout");
+        }
+
+        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
         return Page();
+
+        // If we got this far, something failed, redisplay form
     }
 
     /// <summary>
