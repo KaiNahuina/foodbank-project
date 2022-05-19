@@ -18,7 +18,7 @@
 
 <form method="post">
     <div class="text-center">
-        <h1 class="display-4"><b>Donation Point Name: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank.Name)</h1>
+        <h1 class="display-4"><b>Donation Point Name: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank!.Name)</h1>
     </div>
 
     <div class="row">
@@ -83,13 +83,13 @@
             <div class="col-10 d-grid mx-auto">
                 <h1>Foodbank Needs</h1>
                 <p class="text-box">
-                    @if (Model.Foodbank.Needs.Count == 0 || Model.Foodbank.Needs.All(n => n.NeedStr is null))
+                    @if (Model.Foodbank.Needs?.Count == 0 || Model.Foodbank.Needs!.All(n => n.NeedStr is null))
                     {
                         @Html.Raw("This foodbank has no needs") <br />
                     }
                     else
                     {
-                        @foreach (var need in Model.Foodbank.Needs)
+                        @foreach (var need in Model.Foodbank.Needs!)
                         {
                             @Html.DisplayFor(modelItem => need.NeedStr) <br />
                         }
