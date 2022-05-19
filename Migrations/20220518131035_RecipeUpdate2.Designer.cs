@@ -4,6 +4,7 @@ using Foodbank_Project.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 
@@ -12,9 +13,10 @@ using NetTopologySuite.Geometries;
 namespace Foodbank_Project.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220518131035_RecipeUpdate2")]
+    partial class RecipeUpdate2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -245,42 +247,12 @@ namespace Foodbank_Project.Migrations
                         new
                         {
                             RecipeCategoryId = -1,
-                            Name = "Meat"
+                            Name = "Cat1"
                         },
                         new
                         {
                             RecipeCategoryId = -2,
-                            Name = "Vegetarian"
-                        },
-                        new
-                        {
-                            RecipeCategoryId = -3,
-                            Name = "Fish"
-                        },
-                        new
-                        {
-                            RecipeCategoryId = -4,
-                            Name = "Desert"
-                        },
-                        new
-                        {
-                            RecipeCategoryId = -5,
-                            Name = "Soup"
-                        },
-                        new
-                        {
-                            RecipeCategoryId = -6,
-                            Name = "Snack"
-                        },
-                        new
-                        {
-                            RecipeCategoryId = -7,
-                            Name = "Side"
-                        },
-                        new
-                        {
-                            RecipeCategoryId = -8,
-                            Name = "Special Event"
+                            Name = "Cat2"
                         });
                 });
 
@@ -516,8 +488,7 @@ namespace Foodbank_Project.Migrations
                 {
                     b.HasOne("Foodbank_Project.Models.Foodbank", "Foodbank")
                         .WithMany("Locations")
-                        .HasForeignKey("FoodbankId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("FoodbankId");
 
                     b.Navigation("Foodbank");
                 });
