@@ -31,28 +31,31 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-3">
 
-            <h1>5 closest Foodbanks</h1>
-            <div class="foodbank-list">
-                <div class="m-2 d-grid" id="FoodbankClosest1"></div>
-                <div class="m-2 d-grid" id="FoodbankClosest2"></div>
-                <div class="m-2 d-grid" id="FoodbankClosest3"></div>
-                <div class="m-2 d-grid" id="FoodbankClosest4"></div>
-                <div class="m-2 d-grid" id="FoodbankClosest5"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-10">
+                <form class="visually-hidden">
+                    @Html.AntiForgeryToken()
+                </form>
+
+                <div class ="image-box" id="map" style="height: 33.75vw;
+                                     width: 60vw;
+                                     margin: auto;
+                                     margin-top: 2%;"></div>
             </div>
-
         </div>
-        <div class="col-sm-9">
-            <form class="visually-hidden">
-                @Html.AntiForgeryToken()
-            </form>
-
-            <div id="map" style="height: 33.75vw;
-                                 width: 60vw;
-                                 margin: auto;
-                                 margin-top: 2%;"></div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <h1>5 closest Foodbanks</h1>
+        </div>
+        <div class="row">
+            <div class="col-md-2">  <div class="text-box m-2 d-grid" id="FoodbankClosest1"></div>    </div>
+            <div class="col-md-2">  <div class="text-box m-2 d-grid" id="FoodbankClosest2"></div>    </div>
+            <div class="col-md-2">  <div class="text-box m-2 d-grid" id="FoodbankClosest3"></div>    </div>
+            <div class="col-md-2">  <div class="text-box m-2 d-grid" id="FoodbankClosest4"></div>    </div>
+            <div class="col-md-2">  <div class="text-box m-2 d-grid" id="FoodbankClosest5"></div>    </div>
         </div>
     </div>
 

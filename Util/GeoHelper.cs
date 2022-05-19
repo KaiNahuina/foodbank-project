@@ -17,7 +17,7 @@ public static class GeometryExtensions
 
                 // This coordinate system covers the area of our data.
                 // Different data requires a different coordinate system.
-                [2855] =
+                [27700] =
                     @"
                         PROJCS[""OSGB 1936 / British National Grid"",
                         GEOGCS[""OSGB 1936"",
