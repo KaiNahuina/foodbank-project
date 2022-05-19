@@ -1,12 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
+#region
+
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Foodbank_Project.Pages.Recipes
-{
-    public class DishModel : PageModel
-    {
-        public void OnGet()
-        {
-        }
-    }
-}
+#endregion
+
+namespace Foodbank_Project.Pages.Recipes;
+
+public class DishModel : PageModel
+{}

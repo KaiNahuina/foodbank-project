@@ -1,8 +1,5 @@
 ﻿#region
 
-using Foodbank_Project.Data;
-using Foodbank_Project.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 #endregion
@@ -35,5 +32,4 @@ public class IndexModel : PageModel
     //         
     //     }
     // }
-
 }

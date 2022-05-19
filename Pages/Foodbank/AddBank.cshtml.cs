@@ -6,8 +6,6 @@ using Foodbank_Project.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NetTopologySuite.Geometries;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 
 #endregion
 
@@ -15,51 +13,42 @@ namespace Foodbank_Project.Pages.Foodbank;
 
 public class AddBankModel : PageModel
 {
-
     private ApplicationContext _ap;
-
-    [BindProperty]
-    public Models.Foodbank foodbank { get; set; }
-    [BindProperty]
-    public float lat { get; set; }
-    [BindProperty]
-    public float lng { get; set; }
-
-    [BindProperty]
-    public bool consent { get; set; }
-
-    [BindProperty]
-    public bool confirm { get; set; }
 
     public AddBankModel(ApplicationContext ap)
     {
         _ap = ap;
+        Foodbank = new Models.Foodbank();
     }
 
-    public void onGet()
+    [BindProperty] public Models.Foodbank Foodbank { get; set; }
+    [BindProperty] public float Lat { get; set; }
+    [BindProperty] public float Lng { get; set; }
+
+    [BindProperty] public bool Consent { get; set; }
+
+    [BindProperty] public bool Confirm { get; set; }
+
+    public void OnGet()
     {
-        foodbank.Protected = false;
-        foodbank.Status = Status.UnConfirmed;
+        Foodbank.Protected = false;
+        Foodbank.Status = Status.UnConfirmed;
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
-        
-        var geoLoc = new Point(lat, lng) { SRID = 4326 };
-        foodbank.Coord = geoLoc;
-        foodbank.Closed = false;
-        foodbank.Protected = true;
-        foodbank.Created = DateTime.Now;
+        var geoLoc = new Point(Lat, Lng) { SRID = 4326 };
+        Foodbank.Coord = geoLoc;
+        Foodbank.Closed = false;
+        Foodbank.Protected = true;
+        Foodbank.Created = DateTime.Now;
 
-        foodbank = FoodbankHelpers.ApplySlug(foodbank);
-        foodbank = FoodbankHelpers.ApplyFinalize(foodbank);
-        ModelState.ClearValidationState(nameof(Foodbank));
-        if (!TryValidateModel(foodbank, nameof(Foodbank)))
-        {
-            var errors = ModelState.Select(x => x.Value.Errors).Where(y => y.Count > 0).ToList();
-            return Page();
-        }
-        _ap.Foodbanks.Add(foodbank);
+        Foodbank = FoodbankHelpers.ApplySlug(Foodbank);
+        Foodbank = FoodbankHelpers.ApplyFinalize(Foodbank);
+        ModelState.ClearValidationState(nameof(Pages.Foodbank));
+        if (!TryValidateModel(Foodbank, nameof(Pages.Foodbank))) return Page();
+
+        _ap.Foodbanks?.Add(Foodbank);
         await _ap.SaveChangesAsync();
         return RedirectToPage("/Index");
     }

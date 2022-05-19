@@ -16,9 +16,9 @@
         </tr>
         </thead>
         <tbody>
-        @if (Model.Foodbanks.Count != 0)
+        @if (Model.Foodbanks?.Count != 0)
         {
-            @foreach (var item in Model.Foodbanks)
+            @foreach (var item in Model.Foodbanks!)
             {
                 <tr>
                     <td>
