@@ -45,7 +45,7 @@ public class Foodbank
     public string? Postcode { get; set; }
 
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
-    public bool? Closed { get; set; }
+    public bool Closed { get; set; }
 
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public string? Country { get; set; }

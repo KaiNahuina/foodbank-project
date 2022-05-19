@@ -16,7 +16,8 @@ else
 
 <div class="flex-fill bg-white shadow-lg p-3">
 
-    <form method="post" class="container">
+@* Info *@
+<form method="post" class="container">
         <div class="row">
             <div class="col">
                 <label>ID</label>
@@ -33,7 +34,6 @@ else
                 <input class="form-control" value="@Model.Foodbank.Name" asp-for="Foodbank.Name"/><br/>
             </div>
         </div>
-
         <div class="row">
             <div class="col">
                 <label asp-for="Foodbank.AltName"></label>
@@ -42,6 +42,71 @@ else
                 <input class="form-control" value="@Model.Foodbank.AltName" asp-for="Foodbank.AltName"/><br/>
             </div>
         </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Foodbank.Created"></label>
+        </div>
+        <div class="col-8">
+            <input class="form-control" asp-for="Foodbank.Created" value="@Model.Foodbank.Created?.ToString("yyyy-MM-ddTHH:mm:ss")" readonly/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Foodbank.Network"></label>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Foodbank.Network" asp-for="Foodbank.Network"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Foodbank.Notes"></label>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Foodbank.Notes" asp-for="Foodbank.Notes"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Foodbank.Closed"></label>
+        </div>
+        <div class="col-8 form-control-lg form-check form-switch d-flex justify-content-center">
+            <input class="form-check-input" placeholder="@Model.Foodbank.Closed" asp-for="Foodbank.Closed"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Foodbank.CharityNumber"></label>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Foodbank.CharityNumber" asp-for="Foodbank.CharityNumber"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Foodbank.CharityRegisterUrl"></label>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Foodbank.CharityRegisterUrl" asp-for="Foodbank.CharityRegisterUrl"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Foodbank.Slug"></label>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Foodbank.Slug" asp-for="Foodbank.Slug"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Foodbank.Protected"></label>
+        </div>
+        <div class="col-8 form-control-lg form-check form-switch d-flex justify-content-center">
+            <input class="form-check-input" placeholder="@Model.Foodbank.Protected" asp-for="Foodbank.Protected"/><br/>
+        </div>
+    </div>
+    @* Location *@
         <div class="row">
             <div class="col">
                 <label asp-for="Foodbank.Address"></label>
@@ -58,22 +123,31 @@ else
                 <input class="form-control" value="@Model.Foodbank.Postcode" asp-for="Foodbank.Postcode"/><br/>
             </div>
         </div>
-        <div class="row">
+    <div class="row">
+        <div class="col">
+            <label asp-for="Foodbank.Country"></label>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Foodbank.Country" asp-for="Foodbank.Country"/><br/>
+        </div>
+    </div>
+    <div class="row">
             <div class="col">
-                <label asp-for="Foodbank.Country"></label>
+                <label>Lat</label>
             </div>
             <div class="col-8">
-                <input class="form-control" value="@Model.Foodbank.Country" asp-for="Foodbank.Country"/><br/>
+                <input class="form-control" value="@Model.Lat" asp-for="Lat"/><br/>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <label asp-for="Foodbank.Created"></label>
+                <label>Lng</label>
             </div>
             <div class="col-8">
-                <input class="form-control" asp-for="Foodbank.Created" value="@Model.Foodbank.Created?.ToString("yyyy-MM-ddTHH:mm:ss")" readonly/><br/>
+                <input class="form-control" value="@Model.Lng" asp-for="Lng"/><br/>
             </div>
         </div>
+    @* Contact *@
         <div class="row">
             <div class="col">
                 <label asp-for="Foodbank.Email"></label>
@@ -98,82 +172,10 @@ else
                 <input class="form-control" value="@Model.Foodbank.Homepage" asp-for="Foodbank.Homepage"/><br/>
             </div>
         </div>
-        <div class="row">
-            <div class="col">
-                <label asp-for="Foodbank.Network"></label>
-            </div>
-            <div class="col-8">
-                <input class="form-control" value="@Model.Foodbank.Network" asp-for="Foodbank.Network"/><br/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <label asp-for="Foodbank.Notes"></label>
-            </div>
-            <div class="col-8">
-                <input class="form-control" value="@Model.Foodbank.Notes" asp-for="Foodbank.Notes"/><br/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <label asp-for="Foodbank.Closed"></label>
-            </div>
-            <div class="col-8 form-control-lg form-check form-switch d-flex justify-content-center">
-                <input class="form-check-input" placeholder="@Model.Foodbank.Closed" asp-for="Foodbank.Closed"/><br/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <label>Lat</label>
-            </div>
-            <div class="col-8">
-                <input class="form-control" value="@Model.Lat" asp-for="Lat"/><br/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <label>Lng</label>
-            </div>
-            <div class="col-8">
-                <input class="form-control" value="@Model.Lng" asp-for="Lng"/><br/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <label asp-for="Foodbank.CharityNumber"></label>
-            </div>
-            <div class="col-8">
-                <input class="form-control" value="@Model.Foodbank.CharityNumber" asp-for="Foodbank.CharityNumber"/><br/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <label asp-for="Foodbank.CharityRegisterUrl"></label>
-            </div>
-            <div class="col-8">
-                <input class="form-control" value="@Model.Foodbank.CharityRegisterUrl" asp-for="Foodbank.CharityRegisterUrl"/><br/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <label asp-for="Foodbank.Slug"></label>
-            </div>
-            <div class="col-8">
-                <input class="form-control" value="@Model.Foodbank.Slug" asp-for="Foodbank.Slug"/><br/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <label asp-for="Foodbank.Protected"></label>
-            </div>
-            <div class="col-8 form-control-lg form-check form-switch d-flex justify-content-center">
-                <input class="form-check-input" placeholder="@Model.Foodbank.Protected" asp-for="Foodbank.Protected"/><br/>
-            </div>
-        </div>
-        
-        
 
-        <div class="d-flex justify-content-end flex-row ">
+
+
+    <div class="d-flex justify-content-end flex-row ">
             @if (Model.Action == "Create")
             {
                 <button name="Action" value="Create" type="submit" class="btn btn-success me-3">Create</button>
