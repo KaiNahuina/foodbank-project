@@ -1,4 +1,55 @@
 ﻿@page
 @model DishModel
 @{
+    ViewData["Title"] = "NAME OF DISH";
 }
+
+
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="m-2 d-grid">
+                <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Index">Back</a>
+            </div>
+        </div>
+        <div class="col-sm-6 text-center">
+
+            <h1 class="display-4">NAME OF DISH</h1>
+        </div>
+        <div class="col-md-3 text-center">
+            <h1 class="display-4"></h1>
+        </div>
+    </div>
+
+</div>
+<div class="container mt-4 mb-4">
+    <div class="row">
+        <div class="col-sm-3">
+            <label> Serving suggestion: </label><br />
+            <img src="/img/Independent-logo.jpg" class="image-box img-fluid" alt="Independent foodbanks" />
+        </div>
+        <div class="col-sm-4">
+            <label>Ingredients:</label><br />
+            <p class="text-box h4 overflow-hidden">Foodbanks across the country have risen to the challenge of helping the public through these difficult times</p>
+        </div>
+        <div class="col-sm-4">
+            <label> Method: </label><br />
+            <p class="text-box h4 overflow-hidden">Here you can find and up-to-date database of foodbanks and their distribution centers accross the UK</p>
+        </div>
+    </div>
+</div>
+<div class="container mt-4 mb-4">
+    <div class="row">
+        <div class="col-sm-3"> </div>
+        <div class="col-sm-4">
+            <label>Serves:</label><br />
+            <p class="text-box h4 overflow-hidden">1</p>
+        </div>
+        <div class="col-sm-4">
+            <label>Notes:</label><br />
+            <p class="text-box h4 overflow-hidden"></p>
+        </div>
+
+    </div>
+</div>

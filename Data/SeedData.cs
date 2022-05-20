@@ -16,7 +16,7 @@ public static class SeedData
         var meatCategory = await ctx.RecipeCategories.FirstOrDefaultAsync(c => c.RecipeCategoryId == 1) ?? ctx.RecipeCategories.Add(new RecipeCategory
         {
             RecipeCategoryId = 1,
-            Name = "Meat"
+            Name = "Vegetarian"
         }).Entity ;
 
         await using (var transaction = await ctx.Database.BeginTransactionAsync())
