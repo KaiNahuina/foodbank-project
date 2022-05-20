@@ -16,7 +16,6 @@
         <Content Remove="Foodbank Project Tests\**" />
         <EmbeddedResource Remove="Foodbank Project Tests\**" />
         <None Remove="Foodbank Project Tests\**" />
-        <Content Remove="Pages\Recipes\thankyou.cshtml" />
         <Content Remove="wwwroot\Images\image te1.png" />
         <Content Remove="wwwroot\Images\im-2.png" />
     </ItemGroup>
@@ -44,7 +43,6 @@
 
     <ItemGroup>
         <None Include=".gitlab\auto-deploy-values.yaml" />
-        <None Include="Pages\Recipes\thankyou.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
@@ -88,7 +86,6 @@
         <_ContentIncludedByDefault Remove="Areas\Identity\Pages\_ViewImports.cshtml" />
         <_ContentIncludedByDefault Remove="Areas\Identity\Pages\_ViewStart.cshtml" />
         <_ContentIncludedByDefault Remove="Areas\Identity\Pages\Error.cshtml" />
-        <_ContentIncludedByDefault Remove="Pages\Recipes\thankyou.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
@@ -127,10 +124,6 @@
         <UpToDateCheckInput Remove="Areas\Identity\Pages\Account\ResetPasswordConfirmation.cshtml" />
         <UpToDateCheckInput Remove="Areas\Identity\Pages\Account\_StatusMessage.cshtml" />
         <UpToDateCheckInput Remove="Areas\Identity\Pages\Account\_ViewImports.cshtml" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <UpToDateCheckInput Remove="Pages\Recipes\thankyou.cshtml" />
     </ItemGroup>
 
 </Project>

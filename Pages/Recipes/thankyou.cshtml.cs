@@ -3,10 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Foodbank_Project.Pages.Recipes
 {
-    public class thankyouModel : PageModel
+    public class ThankyouModel : PageModel
     {
-        public void OnGet()
-        {
-        }
     }
 }
