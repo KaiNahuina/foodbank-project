@@ -40,6 +40,7 @@ public class FindDistribution : PageModel
                 f.Name,
                 Id = f.FoodbankId,
                 f.Address,
+                f.Postcode,
                 Coord = new Coords
                 {
                     Lat = f.Coord.Y,

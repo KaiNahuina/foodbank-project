@@ -62,7 +62,7 @@
         <div class="row">
             <!-- get the name of the location id, if it == salvation army skip displaying the view distribution center -->
             <div class="col-sm-6">
-                <h3><a asp-page="/Foodbank/MainLocation" asp-route-id="@Model.Location?.LocationId">Main Location Details</a></h3>
+                <h3><a asp-page="/Foodbank/MainLocation" asp-route-id="@Model.Foodbank?.FoodbankId">Main Location Details</a></h3>
             </div>
             <div class="col-sm-6">
                 <h3><a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'>Click here for directions</a></h3> <!-- link that sends them to google with their lat and long as a search function-->
@@ -72,7 +72,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-12">
+            <div class="col-11 d-grid mx-auto">
                 <div class="image-box" id="map"></div>
             </div>
         </div>

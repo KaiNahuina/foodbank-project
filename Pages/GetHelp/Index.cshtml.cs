@@ -43,6 +43,7 @@ public class IndexModel : PageModel
                 l.Name,
                 Id = l.LocationId,
                 l.Address,
+                l.Postcode,
                 Coord = new Coords
                 {
                     Lat = l.Coord.Y,
