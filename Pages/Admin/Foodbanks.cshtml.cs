@@ -14,11 +14,11 @@ public class FoodbanksModel : PageModel
     private readonly ApplicationContext _ctx;
 
     public IList<Models.Foodbank>? Foodbanks;
+
     public bool HasNextPage;
     public bool HasPrevPage;
     public int MaxPages;
     public string? OrderBy;
-
     public string? OrderDirection;
     public new int Page;
     public string? Search;
