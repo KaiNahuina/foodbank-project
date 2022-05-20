@@ -52,33 +52,26 @@
 <footer class="mastfoot mt-5 ">
     <div class="inner bg-success mt-5">
         <div class="row m-0">
-            <div class="col-sm-4">
-                <p class="h4 text-light bg-success">
-                    <bold>Contact info:</bold>
-                </p>
-                <p class="h6 text-light bg-success">for Foodbanks:</p>
-                <p class="text-light bg-success">infoAdmin123@smtng.co.uk</p>
-                <p class="h6 text-light bg-success">Media enquiries</p>
-                <p class="text-light bg-success">Placeholder@clicky.co.uk</p>
+            <div class="col-sm-2">
+               <a class="nav-link text-light text-decoration-underline" asp-area="" asp-page="/Terms">Terms and Conditions</a>
             </div>
-            <div class="col-sm-4">
-                <a class="nav-link text-light text-decoration-underline" asp-area="" asp-page="/Terms">Terms and Conditions</a>
-                <p class="h4 text-light bg-success text-center">
-                    <bold>Licenses:</bold>
-                </p>
-                <p class="h6 text-light bg-success">Powered by the GiveFood API, Leaflet maps and the Informatics centre. Licensed by:</p>
-                <p class="h6 text-light bg-success">Leaflet; OpenStreetMap®; Nominatim; Leaflet-control-geocoder by Per Liedman</p>
+            <div class="col-sm-8 text-center">
+                <p class="h4 text-light">A joint project between the University of Chester and Clicky media</p>
+                <div class="mt-4">
+                    <div class="row">
+                        <div class="col-6 text-end">
+                            <img src="~/img/uoc_logo.png" class="image-box" alt="university logo" />
+                        </div>
+                        <div class="col-6 text-start">
+                            <img src="~/img/clicky_logo2.jpg" class="image-box" alt="clicky logo" />
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-4">
-                <p class="h-7 text-light bg-success text-end">
-                    <em>Site written by Group A</em>
-                </p>
-                <p class="h-7 text-light bg-success text-end">
-                    <em>University of Chester in cooperation with IC and Clicky</em>
-                </p>
-                <p class="h-7 text-light bg-success text-end">
-                    <em>All rights reserved</em>
-                </p>
+            <div class="col-sm-2 align-self-center">
+                <div class="m-2 col-5 mx-auto d-grid">
+                    <a class="btn btn-lg btn-primary" asp-area="" asp-page="/Admin/Account/Login">Login</a>
+                </div>
             </div>
         </div>
     </div>
