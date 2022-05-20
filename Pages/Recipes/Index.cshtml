@@ -4,9 +4,6 @@
     ViewData["Title"] = "Recipes";
 }
 
-@{
-    ViewData["Title"] = "Recipe Form";
-}
 
 
 <div class="container mt-5">
@@ -30,41 +27,39 @@
 
 </div>
 
-<label>Select recipe Categories::</label> <br/>
 
 
 <div class="container mt-5">
     <div class="row spacingB">
         <div class="container col-md-3 text-center">
-            <a asp-page="/Recipes">
-                <img src="~/img/clock-icon.png" alt="Quick" class="recipe-icons"/><br/>
+            <a href="/QuickRecipes">
+                <img src="~/img/SpecialEvent.jpg" alt="Special Event" class="recipe-icons" /><br />
                 <a asp-page="/Recipes/Search">
-                    <button type="button">Quick Meal</button>
+                    <button type="button">Special Event</button>
                 </a>
             </a>
         </div>
         <div class="col-md-3 text-center">
-            <a asp-page="/Recipes">
-                <img src="~/img/vegetarian-logo.png" alt="Healthy" class="recipe-icons"/><br/>
+            <a href="/HealthyMeals">
+                <img src="~/img/Vegetables.jpg" alt="Vegetarian Dishes" class="recipe-icons" /><br />
                 <a asp-page="/Recipes/Search">
-                    <button type="button">Healthy Meals</button>
+                    <button type="button">Vegetarian Dishes</button>
                 </a>
             </a>
         </div>
         <div class="col-md-3 text-center">
-            <a asp-page="/Recipes">
-                <img src="~/img/world-icon.png" alt="Around the World" class="recipe-icons"/><br/>
+            <a href="/ATW">
+                <img src="~/img/Meat.jpg" alt="Meat Dishes" class="recipe-icons" /><br />
                 <a asp-page="/Recipes/Search">
-                    <button type="button">Around the World</button>
+                    <button type="button">Meat Dishes</button>
                 </a>
             </a>
         </div>
         <div class="col-md-3 text-center">
-            <
             <a asp-page="/Recipes/RecipeForm">
-                <img src="~/img/kosher-icon.png" alt="Kosher" class="recipe-icons"/><br/>
-                <a asp-page="/Recipe/RecipeForm">
-                    <button type="button">Kosher Meals</button>
+                <img src="~/img/Fish.jpg" alt="Fish Dishes" class="recipe-icons" /><br />
+                <a href="/Recipes/RecipeForm">
+                    <button type="button">Fish Dishes</button>
                 </a>
             </a>
         </div>
@@ -76,62 +71,45 @@
     <div class="row spacingB">
         <div class="col-md-3 text-center">
             <a asp-page="/Recipes/Search">
-                <img src="~/img/family-blue.png" alt="Family" class="recipe-icons"/><br/>
-                <a asp-page="/Recipes/Search">
-                    <button type="button">Family Favourites</button>
+                <img src="~/img/Soup.jpg" alt="Soups" class="recipe-icons" /><br />
+                <a href="/Family">
+                    <button type="button">Soups</button>
                 </a>
             </a>
         </div>
         <div class="col-md-3 text-center">
 
-            <a asp-page="/Recipes/Search">
-                <img src="~/img/Halal-icon.png" alt="Halal" class="recipe-icons"/><br/>
+            <a href="/HalalRecipes">
+                <img src="~/img/SideDish.jpg" alt="Side Dishes" class="recipe-icons" /><br />
                 <a asp-page="/Recipes/Search">
-                    <button type="button">Halal Meal</button>
+                    <button type="button">Side Dishes</button>
                 </a>
             </a>
         </div>
         <div class="col-md-3 text-center">
-            <a asp-page="/Recipes/Search">
-                <img src="~/img/vegetarian-logo.png" alt="Vegan" class="recipe-icons"/><br/>
-                <a asp-page="/Recipes/Search">
-                    <button type="button">Vegan Meal</button>
-                </a>
-            </a>
-        </div>
-        <div class="col-md-3 text-center">
-
-            <a asp-page="/Recipes/Search">
-                <img src="~/img/spaghetti.png" alt="Fake-away" class="recipe-icons"/><br/>
-                <a asp-page="/Recipes/Search">
-                    <button type="button">Fake away</button>
-                </a>
-            </a>
-        </div>
-    </div>
-</div>
-
-
-<div class="container">
-    <div class="row d-flex justify-content-center">
-        <div class="col-md-3 text-center">
-            <a asp-page="/Recipes/Search">
-                <img src="~/img/desert-icon.png" alt="Desserts" class="recipe-icons"/><br/>
+            <a href="/VeganRecipes">
+                <img src="~/img/Desserts.jpg" alt="Desserts" class="recipe-icons" /><br />
                 <a asp-page="/Recipes/Search">
                     <button type="button">Desserts</button>
                 </a>
+            </a>
+        </div>
+        <div class="col-md-3 text-center">
 
+            <a href="/FakeAway">
+                <img src="~/img/Snacks.jpg" alt="Snacks" class="recipe-icons" /><br />
+                <a asp-page="/Recipes/Search">
+                    <button type="button">Snacks</button>
+                </a>
             </a>
         </div>
     </div>
 </div>
 
 
-<div class="text-center spacingT spacingB">
-    <a asp-page="/Recipe/RecipeForm">
-        <button>Donate Recipe</button>
-    </a>
-</div>
+
+
+
 
 
 @*Recipe of the day
@@ -143,7 +121,7 @@
     <h2 class="display-4">Cacio E Pepe</h2>
 </div>
 
-<div class="row">
+<div class="row text-center">
     <div class="col-md-6">
         <p>Budget:£7</p>
 
@@ -156,15 +134,19 @@
         </p>
     </div>
 
-    <div class="text-end col-sm-6">
+    <div class="col-sm-6 spacingB">
         <img src="~/img/spaghetti.png" alt="Cacio E Pepe"/>
     </div>
 </div>
 
-<div class="spacingB">
+<div class="text-box spacingB">
     <p>
-        Cook the pasta for 2 mins less than pack instructions state, in salted boiling water. Meanwhile, melt the butter in a medium frying pan over a low heat, then add the ground black pepper and toast for a few minutes.
+        Cook the pasta for 2 mins less than pack instructions state, in salted boiling water. 
+        Meanwhile, melt the butter in a medium frying pan over a low heat, then add the ground black pepper and toast for a few minutes.
 
-        Drain the pasta, keeping 200ml of the pasta water. Tip the pasta and 100ml of the pasta water into the pan with the butter and pepper. Toss briefly, then scatter over the parmesan evenly, but don’t stir – wait for the cheese to melt for 30 seconds, then once melted, toss everything well, and stir together. This prevents the cheese from clumping or going stringy and makes a smooth, shiny sauce. Add a splash more pasta water if you need to, to loosen the sauce and coat the pasta. Serve immediately with a good grating of black pepper.
+        Drain the pasta, keeping 200ml of the pasta water. Tip the pasta and 100ml of the pasta water into the pan with the butter and pepper. 
+        Toss briefly, then scatter over the parmesan evenly, but don’t stir – wait for the cheese to melt for 30 seconds, then once melted, toss everything well, and stir together. 
+        This prevents the cheese from clumping or going stringy and makes a smooth, shiny sauce. 
+        Add a splash more pasta water if you need to, to loosen the sauce and coat the pasta. Serve immediately with a good grating of black pepper.
     </p>
 </div>
