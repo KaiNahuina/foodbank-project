@@ -51,7 +51,7 @@ public class LoginModel : PageModel
     {
         if (!string.IsNullOrEmpty(ErrorMessage)) ModelState.AddModelError(string.Empty, ErrorMessage);
 
-        returnUrl ??= Url.Content("Admin/Index");
+        returnUrl ??= Url.Page("/Admin/Index");
 
         // Clear the existing external cookie to ensure a clean login process
         await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
@@ -61,7 +61,7 @@ public class LoginModel : PageModel
 
     public async Task<IActionResult> OnPostAsync(string returnUrl = null)
     {
-        returnUrl ??= Url.Content("Admin/Index");
+        returnUrl ??= Url.Page("/Admin/Index");
 
 
         if (!ModelState.IsValid) return Page();
@@ -72,12 +72,6 @@ public class LoginModel : PageModel
         {
             _logger.LogInformation("User {Name} logged in", _signInManager.Context.User.Identity?.Name);
             return LocalRedirect(returnUrl);
-        }
-
-        if (result.IsLockedOut)
-        {
-            _logger.LogWarning("User {Name} locked out", _signInManager.Context.User.Identity?.Name);
-            return RedirectToPage("./Lockout");
         }
 
         ModelState.AddModelError(string.Empty, "Invalid login attempt.");
