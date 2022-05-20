@@ -17,10 +17,17 @@ public class FindDistribution : PageModel
 {
     private readonly ApplicationContext _ctx;
 
+    public string? Location { get; set; }
+
     public FindDistribution(ApplicationContext ctx)
     {
         _ctx = ctx;
     }
+    public void OnGetAsync([FromQuery(Name = "Location")] string location)
+    {
+        Location = location;
+    }
+
     public async Task<JsonResult> OnPostAsync([FromBody] Coords obj)
     {
         var origin = new Point(obj.Lng, obj.Lat) { SRID = 4326 };

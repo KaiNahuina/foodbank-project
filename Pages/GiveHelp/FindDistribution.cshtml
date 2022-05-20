@@ -95,7 +95,7 @@
           control._expand();
           $.ajax({
               type: "POST",
-              url: '/GetHelp/Index',
+              url: '/GiveHelp/FindDistribution',
               data: JSON.stringify({Lat: usersLatitude, Lng: usersLongitude}),
               contentType: "application/json; charset=utf-8",
               beforeSend (xhr){
