@@ -1,0 +1,27 @@
+﻿@page
+@model Foodbank_Project.Pages.Foodbank.ConfirmationModel
+@{
+    ViewData["Title"] = "Confirmation";
+}
+
+<h1 class="display-4 text-success">Submission Confirmed</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <p class="text-box h4">Thank you. Your submission has been sent to an admin for review. We will email you with our response
+                as soon as possible. Press the home button to go back to the frontpage
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <img src="~/img/confirm.jpg" class="image-box img-fluid w-100" alt="thanks" />
+        </div>
+    </div>
+    <div class="row mt-md-4">
+        <div class="col-7 d-grid mx-auto">
+            <a class="btn btn-lg btn-success" asp-area="" asp-page="/Index">Home</a>
+        </div>
+    </div>
+</div>

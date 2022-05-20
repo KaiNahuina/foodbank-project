@@ -50,7 +50,7 @@ public class AddBankModel : PageModel
 
         _ap.Foodbanks?.Add(Foodbank);
         await _ap.SaveChangesAsync();
-        return RedirectToPage("/Index");
+        return RedirectToPage("/Foodbank/Confirmation");
     }
 
     public class Coords
