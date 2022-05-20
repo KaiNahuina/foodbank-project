@@ -22,12 +22,9 @@ public class MainLocationModel : PageModel
     public Models.Foodbank? Foodbank { get; set; }
     public Location? Location { get; set; }
 
-    public async Task OnGetAsync([FromRoute(Name = "id")] int locationid)
+    public async Task OnGetAsync([FromRoute(Name = "id")] int foodbankid)
     {
-        var locale = _ctx.Locations.AsNoTracking().Where(l => l.LocationId == locationid);
-        Location = await locale.FirstAsync();
-
-        var foodbank = locale.Include(l => l.Foodbank).ThenInclude(f => f!.Locations).Include(l => l.Foodbank).ThenInclude(f => f!.Needs).Select(l => l.Foodbank);
+        var foodbank = _ctx.Foodbanks!.AsNoTracking().Where(l => l.FoodbankId == foodbankid).Include(f => f.Locations).Include(f => f.Needs);
         Foodbank = await foodbank.FirstAsync();
     }
 }

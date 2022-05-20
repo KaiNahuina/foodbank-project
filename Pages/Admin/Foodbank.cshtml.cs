@@ -32,7 +32,7 @@ public class FoodbankModel : PageModel
         Action = action ?? "Update";
         if (Action != "Create")
         {
-            var id = int.Parse(RouteData.Values["id"] as string);
+            var id = int.Parse(RouteData.Values["id"] as string ?? "");
             var foodbanks = from f in _ctx.Foodbanks where f.FoodbankId == id select f;
 
 

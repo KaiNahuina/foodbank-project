@@ -76,7 +76,7 @@ public class GiveFoodApiService : BackgroundService
                                     resultWrapper.Result?[i].Name, resultWrapper.Result?[i].Urls?.Self, i + 1,
                                     resultWrapper.Result?.Count);
 
-                                var internalFoodbank = FoodbankHelpers.Convert(resultWrapper.Result?[i]);
+                                var internalFoodbank = FoodbankHelpers.Convert(resultWrapper.Result![i]);
 
                                 internalFoodbank.Status = Status.Approved;
 

@@ -24,7 +24,7 @@ public class RecipeFormModel : PageModel
 
     public void OnGet()
     {
-        foreach (var category in _ctx.RecipeCategories.ToArray())
+        foreach (var category in _ctx.RecipeCategories!.ToArray())
             SelectedCategories.Add(category.RecipeCategoryId,
                 new Pair<RecipeCategory, bool> { Item1 = category, Item2 = false });
     }
@@ -32,7 +32,7 @@ public class RecipeFormModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
-        foreach (var category in _ctx.RecipeCategories.ToArray())
+        foreach (var category in _ctx.RecipeCategories!.ToArray())
             SelectedCategories[category.RecipeCategoryId].Item1 = category;
 
         Recipe.Category = new List<RecipeCategory>();
@@ -45,7 +45,7 @@ public class RecipeFormModel : PageModel
 
 
         foreach (var category in SelectedCategories.Where(category => category.Value.Item2))
-            Recipe.Category.Add(category.Value.Item1);
+            Recipe.Category.Add(category.Value.Item1!);
 
         Recipe.Status = Status.UnConfirmed;
 
