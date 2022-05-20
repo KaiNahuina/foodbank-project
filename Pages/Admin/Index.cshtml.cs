@@ -15,6 +15,7 @@ public class IndexModel : PageModel
     private readonly ApplicationContext _ctx;
     
     public IList<Models.Foodbank>? Foodbanks;
+    public IList<Recipe>? Recipes;
     
     public bool HasNextPage;
     public bool HasPrevPage;
@@ -53,6 +54,14 @@ public class IndexModel : PageModel
                 string.IsNullOrEmpty(Search) || n.Name!.Contains(Search) || n.Address!.Contains(Search) ||
                 n.Postcode!.Contains(Search)
                 || n.FoodbankId.ToString() == Search);
+        
+        var recipeQue = (from f in _ctx.Recipes
+                select f).AsNoTracking().Where(f => f.Status == Status.UnConfirmed).Include(f => f.Category)
+            .OrderByDescending(n => n.Name)
+            .Where(n =>
+                string.IsNullOrEmpty(Search) || n.Name!.Contains(Search) || n.Ingredients!.Contains(Search) ||
+                n.Method!.Contains(Search) || n.Notes!.Contains(Search) || n.Serves!.Contains(Search)
+                || n.RecipeId.ToString() == Search);
 
         switch (OrderDirection)
         {
@@ -65,6 +74,14 @@ public class IndexModel : PageModel
                     "Submitted" => foodbankQue.OrderBy(n => n.Created),
                     "Locations" => foodbankQue.OrderBy(n => n.Locations!.Count),
                     _ => foodbankQue
+                };
+                recipeQue = OrderBy switch
+                {
+                    "Name" => recipeQue.OrderBy(n => n.Name),
+                    "Ingredients" => recipeQue.OrderBy(n => n.Ingredients),
+                    "Method" => recipeQue.OrderBy(n => n.Method),
+                    "Notes" => recipeQue.OrderBy(n => n.Notes),
+                    _ => recipeQue
                 };
 
                 break;
@@ -79,6 +96,15 @@ public class IndexModel : PageModel
                     "Locations" => foodbankQue.OrderByDescending(n => n.Locations!.Count),
                     _ => foodbankQue
                 };
+                
+                recipeQue = OrderBy switch
+                {
+                    "Name" => recipeQue.OrderByDescending(n => n.Name),
+                    "Ingredients" => recipeQue.OrderByDescending(n => n.Ingredients),
+                    "Method" => recipeQue.OrderByDescending(n => n.Method),
+                    "Notes" => recipeQue.OrderByDescending(n => n.Notes),
+                    _ => recipeQue
+                };
 
                 break;
             }
@@ -92,6 +118,13 @@ public class IndexModel : PageModel
         HasNextPage = Page < MaxPages;
 
         Foodbanks = await foodbankQue.Skip((Page - 1) * 25).Take(25).ToListAsync();
+        Recipes = await recipeQue.Skip((Page - 1) * 25).Take(25).ToListAsync();
     }
-    
+    public static string TrimBlob(string? blob)
+    {
+        if (blob is null) return "";
+        if (blob.Length > 32)
+            return blob[..32] + " ...";
+        return blob;
+    }
 }
