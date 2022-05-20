@@ -66,7 +66,7 @@ public static class SeedData
         
         var _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 1) ?? ctx.Recipes.Add(new Recipe
         {
-            Name = "Steak and Chips",
+            Name = "Steak peas and Chips",
             RecipeId = 1,
             Ingredients = "Steak \n Chips",
             Status = Status.Approved,
