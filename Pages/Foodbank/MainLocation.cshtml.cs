@@ -10,11 +10,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Foodbank_Project.Pages.Foodbank;
 
-public class DistributionPageModel : PageModel
+public class MainLocationModel : PageModel
 {
     private readonly ApplicationContext _ctx;
 
-    public DistributionPageModel(ApplicationContext ctx)
+    public MainLocationModel(ApplicationContext ctx)
     {
         _ctx = ctx;
     }
@@ -27,7 +27,7 @@ public class DistributionPageModel : PageModel
         var locale = _ctx.Locations.AsNoTracking().Where(l => l.LocationId == locationid);
         Location = await locale.FirstAsync();
 
-        var foodbank = locale.Include(l => l.Foodbank).ThenInclude(f => f!.Locations).Select(l => l.Foodbank);
+        var foodbank = locale.Include(l => l.Foodbank).ThenInclude(f => f!.Locations).Include(l => l.Foodbank).ThenInclude(f => f!.Needs).Select(l => l.Foodbank);
         Foodbank = await foodbank.FirstAsync();
     }
 }

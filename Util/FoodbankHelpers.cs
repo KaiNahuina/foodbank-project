@@ -24,16 +24,19 @@ public static class FoodbankHelpers
         foodbank.Locations ??= new List<Location>();
         foodbank.Needs ??= new List<Need>();
 
-        foodbank.Locations.Add(new Location
+        if (foodbank.Locations.Count == 0)
         {
-            Name = foodbank.Name,
-            Address = foodbank.Address,
-            Coord = foodbank.Coord,
-            Foodbank = foodbank,
-            Phone = foodbank.Phone,
-            Postcode = foodbank.Postcode,
-            Slug = foodbank.Slug
-        });
+            foodbank.Locations.Add(new Location
+            {
+                Name = foodbank.Name,
+                Address = foodbank.Address,
+                Coord = foodbank.Coord,
+                Foodbank = foodbank,
+                Phone = foodbank.Phone,
+                Postcode = foodbank.Postcode,
+                Slug = foodbank.Slug
+            });
+        }
 
         return foodbank;
     }
@@ -81,16 +84,19 @@ public static class FoodbankHelpers
             foodbank.Locations.Add(location);
         }
 
-        foodbank.Locations.Add(new Location
+        if (foodbank.Locations.Count == 0)
         {
-            Address = foodbank.Address,
-            Coord = foodbank.Coord,
-            Name = foodbank.Name,
-            Slug = foodbank.Slug,
-            Postcode = foodbank.Postcode,
-            Phone = foodbank.Phone,
-            Foodbank = foodbank
-        });
+            foodbank.Locations.Add(new Location
+            {
+                Name = foodbank.Name,
+                Address = foodbank.Address,
+                Coord = foodbank.Coord,
+                Foodbank = foodbank,
+                Phone = foodbank.Phone,
+                Postcode = foodbank.Postcode,
+                Slug = foodbank.Slug
+            });
+        }
 
         foodbank.Needs = new List<Need>();
         var needs = externalFoodbank.Needs?.NeedsStr?.Split("\r\n") ?? Array.Empty<string>();

@@ -60,6 +60,7 @@ using (var scope = app.Services.CreateScope())
     context.Database.Migrate();
 }
 
+// Identity
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -68,6 +69,13 @@ using (var scope = app.Services.CreateScope())
     await SeedData.SeedRolesAsync(userManager, roleManager);
     await SeedData.SeedBasicUserAsync(userManager, roleManager);
     await SeedData.SeedAdminUserAsync(userManager, roleManager);
+}
+// Recipes and categories
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var dbContext = services.GetRequiredService<ApplicationContext>();
+    await SeedData.SeedRecipesAsync(dbContext);
 }
 
 // Configure the HTTP request pipeline.
