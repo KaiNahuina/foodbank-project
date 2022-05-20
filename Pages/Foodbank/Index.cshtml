@@ -12,7 +12,7 @@
 
 <div class="text-center ">
     <p>
-        Disclaimer: Vouchers may be required to access the bank. <a asp-page="/GetHelp/Vouchers">Learn more here.</a>
+        Disclaimer: Vouchers may be required to access the bank. <a class="btn btn-sm btn-outline-success" asp-page="/GetHelp/Vouchers">Learn more here.</a>
     </p>
 </div>
 
@@ -64,19 +64,21 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container mt-2">
         <div class="row">
             <!-- get the name of the location id, if it == salvation army skip displaying the view distribution center -->
-            <div class="col-sm-6">
-                <h3><a asp-page="/Foodbank/MainLocation" asp-route-id="@Model.Foodbank?.FoodbankId">Main Location Details</a></h3>
+            <div class="col-lg-3">  </div>
+            <div class="col-lg-3 text-center">
+                <a class="btn btn-lg btn-outline-success" asp-page="/Foodbank/MainLocation" asp-route-id="@Model.Foodbank?.FoodbankId">Main Location Details</a>
             </div>
-            <div class="col-sm-6">
-                <h3><a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'>Click here for directions</a></h3> <!-- link that sends them to google with their lat and long as a search function-->
+            <div class="col-lg-3 text-center">
+                <a class="btn btn-lg btn-outline-success" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley">Click here for directions</a> <!-- link that sends them to google with their lat and long as a search function-->
             </div>
+            <div class="col-lg-3">  </div>
         </div>
     </div>
 
-    <div class="container">
+    <div class="container mt-2">
         <div class="row">
             <div class="col-11 d-grid mx-auto">
                 <div class="image-box" id="map"></div>
