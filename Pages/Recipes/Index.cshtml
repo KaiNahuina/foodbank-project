@@ -15,6 +15,9 @@
             <div class="m-2 d-grid">
                 <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/Index">Home</a>
             </div>
+            <div class="m-2 d-grid">
+                <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Dish">Dish of the day</a>
+            </div>
         </div>
         <div class="col-sm-6 text-center">
 
@@ -32,121 +35,71 @@
 <div class="container mt-5">
     <div class="row spacingB">
         <div class="container col-md-3 text-center">
-            <a href="/QuickRecipes">
-                <img src="~/img/SpecialEvent.jpg" alt="Special Event" class="recipe-icons" /><br />
-                <a asp-page="/Recipes/Search">
-                    <button type="button">Special Event</button>
-                </a>
+
+            <img src="~/img/SpecialEvent.jpg" alt="Special Event" class="recipe-icons" /><br />
+            <a asp-page="/Recipes/Search">
+                <a class="btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Special">Special Events</a>
             </a>
         </div>
         <div class="col-md-3 text-center">
-            <a href="/HealthyMeals">
-                <img src="~/img/Vegetables.jpg" alt="Vegetarian Dishes" class="recipe-icons" /><br />
-                <a asp-page="/Recipes/Search">
-                    <button type="button">Vegetarian Dishes</button>
-                </a>
+
+            <img src="~/img/Vegetables.jpg" alt="Vegetarian Dishes" class="recipe-icons" /><br />
+            <a asp-page="/Recipes/Search">
+                <a class="btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Vegetarian">Vegetarian Dishes</a>
+
             </a>
         </div>
         <div class="col-md-3 text-center">
-            <a href="/ATW">
-                <img src="~/img/Meat.jpg" alt="Meat Dishes" class="recipe-icons" /><br />
-                <a asp-page="/Recipes/Search">
-                    <button type="button">Meat Dishes</button>
-                </a>
+
+            <img src="~/img/Meat.jpg" alt="Meat Dishes" class="recipe-icons" /><br />
+            <a asp-page="/Recipes/Search">
+                <a class="btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Meat">Meat Dishes</a>
+
             </a>
         </div>
         <div class="col-md-3 text-center">
-            <a asp-page="/Recipes/RecipeForm">
+            <a asp-page="/Recipes/Search">
                 <img src="~/img/Fish.jpg" alt="Fish Dishes" class="recipe-icons" /><br />
-                <a href="/Recipes/RecipeForm">
-                    <button type="button">Fish Dishes</button>
-                </a>
+                <a class="btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Fish">Fish Dishes</a>
+
             </a>
         </div>
     </div>
 </div>
 
 
-<div class="container">
+<div class="container mt-5">
     <div class="row spacingB">
         <div class="col-md-3 text-center">
             <a asp-page="/Recipes/Search">
                 <img src="~/img/Soup.jpg" alt="Soups" class="recipe-icons" /><br />
-                <a href="/Family">
-                    <button type="button">Soups</button>
-                </a>
+                <a class="btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Soups">Soups</a>
+
             </a>
         </div>
         <div class="col-md-3 text-center">
 
-            <a href="/HalalRecipes">
-                <img src="~/img/SideDish.jpg" alt="Side Dishes" class="recipe-icons" /><br />
-                <a asp-page="/Recipes/Search">
-                    <button type="button">Side Dishes</button>
-                </a>
-            </a>
-        </div>
-        <div class="col-md-3 text-center">
-            <a href="/VeganRecipes">
-                <img src="~/img/Desserts.jpg" alt="Desserts" class="recipe-icons" /><br />
-                <a asp-page="/Recipes/Search">
-                    <button type="button">Desserts</button>
-                </a>
+            <img src="~/img/SideDish.jpg" alt="Side Dishes" class="recipe-icons" /><br />
+            <a asp-page="/Recipes/Search">
+                <a class="btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Side">Side Dishes</a>
+
             </a>
         </div>
         <div class="col-md-3 text-center">
 
-            <a href="/FakeAway">
-                <img src="~/img/Snacks.jpg" alt="Snacks" class="recipe-icons" /><br />
-                <a asp-page="/Recipes/Search">
-                    <button type="button">Snacks</button>
-                </a>
+            <img src="~/img/Desserts.jpg" alt="Desserts" class="recipe-icons" /><br />
+            <a asp-page="/Recipes/Search">
+                <a class="btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Desserts">Desserts</a>
+
+            </a>
+        </div>
+        <div class="col-md-3 text-center">
+
+            <img src="~/img/Snacks.jpg" alt="Snacks" class="recipe-icons" /><br />
+            <a asp-page="/Recipes/Search">
+                <a class="btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search"asp-route-catName="Snacks">Snacks</a>
+
             </a>
         </div>
     </div>
-</div>
-
-
-
-
-
-
-
-@*Recipe of the day
-*@
-<div class="text-left">
-    <h1 class="display-4">Recipe Of The Day</h1>
-</div>
-<div class="text-left">
-    <h2 class="display-4">Cacio E Pepe</h2>
-</div>
-
-<div class="row text-center">
-    <div class="col-md-6">
-        <p>Budget:£7</p>
-
-        <p>
-            Ingredients:<br/>
-            200g bucatini or spaghetti<br/>
-            25g butter<br/>
-            2 tsp whole black peppercorns, ground, or 1 tsp freshly ground black pepper<br/>
-            50g pecorino or parmesan, finely grated
-        </p>
-    </div>
-
-    <div class="col-sm-6 spacingB">
-        <img src="~/img/spaghetti.png" alt="Cacio E Pepe"/>
-    </div>
-</div>
-
-<div class="text-box spacingB">
-    <p>
-        Cook the pasta for 2 mins less than pack instructions state, in salted boiling water. 
-        Meanwhile, melt the butter in a medium frying pan over a low heat, then add the ground black pepper and toast for a few minutes.
-
-        Drain the pasta, keeping 200ml of the pasta water. Tip the pasta and 100ml of the pasta water into the pan with the butter and pepper. 
-        Toss briefly, then scatter over the parmesan evenly, but don’t stir – wait for the cheese to melt for 30 seconds, then once melted, toss everything well, and stir together. 
-        This prevents the cheese from clumping or going stringy and makes a smooth, shiny sauce. 
-        Add a splash more pasta water if you need to, to loosen the sauce and coat the pasta. Serve immediately with a good grating of black pepper.
-    </p>
 </div>
