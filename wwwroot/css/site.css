@@ -228,3 +228,6 @@ a:hover {
 .noUnderlines {
     text-decoration: none;
 }
+.imageCol{
+    width: 25%;
+}

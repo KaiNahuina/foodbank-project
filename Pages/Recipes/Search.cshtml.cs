@@ -24,7 +24,7 @@ public class SearchModel : PageModel
 
 
     public Models.Recipe? Recipe { get; set; }
-    public IList<Recipe>? passedCategory { get; set; }
+    public List<Recipe>? passedCategory { get; set; }
     public string Category { get; set; }
 
 

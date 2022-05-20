@@ -16,8 +16,44 @@ public static class SeedData
         var meatCategory = await ctx.RecipeCategories.FirstOrDefaultAsync(c => c.RecipeCategoryId == 1) ?? ctx.RecipeCategories.Add(new RecipeCategory
         {
             RecipeCategoryId = 1,
-            Name = "Vegetarian"
+            Name = "Meat"
         }).Entity ;
+        var vegetarianCategory = await ctx.RecipeCategories.FirstOrDefaultAsync(c => c.RecipeCategoryId == 2) ?? ctx.RecipeCategories.Add(new RecipeCategory
+        {
+            RecipeCategoryId = 2,
+            Name = "Vegetarian"
+        }).Entity;
+        var fishCategory = await ctx.RecipeCategories.FirstOrDefaultAsync(c => c.RecipeCategoryId == 3) ?? ctx.RecipeCategories.Add(new RecipeCategory
+        {
+            RecipeCategoryId = 3,
+            Name = "Fish"
+        }).Entity;
+        var soupsCategory = await ctx.RecipeCategories.FirstOrDefaultAsync(c => c.RecipeCategoryId == 4) ?? ctx.RecipeCategories.Add(new RecipeCategory
+        {
+            RecipeCategoryId = 4,
+            Name = "Soups"
+        }).Entity;
+        var specialCategory = await ctx.RecipeCategories.FirstOrDefaultAsync(c => c.RecipeCategoryId == 5) ?? ctx.RecipeCategories.Add(new RecipeCategory
+        {
+            RecipeCategoryId = 5,
+            Name = "Special"
+        }).Entity;
+        var snacksCategory = await ctx.RecipeCategories.FirstOrDefaultAsync(c => c.RecipeCategoryId == 6) ?? ctx.RecipeCategories.Add(new RecipeCategory
+        {
+            RecipeCategoryId = 6,
+            Name = "Snacks"
+        }).Entity;
+        var sideDishesCategory = await ctx.RecipeCategories.FirstOrDefaultAsync(c => c.RecipeCategoryId == 7) ?? ctx.RecipeCategories.Add(new RecipeCategory
+        {
+            RecipeCategoryId = 7,
+            Name = "Side Dishes"
+        }).Entity;
+        var DessertsCategory = await ctx.RecipeCategories.FirstOrDefaultAsync(c => c.RecipeCategoryId == 8) ?? ctx.RecipeCategories.Add(new RecipeCategory
+        {
+            RecipeCategoryId = 8,
+            Name = "Desserts"
+        }).Entity;
+
 
         await using (var transaction = await ctx.Database.BeginTransactionAsync())
         {
