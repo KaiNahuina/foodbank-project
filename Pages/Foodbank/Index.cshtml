@@ -91,7 +91,7 @@
             <div class="col-10 d-grid mx-auto">
                 <h1>Foodbank Needs</h1>
                 <p class="text-box">
-                    @if (Model.Foodbank.Needs?.Count == 0 || Model.Foodbank.Needs!.All(n => n.NeedStr is null))
+                    @if (Model.Foodbank!.Needs!.Count == 0 || Model.Foodbank!.Needs!.All(n => n.NeedStr is null))
                     {
                         @Html.Raw("This foodbank has no needs") <br />
                     }

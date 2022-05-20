@@ -51,12 +51,12 @@ public static class FoodbankHelpers
             Phone = externalFoodbank.Phone?.Replace("%2F", " / ").Replace("or", " / "),
             SecondaryPhone = externalFoodbank.SecondaryPhone,
             Email = externalFoodbank.Email,
-            Address = externalFoodbank.Address?.Replace(externalFoodbank.Postcode, ""),
+            Address = externalFoodbank.Address?.Replace(externalFoodbank.Postcode!, ""),
             Postcode = externalFoodbank.Postcode,
             Closed = externalFoodbank.Closed,
             Country = externalFoodbank.Country,
-            Coord = new Point(double.Parse(externalFoodbank.LatLng?.Split(",")[1]),
-                    double.Parse(externalFoodbank.LatLng?.Split(",")[0]))
+            Coord = new Point(double.Parse(externalFoodbank.LatLng!.Split(",")[1]),
+                    double.Parse(externalFoodbank.LatLng!.Split(",")[0]))
                 { SRID = 4326 },
             Network = externalFoodbank.Network,
             Created = externalFoodbank.Created,
@@ -72,7 +72,7 @@ public static class FoodbankHelpers
             var location = new Location
             {
                 Address = item.Address,
-                Coord = new Point(double.Parse(item.LatLng?.Split(",")[1]), double.Parse(item.LatLng?.Split(",")[0]))
+                Coord = new Point(double.Parse(item.LatLng!.Split(",")[1]), double.Parse(item.LatLng!.Split(",")[0]))
                     { SRID = 4326 },
                 Name = item.Name,
                 Slug = item.Slug,
@@ -125,8 +125,8 @@ public static class FoodbankHelpers
 
         if (dbFoodbank is null)
         {
-            target.Needs = await CompletePartialNeeds(target.Needs, ctx, cancellationToken);
-            target.Locations = await CompletePartialLocations(target.Locations, ctx, cancellationToken);
+            target.Needs = await CompletePartialNeeds(target.Needs!, ctx, cancellationToken);
+            target.Locations = await CompletePartialLocations(target.Locations!, ctx, cancellationToken);
 
             target.FoodbankId = null;
 
@@ -138,8 +138,8 @@ public static class FoodbankHelpers
 
         target.FoodbankId = dbFoodbank.FoodbankId;
 
-        target.Needs = await CompletePartialNeeds(target.Needs, ctx, cancellationToken);
-        target.Locations = await CompletePartialLocations(target.Locations, ctx, cancellationToken);
+        target.Needs = await CompletePartialNeeds(target.Needs!, ctx, cancellationToken);
+        target.Locations = await CompletePartialLocations(target.Locations!, ctx, cancellationToken);
 
         ctx.Entry(dbFoodbank).CurrentValues.SetValues(target);
 

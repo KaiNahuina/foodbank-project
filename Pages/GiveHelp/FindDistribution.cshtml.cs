@@ -36,15 +36,15 @@ public class FindDistribution : PageModel
             .Foodbanks!.AsNoTracking().Where(f => f.Status == Status.Approved)
             .Select(f => new
             {
-                Distance = (int)Math.Round(f.Coord.ProjectTo(27700).Distance(origin.ProjectTo(27700))),
+                Distance = (int)Math.Round(f.Coord!.ProjectTo(27700).Distance(origin.ProjectTo(27700))),
                 f.Name,
                 Id = f.FoodbankId,
                 f.Address,
                 f.Postcode,
                 Coord = new Coords
                 {
-                    Lat = f.Coord.Y,
-                    Lng = f.Coord.X
+                    Lat = f.Coord!.Y,
+                    Lng = f.Coord!.X
                 }
             }).ToArrayAsync();
 

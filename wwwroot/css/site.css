@@ -175,7 +175,7 @@ p {
 }
 
 .sub3 {
-/ / display: inline-block;
+    display: inline-block;
     margin: 100px;
     clear: both;
     text-align: center;
