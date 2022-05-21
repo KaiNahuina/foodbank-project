@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="FSE-Foodbank" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" serverName="FSE-Fo" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
-      <paths name="FSE-Foodbank">
+      <paths name="FSE-Fo">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$/../../../Program Files/dotnet/sdk/6.0.300/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_6_default.editorconfig" web="/" />
