@@ -220,35 +220,202 @@ else
 
 @if (Model.Action != "Create")
 {
-    <table class="table table-striped table-hover w-100">
-        <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Address</th>
-            <th scope="col">Phone</th>
-            <th scope="col">Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in Model.Foodbank!.Locations ?? new List<Location>())
-        {
+    
+    <h1 class="text-start">Locations</h1>
+
+    <div class="bg-light shadow-lg" id="locations">
+        <div class="p-3 d-flex flex-row align-items-center justify-content-between">
+            <div>
+                <form method="get" class="d-flex flex-row align-items-center" asp-fragment="locations">
+                    <input class="me-3" placeholder="Search columns..." name="Search" value="@Model.Search"/>
+                    <button type="submit" class="btn btn-success me-3">Search</button>
+                </form>
+            </div>
+            <div>
+                <form method="get" asp-page="./Location" asp-route-id="0" asp-fragment="locations">
+                    <button type="submit" name="Action" value="Create" class="btn btn-success">Add New</button>
+                </form>
+            </div>
+            <div class="d-flex flex-row align-items-center justify-content-between">
+                @{
+                    var hasPrev = Model.HasPrevPage ? "" : "disabled";
+                    var hasNext = Model.Locations!.Count >= 25 && Model.HasNextPage ? "" : "disabled";
+                }
+                <form method="get" asp-fragment="locations">
+                    <input name="OrderBy" type="hidden" value="@Model.OrderBy">
+                    <input name="OrderDirection" type="hidden" value="@Model.OrderDirection">
+                    <input name="Search" type="hidden" value="@Model.Search">
+                    <input name="Page" type="hidden" value="@(Model.Page - 1)">
+                    <button class="btn btn-success p-2 me-3 @hasPrev">Previous</button>
+                </form>
+                <form method="get" asp-fragment="locations">
+                    <input name="OrderBy" type="hidden" value="@Model.OrderBy">
+                    <input name="OrderDirection" type="hidden" value="@Model.OrderDirection">
+                    <input name="Search" type="hidden" value="@Model.Search">
+                    <input name="Page" type="hidden" value="@(Model.Page + 1)">
+                    <button class="btn btn-success p-2 me-3 @hasNext">Next</button>
+                </form>
+                <span>Page: @Html.DisplayFor(model => model.Page) of @Html.DisplayFor(model => model.MaxPages)</span>
+            </div>
+        </div>
+        <table class="table table-striped table-hover w-100">
+            <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Phone)
-                </td>
-                <td>
-                    Some stuff here
-                </td>
+                @{
+                    var direction = Model.OrderDirection == "Asc" ? "Desc" : "Asc";
+                    var arrow = direction == "Asc" ? "&darr;" : "&uarr;";
+                }
+
+                @switch (Model.OrderBy)
+                {
+                    case "Name":
+                        <th scope="col" style="width: 50%;">
+                            <a asp-route-Search="@Model.Search" asp-fragment="locations" asp-route-OrderBy="Name" asp-route-OrderDirection="@direction">Name @Html.Raw(arrow)</a>
+                        </th>
+                        <th scope="col" style="width: 50%;">
+                            <a asp-route-Search="@Model.Search" asp-fragment="locations" asp-route-OrderBy="Address" asp-route-OrderDirection="Desc">Address</a>
+                        </th>
+                        break;
+                    case "Address":
+                        <th scope="col" style="width: 50%;">
+                            <a asp-route-Search="@Model.Search" asp-fragment="locations" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
+                        </th>
+                        <th scope="col" style="width: 50%;">
+                            <a asp-route-Search="@Model.Search" asp-fragment="locations" asp-route-OrderBy="Address" asp-route-OrderDirection="@direction">Address @Html.Raw(arrow)</a>
+                        </th>
+                        break;
+                    default:
+                        <th scope="col" style="width: 50%;">
+                            <a asp-route-Search="@Model.Search" asp-fragment="locations" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
+                        </th>
+                        <th scope="col" style="width: 50%;">
+                            <a asp-route-Search="@Model.Search" asp-fragment="locations" asp-route-OrderBy="Address" asp-route-OrderDirection="Desc">Address</a>
+                        </th>
+                        break;
+                }
+                <th scope="col" style="width: 25%;">Action</th>
+
             </tr>
-        }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            @if (Model.Locations?.Count != 0)
+            {
+                @foreach (var item in Model.Locations!)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            <a asp-page="./Location" class="btn btn-primary" asp-route-id="@item.LocationId">Edit</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5">Nothing to display...</td>
+                </tr>
+            }
+
+            </tbody>
+        </table>
+    </div>
+    
+    <h1 class="text-start">Needs</h1>
+
+    <div class="bg-light shadow-lg" id="needs">
+        <div class="p-3 d-flex flex-row align-items-center justify-content-between">
+            <div>
+                <form method="get" class="d-flex flex-row align-items-center" asp-fragment="needs">
+                    <input class="me-3" placeholder="Search columns..." name="Search" value="@Model.Search"/>
+                    <button type="submit" class="btn btn-success me-3">Search</button>
+                </form>
+            </div>
+            <div>
+                <form method="get" asp-page="./Need" asp-route-id="0" asp-fragment="needs">
+                    <button type="submit" name="Action" value="Create" class="btn btn-success">Add New</button>
+                </form>
+            </div>
+            <div class="d-flex flex-row align-items-center justify-content-between">
+                @{
+                    hasPrev = Model.HasPrevPage ? "" : "disabled";
+                    hasNext = Model.Needs!.Count >= 25 && Model.HasNextPage ? "" : "disabled";
+                }
+                <form method="get" asp-fragment="needs">
+                    <input name="OrderBy" type="hidden" value="@Model.OrderBy">
+                    <input name="OrderDirection" type="hidden" value="@Model.OrderDirection">
+                    <input name="Search" type="hidden" value="@Model.Search">
+                    <input name="Page" type="hidden" value="@(Model.Page - 1)">
+                    <button class="btn btn-success p-2 me-3 @hasPrev">Previous</button>
+                </form>
+                <form method="get" asp-fragment="needs">
+                    <input name="OrderBy" type="hidden" value="@Model.OrderBy">
+                    <input name="OrderDirection" type="hidden" value="@Model.OrderDirection">
+                    <input name="Search" type="hidden" value="@Model.Search">
+                    <input name="Page" type="hidden" value="@(Model.Page + 1)">
+                    <button class="btn btn-success p-2 me-3 @hasNext">Next</button>
+                </form>
+                <span>Page: @Html.DisplayFor(model => model.Page) of @Html.DisplayFor(model => model.MaxPages)</span>
+            </div>
+        </div>
+        <table class="table table-striped table-hover w-100">
+            <thead>
+            <tr>
+                @{
+                    direction = Model.OrderDirection == "Asc" ? "Desc" : "Asc";
+                    arrow = direction == "Asc" ? "&darr;" : "&uarr;";
+                }
+
+                @switch (Model.OrderBy)
+                {
+                    case "Name":
+                        <th scope="col" style="width: 100%;">
+                            <a asp-route-Search="@Model.Search" asp-fragment="needs" asp-route-OrderBy="Name" asp-route-OrderDirection="@direction">Name @Html.Raw(arrow)</a>
+                        </th>
+                        break;
+                    default:
+                        <th scope="col" style="width: 100%;">
+                            <a asp-route-Search="@Model.Search" asp-fragment="needs" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
+                        </th>
+                        break;
+                }
+                <th scope="col" style="width: 100%;">Action</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            @if (Model.Locations?.Count != 0)
+            {
+                @foreach (var item in Model.Needs!)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NeedStr)
+                        </td>
+                        <td>
+                            <form method="post" asp-page="./Need" asp-route-id="0" asp-fragment="needs">
+                                <input type="hidden" name="Target" value="@Model.Foodbank!.FoodbankId"/>
+                                <button type="submit" name="Action" value="Remove" class="btn btn-danger">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5">Nothing to display...</td>
+                </tr>
+            }
+
+            </tbody>
+        </table>
+    </div>
 }
 
 </div>
