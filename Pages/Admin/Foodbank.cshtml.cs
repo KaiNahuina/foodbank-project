@@ -83,6 +83,43 @@ public class FoodbankModel : PageModel
 
                 break;
             }
+            case "Approve":
+            {
+                if (!ModelState.IsValid) return Page();
+                int id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
+
+                Models.Foodbank? fb = await _ctx.Foodbanks.Where(f => f.FoodbankId == id).FirstOrDefaultAsync();
+
+                if (fb != null)
+                {
+                    fb.Status = Status.Approved;
+                }
+
+                await _ctx.SaveChangesAsync();
+                
+                return RedirectToPage("/Admin/Index");
+
+                
+            }
+
+            case "Deny":
+            {
+                if (!ModelState.IsValid) return Page();
+                int id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
+
+                Models.Foodbank? fb = await _ctx.Foodbanks.Where(f => f.FoodbankId == id).FirstOrDefaultAsync();
+
+                if (fb != null)
+                {
+                    fb.Status = Status.Denied;
+                }
+                
+                await _ctx.SaveChangesAsync();
+                
+                return RedirectToPage("/Admin/Index");
+                
+            }
+                
         }
 
         await _ctx.SaveChangesAsync();
