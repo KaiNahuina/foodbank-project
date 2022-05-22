@@ -112,7 +112,7 @@ public class IndexModel : PageModel
 
         HasPrevPage = Page > 1;
 
-        TotalItems = await foodbankQue.CountAsync();
+        TotalItems = Math.Max(await foodbankQue.CountAsync(), await recipeQue.CountAsync());
         MaxPages = (int)Math.Ceiling(TotalItems / 25d);
 
         HasNextPage = Page < MaxPages;

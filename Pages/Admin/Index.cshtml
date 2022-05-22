@@ -1,4 +1,5 @@
 ﻿@page
+@using Foodbank_Project.Models
 @model IndexModel
 @{
     ViewData["Title"] = "Dashboard - Admin";
@@ -20,7 +21,7 @@
         <div class="d-flex flex-row align-items-center justify-content-between ">
             @{
                 var hasPrev = Model.HasPrevPage ? "" : "disabled";
-                var hasNext = Model.HasNextPage ? "" : "disabled";
+                var hasNext = Model.Foodbanks!.Count >= 25 && Model.HasNextPage ? "" : "disabled";
             }
             <form method="get">
                 <input name="OrderBy" type="hidden" value="@Model.OrderBy">
@@ -36,8 +37,7 @@
                 <input name="Page" type="hidden" value="@(Model.Page + 1)">
                 <button class="btn btn-success p-2 me-3 @hasNext">Next</button>
             </form>
-            <span>Page: @Html.DisplayFor(model => model.Page) of @Html.DisplayFor(model => model.MaxPages) - </span>
-            <span>Total: @Html.DisplayFor(model => model.TotalItems)</span>
+            <span>Page: @Html.DisplayFor(model => model.Page) of @Html.DisplayFor(model => model.MaxPages)</span>
         </div>
     </div>
     <table class="table table-striped table-hover w-100">
@@ -126,9 +126,9 @@
     </tr>
     </thead>
     <tbody>
-    @if (Model.Foodbanks?.Count != 0)
+    @if (Model.Foodbanks?.Count != 0 && Model.Foodbanks is not null)
     {
-        @foreach (var item in Model.Foodbanks!)
+        foreach (var item in Model.Foodbanks!)
         {
             <tr>
                 <td>
@@ -144,7 +144,13 @@
                     @Html.DisplayFor(modelItem => item.Locations!.Count)
                 </td>
                 <td>
-                    <a asp-page="./Foodbank" asp-route-id="@item.FoodbankId">Edit</a>
+                    <form method="post" asp-page="/Admin/Foodbank" asp-route-id="@item.FoodbankId">
+                        <button class="btn btn-success" name="Action" value="Approve" type="submit">Approve</button>
+                    </form>
+                    <form method="post" asp-page="/Admin/Foodbank" asp-route-id="@item.FoodbankId">
+                        <button class="btn btn-danger" name="Action" value="Deny" type="submit">Deny</button>
+                    </form>
+                    <a asp-page="./Foodbank" class="btn btn-primary" asp-route-id="@item.FoodbankId">View</a>
                 </td>
             </tr>
         }
@@ -174,7 +180,7 @@
         <div class="d-flex flex-row align-items-center justify-content-between ">
             @{
                 hasPrev = Model.HasPrevPage ? "" : "disabled";
-                hasNext = Model.HasNextPage ? "" : "disabled";
+                hasNext = Model.Recipes!.Count >= 25 && Model.HasNextPage ? "" : "disabled";
             }
             <form method="get">
                 <input name="OrderBy" type="hidden" value="@Model.OrderBy">
@@ -190,8 +196,7 @@
                 <input name="Page" type="hidden" value="@(Model.Page + 1)">
                 <button class="btn btn-success p-2 me-3 @hasNext">Next</button>
             </form>
-            <span>Page: @Html.DisplayFor(model => model.Page) of @Html.DisplayFor(model => model.MaxPages) - </span>
-            <span>Total: @Html.DisplayFor(model => model.Recipes!.Count)</span>
+            <span>Page: @Html.DisplayFor(model => model.Page) of @Html.DisplayFor(model => model.MaxPages)</span>
         </div>
     </div>
     <table class="table table-striped table-hover w-100">
@@ -280,9 +285,9 @@
         </tr>
         </thead>
         <tbody>
-        @if (Model.Recipes?.Count != 0)
+        @if (Model.Recipes?.Count != 0 && Model.Recipes is not null)
         {
-            @foreach (var item in Model.Recipes!)
+            foreach (var item in Model.Recipes!)
             {
                 <tr>
                     <td>
