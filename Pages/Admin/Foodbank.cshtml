@@ -122,8 +122,8 @@ else
             <label asp-for="Foodbank!.Status"></label>
             <span asp-validation-for="Foodbank!.Status" class="text-danger"></span>
         </div>
-        <div class="col-8">
-            <select asp-for="Foodbank!.Status" asp-items="Html.GetEnumSelectList<Status>()">
+        <div class="col-8 mb-4">
+            <select class="form-select" asp-for="Foodbank!.Status" asp-items="Html.GetEnumSelectList<Status>()">
                 <option selected="selected" value="@Model.Foodbank.Status"></option>
             </select>
         </div>
