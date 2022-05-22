@@ -21,6 +21,7 @@ else
     <div class="row">
         <div class="col">
             <label>ID</label>
+            <span asp-validation-for="Foodbank!.FoodbankId" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" readonly value="@Model.Foodbank?.FoodbankId" asp-for="Foodbank!.FoodbankId"/><br/>
@@ -29,6 +30,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Name"></label>
+            <span asp-validation-for="Foodbank!.Name" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Name" asp-for="Foodbank!.Name"/><br/>
@@ -37,6 +39,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.AltName"></label>
+            <span asp-validation-for="Foodbank!.AltName" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.AltName" asp-for="Foodbank!.AltName"/><br/>
@@ -45,6 +48,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Created"></label>
+            <span asp-validation-for="Foodbank!.Created" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" asp-for="Foodbank!.Created" value="@Model.Foodbank.Created?.ToString("yyyy-MM-ddTHH:mm:ss")" readonly/><br/>
@@ -53,6 +57,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Network"></label>
+            <span asp-validation-for="Foodbank!.Network" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Network" asp-for="Foodbank!.Network"/><br/>
@@ -61,6 +66,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Notes"></label>
+            <span asp-validation-for="Foodbank!.Notes" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Notes" asp-for="Foodbank!.Notes"/><br/>
@@ -69,6 +75,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Closed"></label>
+            <span asp-validation-for="Foodbank!.Closed" class="text-danger"></span>
         </div>
         <div class="col-8 form-control-lg form-check form-switch d-flex justify-content-center">
             <input class="form-check-input" placeholder="@Model.Foodbank.Closed" asp-for="Foodbank!.Closed"/><br/>
@@ -77,6 +84,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.CharityNumber"></label>
+            <span asp-validation-for="Foodbank!.CharityNumber" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.CharityNumber" asp-for="Foodbank!.CharityNumber"/><br/>
@@ -85,6 +93,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.CharityRegisterUrl"></label>
+            <span asp-validation-for="Foodbank!.CharityRegisterUrl" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.CharityRegisterUrl" asp-for="Foodbank!.CharityRegisterUrl"/><br/>
@@ -93,6 +102,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Slug"></label>
+            <span asp-validation-for="Foodbank!.Slug" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Slug" asp-for="Foodbank!.Slug"/><br/>
@@ -101,6 +111,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Protected"></label>
+            <span asp-validation-for="Foodbank!.Protected" class="text-danger"></span>
         </div>
         <div class="col-8 form-control-lg form-check form-switch d-flex justify-content-center">
             <input class="form-check-input" placeholder="@Model.Foodbank.Protected" asp-for="Foodbank!.Protected"/><br/>
@@ -109,6 +120,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Status"></label>
+            <span asp-validation-for="Foodbank!.Status" class="text-danger"></span>
         </div>
         <div class="col-8">
             <select asp-for="Foodbank!.Status" asp-items="Html.GetEnumSelectList<Status>()">
@@ -120,6 +132,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Address"></label>
+            <span asp-validation-for="Foodbank!.Address" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Address" asp-for="Foodbank!.Address"/><br/>
@@ -128,6 +141,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Postcode"></label>
+            <span asp-validation-for="Foodbank!.Postcode" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Postcode" asp-for="Foodbank!.Postcode"/><br/>
@@ -136,6 +150,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Country"></label>
+            <span asp-validation-for="Foodbank!.Country" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Country" asp-for="Foodbank!.Country"/><br/>
@@ -144,6 +159,7 @@ else
     <div class="row">
         <div class="col">
             <label>Lat</label>
+            <span asp-validation-for="Lat" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Lat" asp-for="Lat"/><br/>
@@ -152,6 +168,7 @@ else
     <div class="row">
         <div class="col">
             <label>Lng</label>
+            <span asp-validation-for="Lng" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Lng" asp-for="Lng"/><br/>
@@ -161,6 +178,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Email"></label>
+            <span asp-validation-for="Foodbank!.Email" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Email" asp-for="Foodbank!.Email"/><br/>
@@ -169,6 +187,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Phone"></label>
+            <span asp-validation-for="Foodbank!.Phone" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Phone" asp-for="Foodbank!.Phone"/><br/>
@@ -177,6 +196,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Homepage"></label>
+            <span asp-validation-for="Foodbank!.Homepage" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Homepage" asp-for="Foodbank!.Homepage"/><br/>

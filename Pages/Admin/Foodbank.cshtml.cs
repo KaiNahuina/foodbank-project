@@ -50,7 +50,7 @@ public class FoodbankModel : PageModel
     }
 
 
-    public async Task<RedirectToPageResult> OnPostAsync([FromQuery(Name = "Action")] string? action)
+    public async Task<IActionResult> OnPostAsync([FromQuery(Name = "Action")] string? action)
     {
         Action = action ?? Request.Form["Action"].ToString() ?? "Update";
         switch (Action)
@@ -61,6 +61,7 @@ public class FoodbankModel : PageModel
                 break;
             case "Create":
             {
+                if (!ModelState.IsValid) return Page();
                 if (Foodbank != null)
                 {
                     Foodbank.Coord = new Point(Lng, Lat) { SRID = 4326 };
@@ -73,6 +74,7 @@ public class FoodbankModel : PageModel
             }
             case "Update":
             {
+                if (!ModelState.IsValid) return Page();
                 if (Foodbank != null)
                 {
                     Foodbank.Coord = new Point(Lng, Lat) { SRID = 4326 };
