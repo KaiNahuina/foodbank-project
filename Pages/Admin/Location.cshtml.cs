@@ -79,6 +79,7 @@ public class LocationModel : PageModel
                 if (!ModelState.IsValid) return Page();
                 if (Location != null)
                 {
+                    _ctx.Foodbanks!.Attach(Location.Foodbank);
                     Location.Coord = new Point(Lng, Lat) { SRID = 4326 };
                     _ctx.Locations?.Update(Location);
                 }
