@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    <div class="container">
+    <div id="Top5Section" class="container">
         <div class="row">
             <div class="col-8 d-grid mx-auto">
                 <h1>5 closest Foodbanks</h1>
@@ -45,19 +45,13 @@
 
 
     <script type="text/javascript">
+        const Top5section = document.getElementById('Top5Section');
 
         var foodbankIcon = L.icon({
               iconUrl: '/img/leaf.png',
-              iconSize:     [40, 40],
-              iconAnchor:   [0, 30],
-              popupAnchor:  [15, -30]
-        });
-
-        var warehouseIcon = L.icon({
-              iconUrl: '/img/warehouse.png',//copy righted dont use for final
               iconSize:     [50, 50],
-              iconAnchor:   [25, 50],
-              popupAnchor:  [-3, -76]
+              iconAnchor:   [28, 37],
+              popupAnchor:  [-5 , -35]
         });
 
         var map = L.map('map').setView([ 54.596442,  -3.9], 6);
@@ -118,6 +112,7 @@
                  markerGroup = L.featureGroup([closest5Markers[0],closest5Markers[1],closest5Markers[2],closest5Markers[3],closest5Markers[4]]);
                  map.addLayer(markerGroup);
                  map.fitBounds([markerGroup.getBounds().pad(0.2), e.bbox]);
+                 Top5Section.style.display = 'block'
 
                  if (history.pushState) {
                     var newurl = window.location.protocol + "//" + window.location.host + '/GetHelp/Index/?Location=' + control._input.value;   //change testmap name

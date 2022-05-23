@@ -228,3 +228,15 @@ a:hover {
 .noUnderlines {
     text-decoration: none;
 }
+
+#Top5Section{
+    display: none;
+}
+
+#salvationArmyList {
+    display: none;
+}
+
+#viewMoreButton{
+    display: block;
+}

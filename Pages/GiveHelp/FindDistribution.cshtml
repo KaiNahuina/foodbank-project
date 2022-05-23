@@ -23,14 +23,14 @@
         </div>
     </div>
 
-    <div class="container">
+    <div id="Top5Section" class="container">
         <div class="col-11 d-grid mx-auto">
             @Html.AntiForgeryToken()
             <div class="image-box" id="map"></div>
         </div>
     </div>
 
-    <div class="container">
+    <div id="Top5Section" class="container">
         <div class="row">
             <div class="col-8 d-grid mx-auto">
                 <h1>5 closest Donation Points</h1>
@@ -45,6 +45,7 @@
 
 
     <script type="text/javascript">
+        const Top5section = document.getElementById('Top5Section');
 
         var warehouseIcon = L.icon({
               iconUrl: '/img/warehouse.png',//copy righted dont use for final
@@ -110,6 +111,7 @@
                  markerGroup = L.featureGroup([closest5Markers[0],closest5Markers[1],closest5Markers[2],closest5Markers[3],closest5Markers[4]]);
                  map.addLayer(markerGroup);
                  map.fitBounds([markerGroup.getBounds().pad(0.2), e.bbox]);
+                 Top5Section.style.display = 'block'
 
                  if (history.pushState) {
                     var newurl = window.location.protocol + "//" + window.location.host + '/Foodbank/DistributionPage/Location?=' + control._input.value;   //change testmap name
