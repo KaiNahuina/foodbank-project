@@ -61,12 +61,27 @@ p {
 
 }
 
+a {
+    color: #115649;
+}
+
 .button {
-    background-color: forestgreen;
+    background-color: #f4faed;
     border-radius: 5px; /*border curve*/
     box-shadow: 2px 2px #808080; /*current background effect*/
     text-align: center;
     display: inline-block;
+}
+
+    .button:hover {
+        background-color: #115649;
+        color: white
+    }
+
+.carousel-control .icon-prev, .carousel-control .icon-next {
+    font-size: 100px;
+    margin-top: -50px;
+    color: #fff;
 }
 
 .text-box {

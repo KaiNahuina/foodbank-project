@@ -12,7 +12,7 @@
 
 <div class="text-center ">
     <p>
-        Disclaimer: Vouchers may be required to access the bank. <a class="btn btn-sm btn-outline-success" asp-page="/GetHelp/Vouchers">Learn more here.</a>
+        Disclaimer: Vouchers may be required to access the bank. <a class="button btn btn-sm btn-outline-success" asp-page="/GetHelp/Vouchers">Learn more here.</a>
     </p>
 </div>
 
@@ -69,10 +69,10 @@
             <!-- get the name of the location id, if it == salvation army skip displaying the view distribution center -->
             <div class="col-lg-3">  </div>
             <div class="col-lg-3 text-center">
-                <a class="btn btn-lg btn-outline-success" asp-page="/Foodbank/MainLocation" asp-route-id="@Model.Foodbank?.FoodbankId">Main Location Details</a>
+                <a class="button btn btn-lg btn-outline-success" asp-page="/Foodbank/MainLocation" asp-route-id="@Model.Foodbank?.FoodbankId">Main Location Details</a>
             </div>
             <div class="col-lg-3 text-center">
-                <a class="btn btn-lg btn-outline-success" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley">Click here for directions</a> <!-- link that sends them to google with their lat and long as a search function-->
+                <a class="button btn btn-lg btn-outline-success" href="https://maps.google.com/?q= @Model.Location?.Coord!.Y ,@Model.Location?.Coord!.X">Click here for directions</a> <!-- link that sends them to google with their lat and long as a search function-->
             </div>
             <div class="col-lg-3">  </div>
         </div>
