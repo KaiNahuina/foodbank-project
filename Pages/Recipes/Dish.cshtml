@@ -25,46 +25,44 @@
 </div>
 <div class="container mt-4 mb-4">
     <div class="row">
-        <div class="col-sm-3">
-           
+        <div class="col-sm-4">
+
             <label>Serves:</label><br />
-            <p class="text-box h4 overflow-hidden">@Model.Recipe.Serves</p>
-       
+            <p class="text-box h4 overflow-hidden ">@Model.Recipe.Serves</p>
+
             <label> Serving suggestion: </label><br />
 
-             @{
-                    try
-                    {
-                           <img src="@string.Format("data:Images/jpg;base64,{0}",Convert.ToBase64String(@Model.Recipe.Image))" alt="@Model.Recipe.Name" />
+            @{
+                try
+                {
+                    <img src="@string.Format("data:Images/jpg;base64,{0}",Convert.ToBase64String(@Model.Recipe.Image))" style="width:100%" alt="@Model.Recipe.Name" />
 
-                    }
-                    catch
-                    {
-                        
-                            <img src="/img/Empty.png" alt="No Image available" />
-                       
-                    }
                 }
-            <img src="/img/Independent-logo.jpg" class="image-box img-fluid" alt="Independent foodbanks" />
+                catch
+                {
+
+                    <img src="/img/Empty.png" alt="No Image available" />
+
+                }
+            }
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <label>Ingredients:</label><br />
-            <p class="text-box h4 overflow-hidden">@Model.Recipe.Ingredients</p>
+            <p class="text-box h4 overflow-hidden">@Html.Raw(Model.Recipe.Ingredients.Replace("\n", "<br/>"))</p>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-5">
             <label> Method: </label><br />
-            <p class="text-box h4 overflow-hidden">@Model.Recipe.Method</p>
+            <p class="text-box h4 overflow-hidden">@Html.Raw(Model.Recipe.Method.Replace("\n", "<br/>"))</p>
         </div>
     </div>
 </div>
 <div class="container mt-4 mb-4">
     <div class="row">
-        <div class="col-sm-3"> </div>
-        
-        <div class="col-sm-8">
-            <label>Notes:</label><br />
-            <p class="text-box h4 overflow-hidden">@Model.Recipe.Notes</p>
-        </div>
-
+           @if (!string.IsNullOrEmpty(Model.Recipe.Notes))
+            {
+                <label>Notes:</label><br />
+                <p class="text-box h4 overflow-hidden">@Model.Recipe.Notes</p>
+            }
+        }
     </div>
 </div>

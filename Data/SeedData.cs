@@ -82,19 +82,7 @@ public static class SeedData
             Serves = "9 People",
             Image = await File.ReadAllBytesAsync("./wwwroot/img/omelette.jpg")
         }).Entity;
-        
-        _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 1) ?? ctx.Recipes.Add(new Recipe
-        {
-            Name = "Steak peas and Chips",
-            RecipeId = 1,
-            Ingredients = "Steak \n Chips",
-            Status = Status.Approved,
-            Method = "Grill Steak\nCook Chips\nServe",
-            Category = new List<RecipeCategory> { meatCategory },
-            Notes = "",
-            Serves = "9 People",
-            Image = await File.ReadAllBytesAsync("./wwwroot/img/bag-icon.png")
-        }).Entity;
+      
 
         _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 2) ?? ctx.Recipes.Add(new Recipe
         {
