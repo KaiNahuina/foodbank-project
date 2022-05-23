@@ -78,6 +78,11 @@ a {
         color: white
     }
 
+.carousel-control .icon-prev, .carousel-control .icon-next {
+    font-size: 100px;
+    margin-top: -50px;
+    color: #fff;
+}
 
 .text-box {
     color: black;
