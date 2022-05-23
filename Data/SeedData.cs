@@ -64,21 +64,10 @@ public static class SeedData
         };
         
         
+
+
+
         var _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 1) ?? ctx.Recipes.Add(new Recipe
-        {
-            Name = "Steak peas and Chips",
-            RecipeId = 1,
-            Ingredients = "Steak \n Chips",
-            Status = Status.Approved,
-            Method = "Grill Steak\nCook Chips\nServe",
-            Category = new List<RecipeCategory> { meatCategory },
-            Notes = "",
-            Serves = "9 People",
-            Image = await File.ReadAllBytesAsync("./wwwroot/img/bag-icon.png")
-        }).Entity;
-
-
-        _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 1) ?? ctx.Recipes.Add(new Recipe
         {
             Name = "Omelette",
             RecipeId = 1,
@@ -342,7 +331,7 @@ public static class SeedData
             Ingredients = "10 pound fish, (about 1 gallon, diced)\n5 1/2 quart hot fish stock\n1/2 pound salt pork, (1 cup, diced)\n6 onions, sliced\n1 teaspoon pepper\n3 tablespoon salt, (1 1/2 ounces)\n1/4 cup flour, (1 ounce)\n3 quart diced potatoes\n3 quart evaporated milk\n12 hard cooked eggs, chopped, may be omitted",
             Status = Status.Approved,
             Method = "Halibut, haddock or cod are best.\nRemove bone and cut fish into small pieces.\nCook head and back bone in 6 quarts boiling water 15 minutes.\nStrain.\nThere should be 5 1/2 quarts fish stock.\nFry salt pork and onions in soup kettle until onions are slightly brown.\nRemove pork and onions and keep hot.\nArrange layer of fish in bottom of kettle and sprinkle with salt, pepper and flour.\nAdd a layer of potatoes, and then the onion and pork.\nRepeat.\nAdd the fish stock and cook slowly without stirring until potatoes and fish are done, about 45 minutes.\nAdd scalded milk.\n Garnish each serving with chopped egg.",
-Category = new List<RecipeCategory> { fishCategory },
+            Category = new List<RecipeCategory> { fishCategory },
             Notes = "",
             Serves = "40",
             Image = await File.ReadAllBytesAsync("./wwwroot/img/Fish Chowder.jpg")
