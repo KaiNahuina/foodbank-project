@@ -402,7 +402,7 @@ else
                             @Html.DisplayFor(modelItem => item.NeedStr)
                         </td>
                         <td>
-                            <form method="post" asp-page="./Need" asp-route-id="0" asp-fragment="needs">
+                            <form method="post" asp-page="./Need" asp-route-id="@item.NeedId">
                                 <input type="hidden" name="Target" value="@Model.Foodbank!.FoodbankId"/>
                                 <button type="submit" name="Action" value="Remove" class="btn btn-danger">Remove</button>
                             </form>

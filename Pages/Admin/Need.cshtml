@@ -1,19 +1,19 @@
-﻿@page
+﻿@page "{id:int}"
 @model Foodbank_Project.Pages.Admin.AddNeed
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Need - Admin";
 }
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-<div>
-    
+<h1 class="text-start">Add Need</h1>
+
+
+
+<div class="bg-light shadow-lg flex-fill d-flex justify-content-center align-items-center">
+    <h3>Search</h3>
+    <form method="get">
+        <input asp-for="Name"/>
+        <input type="hidden" asp-for="Action" value="Search"/>
+    </form>
 </div>
-</body>
-</html>
