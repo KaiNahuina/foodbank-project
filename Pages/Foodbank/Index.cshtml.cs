@@ -24,7 +24,7 @@ public class IndexModel : PageModel
 
     public async Task OnGetAsync([FromRoute(Name = "id")] int location)
     {
-        var locale = _ctx.Locations.AsNoTracking().Where(l => l.LocationId == location);
+        var locale = _ctx.Locations!.AsNoTracking().Where(l => l.LocationId == location);
         Location = await locale.FirstAsync();
 
         var foodbank = locale.Include(l => l.Foodbank).ThenInclude(f => f!.Locations).Include(l => l.Foodbank)

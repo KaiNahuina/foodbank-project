@@ -21,6 +21,7 @@ else
     <div class="row">
         <div class="col">
             <label>ID</label>
+            <span asp-validation-for="Foodbank!.FoodbankId" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" readonly value="@Model.Foodbank?.FoodbankId" asp-for="Foodbank!.FoodbankId"/><br/>
@@ -29,6 +30,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Name"></label>
+            <span asp-validation-for="Foodbank!.Name" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Name" asp-for="Foodbank!.Name"/><br/>
@@ -37,6 +39,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.AltName"></label>
+            <span asp-validation-for="Foodbank!.AltName" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.AltName" asp-for="Foodbank!.AltName"/><br/>
@@ -45,6 +48,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Created"></label>
+            <span asp-validation-for="Foodbank!.Created" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" asp-for="Foodbank!.Created" value="@Model.Foodbank.Created?.ToString("yyyy-MM-ddTHH:mm:ss")" readonly/><br/>
@@ -53,6 +57,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Network"></label>
+            <span asp-validation-for="Foodbank!.Network" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Network" asp-for="Foodbank!.Network"/><br/>
@@ -61,6 +66,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Notes"></label>
+            <span asp-validation-for="Foodbank!.Notes" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Notes" asp-for="Foodbank!.Notes"/><br/>
@@ -69,6 +75,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Closed"></label>
+            <span asp-validation-for="Foodbank!.Closed" class="text-danger"></span>
         </div>
         <div class="col-8 form-control-lg form-check form-switch d-flex justify-content-center">
             <input class="form-check-input" placeholder="@Model.Foodbank.Closed" asp-for="Foodbank!.Closed"/><br/>
@@ -77,6 +84,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.CharityNumber"></label>
+            <span asp-validation-for="Foodbank!.CharityNumber" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.CharityNumber" asp-for="Foodbank!.CharityNumber"/><br/>
@@ -85,6 +93,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.CharityRegisterUrl"></label>
+            <span asp-validation-for="Foodbank!.CharityRegisterUrl" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.CharityRegisterUrl" asp-for="Foodbank!.CharityRegisterUrl"/><br/>
@@ -93,6 +102,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Slug"></label>
+            <span asp-validation-for="Foodbank!.Slug" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Slug" asp-for="Foodbank!.Slug"/><br/>
@@ -101,15 +111,28 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Protected"></label>
+            <span asp-validation-for="Foodbank!.Protected" class="text-danger"></span>
         </div>
         <div class="col-8 form-control-lg form-check form-switch d-flex justify-content-center">
             <input class="form-check-input" placeholder="@Model.Foodbank.Protected" asp-for="Foodbank!.Protected"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Foodbank!.Status"></label>
+            <span asp-validation-for="Foodbank!.Status" class="text-danger"></span>
+        </div>
+        <div class="col-8 mb-4">
+            <select class="form-select" asp-for="Foodbank!.Status" asp-items="Html.GetEnumSelectList<Status>()">
+                <option selected="selected" value="@Model.Foodbank.Status"></option>
+            </select>
         </div>
     </div>
     @* Location *@
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Address"></label>
+            <span asp-validation-for="Foodbank!.Address" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Address" asp-for="Foodbank!.Address"/><br/>
@@ -118,6 +141,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Postcode"></label>
+            <span asp-validation-for="Foodbank!.Postcode" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Postcode" asp-for="Foodbank!.Postcode"/><br/>
@@ -126,6 +150,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Country"></label>
+            <span asp-validation-for="Foodbank!.Country" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Country" asp-for="Foodbank!.Country"/><br/>
@@ -134,6 +159,7 @@ else
     <div class="row">
         <div class="col">
             <label>Lat</label>
+            <span asp-validation-for="Lat" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Lat" asp-for="Lat"/><br/>
@@ -142,6 +168,7 @@ else
     <div class="row">
         <div class="col">
             <label>Lng</label>
+            <span asp-validation-for="Lng" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Lng" asp-for="Lng"/><br/>
@@ -151,6 +178,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Email"></label>
+            <span asp-validation-for="Foodbank!.Email" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Email" asp-for="Foodbank!.Email"/><br/>
@@ -159,6 +187,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Phone"></label>
+            <span asp-validation-for="Foodbank!.Phone" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Phone" asp-for="Foodbank!.Phone"/><br/>
@@ -167,6 +196,7 @@ else
     <div class="row">
         <div class="col">
             <label asp-for="Foodbank!.Homepage"></label>
+            <span asp-validation-for="Foodbank!.Homepage" class="text-danger"></span>
         </div>
         <div class="col-8">
             <input class="form-control" value="@Model.Foodbank.Homepage" asp-for="Foodbank!.Homepage"/><br/>
@@ -190,35 +220,206 @@ else
 
 @if (Model.Action != "Create")
 {
-    <table class="table table-striped table-hover w-100">
-        <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Address</th>
-            <th scope="col">Phone</th>
-            <th scope="col">Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in Model.Foodbank!.Locations ?? new List<Location>())
-        {
+    
+    <h1 class="text-start">Locations</h1>
+
+    <div class="bg-light shadow-lg" id="locations">
+        <div class="p-3 d-flex flex-row align-items-center justify-content-between">
+            <div>
+                <form method="get" class="d-flex flex-row align-items-center" asp-fragment="locations">
+                    <input class="me-3" placeholder="Search columns..." name="Search" value="@Model.Search"/>
+                    <button type="submit" class="btn btn-success me-3">Search</button>
+                </form>
+            </div>
+            <div>
+                <form method="get" asp-page="./Location" asp-route-id="0" asp-fragment="locations">
+                    <input type="hidden" name="target" value="@Model.Foodbank!.FoodbankId"/>
+                    <button type="submit" name="Action" value="Create" class="btn btn-success">Add New</button>
+                </form>
+            </div>
+            <div class="d-flex flex-row align-items-center justify-content-between">
+                @{
+                    var hasPrev = Model.HasPrevPage ? "" : "disabled";
+                    var hasNext = Model.Locations!.Count >= 25 && Model.HasNextPage ? "" : "disabled";
+                }
+                <form method="get" asp-fragment="locations">
+                    <input name="OrderBy" type="hidden" value="@Model.OrderBy">
+                    <input name="OrderDirection" type="hidden" value="@Model.OrderDirection">
+                    <input name="Search" type="hidden" value="@Model.Search">
+                    <input name="Page" type="hidden" value="@(Model.Page - 1)">
+                    <button class="btn btn-success p-2 me-3 @hasPrev">Previous</button>
+                </form>
+                <form method="get" asp-fragment="locations">
+                    <input name="OrderBy" type="hidden" value="@Model.OrderBy">
+                    <input name="OrderDirection" type="hidden" value="@Model.OrderDirection">
+                    <input name="Search" type="hidden" value="@Model.Search">
+                    <input name="Page" type="hidden" value="@(Model.Page + 1)">
+                    <button class="btn btn-success p-2 me-3 @hasNext">Next</button>
+                </form>
+                <span>Page: @Html.DisplayFor(model => model.Page) of @Html.DisplayFor(model => model.MaxPages)</span>
+            </div>
+        </div>
+        <table class="table table-striped table-hover w-100">
+            <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Phone)
-                </td>
-                <td>
-                    Some stuff here
-                </td>
+                @{
+                    var direction = Model.OrderDirection == "Asc" ? "Desc" : "Asc";
+                    var arrow = direction == "Asc" ? "&darr;" : "&uarr;";
+                }
+
+                @switch (Model.OrderBy)
+                {
+                    case "Name":
+                        <th scope="col" style="width: 50%;">
+                            <a asp-route-Search="@Model.Search" asp-fragment="locations" asp-route-OrderBy="Name" asp-route-OrderDirection="@direction">Name @Html.Raw(arrow)</a>
+                        </th>
+                        <th scope="col" style="width: 50%;">
+                            <a asp-route-Search="@Model.Search" asp-fragment="locations" asp-route-OrderBy="Address" asp-route-OrderDirection="Desc">Address</a>
+                        </th>
+                        break;
+                    case "Address":
+                        <th scope="col" style="width: 50%;">
+                            <a asp-route-Search="@Model.Search" asp-fragment="locations" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
+                        </th>
+                        <th scope="col" style="width: 50%;">
+                            <a asp-route-Search="@Model.Search" asp-fragment="locations" asp-route-OrderBy="Address" asp-route-OrderDirection="@direction">Address @Html.Raw(arrow)</a>
+                        </th>
+                        break;
+                    default:
+                        <th scope="col" style="width: 50%;">
+                            <a asp-route-Search="@Model.Search" asp-fragment="locations" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
+                        </th>
+                        <th scope="col" style="width: 50%;">
+                            <a asp-route-Search="@Model.Search" asp-fragment="locations" asp-route-OrderBy="Address" asp-route-OrderDirection="Desc">Address</a>
+                        </th>
+                        break;
+                }
+                <th scope="col" style="width: 25%;">Action</th>
+
             </tr>
-        }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            @if (Model.Locations?.Count != 0)
+            {
+                @foreach (var item in Model.Locations!)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            <form method="get" asp-page="./Location" asp-route-id="@item.LocationId">
+                                <input type="hidden" name="target" value="@item.Foodbank?.FoodbankId"/>
+                                <button class="btn btn-primary">Edit</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5">Nothing to display...</td>
+                </tr>
+            }
+
+            </tbody>
+        </table>
+    </div>
+    
+    <h1 class="text-start">Needs</h1>
+
+    <div class="bg-light shadow-lg" id="needs">
+        <div class="p-3 d-flex flex-row align-items-center justify-content-between">
+            <div>
+                <form method="get" class="d-flex flex-row align-items-center" asp-fragment="needs">
+                    <input class="me-3" placeholder="Search columns..." name="Search" value="@Model.Search"/>
+                    <button type="submit" class="btn btn-success me-3">Search</button>
+                </form>
+            </div>
+            <div>
+                <form method="get" asp-page="./Need" asp-route-id="0" asp-fragment="needs">
+                    <button type="submit" name="Action" value="Create" class="btn btn-success">Add New</button>
+                </form>
+            </div>
+            <div class="d-flex flex-row align-items-center justify-content-between">
+                @{
+                    hasPrev = Model.HasPrevPage ? "" : "disabled";
+                    hasNext = Model.Needs!.Count >= 25 && Model.HasNextPage ? "" : "disabled";
+                }
+                <form method="get" asp-fragment="needs">
+                    <input name="OrderBy" type="hidden" value="@Model.OrderBy">
+                    <input name="OrderDirection" type="hidden" value="@Model.OrderDirection">
+                    <input name="Search" type="hidden" value="@Model.Search">
+                    <input name="Page" type="hidden" value="@(Model.Page - 1)">
+                    <button class="btn btn-success p-2 me-3 @hasPrev">Previous</button>
+                </form>
+                <form method="get" asp-fragment="needs">
+                    <input name="OrderBy" type="hidden" value="@Model.OrderBy">
+                    <input name="OrderDirection" type="hidden" value="@Model.OrderDirection">
+                    <input name="Search" type="hidden" value="@Model.Search">
+                    <input name="Page" type="hidden" value="@(Model.Page + 1)">
+                    <button class="btn btn-success p-2 me-3 @hasNext">Next</button>
+                </form>
+                <span>Page: @Html.DisplayFor(model => model.Page) of @Html.DisplayFor(model => model.MaxPages)</span>
+            </div>
+        </div>
+        <table class="table table-striped table-hover w-100">
+            <thead>
+            <tr>
+                @{
+                    direction = Model.OrderDirection == "Asc" ? "Desc" : "Asc";
+                    arrow = direction == "Asc" ? "&darr;" : "&uarr;";
+                }
+
+                @switch (Model.OrderBy)
+                {
+                    case "Name":
+                        <th scope="col" style="width: 100%;">
+                            <a asp-route-Search="@Model.Search" asp-fragment="needs" asp-route-OrderBy="Name" asp-route-OrderDirection="@direction">Name @Html.Raw(arrow)</a>
+                        </th>
+                        break;
+                    default:
+                        <th scope="col" style="width: 100%;">
+                            <a asp-route-Search="@Model.Search" asp-fragment="needs" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
+                        </th>
+                        break;
+                }
+                <th scope="col" style="width: 100%;">Action</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            @if (Model.Locations?.Count != 0)
+            {
+                @foreach (var item in Model.Needs!)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NeedStr)
+                        </td>
+                        <td>
+                            <form method="post" asp-page="./Need" asp-route-id="@item.NeedId">
+                                <input type="hidden" name="Target" value="@Model.Foodbank!.FoodbankId"/>
+                                <button type="submit" name="Action" value="Remove" class="btn btn-danger">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5">Nothing to display...</td>
+                </tr>
+            }
+
+            </tbody>
+        </table>
+    </div>
 }
 
 </div>

@@ -4,14 +4,14 @@
     ViewData["Title"] = "Give Help";
 }
 
-<div class="container m-4">
+<div class="container mt-5">
     <div class="row">
         <div class="col-md-3">
             <div class="m-2 d-grid">
-                <a class="btn btn-lg btn-outline-success" asp-area="" asp-page="/GiveHelp/Index">Back</a>
+                <a class="button btn btn-lg btn-outline-success" asp-area="" asp-page="/GiveHelp/Index">Back</a>
             </div>
         </div>
-        <div class="col-sm-6 text-center">
+        <div class="col-md-6 text-center">
             <h1 class="display-4 text-success">Donate Funds</h1>
         </div>
         <div class="col-md-36 text-center">
@@ -23,19 +23,19 @@
 <div class="container mt-4">
     <div class="row mt-3">
         <div class="col-sm-4">
-            <p class="h5 text-box text-success">
+            <p class="h4 text-box">
                 Monetary donations are very important for foodbanks. They are used to pay for utilities and
                 for extra services that the foodbank in question may provide such as financial advice.
             </p>
         </div>
         <div class="col-sm-4">
-            <p class="h5 text-box text-success">
+            <p class="h4 text-box">
                 The money that you donate here will be given to associated charities that will make sure
                 to distribute it to the foodbanks that will need it the most.
             </p>
         </div>
         <div class="col-sm-4">
-            <p class="h4 text-box text-success">
+            <p class="h4 text-box">
                 You can make a one time donation, or if you want to get more involved, you can make a
                 regular monthly donation
             </p>
@@ -47,22 +47,20 @@
     <div class="row">
         <div class="col-6">
             <div>
-                @* ReSharper disable once Html.IdNotResolved *@
-                <a aria-controls="oneTime" aria-expanded="false" class="btn btn-warning d-grid btn-lg" data-bs-toggle="collapse" href="#oneTime" role="button">
-                    Single Donation
+                <a class="btn btn-warning d-grid btn-lg" data-bs-toggle="collapse" href="#oneTime" role="button" aria-expanded="false" aria-controls="oneTime">
+                    Click to make single Donation
                 </a>
             </div>
         </div>
         <div class="col-6">
             <div>
-                @* ReSharper disable once Html.IdNotResolved *@
-                <a aria-controls="regularPay" aria-expanded="false" class="btn btn-success d-grid btn-lg" data-bs-toggle="collapse" href="#regularPay" role="button">
-                    Regular Donations
+                <a class="btn btn-success d-grid btn-lg" data-bs-toggle="collapse" href="#regularPay" role="button" aria-expanded="false" aria-controls="regularPay">
+                    Click to make regular Donations
                 </a>
             </div>
         </div>
     </div>
-    <div class="row" id="donations">
+    <div class="row mt-5" id="donations">
         <div class="col-7 d-grid mx-auto">
             <div class="collapse" id="oneTime" data-bs-parent="#donations">
                 <div class="card card-body bg-warning" style="--bs-bg-opacity: .25;">

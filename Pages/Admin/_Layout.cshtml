@@ -2,7 +2,7 @@
     Layout = "Shared/_Layout";
 }
 
-<div class="h-100 d-flex flex-row">
+<div class="h-100 d-flex flex-row w-100">
     <ul class="nav flex-column mt-5 sticky-top">
         <li class="nav-item">
             <a class="nav-link active" aria-current="page" asp-page="/Admin/Index">
@@ -29,14 +29,9 @@
                 Recipes
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" asp-page="/Admin/Content">
-                Content
-            </a>
-        </li>
     </ul>
 
-    <div class="px-5 flex-fill pt-5">
+    <div class="ps-4 flex-fill pt-5 pe-lg-4 pe-md-0">
         @RenderBody()
     </div>
 </div>

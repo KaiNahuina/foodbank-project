@@ -18,22 +18,30 @@ public static class FoodbankHelpers
         foodbank.Slug = foodbank.Name?.ToLower().Replace(" ", "-");
         return foodbank;
     }
+    public static Location ApplySlug(Location foodbank)
+    {
+        foodbank.Slug = foodbank.Name?.ToLower().Replace(" ", "-");
+        return foodbank;
+    }
 
     public static Foodbank ApplyFinalize(Foodbank foodbank)
     {
         foodbank.Locations ??= new List<Location>();
         foodbank.Needs ??= new List<Need>();
 
-        foodbank.Locations.Add(new Location
+        if (foodbank.Locations.Count == 0)
         {
-            Name = foodbank.Name,
-            Address = foodbank.Address,
-            Coord = foodbank.Coord,
-            Foodbank = foodbank,
-            Phone = foodbank.Phone,
-            Postcode = foodbank.Postcode,
-            Slug = foodbank.Slug
-        });
+            foodbank.Locations.Add(new Location
+            {
+                Name = foodbank.Name,
+                Address = foodbank.Address,
+                Coord = foodbank.Coord,
+                Foodbank = foodbank,
+                Phone = foodbank.Phone,
+                Postcode = foodbank.Postcode,
+                Slug = foodbank.Slug
+            });
+        }
 
         return foodbank;
     }
@@ -48,12 +56,12 @@ public static class FoodbankHelpers
             Phone = externalFoodbank.Phone?.Replace("%2F", " / ").Replace("or", " / "),
             SecondaryPhone = externalFoodbank.SecondaryPhone,
             Email = externalFoodbank.Email,
-            Address = externalFoodbank.Address?.Replace(externalFoodbank.Postcode, ""),
+            Address = externalFoodbank.Address?.Replace(externalFoodbank.Postcode!, ""),
             Postcode = externalFoodbank.Postcode,
             Closed = externalFoodbank.Closed,
             Country = externalFoodbank.Country,
-            Coord = new Point(double.Parse(externalFoodbank.LatLng?.Split(",")[1]),
-                    double.Parse(externalFoodbank.LatLng?.Split(",")[0]))
+            Coord = new Point(double.Parse(externalFoodbank.LatLng!.Split(",")[1]),
+                    double.Parse(externalFoodbank.LatLng!.Split(",")[0]))
                 { SRID = 4326 },
             Network = externalFoodbank.Network,
             Created = externalFoodbank.Created,
@@ -69,7 +77,7 @@ public static class FoodbankHelpers
             var location = new Location
             {
                 Address = item.Address,
-                Coord = new Point(double.Parse(item.LatLng?.Split(",")[1]), double.Parse(item.LatLng?.Split(",")[0]))
+                Coord = new Point(double.Parse(item.LatLng!.Split(",")[1]), double.Parse(item.LatLng!.Split(",")[0]))
                     { SRID = 4326 },
                 Name = item.Name,
                 Slug = item.Slug,
@@ -81,16 +89,19 @@ public static class FoodbankHelpers
             foodbank.Locations.Add(location);
         }
 
-        foodbank.Locations.Add(new Location
+        if (foodbank.Locations.Count == 0)
         {
-            Address = foodbank.Address,
-            Coord = foodbank.Coord,
-            Name = foodbank.Name,
-            Slug = foodbank.Slug,
-            Postcode = foodbank.Postcode,
-            Phone = foodbank.Phone,
-            Foodbank = foodbank
-        });
+            foodbank.Locations.Add(new Location
+            {
+                Name = foodbank.Name,
+                Address = foodbank.Address,
+                Coord = foodbank.Coord,
+                Foodbank = foodbank,
+                Phone = foodbank.Phone,
+                Postcode = foodbank.Postcode,
+                Slug = foodbank.Slug
+            });
+        }
 
         foodbank.Needs = new List<Need>();
         var needs = externalFoodbank.Needs?.NeedsStr?.Split("\r\n") ?? Array.Empty<string>();
@@ -119,8 +130,8 @@ public static class FoodbankHelpers
 
         if (dbFoodbank is null)
         {
-            target.Needs = await CompletePartialNeeds(target.Needs, ctx, cancellationToken);
-            target.Locations = await CompletePartialLocations(target.Locations, ctx, cancellationToken);
+            target.Needs = await CompletePartialNeeds(target.Needs!, ctx, cancellationToken);
+            target.Locations = await CompletePartialLocations(target.Locations!, ctx, cancellationToken);
 
             target.FoodbankId = null;
 
@@ -132,8 +143,8 @@ public static class FoodbankHelpers
 
         target.FoodbankId = dbFoodbank.FoodbankId;
 
-        target.Needs = await CompletePartialNeeds(target.Needs, ctx, cancellationToken);
-        target.Locations = await CompletePartialLocations(target.Locations, ctx, cancellationToken);
+        target.Needs = await CompletePartialNeeds(target.Needs!, ctx, cancellationToken);
+        target.Locations = await CompletePartialLocations(target.Locations!, ctx, cancellationToken);
 
         ctx.Entry(dbFoodbank).CurrentValues.SetValues(target);
 

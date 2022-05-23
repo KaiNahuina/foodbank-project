@@ -65,8 +65,7 @@ namespace Foodbank_Project.Migrations
                     b.Property<string>("CharityRegisterUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("Closed")
-                        .IsRequired()
+                    b.Property<bool>("Closed")
                         .HasColumnType("bit");
 
                     b.Property<Point>("Coord")
@@ -239,48 +238,6 @@ namespace Foodbank_Project.Migrations
                     b.HasKey("RecipeCategoryId");
 
                     b.ToTable("RecipeCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            RecipeCategoryId = -1,
-                            Name = "Meat"
-                        },
-                        new
-                        {
-                            RecipeCategoryId = -2,
-                            Name = "Vegetarian"
-                        },
-                        new
-                        {
-                            RecipeCategoryId = -3,
-                            Name = "Fish"
-                        },
-                        new
-                        {
-                            RecipeCategoryId = -4,
-                            Name = "Desert"
-                        },
-                        new
-                        {
-                            RecipeCategoryId = -5,
-                            Name = "Soup"
-                        },
-                        new
-                        {
-                            RecipeCategoryId = -6,
-                            Name = "Snack"
-                        },
-                        new
-                        {
-                            RecipeCategoryId = -7,
-                            Name = "Side"
-                        },
-                        new
-                        {
-                            RecipeCategoryId = -8,
-                            Name = "Special Event"
-                        });
                 });
 
             modelBuilder.Entity("FoodbankNeed", b =>

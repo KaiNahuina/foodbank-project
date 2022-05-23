@@ -1,0 +1,120 @@
+﻿@page "{id:int}"
+@using Foodbank_Project.Models
+@model LocationModel
+@{
+    ViewData["Title"] = "Location - Admin";
+}
+
+@if (Model.Action != "Create")
+{
+    <h1 class="text-start">Edit Location</h1>
+}
+else
+{
+    <h1 class="text-start">Create Location</h1>
+}
+
+<div class="flex-fill bg-white shadow-lg p-3">
+
+@* Info *@
+<form method="post" class="container">
+    <div class="row">
+        <div class="col">
+            <label>ID</label>
+            <span asp-validation-for="Location!.LocationId" class="text-danger"></span>
+        </div>
+        <div class="col-8">
+            <input class="form-control" readonly value="@Model.Location?.LocationId" asp-for="Location!.LocationId"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label>Foodbank ID</label>
+            <span asp-validation-for="Location!.Foodbank!.FoodbankId" class="text-danger"></span>
+        </div>
+        <div class="col-8">
+            <input class="form-control" readonly value="@Model.Location?.Foodbank?.FoodbankId" asp-for="Location!.Foodbank!.FoodbankId"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Location!.Name"></label>
+            <span asp-validation-for="Location!.Name" class="text-danger"></span>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Location.Name" asp-for="Location!.Name"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Location!.Address"></label>
+            <span asp-validation-for="Location!.Address" class="text-danger"></span>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Location.Address" asp-for="Location!.Address"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Location!.Postcode"></label>
+            <span asp-validation-for="Location!.Postcode" class="text-danger"></span>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Location.Postcode" asp-for="Location!.Postcode"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Lat"></label>
+            <span asp-validation-for="Lat" class="text-danger"></span>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Lat" asp-for="Lat"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Lng"></label>
+            <span asp-validation-for="Lng" class="text-danger"></span>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Lng" asp-for="Lng"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Location!.Phone"></label>
+            <span asp-validation-for="Location!.Phone" class="text-danger"></span>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Location.Phone" asp-for="Location!.Phone"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Location!.Slug"></label>
+            <span asp-validation-for="Location!.Slug" class="text-danger"></span>
+        </div>
+        <div class="col-8">
+            <input class="form-control" readonly value="@Model.Location?.Slug" asp-for="Location!.Slug"/><br/>
+        </div>
+    </div>
+
+
+    <div class="d-flex justify-content-end flex-row ">
+        @if (Model.Action == "Create")
+        {
+            <button name="Action" value="Create" type="submit" class="btn btn-success me-3">Create</button>
+            <a asp-page="./Foodbank" asp-route-id="@Model.Location.Foodbank.FoodbankId" asp-fragment="locations"><button class="btn btn-primary" type="button">Cancel</button></a>
+        }
+        else
+        {
+            <button name="Action" value="Update" type="submit" class="btn btn-success me-3">Save</button>
+            <button name="Action" value="Delete" type="submit" class="btn btn-danger me-3">Delete</button>
+            <a asp-page="./Foodbank" asp-route-id="@Model.Location.Foodbank.FoodbankId" asp-fragment="locations"><button class="btn btn-primary" type="button">Cancel</button></a>
+        }
+    </div>
+
+</form>
+
+</div>

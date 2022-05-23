@@ -94,39 +94,40 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
 
         modelBuilder.Entity<RecipeCategory>().Property(fl => fl.Name).IsRequired();
 
-        modelBuilder.Entity<RecipeCategory>().HasData(new RecipeCategory
-        {
-            RecipeCategoryId = -1,
-            Name = "Meat"
-        }, new RecipeCategory
-        {
-            RecipeCategoryId = -2,
-            Name = "Vegetarian"
-        }, new RecipeCategory
-        {
-            RecipeCategoryId = -3,
-            Name = "Fish"
-        }, new RecipeCategory
-        {
-            RecipeCategoryId = -4,
-            Name = "Desert"
-        }, new RecipeCategory
-        {
-            RecipeCategoryId = -5,
-            Name = "Soup"
-        }, new RecipeCategory
-        {
-            RecipeCategoryId = -6,
-            Name = "Snack"
-        }, new RecipeCategory
-        {
-            RecipeCategoryId = -7,
-            Name = "Side"
-        }, new RecipeCategory
-        {
-            RecipeCategoryId = -8,
-            Name = "Special Event"
-        });
+        // modelBuilder.Entity<RecipeCategory>().HasData(new RecipeCategory
+        // {
+        //     RecipeCategoryId = -1,
+        //     Name = "Meat"
+        // }, new RecipeCategory
+        // {
+        //     RecipeCategoryId = -2,
+        //     Name = "Vegetarian"
+        // }, new RecipeCategory
+        // {
+        //     RecipeCategoryId = -3,
+        //     Name = "Fish"
+        // }, new RecipeCategory
+        // {
+        //     RecipeCategoryId = -4,
+        //     Name = "Desert"
+        // }, new RecipeCategory
+        // {
+        //     RecipeCategoryId = -5,
+        //     Name = "Soup"
+        // }, new RecipeCategory
+        // {
+        //     RecipeCategoryId = -6,
+        //     Name = "Snack"
+        // }, new RecipeCategory
+        // {
+        //     RecipeCategoryId = -7,
+        //     Name = "Side"
+        // }, new RecipeCategory
+        // {
+        //     RecipeCategoryId = -8,
+        //     Name = "Special Event"
+        // });
+
 
         base.OnModelCreating(modelBuilder);
     }
