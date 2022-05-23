@@ -233,6 +233,7 @@ else
             </div>
             <div>
                 <form method="get" asp-page="./Location" asp-route-id="0" asp-fragment="locations">
+                    <input type="hidden" name="target" value="@Model.Foodbank!.FoodbankId"/>
                     <button type="submit" name="Action" value="Create" class="btn btn-success">Add New</button>
                 </form>
             </div>
@@ -310,7 +311,10 @@ else
                             @Html.DisplayFor(modelItem => item.Address)
                         </td>
                         <td>
-                            <a asp-page="./Location" class="btn btn-primary" asp-route-id="@item.LocationId">Edit</a>
+                            <form method="get" asp-page="./Location" asp-route-id="@item.LocationId">
+                                <input type="hidden" name="target" value="@item.Foodbank?.FoodbankId"/>
+                                <button class="btn btn-primary">Edit</button>
+                            </form>
                         </td>
                     </tr>
                 }

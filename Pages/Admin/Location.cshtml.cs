@@ -23,7 +23,7 @@ public class LocationModel : PageModel
         _ctx = ctx;
     }
 
-    [BindProperty] public Models.Foodbank? Foodbank { get; set; }
+    [BindProperty] public Models.Location? Location { get; set; }
     [BindProperty] public double Lat { get; set; }
     [BindProperty] public double Lng { get; set; }
 
@@ -33,18 +33,21 @@ public class LocationModel : PageModel
         if (Action != "Create")
         {
             var id = int.Parse(RouteData.Values["id"] as string ?? "");
-            var foodbanks = from f in _ctx.Foodbanks where f.FoodbankId == id select f;
+            var locations = from f in _ctx.Locations where f.LocationId == id select f;
 
 
-            Foodbank = await foodbanks.AsNoTracking().Include(f => f.Locations).Include(f => f.Needs).FirstAsync();
-            Lat = Foodbank.Coord!.Y;
-            Lng = Foodbank.Coord.X;
+            Location = await locations.AsNoTracking().Include(l => l.Foodbank).FirstAsync();
+            Lat = Location.Coord!.Y;
+            Lng = Location.Coord.X;
         }
         else
         {
-            Foodbank = new Models.Foodbank
+            Location = new Models.Location
             {
-                Created = DateTime.Now
+                Foodbank = new Models.Foodbank
+                {
+                    FoodbankId = int.Parse(Request.Query["target"])
+                }
             };
         }
     }
@@ -56,18 +59,17 @@ public class LocationModel : PageModel
         switch (Action)
         {
             case "Delete":
-                if (Foodbank != null) _ctx.Remove(Foodbank);
+                if (Location != null) _ctx.Remove(Location);
 
                 break;
             case "Create":
             {
                 if (!ModelState.IsValid) return Page();
-                if (Foodbank != null)
+                if (Location != null)
                 {
-                    Foodbank.Coord = new Point(Lng, Lat) { SRID = 4326 };
-                    Foodbank.Provider = Provider.Internal;
-                    Foodbank = FoodbankHelpers.ApplyFinalize(Foodbank);
-                    _ctx.Foodbanks?.Update(Foodbank);
+                    Location.Coord = new Point(Lng, Lat) { SRID = 4326 };
+                    Location = FoodbankHelpers.ApplySlug(Location);
+                    _ctx.Locations?.Update(Location);
                 }
 
                 break;
@@ -75,54 +77,18 @@ public class LocationModel : PageModel
             case "Update":
             {
                 if (!ModelState.IsValid) return Page();
-                if (Foodbank != null)
+                if (Location != null)
                 {
-                    Foodbank.Coord = new Point(Lng, Lat) { SRID = 4326 };
-                    _ctx.Foodbanks?.Update(Foodbank);
+                    Location.Coord = new Point(Lng, Lat) { SRID = 4326 };
+                    _ctx.Locations?.Update(Location);
                 }
 
                 break;
             }
-            case "Approve":
-            {
-                if (!ModelState.IsValid) return Page();
-                int id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
 
-                Models.Foodbank? fb = await _ctx.Foodbanks.Where(f => f.FoodbankId == id).FirstOrDefaultAsync();
-
-                if (fb != null)
-                {
-                    fb.Status = Status.Approved;
-                }
-
-                await _ctx.SaveChangesAsync();
-                
-                return RedirectToPage("/Admin/Index");
-
-                
-            }
-
-            case "Deny":
-            {
-                if (!ModelState.IsValid) return Page();
-                int id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
-
-                Models.Foodbank? fb = await _ctx.Foodbanks.Where(f => f.FoodbankId == id).FirstOrDefaultAsync();
-
-                if (fb != null)
-                {
-                    fb.Status = Status.Denied;
-                }
-                
-                await _ctx.SaveChangesAsync();
-                
-                return RedirectToPage("/Admin/Index");
-                
-            }
-                
         }
 
         await _ctx.SaveChangesAsync();
-        return RedirectToPage("./Foodbanks");
+        return RedirectToPage("./Foodbank", routeValues:new  {id=Location?.Foodbank?.FoodbankId ?? 0}, fragment:"locations", pageHandler:"");
     }
 }

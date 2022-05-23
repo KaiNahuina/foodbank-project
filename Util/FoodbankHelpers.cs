@@ -18,6 +18,11 @@ public static class FoodbankHelpers
         foodbank.Slug = foodbank.Name?.ToLower().Replace(" ", "-");
         return foodbank;
     }
+    public static Location ApplySlug(Location foodbank)
+    {
+        foodbank.Slug = foodbank.Name?.ToLower().Replace(" ", "-");
+        return foodbank;
+    }
 
     public static Foodbank ApplyFinalize(Foodbank foodbank)
     {

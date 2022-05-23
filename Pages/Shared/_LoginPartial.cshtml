@@ -4,7 +4,7 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <div class="d-flex flex-column align-items-center">
+    <div class="d-flex flex-column align-items-center p-3">
         <a id="manage" asp-page="/Admin/Index" class="btn btn-outline-primary mb-3 text-black-50 fw-bolder" title="Manage">Hello @UserManager.GetUserName(User)!</a>
         <form id="logoutForm" class="form-inline" asp-page="/Admin/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })">
              <button id="logout" class="btn btn-primary fw-bolder" type="submit">Logout</button>

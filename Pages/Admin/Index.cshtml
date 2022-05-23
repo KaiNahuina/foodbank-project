@@ -54,7 +54,7 @@
                 <th scope="col" style="width: 15%;">
                     <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="@direction">Name @Html.Raw(arrow)</a>
                 </th>
-                <th scope="col" style="width: 50%;">
+                <th scope="col" style="width: 35%;">
                     <a asp-route-Search="@Model.Search" asp-route-OrderBy="Address" asp-route-OrderDirection="Desc">Address</a>
                 </th>
                 <th scope="col" style="width: 20%;">
@@ -68,7 +68,7 @@
                 <th scope="col" style="width: 15%;">
                     <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
                 </th>
-                <th scope="col" style="width: 50%;">
+                <th scope="col" style="width: 35%;">
                     <a asp-route-Search="@Model.Search" asp-route-OrderBy="Address" asp-route-OrderDirection="@direction">Address @Html.Raw(arrow)</a>
                 </th>
                 <th scope="col" style="width: 20%;">
@@ -82,7 +82,7 @@
                 <th scope="col" style="width: 15%;">
                     <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
                 </th>
-                <th scope="col" style="width: 50%;">
+                <th scope="col" style="width: 35%;">
                     <a asp-route-Search="@Model.Search" asp-route-OrderBy="Address" asp-route-OrderDirection="Desc">Address</a>
                 </th>
                 <th scope="col" style="width: 20%;">
@@ -96,7 +96,7 @@
                 <th scope="col" style="width: 15%;">
                     <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
                 </th>
-                <th scope="col" style="width: 50%;">
+                <th scope="col" style="width: 35%;">
                     <a asp-route-Search="@Model.Search" asp-route-OrderBy="Address" asp-route-OrderDirection="Desc">Address</a>
                 </th>
                 <th scope="col" style="width: 20%;">
@@ -110,7 +110,7 @@
                 <th scope="col" style="width: 15%;">
                     <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
                 </th>
-                <th scope="col" style="width: 50%;">
+                <th scope="col" style="width: 35%;">
                     <a asp-route-Search="@Model.Search" asp-route-OrderBy="Address" asp-route-OrderDirection="Desc">Address</a>
                 </th>
                 <th scope="col" style="width: 20%;">
@@ -144,13 +144,11 @@
                     @Html.DisplayFor(modelItem => item.Locations!.Count)
                 </td>
                 <td>
-                    <form method="post" asp-page="/Admin/Foodbank" asp-route-id="@item.FoodbankId">
+                    <form method="post" asp-page="/Admin/Foodbank" asp-route-id="@item.FoodbankId" class="d-flex flex-row">
                         <button class="btn btn-success" name="Action" value="Approve" type="submit">Approve</button>
-                    </form>
-                    <form method="post" asp-page="/Admin/Foodbank" asp-route-id="@item.FoodbankId">
                         <button class="btn btn-danger" name="Action" value="Deny" type="submit">Deny</button>
+                        <a asp-page="./Foodbank" class="btn btn-primary" asp-route-id="@item.FoodbankId">View</a>
                     </form>
-                    <a asp-page="./Foodbank" class="btn btn-primary" asp-route-id="@item.FoodbankId">View</a>
                 </td>
             </tr>
         }
