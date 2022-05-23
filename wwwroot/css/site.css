@@ -231,3 +231,15 @@ a:hover {
 .imageCol{
     width: 25%;
 }
+
+#Top5Section{
+    display: none;
+}
+
+#salvationArmyList {
+    display: none;
+}
+
+#viewMoreButton{
+    display: block;
+}

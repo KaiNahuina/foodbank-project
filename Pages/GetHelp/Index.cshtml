@@ -3,8 +3,8 @@
 @{
     ViewData["Title"] = "Get Help";
 }
-<link rel="stylesheet" href="/css/Control.Geocoder.css"/>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css"/>
+<link rel="stylesheet" href="/css/Control.Geocoder.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css" />
 
 <script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
 <script src="/js/Control.Geocoder.js"></script>
@@ -24,42 +24,34 @@
     </div>
 
     <div class="container">
-        <div class="row">
-            <div class="col-11 d-grid mx-auto">
-                @Html.AntiForgeryToken()
-                <div class="image-box d-grid mx-auto text-center" id="map"></div>
-            </div>
+        <div class="col-11 d-grid mx-auto">
+            @Html.AntiForgeryToken()
+            <div class="image-box" id="map"></div>
         </div>
     </div>
 
-    <div class="container">
+    <div id="Top5Section" class="container">
         <div class="row">
-            <div class="col-8 d-grid mx-auto">   
-                <h1>5 closest Foodbanks</h1>    
-                <div class="text-box mt-2" id="FoodbankClosest1"></div>      
-                <div class="text-box mt-2" id="FoodbankClosest2"></div>       
-                <div class="text-box mt-2" id="FoodbankClosest3"></div>   
-                <div class="text-box mt-2" id="FoodbankClosest4"></div>       
-                <div class="text-box mt-2" id="FoodbankClosest5"></div> 
-            </div>        
+            <div class="col-8 d-grid mx-auto">
+                <h1>5 closest Foodbanks</h1>
+                <div class="text-box mt-2" id="FoodbankClosest1"></div>
+                <div class="text-box mt-2" id="FoodbankClosest2"></div>
+                <div class="text-box mt-2" id="FoodbankClosest3"></div>
+                <div class="text-box mt-2" id="FoodbankClosest4"></div>
+                <div class="text-box mt-2" id="FoodbankClosest5"></div>
+            </div>
         </div>
     </div>
 
 
     <script type="text/javascript">
+        const Top5section = document.getElementById('Top5Section');
 
         var foodbankIcon = L.icon({
               iconUrl: '/img/leaf.png',
-              iconSize:     [40, 40],
-              iconAnchor:   [0, 30],
-              popupAnchor:  [15, -30] 
-        });
-
-        var warehouseIcon = L.icon({
-              iconUrl: '/img/warehouse.png',//copy righted dont use for final
               iconSize:     [50, 50],
-              iconAnchor:   [25, 50],
-              popupAnchor:  [-3, -76]
+              iconAnchor:   [28, 37],
+              popupAnchor:  [-5 , -35]
         });
 
         var map = L.map('map').setView([ 54.596442,  -3.9], 6);
@@ -120,6 +112,7 @@
                  markerGroup = L.featureGroup([closest5Markers[0],closest5Markers[1],closest5Markers[2],closest5Markers[3],closest5Markers[4]]);
                  map.addLayer(markerGroup);
                  map.fitBounds([markerGroup.getBounds().pad(0.2), e.bbox]);
+                 Top5Section.style.display = 'block'
 
                  if (history.pushState) {
                     var newurl = window.location.protocol + "//" + window.location.host + '/GetHelp/Index/?Location=' + control._input.value;   //change testmap name
