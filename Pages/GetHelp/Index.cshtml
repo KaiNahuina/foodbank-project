@@ -79,6 +79,7 @@
             query: "@Html.DisplayFor(model => model.Location)",
             collapsed: false,
             placeholder: 'Search Postcode or Address',
+           
             geocoder
         })
 
@@ -118,6 +119,7 @@
                     var newurl = window.location.protocol + "//" + window.location.host + '/GetHelp/Index/?Location=' + control._input.value;   //change testmap name
                     window.history.pushState({path:newurl},'',newurl);
                 }
+                 window.location.hash = "Top5Section";
               },
               error (xhr, status, err){
                   alert("We weren't unable to return any data");
@@ -131,6 +133,14 @@
 
         geocoder.geocode("@Html.DisplayFor(model => model.Location)", function(ctx){control._geocodeResultSelected(ctx[0])});
 
+        window.onload = function(){
+            $(".leaflet-control-geocoder-icon").click(function() {
+                control._geocode();
+              });
+        };
+        
+        
+        
         L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
