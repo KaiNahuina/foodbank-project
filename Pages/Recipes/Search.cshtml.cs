@@ -23,14 +23,13 @@ public class SearchModel : PageModel
 
 
 
-    public Models.Recipe? Recipe { get; set; }
-    public List<Recipe>? passedCategory { get; set; }
+    public List<Recipe>? Recipes { get; set; }
     public string Category { get; set; }
 
 
     public async Task OnGetAsync([FromRoute(Name = "catName")] string category)
     {
-         passedCategory = await _ctx.RecipeCategories.AsNoTracking().Where(r => r.Name == category)
+         Recipes = await _ctx.RecipeCategories.AsNoTracking().Where(r => r.Name == category)
             .Include(r => r.Recipes).Select(r => new List<Recipe>(r.Recipes)).FirstOrDefaultAsync();
 
          Category = category;        
