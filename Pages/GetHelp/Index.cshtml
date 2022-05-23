@@ -118,6 +118,7 @@
                     var newurl = window.location.protocol + "//" + window.location.host + '/GetHelp/Index/?Location=' + control._input.value;   //change testmap name
                     window.history.pushState({path:newurl},'',newurl);
                 }
+                 window.location.hash = "Top5Section";
               },
               error (xhr, status, err){
                   alert("We weren't unable to return any data");
