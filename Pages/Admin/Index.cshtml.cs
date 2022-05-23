@@ -120,7 +120,7 @@ public class IndexModel : PageModel
         Foodbanks = await foodbankQue.Skip((Page - 1) * 25).Take(25).ToListAsync();
         Recipes = await recipeQue.Skip((Page - 1) * 25).Take(25).ToListAsync();
     }
-    public static string TrimBlob(string? blob)
+    public string TrimBlob(string? blob)
     {
         if (blob is null) return "";
         if (blob.Length > 32)
