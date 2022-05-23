@@ -79,6 +79,7 @@
             query: "@Html.DisplayFor(model => model.Location)",
             collapsed: false,
             placeholder: 'Search Postcode or Address',
+           
             geocoder
         })
 
@@ -132,6 +133,14 @@
 
         geocoder.geocode("@Html.DisplayFor(model => model.Location)", function(ctx){control._geocodeResultSelected(ctx[0])});
 
+        window.onload = function(){
+            $(".leaflet-control-geocoder-icon").click(function() {
+                control._geocode();
+              });
+        };
+        
+        
+        
         L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
