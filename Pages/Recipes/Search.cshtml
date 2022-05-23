@@ -1,4 +1,5 @@
 ﻿@page "{catName}"
+@using Foodbank_Project.Models
 @model SearchModel
 @{
     ViewData["Title"] = "Search Page";
@@ -35,15 +36,17 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.passedCategory ?? new())
+        @foreach (Recipe item in Model.Recipes ?? new())
         {
+        
             <tr>
+                
 
                 @{
                     try
                     {
                         <td>
-                            <img src="@string.Format("data:Images/jpg;base64,{0}",Convert.ToBase64String(item.Image))" alt="@item.Name" class="recipe-icons"/>
+                            <a asp-page="./Dish" asp-route-id="@item.RecipeId"><img src="@string.Format("data:Images/jpg;base64,{0}",Convert.ToBase64String(item.Image))" alt="@item.Name" /></a>
                         </td>
                     }
                     catch
@@ -60,7 +63,6 @@
                     @Html.DisplayFor(modelItem => item.Name)
                     </div>
                 </td>
-
             </tr>
         }
     </tbody>

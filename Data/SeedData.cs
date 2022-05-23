@@ -82,6 +82,7 @@ public static class SeedData
             Serves = "9 People",
             Image = await File.ReadAllBytesAsync("./wwwroot/img/omelette.jpg")
         }).Entity;
+      
 
         _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 2) ?? ctx.Recipes.Add(new Recipe
         {

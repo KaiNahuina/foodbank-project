@@ -37,12 +37,15 @@ public class RecipeFormModel : PageModel
 
         Recipe.Category = new List<RecipeCategory>();
 
-        var ms = new MemoryStream();
-        await Image?.CopyToAsync(ms)!;
-        Recipe.Image = ms.ToArray();
-        ms.Close();
-        await ms.DisposeAsync();
-
+        
+        if (Image != null)
+        {
+            var ms = new MemoryStream();
+            await Image?.CopyToAsync(ms)!;
+            Recipe.Image = ms.ToArray();
+            ms.Close();
+            await ms.DisposeAsync();
+        }
 
         foreach (var category in SelectedCategories.Where(category => category.Value.Item2))
             Recipe.Category.Add(category.Value.Item1!);

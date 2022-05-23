@@ -17,7 +17,7 @@
                 <div class="m-2 d-grid">    <a class="button btn btn-lg btn-outline-success" asp-area="" asp-page="/Givehelp/Supermarkets">Back</a>    </div>
             </div>
 
-            <div class="col-sm-6 text-center">
+            <div class="col-md-6 text-center">
                 <h1 class="display-4">Find a Donation Point</h1>
             </div>
         </div>
@@ -112,6 +112,8 @@
                  map.addLayer(markerGroup);
                  map.fitBounds([markerGroup.getBounds().pad(0.2), e.bbox]);
                  Top5Section.style.display = 'block'
+                 
+                 window.location.hash = "Top5Section";
 
                  if (history.pushState) {
                     var newurl = window.location.protocol + "//" + window.location.host + '/Foodbank/DistributionPage/Location?=' + control._input.value;   //change testmap name
@@ -127,6 +129,12 @@
         .addTo(map);
 
         control._expand();
+        
+        window.onload = function(){
+                    $(".leaflet-control-geocoder-icon").click(function() {
+                        control._geocode();
+                      });
+                };
 
         L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
