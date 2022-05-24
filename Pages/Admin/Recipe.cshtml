@@ -16,111 +16,113 @@ else
 
 <div class="flex-fill bg-white shadow-lg p-3">
 
-@* Info *@
-<form method="post" class="container" enctype="multipart/form-data">
-    <div class="row">
-        <div class="col">
-            <label>ID</label>
-            <span asp-validation-for="Recipe!.RecipeId" class="text-danger"></span>
+    @* Info *@
+    <form method="post" class="container" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col">
+                <label>ID</label>
+                <span asp-validation-for="Recipe!.RecipeId" class="text-danger"></span>
+            </div>
+            <div class="col-8">
+                <input class="form-control" readonly value="@Model.Recipe?.RecipeId" asp-for="Recipe!.RecipeId"/><br/>
+            </div>
         </div>
-        <div class="col-8">
-            <input class="form-control" readonly value="@Model.Recipe?.RecipeId" asp-for="Recipe!.RecipeId"/><br/>
+        <div class="row">
+            <div class="col">
+                <label asp-for="Recipe!.Name"></label>
+                <span asp-validation-for="Recipe!.Name" class="text-danger"></span>
+            </div>
+            <div class="col-8">
+                <input class="form-control" value="@Model.Recipe.Name" asp-for="Recipe!.Name"/><br/>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <label asp-for="Recipe!.Name"></label>
-            <span asp-validation-for="Recipe!.Name" class="text-danger"></span>
+        <div class="row">
+            <div class="col">
+                <label asp-for="Recipe!.Serves"></label>
+                <span asp-validation-for="Recipe!.Serves" class="text-danger"></span>
+            </div>
+            <div class="col-8">
+                <input class="form-control" value="@Model.Recipe.Serves" asp-for="Recipe!.Serves"/><br/>
+            </div>
         </div>
-        <div class="col-8">
-            <input class="form-control" value="@Model.Recipe.Name" asp-for="Recipe!.Name"/><br/>
+        <div class="row">
+            <div class="col">
+                <label asp-for="Recipe!.Ingredients"></label>
+                <span asp-validation-for="Recipe!.Ingredients" class="text-danger"></span>
+            </div>
+            <div class="col-8">
+                <textarea class="form-control" value="@Model.Recipe.Ingredients" asp-for="Recipe!.Ingredients"></textarea><br/>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <label asp-for="Recipe!.Serves"></label>
-            <span asp-validation-for="Recipe!.Serves" class="text-danger"></span>
+        <div class="row">
+            <div class="col">
+                <label asp-for="Recipe!.Method"></label>
+                <span asp-validation-for="Recipe!.Method" class="text-danger"></span>
+            </div>
+            <div class="col-8">
+                <textarea class="form-control" value="@Model.Recipe.Method" asp-for="Recipe!.Method"></textarea><br/>
+            </div>
         </div>
-        <div class="col-8">
-            <input class="form-control" value="@Model.Recipe.Serves" asp-for="Recipe!.Serves"/><br/>
+        <div class="row">
+            <div class="col">
+                <label asp-for="Recipe!.Notes"></label>
+                <span asp-validation-for="Recipe!.Notes" class="text-danger"></span>
+            </div>
+            <div class="col-8">
+                <textarea class="form-control" value="@Model.Recipe.Notes" asp-for="Recipe!.Notes"></textarea><br/>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <label asp-for="Recipe!.Ingredients"></label>
-            <span asp-validation-for="Recipe!.Ingredients" class="text-danger"></span>
+        <div class="row">
+            <div class="col">
+                <label asp-for="Upload"></label>
+                <span asp-validation-for="Upload" class="text-danger"></span>
+            </div>
+            <div class="col-8">
+                @try
+                {
+                    <img src="@($"data:Images/jpg;base64,{Convert.ToBase64String(@Model.Recipe.Image ?? throw new InvalidOperationException())}")" style="width:100%" alt="@Model.Recipe.Name" />
+
+                }
+                catch
+                {
+
+                    <img src="/img/no-image-available.png" alt="No Image available" />
+
+                }
+                <input class="form-control" type="file" asp-for="Upload"/><br/>
+            </div>
         </div>
-        <div class="col-8">
-            <textarea class="form-control" value="@Model.Recipe.Ingredients" asp-for="Recipe!.Ingredients"></textarea><br/>
+        <div class="row">
+            <div class="col">
+                <label asp-for="Recipe!.Status"></label>
+                <span asp-validation-for="Recipe!.Status" class="text-danger"></span>
+            </div>
+            <div class="col-8 mb-4">
+                <select class="form-select" asp-for="Recipe!.Status" asp-items="Html.GetEnumSelectList<Status>()">
+                    <option selected="selected" value="@Model.Recipe.Status"></option>
+                </select>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <label asp-for="Recipe!.Method"></label>
-            <span asp-validation-for="Recipe!.Method" class="text-danger"></span>
-        </div>
-        <div class="col-8">
-            <textarea class="form-control" value="@Model.Recipe.Method" asp-for="Recipe!.Method"></textarea><br/>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <label asp-for="Recipe!.Notes"></label>
-            <span asp-validation-for="Recipe!.Notes" class="text-danger"></span>
-        </div>
-        <div class="col-8">
-            <textarea class="form-control" value="@Model.Recipe.Notes" asp-for="Recipe!.Notes"></textarea><br/>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <label asp-for="Upload"></label>
-            <span asp-validation-for="Upload" class="text-danger"></span>
-        </div>
-        <div class="col-8">
-            @try
+
+
+        <div class="d-flex justify-content-end flex-row ">
+            @if (Model.Action == "Create")
             {
-                <img src="@($"data:Images/jpg;base64,{Convert.ToBase64String(@Model.Recipe.Image ?? throw new InvalidOperationException())}")" style="width:100%" alt="@Model.Recipe.Name" />
-
+                <button name="Action" value="Create" type="submit" class="btn btn-success me-3">Create</button>
+                <a asp-page="./Recipes"><button class="btn btn-primary" type="button">Cancel</button></a>
             }
-            catch
+            else
             {
-
-                <img src="/img/no-image-available.png" alt="No Image available" />
-
+                <button name="Action" value="Update" type="submit" class="btn btn-success me-3">Save</button>
+                <button name="Action" value="Delete" type="submit" class="btn btn-danger me-3">Delete</button>
+                <a asp-page="./Recipes"><button class="btn btn-primary" type="button">Cancel</button></a>
             }
-            <input class="form-control" type="file" asp-for="Upload"/><br/>
         </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <label asp-for="Recipe!.Status"></label>
-            <span asp-validation-for="Recipe!.Status" class="text-danger"></span>
-        </div>
-        <div class="col-8 mb-4">
-            <select class="form-select" asp-for="Recipe!.Status" asp-items="Html.GetEnumSelectList<Status>()">
-                <option selected="selected" value="@Model.Recipe.Status"></option>
-            </select>
-        </div>
-    </div>
 
+    </form>
 
-    <div class="d-flex justify-content-end flex-row ">
-        @if (Model.Action == "Create")
-        {
-            <button name="Action" value="Create" type="submit" class="btn btn-success me-3">Create</button>
-            <a asp-page="./Recipes"><button class="btn btn-primary" type="button">Cancel</button></a>
-        }
-        else
-        {
-            <button name="Action" value="Update" type="submit" class="btn btn-success me-3">Save</button>
-            <button name="Action" value="Delete" type="submit" class="btn btn-danger me-3">Delete</button>
-            <a asp-page="./Recipes"><button class="btn btn-primary" type="button">Cancel</button></a>
-        }
-    </div>
-
-</form>
-<h1 class="text-start">Categories</h1>
+@if(Model.Action != "Create"){
+    <h1 class="text-start" id="categories">Categories</h1>
 
     <div class="bg-light shadow-lg" id="needs">
         <div class="p-3 d-flex flex-row align-items-center justify-content-between">
@@ -185,33 +187,36 @@ else
             </tr>
             </thead>
             <tbody>
-            @if (Model.Categories?.Count != 0)
-            {
-                @foreach (var item in Model.Categories!)
+            @{
+                if (Model.Categories?.Count != 0 && Model.Categories is not null)
+                {
+                    foreach (var item in Model.Categories)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                <form method="post" asp-page="./RecipeCategory" asp-route-id="@item.RecipeCategoryId">
+                                    <input type="hidden" name="Target" value="@Model.Recipe!.RecipeId"/>
+                                    <button type="submit" name="Action" value="Remove" class="btn btn-danger">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
                 {
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            <form method="post" asp-page="./RecipeCategory" asp-route-id="@item.RecipeCategoryId">
-                                <input type="hidden" name="Target" value="@Model.Recipe!.RecipeId"/>
-                                <button type="submit" name="Action" value="Remove" class="btn btn-danger">Remove</button>
-                            </form>
-                        </td>
+                        <td colspan="5">Nothing to display...</td>
                     </tr>
                 }
             }
-            else
-            {
-                <tr>
-                    <td colspan="5">Nothing to display...</td>
-                </tr>
-            }
-
             </tbody>
         </table>
     </div>
+    }
 </div>
+
 @section Scripts
 {<partial name="_ValidationScriptsPartial"/>}

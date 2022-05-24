@@ -1,0 +1,60 @@
+﻿@page "{id:int}"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.CodeAnalysis.CSharp.Syntax
+@model Foodbank_Project.Pages.Admin.RecipeCategoryModel
+
+@{
+    ViewData["Title"] = "Recipe Category - Admin";
+}
+
+
+<h1 class="text-start">Add Recipe Category</h1>
+
+
+
+<div class="bg-light shadow-lg flex-fill d-flex justify-content-center align-items-center flex-column p-3">
+    <h3 class="text-start">Search</h3>
+    <form method="get" class="d-flex flex-column flex-fill w-100">
+        <input class="form-control flex-fill w-100 p-3 mb-3" name="Name" placeholder="Search needs"/>
+        <input type="hidden" name="Target" value="@Model.Target"/>
+        <button name="Action" value="Search" class="btn btn-success btn-lg">Search</button>
+    </form>
+    <div id="searchResults" class="d-flex w-100">
+        <table class="table table-striped table-hover flex-fill w-100">
+            <thead>
+            <tr>
+                <th scope="col" style="width: 80%">Name</th>
+                <th scope="col" style="width: 20%">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+             @{
+                if (Model.Categories != null && Model.Categories?.Count != 0)
+                {
+                    foreach (var item in Model.Categories!)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>
+                                <form method="post" asp-route-id="@item.RecipeCategoryId">
+                                    <input type="hidden" name="Target" value="@Model.Target"/>
+                                    <button type="submit" name="Action" value="Add" class="btn btn-success">Add to Recipe</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    
+                    <tr>
+                        <td colspan="2"><div class="d-flex justify-content-center flex-column">
+                            <h5>No category found...</h5>
+                        </div></td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
