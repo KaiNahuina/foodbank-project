@@ -6,6 +6,7 @@ using Foodbank_Project.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NetTopologySuite.Geometries;
+using System.ComponentModel.DataAnnotations;
 
 #endregion
 
