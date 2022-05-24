@@ -6,6 +6,8 @@ using Foodbank_Project.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NetTopologySuite.Geometries;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 
 #endregion
 
@@ -45,6 +47,8 @@ public class AddBankModel : PageModel
 
         Foodbank = FoodbankHelpers.ApplySlug(Foodbank);
         Foodbank = FoodbankHelpers.ApplyFinalize(Foodbank);
+        if (Foodbank.Country!.Equals("Country")) { Foodbank.Country = null; }
+        if (Foodbank.Network!.Equals("Network")) { Foodbank.Network = null; }
         ModelState.ClearValidationState(nameof(Pages.Foodbank));
         if (!TryValidateModel(Foodbank, nameof(Pages.Foodbank))) return Page();
 
