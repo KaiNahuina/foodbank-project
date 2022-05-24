@@ -50,13 +50,13 @@
                             </td>
                         }
                     }
-                    <td>
+                    <td style="text-align: center; vertical-align: middle;">
                         <div class="h2">
-                            @Html.DisplayFor(modelItem => item.Name)
+                            <a asp-page="./Dish" asp-route-id="@item.RecipeId">@Html.DisplayFor(modelItem => item.Name)</a>
                         </div>
                     </td>
-                    <td>
-                        <a class="button btn btn-lg btn-outline-success" asp-page="./Dish" asp-route-id="@item.RecipeId">View Recipe</a>
+                    <td style="text-align: center; vertical-align: middle;">
+                        <a  class="button btn btn-lg btn-outline-success" asp-page="./Dish" asp-route-id="@item.RecipeId">View Recipe</a>
                     </td>
                 </tr>
             }
