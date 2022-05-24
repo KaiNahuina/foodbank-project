@@ -96,40 +96,8 @@
     <div class="text-center ">
         <h1 class="display-4">Associated Foodbanks</h1>
     </div>
-    <table class="table table-striped table-hover w-100">
-        <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Address</th>
-                <th scope="col">Foodbank</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Foodbank.Locations!)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Address)
-                    </td>
-                    <td>
-                        <a class="button btn btn-lg btn-outline-success" asp-page="/Foodbank/Index" asp-route-id="@item.LocationId">View foodbank</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    }
-    else
-    {
-
-        <div class="text-center">
-            <h1 class="display-4">Associated Foodbanks</h1>
-            <h1 id="viewMoreButton" class="button btn btn-lg btn-outline-success col-8 d-grid mx-auto" onclick="showList()">Click here to view places associated with Salvation Army (600+ items)</h1> 
-        </div>
-        <table id="salvationArmyList" class="table table-striped table-hover w-100">
+    <div class="container">
+        <table class="table table-striped table-hover w-100 ">
             <thead>
                 <tr>
                     <th scope="col">Name</th>
@@ -154,6 +122,42 @@
                 }
             </tbody>
         </table>
+    </div> 
+    }
+    else
+    {
+
+        <div class="text-center">
+            <h1 class="display-4">Associated Foodbanks</h1>
+            <h1 id="viewMoreButton" class="button btn btn-lg btn-outline-success col-8 d-grid mx-auto" onclick="showList()">Click here to view places associated with Salvation Army (600+ items)</h1> 
+        </div>
+        <div class="container">
+            <table id="salvationArmyList" class="table table-striped table-hover w-100">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Foodbank</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Foodbank.Locations!)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td>
+                                <a class="button btn btn-lg btn-outline-success" asp-page="/Foodbank/Index" asp-route-id="@item.LocationId">View foodbank</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div> 
     }
 
 </form>
