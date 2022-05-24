@@ -8,10 +8,6 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css" />
 
 
-<script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
-<script src="/js/Control.Geocoder.js"></script>
-
-
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-3">
@@ -35,7 +31,6 @@
 </div>
 
 <form method="post">
-    <div asp-validation-summary="All"></div>
     <div class="container">
         <div class="row">
             <div class="col-6 d-grid mx-auto">
@@ -107,12 +102,13 @@
                         <input class="mt-1" id="map-housenumber" value="" placeholder="House Number" />
                         <input class="mt-1" id="map-postcode" asp-for="Foodbank.Postcode" value="" placeholder="Postcode" />
                     </div>
-
+                    
                     <div class="col-6 d-grid">
                         <input class="mt-1" id="map-street" value="" placeholder="Street/Road" />
                         <input class="mt-1" id="map-address" asp-for="Foodbank.Address" value="" readonly placeholder="Address" />
                     </div>
                 </div>
+
 
                 <!--<div class="mb-3 d-grid">-->
 
@@ -122,6 +118,8 @@
                 </div>
             </div>
         </div>
+
+        <span asp-validation-for="Lat" class="text-danger"></span>
 
         <div class="row mt-3">
             <div class="col-9 d-grid mx-auto">
@@ -151,7 +149,10 @@
             </div>
         </div>
     
-
+</form>
+@section Scripts{
+    <script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
+    <script src="/js/Control.Geocoder.js"></script>
 
     <script type="text/javascript">
 
@@ -207,14 +208,14 @@
           attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-    </script>
-</form>
+        document.getElementById("consent").setCustomValidity("Please indicate that you accept the terms and conditions");
+        document.getElementById("confirmation").setCustomValidity("Please indicate that you vouch for the validity of the info");
+
+        confirmation.value = false;
+        consent.value = false;
+        </script>
+
+        <partial name="_ValidationScriptsPartial"/>
+}
 
 
-<script>
-    document.getElementById("consent").setCustomValidity("Please indicate that you accept the terms and conditions");
-    document.getElementById("confirmation").setCustomValidity("Please indicate that you vouch for the validity of the info");
-
-    confirmation.value = false;
-    consent.value = false;
-</script>
