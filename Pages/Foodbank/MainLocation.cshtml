@@ -7,9 +7,6 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css" />
 
 
-<script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
-<script src="/js/Control.Geocoder.js"></script>
-
 <div class="text-center ">
     <p>
         Disclaimer: Vouchers may be required to access the bank. <a class="button btn btn-md btn-outline-success" asp-page="/GetHelp/Vouchers">Learn more here.</a>
@@ -159,7 +156,10 @@
         </table>
     }
 
-
+</form>
+@section Scripts{
+    <script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
+    <script src="/js/Control.Geocoder.js"></script>
 
     <script type="text/javascript">
         const viewMoreButton = document.getElementById('viewMoreButton');
@@ -202,4 +202,4 @@
         }).addTo(map);
 
     </script>
-</form>
+}
