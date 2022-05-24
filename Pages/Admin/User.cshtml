@@ -52,7 +52,7 @@ else
             @if (Model.Action == "Create")
             {
                 <button name="Action" value="Create" type="submit" class="btn btn-success me-3">Create</button>
-                <a asp-page="./Recipes"><button class="btn btn-primary" type="button">Cancel</button></a>
+                <a asp-page="./users"><button class="btn btn-primary" type="button">Cancel</button></a>
             }
             else
             {
@@ -65,7 +65,7 @@ else
     </form>
 
 @if(Model.Action != "Create"){
-    <h1 class="text-start" id="categories">Roles</h1>
+    <h1 class="text-start" id="roles">Roles</h1>
 
     <div class="bg-light shadow-lg" id="needs">
         <div class="p-3 d-flex flex-row align-items-center justify-content-between">
@@ -76,7 +76,7 @@ else
                 </form>
             </div>
             <div>
-                <form method="get" asp-page="./RecipeCategory" asp-route-id="0" asp-fragment="needs">
+                <form method="get" asp-page="./Role" asp-route-id="0" asp-fragment="needs">
                     <input type="hidden" name="Target" value="@Model.Id"/>
                     <button type="submit" class="btn btn-success">Add New</button>
                 </form>
@@ -140,7 +140,7 @@ else
                                 @Html.DisplayFor(modelItem => item)
                             </td>
                             <td>
-                                <form method="post" asp-page="./RecipeCategory" asp-route-id="@item">
+                                <form method="post" asp-page="./Role" asp-route-id="@item">
                                     <input type="hidden" name="Target" value="@Model.Id"/>
                                     <button type="submit" name="Action" value="Remove" class="btn btn-danger">Remove</button>
                                 </form>

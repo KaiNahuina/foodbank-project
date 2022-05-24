@@ -16,7 +16,6 @@ namespace Foodbank_Project.Pages.Admin;
 
 public class UserModel : PageModel
 {
-    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<IdentityUser> _userManager;
 
     public string? Action;
@@ -32,10 +31,9 @@ public class UserModel : PageModel
     
     public IList<string>? Roles;
 
-    public UserModel(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+    public UserModel(UserManager<IdentityUser> userManager)
     {
         _userManager = userManager;
-        _roleManager = roleManager;
     }
 
     [Required]

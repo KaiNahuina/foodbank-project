@@ -383,7 +383,6 @@ public static class SeedData
         await roleManager.CreateAsync(new IdentityRole("SiteAdmin"));
         await roleManager.CreateAsync(new IdentityRole("FoodbanksAdmin"));
         await roleManager.CreateAsync(new IdentityRole("UsersAdmin"));
-        await roleManager.CreateAsync(new IdentityRole("ContentAdmin"));
         await roleManager.CreateAsync(new IdentityRole("RecipeAdmin"));
         await roleManager.CreateAsync(new IdentityRole("LoggingAdmin"));
     }
