@@ -38,11 +38,11 @@ public class LocationModel : PageModel
         {
             var id = int.Parse(RouteData.Values["id"] as string ?? "");
 
-            if (!User.IsInRole("FoodbanksAdmin") || !User.IsInRole("SiteAdmin"))
+            if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
             {
                 if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", id.ToString()))
                 {
-                    return Unauthorized();
+                    return Forbid();
                 }
             }
 
@@ -56,11 +56,11 @@ public class LocationModel : PageModel
         }
         else
         {
-            if (!User.IsInRole("FoodbanksAdmin") || !User.IsInRole("SiteAdmin"))
+            if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
             {
                 if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", Request.Query["target"]))
                 {
-                    return Unauthorized();
+                    return Forbid();
                 }
             }
 
@@ -82,12 +82,12 @@ public class LocationModel : PageModel
         switch (Action)
         {
             case "Delete":
-                if (!User.IsInRole("FoodbanksAdmin") || !User.IsInRole("SiteAdmin"))
+                if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
                 {
                     if (!User.IsInRole("FoodbankAdmin") &&
                         !User.HasClaim("FoodbankClaim", Location?.Foodbank?.FoodbankId.ToString()))
                     {
-                        return Unauthorized();
+                        return Forbid();
                     }
                 }
 
@@ -100,12 +100,12 @@ public class LocationModel : PageModel
                 break;
             case "Create":
             {
-                if (!User.IsInRole("FoodbanksAdmin") || !User.IsInRole("SiteAdmin"))
+                if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
                 {
                     if (!User.IsInRole("FoodbankAdmin") &&
                         !User.HasClaim("FoodbankClaim", Location?.Foodbank?.FoodbankId.ToString()))
                     {
-                        return Unauthorized();
+                        return Forbid();
                     }
                 }
 
@@ -124,12 +124,12 @@ public class LocationModel : PageModel
             }
             case "Update":
             {
-                if (!User.IsInRole("FoodbanksAdmin") || !User.IsInRole("SiteAdmin"))
+                if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
                 {
                     if (!User.IsInRole("FoodbankAdmin") &&
                         !User.HasClaim("FoodbankClaim", Location?.Foodbank?.FoodbankId.ToString()))
                     {
-                        return Unauthorized();
+                        return Forbid();
                     }
                 }
 

@@ -11,7 +11,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Foodbank_Project.Pages.Admin;
 
-[Authorize(Roles = "ApprovalAdmin,SiteAdmin")]
 public class IndexModel : PageModel
 {
     private readonly ApplicationContext _ctx;
@@ -37,7 +36,42 @@ public class IndexModel : PageModel
         [FromQuery(Name = "OrderDirection")] string? orderDirection,
         [FromQuery(Name = "Search")] string? search, [FromQuery(Name = "Page")] string? page)
     {
-        if (!User.IsInRole("ApprovalAdmin") || !User.IsInRole("SiteAdmin")) return Unauthorized();
+        
+        ///// DO SOME REDIRECTION LOGIC!!
+        if (!User.IsInRole("SiteAdmin"))
+        {
+            if(User.IsInRole("ApprovalAdmin"))
+            {
+                return RedirectToPage("./Index");
+            }
+            if (User.IsInRole("FoodbankAdmin"))
+            {
+                var id = User.Claims.Where(c => c.Type == "FoodbankClaim").Select(c => c.Value).First();
+                return RedirectToPage("./Foodbank",
+                    new { id =  id});
+            }
+            if(User.IsInRole("FoodbanksAdmin"))
+            {
+                return RedirectToPage("./Foodbanks");
+            }
+            if(User.IsInRole("UsersAdmin"))
+            {
+                return RedirectToPage("./Users");
+            }
+            if(User.IsInRole("RecipesAdmin"))
+            {
+                return RedirectToPage("./Recipes");
+            }
+            if(User.IsInRole("NeedsAdmin"))
+            {
+                return RedirectToPage("./Needs");
+            }
+            
+        }
+        
+        
+        
+        if (!User.IsInRole("SiteAdmin") && !User.IsInRole("ApprovalAdmin")) return Forbid();
         OrderBy = string.IsNullOrEmpty(orderBy) ? "Locations" : orderBy;
         OrderDirection = string.IsNullOrEmpty(orderDirection) ? "Desc" : orderDirection;
         if (!int.TryParse(page, out Page)) Page = 1;

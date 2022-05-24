@@ -55,11 +55,11 @@ public class FoodbankModel : PageModel
         if (Action != "Create")
         {
             var id = int.Parse(RouteData.Values["id"] as string ?? "");
-            if (!User.IsInRole("FoodbanksAdmin") || !User.IsInRole("SiteAdmin"))
+            if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
             {
                 if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", id.ToString()))
                 {
-                    return Unauthorized();
+                    return Forbid();
                 }
             }
 
@@ -148,7 +148,7 @@ public class FoodbankModel : PageModel
             return Page();
         }
 
-        if (!User.IsInRole("FoodbanksAdmin") || !User.IsInRole("SiteAdmin")) return Unauthorized();
+        if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
         Foodbank = new Models.Foodbank
         {
             Created = DateTime.Now
@@ -164,12 +164,12 @@ public class FoodbankModel : PageModel
         {
             case "Delete":
 
-                if (!User.IsInRole("FoodbanksAdmin") || !User.IsInRole("SiteAdmin"))
+                if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
                 {
                     if (!User.IsInRole("FoodbankAdmin") &&
                         !User.HasClaim("FoodbankClaim", Foodbank?.FoodbankId.ToString()))
                     {
-                        return Unauthorized();
+                        return Forbid();
                     }
                 }
 
@@ -180,7 +180,7 @@ public class FoodbankModel : PageModel
                 break;
             case "Create":
             {
-                if (!User.IsInRole("FoodbanksAdmin") || !User.IsInRole("SiteAdmin")) return Unauthorized();
+                if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
                 if (!ModelState.IsValid) return Page();
                 if (Foodbank != null)
                 {
@@ -195,12 +195,12 @@ public class FoodbankModel : PageModel
             }
             case "Update":
             {
-                if (!User.IsInRole("FoodbanksAdmin") || !User.IsInRole("SiteAdmin"))
+                if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
                 {
                     if (!User.IsInRole("FoodbankAdmin") &&
                         !User.HasClaim("FoodbankClaim", Foodbank?.FoodbankId.ToString()))
                     {
-                        return Unauthorized();
+                        return Forbid();
                     }
                 }
 
@@ -217,7 +217,7 @@ public class FoodbankModel : PageModel
             }
             case "Approve":
             {
-                if (!User.IsInRole("ApprovalAdmin") || !User.IsInRole("SiteAdmin")) return Unauthorized();
+                if (!User.IsInRole("ApprovalAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
                 if (!ModelState.IsValid) return Page();
                 int id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
 
@@ -237,7 +237,7 @@ public class FoodbankModel : PageModel
 
             case "Deny":
             {
-                if (!User.IsInRole("ApprovalAdmin") || !User.IsInRole("SiteAdmin")) return Unauthorized();
+                if (!User.IsInRole("ApprovalAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
                 if (!ModelState.IsValid) return Page();
                 int id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
 

@@ -70,9 +70,8 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-    await SeedData.SeedRolesAsync(userManager, roleManager);
-    await SeedData.SeedBasicUserAsync(userManager, roleManager);
-    await SeedData.SeedAdminUserAsync(userManager, roleManager);
+    await SeedData.SeedRolesAsync(roleManager);
+    await SeedData.SeedUsersAsync(userManager);
 }
 
 // Recipes and categories

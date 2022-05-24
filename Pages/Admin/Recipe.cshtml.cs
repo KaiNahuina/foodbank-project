@@ -120,14 +120,14 @@ public class RecipeModel : PageModel
         switch (Action)
         {
             case "Delete":
-                if (User.IsInRole("ApprovalAdmin")) return Unauthorized();
+                if (User.IsInRole("ApprovalAdmin")) return Forbid();
                 if (Recipe != null) _ctx.Remove(Recipe);
                 _logger.Log(LogLevel.Warning, "User {UserName} deleted recipe {Recipe}",
                     User.Identity?.Name, Recipe?.Name);
                 break;
             case "Create":
             {
-                if (User.IsInRole("ApprovalAdmin")) return Unauthorized();
+                if (User.IsInRole("ApprovalAdmin")) return Forbid();
                 if (!ModelState.IsValid) return Page();
                 if (Recipe != null)
                 {
@@ -148,7 +148,7 @@ public class RecipeModel : PageModel
             }
             case "Update":
             {
-                if (User.IsInRole("ApprovalAdmin")) return Unauthorized();
+                if (User.IsInRole("ApprovalAdmin")) return Forbid();
                 if (!ModelState.IsValid) return Page();
                 if (Recipe != null)
                 {
@@ -169,7 +169,7 @@ public class RecipeModel : PageModel
             }
             case "Approve":
             {
-                if (!User.IsInRole("ApprovalAdmin") || User.IsInRole("SiteAdmin")) return Unauthorized();
+                if (!User.IsInRole("ApprovalAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
                 if (!ModelState.IsValid) return Page();
                 int id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
 
@@ -190,7 +190,7 @@ public class RecipeModel : PageModel
 
             case "Deny":
             {
-                if (!User.IsInRole("ApprovalAdmin") || User.IsInRole("SiteAdmin")) return Unauthorized();
+                if (!User.IsInRole("ApprovalAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
                 if (!ModelState.IsValid) return Page();
                 int id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
 

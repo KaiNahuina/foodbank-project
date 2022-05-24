@@ -55,11 +55,11 @@ public class NeedModel : PageModel
             default:
             {
                 Target = int.Parse(Request.Query["Target"]);
-                if (!User.IsInRole("FoodbanksAdmin") || !User.IsInRole("SiteAdmin"))
+                if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
                 {
                     if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", Target.ToString()))
                     {
-                        return Unauthorized();
+                        return Forbid();
                     }
                 }
 
@@ -78,11 +78,11 @@ public class NeedModel : PageModel
             case "Remove":
             {
                 Target = int.Parse(Request.Form["Target"]);
-                if (!User.IsInRole("FoodbanksAdmin") || !User.IsInRole("SiteAdmin"))
+                if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
                 {
                     if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", Target.ToString()))
                     {
-                        return Unauthorized();
+                        return Forbid();
                     }
                 }
 
@@ -104,11 +104,11 @@ public class NeedModel : PageModel
             case "Add":
             {
                 Target = int.Parse(Request.Form["Target"]);
-                if (!User.IsInRole("FoodbanksAdmin") || !User.IsInRole("SiteAdmin"))
+                if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
                 {
                     if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", Target.ToString()))
                     {
-                        return Unauthorized();
+                        return Forbid();
                     }
                 }
 
@@ -131,11 +131,11 @@ public class NeedModel : PageModel
             case "Create":
             {
                 Target = int.Parse(Request.Form["Target"]);
-                if (!User.IsInRole("FoodbanksAdmin") || !User.IsInRole("SiteAdmin"))
+                if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
                 {
                     if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", Target.ToString()))
                     {
-                        return Unauthorized();
+                        return Forbid();
                     }
                 }
 

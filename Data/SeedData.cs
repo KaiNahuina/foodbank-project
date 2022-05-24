@@ -1,5 +1,6 @@
 ﻿#region
 
+using System.Security.Claims;
 using Foodbank_Project.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -398,8 +399,7 @@ public static class SeedData
         }
     }
 
-    public static async Task SeedRolesAsync(UserManager<IdentityUser> userManager,
-        RoleManager<IdentityRole> roleManager)
+    public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
     {
         await roleManager.CreateAsync(new IdentityRole("FoodbankAdmin")); // unlimited access to single foodbank
 
@@ -407,52 +407,139 @@ public static class SeedData
         await roleManager.CreateAsync(new IdentityRole("FoodbanksAdmin")); // unlimited access to all foodbanks
         await roleManager.CreateAsync(new IdentityRole("UsersAdmin")); // unlimited access to users
         await roleManager.CreateAsync(new IdentityRole("RecipesAdmin")); // unlimited access to recipes
-        await roleManager.CreateAsync(new IdentityRole("LoggingAdmin")); // unlimited access to logging
+        await roleManager.CreateAsync(new IdentityRole("LoggingAdmin")); // unlimited access to logging, not implemented 
         await roleManager.CreateAsync(new IdentityRole("ApprovalAdmin")); // unlimited access to approval/denial
         await roleManager.CreateAsync(new IdentityRole("NeedsAdmin")); // unlimited access to needs
     }
 
 
-    public static async Task SeedBasicUserAsync(UserManager<IdentityUser> userManager,
-        RoleManager<IdentityRole> roleManager)
+    public static async Task SeedUsersAsync(UserManager<IdentityUser> userManager)
     {
-        // Seed Basic User
-        var defaultUser = new IdentityUser
         {
-            UserName = "user@user.com",
-            Email = "user@user.com",
-            EmailConfirmed = true,
-            PhoneNumberConfirmed = true
-        };
-        if (userManager.Users.All(u => u.Id != defaultUser.Id))
-        {
-            var user = await userManager.FindByEmailAsync(defaultUser.Email);
-            if (user == null)
+            var defaultUser = new IdentityUser
             {
-                await userManager.CreateAsync(defaultUser, "236!User?339");
-                await userManager.AddToRoleAsync(defaultUser, "FoodbankAdmin");
+                UserName = "foodbankadmin@admin.com",
+                Email = "foodbankadmin@admin.com",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            };
+            if (userManager.Users.All(u => u.Id != defaultUser.Id))
+            {
+                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "236!Admin?339");
+                    await userManager.AddToRoleAsync(defaultUser, "FoodbankAdmin");
+                    await userManager.AddClaimAsync(defaultUser, new Claim("FoodbankClaim", "1"));
+                }
             }
         }
-    }
-
-    public static async Task SeedAdminUserAsync(UserManager<IdentityUser> userManager,
-        RoleManager<IdentityRole> roleManager)
-    {
-        // Seed SuperAdmin User
-        var defaultUser = new IdentityUser
         {
-            UserName = "admin@admin.com",
-            Email = "admin@admin.com",
-            EmailConfirmed = true,
-            PhoneNumberConfirmed = true
-        };
-        if (userManager.Users.All(u => u.Id != defaultUser.Id))
-        {
-            var user = await userManager.FindByEmailAsync(defaultUser.Email);
-            if (user == null)
+            var defaultUser = new IdentityUser
             {
-                await userManager.CreateAsync(defaultUser, "236!Admin?339");
-                await userManager.AddToRoleAsync(defaultUser, "SiteAdmin");
+                UserName = "siteadmin@admin.com",
+                Email = "siteadmin@admin.com",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            };
+            if (userManager.Users.All(u => u.Id != defaultUser.Id))
+            {
+                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "236!Admin?339");
+                    await userManager.AddToRoleAsync(defaultUser, "SiteAdmin");
+                }
+            }
+        }
+        {
+            var defaultUser = new IdentityUser
+            {
+                UserName = "foodbanksadmin@admin.com",
+                Email = "foodbanksadmin@admin.com",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            };
+            if (userManager.Users.All(u => u.Id != defaultUser.Id))
+            {
+                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "236!Admin?339");
+                    await userManager.AddToRoleAsync(defaultUser, "FoodbanksAdmin");
+                }
+            }
+        }
+        {
+            var defaultUser = new IdentityUser
+            {
+                UserName = "usersadmin@admin.com",
+                Email = "usersadmin@admin.com",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            };
+            if (userManager.Users.All(u => u.Id != defaultUser.Id))
+            {
+                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "236!Admin?339");
+                    await userManager.AddToRoleAsync(defaultUser, "UsersAdmin");
+                }
+            }
+        }
+        {
+            var defaultUser = new IdentityUser
+            {
+                UserName = "recipesadmin@admin.com",
+                Email = "recipesadmin@admin.com",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            };
+            if (userManager.Users.All(u => u.Id != defaultUser.Id))
+            {
+                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "236!Admin?339");
+                    await userManager.AddToRoleAsync(defaultUser, "RecipesAdmin");
+                }
+            }
+        }
+        {
+            var defaultUser = new IdentityUser
+            {
+                UserName = "approvaladmin@admin.com",
+                Email = "approvaladmin@admin.com",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            };
+            if (userManager.Users.All(u => u.Id != defaultUser.Id))
+            {
+                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "236!Admin?339");
+                    await userManager.AddToRoleAsync(defaultUser, "ApprovalAdmin");
+                }
+            }
+        }
+        {
+            var defaultUser = new IdentityUser
+            {
+                UserName = "needsadmin@admin.com",
+                Email = "needsadmin@admin.com",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            };
+            if (userManager.Users.All(u => u.Id != defaultUser.Id))
+            {
+                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(defaultUser, "236!Admin?339");
+                    await userManager.AddToRoleAsync(defaultUser, "NeedsAdmin");
+                }
             }
         }
     }
