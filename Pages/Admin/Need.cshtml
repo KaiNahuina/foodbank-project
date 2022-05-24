@@ -1,5 +1,7 @@
 ﻿@page "{id:int}"
-@model Foodbank_Project.Pages.Admin.AddNeed
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.CodeAnalysis.CSharp.Syntax
+@model Foodbank_Project.Pages.Admin.NeedModel
 
 @{
     ViewData["Title"] = "Need - Admin";
@@ -13,8 +15,66 @@
 <div class="bg-light shadow-lg flex-fill d-flex justify-content-center align-items-center flex-column p-3">
     <h3 class="text-start">Search</h3>
     <form method="get" class="d-flex flex-column flex-fill w-100">
-        <input type="hidden" asp-for="Action" value="Search"/>
-        <input class="form-control flex-fill w-100 p-3 mb-3" asp-for="Name"/>
-        <button class="btn btn-success btn-lg">Search</button>
+        <input class="form-control flex-fill w-100 p-3 mb-3" name="Name" placeholder="Search needs"/>
+        <input type="hidden" name="Target" value="@Model.Target"/>
+        <button name="Action" value="Search" class="btn btn-success btn-lg">Search</button>
     </form>
+    <div id="searchResults" class="d-flex w-100">
+        <table class="table table-striped table-hover flex-fill w-100">
+            <thead>
+            <tr>
+                <th scope="col" style="width: 80%">Name</th>
+                <th scope="col" style="width: 20%">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+             @{
+                if (Model.Needs != null && Model.Needs?.Count != 0)
+                {
+                    foreach (var item in Model.Needs!)
+                    {
+                        <tr>
+                            <td>@item.NeedStr</td>
+                            <td>
+                                <form method="post" asp-page="./Need" asp-route-id="@item.NeedId">
+                                    <input type="hidden" name="Target" value="@Model.Target"/>
+                                    <button type="submit" name="Action" value="Add" class="btn btn-success">Add to Foodbank</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    
+                    if (string.IsNullOrEmpty(Model.Name))
+                    {
+                        <tr>
+                            <td colspan="2">
+                                <div class="d-flex justify-content-center flex-column">
+                                    <h5>Enter a search...</h5>
+                                </div></td>
+                        </tr>
+                                
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2"><div class="d-flex justify-content-center flex-column">
+                                <h5>No need found...</h5>
+                                <form method="post" class="d-flex justify-content-center flex-column">
+                                    <input type="hidden" name="Target" value="@Model.Target"/>
+                                    <input type="hidden" name="Name" value="@Model.Name"/>
+                                    <label class="form-label">Create @Model.Name and add to foodbank?</label>
+                                    <button name="Action" value="Create" class="btn btn-lg btn-success">Create and Add need</button>
+                                </form>
+                            </div></td>
+                        </tr>
+                    }
+                    
+                }
+            }
+            </tbody>
+        </table>
+    </div>
 </div>
