@@ -1,19 +1,29 @@
-﻿using Foodbank_Project.Data;
-using Foodbank_Project.Models;
+﻿#region
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
+#endregion
+
 namespace Foodbank_Project.Pages.Admin;
 
 [Authorize(Roles = "UsersAdmin,SiteAdmin")]
 public class RoleModel : PageModel
 {
+    private readonly ILogger<RoleModel> _logger;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<IdentityUser> _userManager;
-    private readonly ILogger<RoleModel> _logger;
+
+    public RoleModel(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager,
+        ILogger<RoleModel> logger)
+    {
+        _userManager = userManager;
+        _roleManager = roleManager;
+        _logger = logger;
+    }
 
     public string? Action { get; set; }
 
@@ -21,13 +31,6 @@ public class RoleModel : PageModel
     public string? Target { get; set; }
 
     public List<IdentityRole>? Roles { get; set; }
-
-    public RoleModel(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, ILogger<RoleModel> logger)
-    {
-        _userManager = userManager;
-        _roleManager = roleManager;
-        _logger = logger;
-    }
 
     public async Task OnGetAsync([FromQuery(Name = "Action")] string? action)
     {
@@ -65,13 +68,11 @@ public class RoleModel : PageModel
                 if (!result.Succeeded)
                 {
                     foreach (var identityError in result.Errors)
-                    {
                         ModelState.AddModelError(string.Empty, identityError.Code + " :: " + identityError.Description);
-                    }
 
                     return Page();
                 }
-                
+
                 _logger.Log(LogLevel.Warning, "User {UserName} removed role {Role} to {TargetUser}",
                     User.Identity?.Name, id, targetUser.UserName);
 
@@ -87,13 +88,11 @@ public class RoleModel : PageModel
                 if (!result.Succeeded)
                 {
                     foreach (var identityError in result.Errors)
-                    {
                         ModelState.AddModelError(string.Empty, identityError.Code + " :: " + identityError.Description);
-                    }
 
                     return Page();
                 }
-                
+
                 _logger.Log(LogLevel.Information, "User {UserName} added role {Role} to {TargetUser}",
                     User.Identity?.Name, id, targetUser.UserName);
 

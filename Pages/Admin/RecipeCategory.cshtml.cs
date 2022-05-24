@@ -1,9 +1,13 @@
-﻿using Foodbank_Project.Data;
+﻿#region
+
+using Foodbank_Project.Data;
 using Foodbank_Project.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+
+#endregion
 
 namespace Foodbank_Project.Pages.Admin;
 
@@ -13,18 +17,18 @@ public class RecipeCategoryModel : PageModel
     private readonly ApplicationContext _ctx;
     private readonly ILogger<RecipeCategoryModel> _logger;
 
+    public RecipeCategoryModel(ApplicationContext ctx, ILogger<RecipeCategoryModel> logger)
+    {
+        _ctx = ctx;
+        _logger = logger;
+    }
+
     public string? Action { get; set; }
 
     public string? Name { get; set; }
     public int? Target { get; set; }
 
     public List<RecipeCategory>? Categories { get; set; }
-
-    public RecipeCategoryModel(ApplicationContext ctx, ILogger<RecipeCategoryModel> logger)
-    {
-        _ctx = ctx;
-        _logger = logger;
-    }
 
     public async Task OnGetAsync([FromQuery(Name = "Action")] string? action)
     {
@@ -64,7 +68,7 @@ public class RecipeCategoryModel : PageModel
                 recipe.Categories!.Clear();
 
                 await _ctx.SaveChangesAsync();
-                
+
                 _logger.Log(LogLevel.Information, "User {UserName} removed category id {Category} from {Recipe}",
                     User.Identity?.Name, id, recipe.Name);
 
@@ -83,7 +87,7 @@ public class RecipeCategoryModel : PageModel
                 recipe.Categories!.Add(category);
 
                 await _ctx.SaveChangesAsync();
-                
+
                 _logger.Log(LogLevel.Information, "User {UserName} added category id {Category} from {Recipe}",
                     User.Identity?.Name, id, recipe.Name);
 

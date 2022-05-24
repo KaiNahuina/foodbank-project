@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
-using Foodbank = Foodbank_Project.Models.Foodbank;
 
 #endregion
 
@@ -17,12 +16,12 @@ public class FindDistribution : PageModel
 {
     private readonly ApplicationContext _ctx;
 
-    public string? Location { get; set; }
-
     public FindDistribution(ApplicationContext ctx)
     {
         _ctx = ctx;
     }
+
+    public string? Location { get; set; }
 
     public void OnGetAsync([FromQuery(Name = "Location")] string location)
     {

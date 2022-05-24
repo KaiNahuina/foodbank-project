@@ -80,7 +80,7 @@ else
         <div class="col-8">
             @try
             {
-                <img src="@($"data:Images/jpg;base64,{Convert.ToBase64String(@Model.Recipe.Image ?? throw new InvalidOperationException())}")" style="width:100%" alt="@Model.Recipe.Name"/>
+                <img src="@($"data:Images/jpg;base64,{Convert.ToBase64String(Model.Recipe.Image ?? throw new InvalidOperationException())}")" style="width:100%" alt="@Model.Recipe.Name"/>
             }
             catch
             {

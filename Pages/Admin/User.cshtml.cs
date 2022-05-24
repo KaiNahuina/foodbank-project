@@ -2,15 +2,10 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
-using Foodbank_Project.Data;
-using Foodbank_Project.Models;
-using Foodbank_Project.Util;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using NetTopologySuite.Geometries;
 
 #endregion
 
@@ -19,6 +14,7 @@ namespace Foodbank_Project.Pages.Admin;
 [Authorize(Roles = "UsersAdmin,SiteAdmin")]
 public class UserModel : PageModel
 {
+    private readonly ILogger<UserModel> _logger;
     private readonly UserManager<IdentityUser> _userManager;
 
     public string? Action;
@@ -29,11 +25,10 @@ public class UserModel : PageModel
     public string? OrderBy;
     public string? OrderDirection;
     public new int Page;
-    public string? Search;
-    public int TotalItems;
 
     public IList<string>? Roles;
-    private readonly ILogger<UserModel> _logger;
+    public string? Search;
+    public int TotalItems;
 
     public UserModel(UserManager<IdentityUser> userManager, ILogger<UserModel> logger)
     {
@@ -119,12 +114,8 @@ public class UserModel : PageModel
             Id = u.Id;
             Locked = await _userManager.IsLockedOutAsync(u);
             foreach (var claim in await _userManager.GetClaimsAsync(u))
-            {
                 if (claim.Type == "FoodbankClaim")
-                {
                     FoodbankClaim = int.Parse(claim.Value);
-                }
-            }
         }
     }
 
@@ -141,13 +132,11 @@ public class UserModel : PageModel
                 if (!result.Succeeded)
                 {
                     foreach (var identityError in result.Errors)
-                    {
                         ModelState.AddModelError(string.Empty, identityError.Code + " :: " + identityError.Description);
-                    }
 
                     return Page();
                 }
-                
+
                 _logger.Log(LogLevel.Warning, "User {UserName} removed user {TargetUser}",
                     User.Identity?.Name, u.UserName);
 
@@ -162,33 +151,27 @@ public class UserModel : PageModel
                     UserName = Email,
                     Email = Email,
                     EmailConfirmed = true,
-                    PhoneNumberConfirmed = true,
+                    PhoneNumberConfirmed = true
                 };
                 if (Locked)
-                {
                     await _userManager.SetLockoutEndDateAsync(u, DateTimeOffset.MaxValue);
-                }
                 else
-                {
                     await _userManager.SetLockoutEndDateAsync(u, DateTimeOffset.Now);
-                }
 
                 var result = await _userManager.CreateAsync(u, Password);
                 if (!result.Succeeded)
                 {
                     foreach (var identityError in result.Errors)
-                    {
                         ModelState.AddModelError(string.Empty, identityError.Code + " :: " + identityError.Description);
-                    }
 
                     return Page();
                 }
 
                 await _userManager.AddClaimAsync(u, new Claim("FoodbankClaim", FoodbankClaim.ToString()));
-                
+
                 _logger.Log(LogLevel.Information, "User {UserName} created user {TargetUser}",
                     User.Identity?.Name, u.UserName);
-                
+
                 break;
             }
             case "Update":
@@ -199,13 +182,9 @@ public class UserModel : PageModel
                 u.Email = Email;
                 u.UserName = Email;
                 if (Locked)
-                {
                     await _userManager.SetLockoutEndDateAsync(u, DateTimeOffset.MaxValue);
-                }
                 else
-                {
                     await _userManager.SetLockoutEndDateAsync(u, DateTimeOffset.Now);
-                }
 
                 if (Password is not null)
                 {
@@ -217,10 +196,10 @@ public class UserModel : PageModel
 
                 await _userManager.UpdateAsync(u);
                 await _userManager.AddClaimAsync(u, new Claim("FoodbankClaim", FoodbankClaim.ToString()));
-                
+
                 _logger.Log(LogLevel.Information, "User {UserName} updated user {TargetUser}",
                     User.Identity?.Name, u.UserName);
-                
+
                 break;
             }
         }

@@ -2,12 +2,10 @@
 
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
-using Foodbank_Project.Util;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using NetTopologySuite.Geometries;
 
 #endregion
 
@@ -17,8 +15,11 @@ namespace Foodbank_Project.Pages.Admin;
 public class RecipeModel : PageModel
 {
     private readonly ApplicationContext _ctx;
+    private readonly ILogger<RecipeModel> _logger;
 
     public string? Action;
+
+    public IList<RecipeCategory>? Categories;
 
     public bool HasNextPage;
     public bool HasPrevPage;
@@ -28,9 +29,6 @@ public class RecipeModel : PageModel
     public new int Page;
     public string? Search;
     public int TotalItems;
-
-    public IList<Models.RecipeCategory>? Categories;
-    private readonly ILogger<RecipeModel> _logger;
 
     public RecipeModel(ApplicationContext ctx, ILogger<RecipeModel> logger)
     {
@@ -133,13 +131,13 @@ public class RecipeModel : PageModel
                 {
                     if (Upload is not null)
                     {
-                        MemoryStream ms = new MemoryStream();
+                        var ms = new MemoryStream();
                         await Upload.CopyToAsync(ms);
                         Recipe.Image = ms.ToArray();
                     }
 
                     _ctx.Recipes?.Update(Recipe);
-                    
+
                     _logger.Log(LogLevel.Information, "User {UserName} created recipe {Recipe}",
                         User.Identity?.Name, Recipe?.Name);
                 }
@@ -154,13 +152,13 @@ public class RecipeModel : PageModel
                 {
                     if (Upload is not null)
                     {
-                        MemoryStream ms = new MemoryStream();
+                        var ms = new MemoryStream();
                         await Upload.CopyToAsync(ms);
                         Recipe.Image = ms.ToArray();
                     }
 
                     _ctx.Recipes?.Update(Recipe);
-                    
+
                     _logger.Log(LogLevel.Information, "User {UserName} updated recipe {Recipe}",
                         User.Identity?.Name, Recipe?.Name);
                 }
@@ -171,17 +169,14 @@ public class RecipeModel : PageModel
             {
                 if (!User.IsInRole("ApprovalAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
                 if (!ModelState.IsValid) return Page();
-                int id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
+                var id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
 
-                Recipe? fb = await _ctx.Recipes.Where(f => f.RecipeId == id).FirstOrDefaultAsync();
+                var fb = await _ctx.Recipes.Where(f => f.RecipeId == id).FirstOrDefaultAsync();
 
-                if (fb != null)
-                {
-                    fb.Status = Status.Approved;
-                }
+                if (fb != null) fb.Status = Status.Approved;
 
                 await _ctx.SaveChangesAsync();
-                
+
                 _logger.Log(LogLevel.Information, "User {UserName} approved recipe {Recipe}",
                     User.Identity?.Name, Recipe?.Name);
 
@@ -192,17 +187,14 @@ public class RecipeModel : PageModel
             {
                 if (!User.IsInRole("ApprovalAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
                 if (!ModelState.IsValid) return Page();
-                int id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
+                var id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
 
-                Recipe? fb = await _ctx.Recipes.Where(f => f.RecipeId == id).FirstOrDefaultAsync();
+                var fb = await _ctx.Recipes.Where(f => f.RecipeId == id).FirstOrDefaultAsync();
 
-                if (fb != null)
-                {
-                    fb.Status = Status.Denied;
-                }
+                if (fb != null) fb.Status = Status.Denied;
 
                 await _ctx.SaveChangesAsync();
-                
+
                 _logger.Log(LogLevel.Information, "User {UserName} denied recipe {Recipe}",
                     User.Identity?.Name, Recipe?.Name);
 

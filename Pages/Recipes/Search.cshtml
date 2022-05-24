@@ -39,7 +39,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (Recipe item in Model.Recipes ?? new())
+        @foreach (var item in Model.Recipes ?? new List<Recipe>())
         {
             <tr>
                 @{

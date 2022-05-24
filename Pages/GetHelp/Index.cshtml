@@ -118,7 +118,7 @@
                  markerGroup = L.featureGroup([closest5Markers[0],closest5Markers[1],closest5Markers[2],closest5Markers[3],closest5Markers[4]]);
                  map.addLayer(markerGroup);
                  map.fitBounds([markerGroup.getBounds().pad(0.2), e.bbox]);
-                 Top5Section.style.display = 'block'
+                 Top5Section.style.display = 'block';
 
                  if (history.pushState) {
                     var newurl = window.location.protocol + "//" + window.location.host + '/GetHelp/Index/?Location=' + control._input.value;   //change testmap name

@@ -34,7 +34,7 @@
             @{
                 try
                 {
-                    <img src="@string.Format("data:Images/jpg;base64,{0}", Convert.ToBase64String(@Model.Recipe.Image))" style="width:100%" alt="@Model.Recipe.Name"/>
+                    <img src="@string.Format("data:Images/jpg;base64,{0}", Convert.ToBase64String(Model.Recipe.Image))" style="width:100%" alt="@Model.Recipe.Name"/>
                 }
                 catch
                 {
