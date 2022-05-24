@@ -29,9 +29,10 @@ public class SearchModel : PageModel
 
     public async Task OnGetAsync([FromRoute(Name = "catName")] string category)
     {
-         Recipes = await _ctx.RecipeCategories.AsNoTracking().Where(r => r.Name == category)
-            .Include(r => r.Recipes).Select(r => new List<Recipe>(r.Recipes)).FirstOrDefaultAsync();
-
+        Recipes = await _ctx.Recipes.Where(r => r.Status == Status.Approved)
+            .Include(r => r.Category.Where(c => c.Name == category))
+            .Where(r => r.Category.Any(c => c.Name == category))
+            .ToListAsync();
          Category = category;        
     }
 }
