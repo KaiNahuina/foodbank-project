@@ -4,7 +4,6 @@ using System.Security.Claims;
 using Foodbank_Project.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 #endregion
 
@@ -87,7 +86,7 @@ public static class SeedData
                 "Beat the whites till stiff and dry\nCut and fold into first mixture\nHeat the omelette pan, add the butter, turn the pan so that the" +
                 "melted butter covers teh sides and the bottom of the pan.\nTurn in mixture, spread evenly, turn down the fire and allow the omelette to cook slowly\n" +
                 "Turn the pan so that the omelette will brown evenly",
-            Categories = new List<RecipeCategory> { vegetarianCategory, },
+            Categories = new List<RecipeCategory> { vegetarianCategory },
             Notes = "",
             Serves = "9 People",
             Image = await File.ReadAllBytesAsync("./wwwroot/img/omelette.jpg")
@@ -407,7 +406,8 @@ public static class SeedData
         await roleManager.CreateAsync(new IdentityRole("FoodbanksAdmin")); // unlimited access to all foodbanks
         await roleManager.CreateAsync(new IdentityRole("UsersAdmin")); // unlimited access to users
         await roleManager.CreateAsync(new IdentityRole("RecipesAdmin")); // unlimited access to recipes
-        await roleManager.CreateAsync(new IdentityRole("LoggingAdmin")); // unlimited access to logging, not implemented 
+        await roleManager.CreateAsync(
+            new IdentityRole("LoggingAdmin")); // unlimited access to logging, not implemented 
         await roleManager.CreateAsync(new IdentityRole("ApprovalAdmin")); // unlimited access to approval/denial
         await roleManager.CreateAsync(new IdentityRole("NeedsAdmin")); // unlimited access to needs
     }

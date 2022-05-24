@@ -1,9 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
+#region
+
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Foodbank_Project.Pages.Recipes
-{
-    public class ThankyouModel : PageModel
-    {
-    }
-}
+#endregion
+
+namespace Foodbank_Project.Pages.Recipes;
+
+public class ThankyouModel : PageModel
+{}

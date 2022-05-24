@@ -1,13 +1,13 @@
 #region
 
 using Foodbank_Project.Data;
-using Foodbank_Project.Models;
 using Foodbank_Project.Util;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
+using Location = Foodbank_Project.Models.Location;
 
 #endregion
 
@@ -17,9 +17,9 @@ namespace Foodbank_Project.Pages.Admin;
 public class LocationModel : PageModel
 {
     private readonly ApplicationContext _ctx;
+    private readonly ILogger<LocationModel> _logger;
 
     public string? Action;
-    private readonly ILogger<LocationModel> _logger;
 
     public LocationModel(ApplicationContext ctx, ILogger<LocationModel> logger)
     {
@@ -27,7 +27,7 @@ public class LocationModel : PageModel
         _logger = logger;
     }
 
-    [BindProperty] public Models.Location? Location { get; set; }
+    [BindProperty] public Location? Location { get; set; }
     [BindProperty] public double Lat { get; set; }
     [BindProperty] public double Lng { get; set; }
 
@@ -39,12 +39,8 @@ public class LocationModel : PageModel
             var id = int.Parse(RouteData.Values["id"] as string ?? "");
 
             if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-            {
                 if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", id.ToString()))
-                {
                     return Forbid();
-                }
-            }
 
             var locations = from f in _ctx.Locations where f.LocationId == id select f;
 
@@ -54,25 +50,19 @@ public class LocationModel : PageModel
             Lng = Location.Coord.X;
             return Page();
         }
-        else
-        {
-            if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-            {
-                if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", Request.Query["target"]))
-                {
-                    return Forbid();
-                }
-            }
 
-            Location = new Models.Location
+        if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
+            if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", Request.Query["target"]))
+                return Forbid();
+
+        Location = new Location
+        {
+            Foodbank = new Models.Foodbank
             {
-                Foodbank = new Models.Foodbank
-                {
-                    FoodbankId = int.Parse(Request.Query["target"])
-                }
-            };
-            return Page();
-        }
+                FoodbankId = int.Parse(Request.Query["target"])
+            }
+        };
+        return Page();
     }
 
 
@@ -83,17 +73,13 @@ public class LocationModel : PageModel
         {
             case "Delete":
                 if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-                {
                     if (!User.IsInRole("FoodbankAdmin") &&
                         !User.HasClaim("FoodbankClaim", Location?.Foodbank?.FoodbankId.ToString()))
-                    {
                         return Forbid();
-                    }
-                }
 
 
                 if (Location != null) _ctx.Remove(Location);
-                
+
                 _logger.Log(LogLevel.Warning, "User {UserName} deleted location {Name} for foodbank {Foodbank}",
                     User.Identity?.Name, Location?.Name, Location?.Foodbank?.Name);
 
@@ -101,13 +87,9 @@ public class LocationModel : PageModel
             case "Create":
             {
                 if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-                {
                     if (!User.IsInRole("FoodbankAdmin") &&
                         !User.HasClaim("FoodbankClaim", Location?.Foodbank?.FoodbankId.ToString()))
-                    {
                         return Forbid();
-                    }
-                }
 
                 if (!ModelState.IsValid) return Page();
                 if (Location != null)
@@ -116,7 +98,7 @@ public class LocationModel : PageModel
                     Location = FoodbankHelpers.ApplySlug(Location);
                     _ctx.Locations?.Update(Location);
                 }
-                
+
                 _logger.Log(LogLevel.Information, "User {UserName} created location {Name} for foodbank {Foodbank}",
                     User.Identity?.Name, Location?.Name, Location?.Foodbank?.Name);
 
@@ -125,13 +107,9 @@ public class LocationModel : PageModel
             case "Update":
             {
                 if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-                {
                     if (!User.IsInRole("FoodbankAdmin") &&
                         !User.HasClaim("FoodbankClaim", Location?.Foodbank?.FoodbankId.ToString()))
-                    {
                         return Forbid();
-                    }
-                }
 
                 if (!ModelState.IsValid) return Page();
                 if (Location != null)
@@ -140,7 +118,7 @@ public class LocationModel : PageModel
                     Location.Coord = new Point(Lng, Lat) { SRID = 4326 };
                     _ctx.Locations?.Update(Location);
                 }
-                
+
                 _logger.Log(LogLevel.Information, "User {UserName} updated location {Name} for foodbank {Foodbank}",
                     User.Identity?.Name, Location?.Name, Location?.Foodbank?.Name);
 

@@ -2,7 +2,6 @@
 
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +15,6 @@ public class IndexModel : PageModel
     private readonly ApplicationContext _ctx;
 
     public IList<Models.Foodbank>? Foodbanks;
-    public IList<Recipe>? Recipes;
 
     public bool HasNextPage;
     public bool HasPrevPage;
@@ -24,6 +22,7 @@ public class IndexModel : PageModel
     public string? OrderBy;
     public string? OrderDirection;
     public new int Page;
+    public IList<Recipe>? Recipes;
     public string? Search;
     public int TotalItems;
 
@@ -36,41 +35,24 @@ public class IndexModel : PageModel
         [FromQuery(Name = "OrderDirection")] string? orderDirection,
         [FromQuery(Name = "Search")] string? search, [FromQuery(Name = "Page")] string? page)
     {
-        
         ///// DO SOME REDIRECTION LOGIC!!
         if (!User.IsInRole("SiteAdmin"))
         {
-            if(User.IsInRole("ApprovalAdmin"))
-            {
-                return RedirectToPage("./Index");
-            }
+            if (User.IsInRole("ApprovalAdmin")) return RedirectToPage("./Index");
             if (User.IsInRole("FoodbankAdmin"))
             {
                 var id = User.Claims.Where(c => c.Type == "FoodbankClaim").Select(c => c.Value).First();
                 return RedirectToPage("./Foodbank",
-                    new { id =  id});
+                    new { id });
             }
-            if(User.IsInRole("FoodbanksAdmin"))
-            {
-                return RedirectToPage("./Foodbanks");
-            }
-            if(User.IsInRole("UsersAdmin"))
-            {
-                return RedirectToPage("./Users");
-            }
-            if(User.IsInRole("RecipesAdmin"))
-            {
-                return RedirectToPage("./Recipes");
-            }
-            if(User.IsInRole("NeedsAdmin"))
-            {
-                return RedirectToPage("./Needs");
-            }
-            
+
+            if (User.IsInRole("FoodbanksAdmin")) return RedirectToPage("./Foodbanks");
+            if (User.IsInRole("UsersAdmin")) return RedirectToPage("./Users");
+            if (User.IsInRole("RecipesAdmin")) return RedirectToPage("./Recipes");
+            if (User.IsInRole("NeedsAdmin")) return RedirectToPage("./Needs");
         }
-        
-        
-        
+
+
         if (!User.IsInRole("SiteAdmin") && !User.IsInRole("ApprovalAdmin")) return Forbid();
         OrderBy = string.IsNullOrEmpty(orderBy) ? "Locations" : orderBy;
         OrderDirection = string.IsNullOrEmpty(orderDirection) ? "Desc" : orderDirection;

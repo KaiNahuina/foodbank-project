@@ -14,20 +14,17 @@ public class DishModel : PageModel
 {
     private readonly ApplicationContext _ctx;
 
-    public Recipe Recipe { get; set; }
-
     public DishModel(ApplicationContext ctx)
     {
         _ctx = ctx;
     }
 
+    public Recipe Recipe { get; set; }
+
     public async Task<IActionResult> OnGetAsync([FromRoute] int id)
     {
         Recipe = await _ctx.Recipes.Where(r => r.RecipeId == id).FirstAsync();
-        if (Recipe.Status != Status.Approved)
-        {
-            return Forbid();
-        }
+        if (Recipe.Status != Status.Approved) return Forbid();
 
         return Page();
     }

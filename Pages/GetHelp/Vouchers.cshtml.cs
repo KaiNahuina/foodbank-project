@@ -7,5 +7,4 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Foodbank_Project.Pages.GetHelp;
 
 public class VoucherModel : PageModel
-{
-}
+{}

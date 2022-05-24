@@ -16,5 +16,4 @@ namespace Foodbank_Project.Pages.Admin.Account;
 ///     directly from your code. This API may change or be removed in future releases.
 /// </summary>
 public class AccessDeniedModel : PageModel
-{
-}
+{}

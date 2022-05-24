@@ -1,13 +1,14 @@
-﻿using Foodbank_Project.Data;
+﻿#region
+
+using Foodbank_Project.Data;
 using Foodbank_Project.Models;
 using Foodbank_Project.Models.External;
-using Foodbank_Project.Util;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using NetTopologySuite.Geometries;
-using Location = Foodbank_Project.Models.Location;
+
+#endregion
 
 namespace Foodbank_Project.Pages.Admin;
 
@@ -17,18 +18,18 @@ public class NeedModel : PageModel
     private readonly ApplicationContext _ctx;
     private readonly ILogger<Needs> _loger;
 
+    public NeedModel(ApplicationContext ctx, ILogger<Needs> logger)
+    {
+        _ctx = ctx;
+        _loger = logger;
+    }
+
     public string? Action { get; set; }
 
     public string? Name { get; set; }
     public int? Target { get; set; }
 
     public List<Need>? Needs { get; set; }
-
-    public NeedModel(ApplicationContext ctx, ILogger<Needs> logger)
-    {
-        _ctx = ctx;
-        _loger = logger;
-    }
 
     public async Task<IActionResult> OnGetAsync([FromQuery(Name = "Action")] string? action)
     {
@@ -41,12 +42,8 @@ public class NeedModel : PageModel
                 Target = int.Parse(Request.Query["Target"]);
 
                 if (!User.IsInRole("FoodbanksAdmin") || !User.IsInRole("SiteAdmin"))
-                {
                     if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", Target.ToString()))
-                    {
                         return Unauthorized();
-                    }
-                }
 
                 Needs = await _ctx.Needs!.AsNoTracking().Where(n => n.NeedStr!.Contains(Name))
                     .OrderByDescending(n => n.Foodbanks.Count).Take(25).ToListAsync();
@@ -56,12 +53,8 @@ public class NeedModel : PageModel
             {
                 Target = int.Parse(Request.Query["Target"]);
                 if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-                {
                     if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", Target.ToString()))
-                    {
                         return Forbid();
-                    }
-                }
 
                 break;
             }
@@ -79,12 +72,8 @@ public class NeedModel : PageModel
             {
                 Target = int.Parse(Request.Form["Target"]);
                 if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-                {
                     if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", Target.ToString()))
-                    {
                         return Forbid();
-                    }
-                }
 
                 var id = int.Parse(Request.RouteValues["id"]?.ToString());
                 var foodbank = await _ctx.Foodbanks!.Where(f => f.FoodbankId == Target)
@@ -94,7 +83,7 @@ public class NeedModel : PageModel
                 foodbank.Needs!.Clear();
 
                 await _ctx.SaveChangesAsync();
-                
+
                 _loger.Log(LogLevel.Information, "User {UserName} removed need {Need} id from foodbank {Foodbank} id",
                     User.Identity?.Name, id, foodbank.Name);
 
@@ -105,12 +94,8 @@ public class NeedModel : PageModel
             {
                 Target = int.Parse(Request.Form["Target"]);
                 if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-                {
                     if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", Target.ToString()))
-                    {
                         return Forbid();
-                    }
-                }
 
                 var id = int.Parse(Request.RouteValues["id"]?.ToString());
                 var foodbank = await _ctx.Foodbanks!.Where(f => f.FoodbankId == Target).Include(f => f.Needs)
@@ -119,7 +104,7 @@ public class NeedModel : PageModel
                 var need = await _ctx.Needs!.Where(n => n.NeedId == id).FirstAsync();
 
                 foodbank.Needs!.Add(need);
-                
+
                 _loger.Log(LogLevel.Information, "User {UserName} added need {Need} id from foodbank {Foodbank}",
                     User.Identity?.Name, id, foodbank.Name);
 
@@ -132,12 +117,8 @@ public class NeedModel : PageModel
             {
                 Target = int.Parse(Request.Form["Target"]);
                 if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-                {
                     if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", Target.ToString()))
-                    {
                         return Forbid();
-                    }
-                }
 
                 Name = Request.Form["Name"];
                 var foodbank = await _ctx.Foodbanks!.Where(f => f.FoodbankId == Target).Include(f => f.Needs)
@@ -149,7 +130,7 @@ public class NeedModel : PageModel
                 });
 
                 await _ctx.SaveChangesAsync();
-                
+
                 _loger.Log(LogLevel.Information, "User {UserName} added need {Need} from foodbank {Foodbank}",
                     User.Identity?.Name, Name, foodbank.Name);
 

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
+using Location = Foodbank_Project.Models.Location;
 
 #endregion
 
@@ -22,13 +23,13 @@ public class FoodbankModel : PageModel
 
     public string? Action;
 
-    public IList<Models.Location>? Locations;
-
-    public IList<Models.Need>? Needs;
-
     public bool HasNextPage;
     public bool HasPrevPage;
+
+    public IList<Location>? Locations;
     public int MaxPages;
+
+    public IList<Need>? Needs;
     public string? OrderBy;
     public string? OrderDirection;
     public new int Page;
@@ -56,12 +57,8 @@ public class FoodbankModel : PageModel
         {
             var id = int.Parse(RouteData.Values["id"] as string ?? "");
             if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-            {
                 if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", id.ToString()))
-                {
                     return Forbid();
-                }
-            }
 
             OrderBy = string.IsNullOrEmpty(orderBy) ? "Name" : orderBy;
             OrderDirection = string.IsNullOrEmpty(orderDirection) ? "Desc" : orderDirection;
@@ -165,18 +162,15 @@ public class FoodbankModel : PageModel
             case "Delete":
 
                 if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-                {
                     if (!User.IsInRole("FoodbankAdmin") &&
                         !User.HasClaim("FoodbankClaim", Foodbank?.FoodbankId.ToString()))
-                    {
                         return Forbid();
-                    }
-                }
 
                 if (Foodbank != null) _ctx.Remove(Foodbank);
-                
-                _logger.Log(LogLevel.Warning, "User {UserName} deleted foodbank {Name}", User.Identity?.Name, Foodbank?.Name);
-                
+
+                _logger.Log(LogLevel.Warning, "User {UserName} deleted foodbank {Name}", User.Identity?.Name,
+                    Foodbank?.Name);
+
                 break;
             case "Create":
             {
@@ -189,20 +183,18 @@ public class FoodbankModel : PageModel
                     Foodbank = FoodbankHelpers.ApplyFinalize(Foodbank);
                     _ctx.Foodbanks?.Update(Foodbank);
                 }
-                _logger.Log(LogLevel.Information, "User {UserName} created foodbank {Name}", User.Identity?.Name, Foodbank?.Name);
+
+                _logger.Log(LogLevel.Information, "User {UserName} created foodbank {Name}", User.Identity?.Name,
+                    Foodbank?.Name);
 
                 break;
             }
             case "Update":
             {
                 if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-                {
                     if (!User.IsInRole("FoodbankAdmin") &&
                         !User.HasClaim("FoodbankClaim", Foodbank?.FoodbankId.ToString()))
-                    {
                         return Forbid();
-                    }
-                }
 
                 if (!ModelState.IsValid) return Page();
                 if (Foodbank != null)
@@ -211,26 +203,25 @@ public class FoodbankModel : PageModel
                     _ctx.Foodbanks?.Update(Foodbank);
                 }
 
-                _logger.Log(LogLevel.Information, "User {UserName} updated foodbank {Name}", User.Identity?.Name, Foodbank?.Name);
-                
+                _logger.Log(LogLevel.Information, "User {UserName} updated foodbank {Name}", User.Identity?.Name,
+                    Foodbank?.Name);
+
                 break;
             }
             case "Approve":
             {
                 if (!User.IsInRole("ApprovalAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
                 if (!ModelState.IsValid) return Page();
-                int id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
+                var id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
 
-                Models.Foodbank? fb = await _ctx.Foodbanks.Where(f => f.FoodbankId == id).FirstOrDefaultAsync();
+                var fb = await _ctx.Foodbanks.Where(f => f.FoodbankId == id).FirstOrDefaultAsync();
 
-                if (fb != null)
-                {
-                    fb.Status = Status.Approved;
-                }
+                if (fb != null) fb.Status = Status.Approved;
 
                 await _ctx.SaveChangesAsync();
-                
-                _logger.Log(LogLevel.Information, "User {UserName} approved foodbank {Name}", User.Identity?.Name, Foodbank?.Name);
+
+                _logger.Log(LogLevel.Information, "User {UserName} approved foodbank {Name}", User.Identity?.Name,
+                    Foodbank?.Name);
 
                 return RedirectToPage("/Admin/Index");
             }
@@ -239,19 +230,17 @@ public class FoodbankModel : PageModel
             {
                 if (!User.IsInRole("ApprovalAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
                 if (!ModelState.IsValid) return Page();
-                int id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
+                var id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
 
-                Models.Foodbank? fb = await _ctx.Foodbanks.Where(f => f.FoodbankId == id).FirstOrDefaultAsync();
+                var fb = await _ctx.Foodbanks.Where(f => f.FoodbankId == id).FirstOrDefaultAsync();
 
-                if (fb != null)
-                {
-                    fb.Status = Status.Denied;
-                }
+                if (fb != null) fb.Status = Status.Denied;
 
                 await _ctx.SaveChangesAsync();
 
-                _logger.Log(LogLevel.Information, "User {UserName} denied foodbank {Name}", User.Identity?.Name, Foodbank?.Name);
-                
+                _logger.Log(LogLevel.Information, "User {UserName} denied foodbank {Name}", User.Identity?.Name,
+                    Foodbank?.Name);
+
                 return RedirectToPage("/Admin/Index");
             }
         }

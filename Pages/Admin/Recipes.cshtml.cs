@@ -1,6 +1,7 @@
 #region
 
 using Foodbank_Project.Data;
+using Foodbank_Project.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -15,14 +16,14 @@ public class RecipesModel : PageModel
 {
     private readonly ApplicationContext _ctx;
 
-    public IList<Models.Recipe>? Recipes;
-
     public bool HasNextPage;
     public bool HasPrevPage;
     public int MaxPages;
     public string? OrderBy;
     public string? OrderDirection;
     public new int Page;
+
+    public IList<Recipe>? Recipes;
     public string? Search;
     public int TotalItems;
 
