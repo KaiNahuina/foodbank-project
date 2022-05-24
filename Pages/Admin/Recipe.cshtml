@@ -1,0 +1,217 @@
+﻿@page "{id:int}"
+@using Foodbank_Project.Models
+@model RecipeModel
+@{
+    ViewData["Title"] = "Location - Admin";
+}
+
+@if (Model.Action != "Create")
+{
+    <h1 class="text-start">Edit Location</h1>
+}
+else
+{
+    <h1 class="text-start">Create Location</h1>
+}
+
+<div class="flex-fill bg-white shadow-lg p-3">
+
+@* Info *@
+<form method="post" class="container" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col">
+            <label>ID</label>
+            <span asp-validation-for="Recipe!.RecipeId" class="text-danger"></span>
+        </div>
+        <div class="col-8">
+            <input class="form-control" readonly value="@Model.Recipe?.RecipeId" asp-for="Recipe!.RecipeId"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Recipe!.Name"></label>
+            <span asp-validation-for="Recipe!.Name" class="text-danger"></span>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Recipe.Name" asp-for="Recipe!.Name"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Recipe!.Serves"></label>
+            <span asp-validation-for="Recipe!.Serves" class="text-danger"></span>
+        </div>
+        <div class="col-8">
+            <input class="form-control" value="@Model.Recipe.Serves" asp-for="Recipe!.Serves"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Recipe!.Ingredients"></label>
+            <span asp-validation-for="Recipe!.Ingredients" class="text-danger"></span>
+        </div>
+        <div class="col-8">
+            <textarea class="form-control" value="@Model.Recipe.Ingredients" asp-for="Recipe!.Ingredients"></textarea><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Recipe!.Method"></label>
+            <span asp-validation-for="Recipe!.Method" class="text-danger"></span>
+        </div>
+        <div class="col-8">
+            <textarea class="form-control" value="@Model.Recipe.Method" asp-for="Recipe!.Method"></textarea><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Recipe!.Notes"></label>
+            <span asp-validation-for="Recipe!.Notes" class="text-danger"></span>
+        </div>
+        <div class="col-8">
+            <textarea class="form-control" value="@Model.Recipe.Notes" asp-for="Recipe!.Notes"></textarea><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Upload"></label>
+            <span asp-validation-for="Upload" class="text-danger"></span>
+        </div>
+        <div class="col-8">
+            @try
+            {
+                <img src="@($"data:Images/jpg;base64,{Convert.ToBase64String(@Model.Recipe.Image ?? throw new InvalidOperationException())}")" style="width:100%" alt="@Model.Recipe.Name" />
+
+            }
+            catch
+            {
+
+                <img src="/img/no-image-available.png" alt="No Image available" />
+
+            }
+            <input class="form-control" type="file" asp-for="Upload"/><br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <label asp-for="Recipe!.Status"></label>
+            <span asp-validation-for="Recipe!.Status" class="text-danger"></span>
+        </div>
+        <div class="col-8 mb-4">
+            <select class="form-select" asp-for="Recipe!.Status" asp-items="Html.GetEnumSelectList<Status>()">
+                <option selected="selected" value="@Model.Recipe.Status"></option>
+            </select>
+        </div>
+    </div>
+
+
+    <div class="d-flex justify-content-end flex-row ">
+        @if (Model.Action == "Create")
+        {
+            <button name="Action" value="Create" type="submit" class="btn btn-success me-3">Create</button>
+            <a asp-page="./Recipes"><button class="btn btn-primary" type="button">Cancel</button></a>
+        }
+        else
+        {
+            <button name="Action" value="Update" type="submit" class="btn btn-success me-3">Save</button>
+            <button name="Action" value="Delete" type="submit" class="btn btn-danger me-3">Delete</button>
+            <a asp-page="./Recipes"><button class="btn btn-primary" type="button">Cancel</button></a>
+        }
+    </div>
+
+</form>
+<h1 class="text-start">Categories</h1>
+
+    <div class="bg-light shadow-lg" id="needs">
+        <div class="p-3 d-flex flex-row align-items-center justify-content-between">
+            <div>
+                <form method="get" class="d-flex flex-row align-items-center" asp-fragment="needs">
+                    <input class="me-3" placeholder="Search columns..." name="Search" value="@Model.Search"/>
+                    <button type="submit" class="btn btn-success me-3">Search</button>
+                </form>
+            </div>
+            <div>
+                <form method="get" asp-page="./RecipeCategory" asp-route-id="0" asp-fragment="needs">
+                    <input type="hidden" name="Target" value="@Model.Recipe!.RecipeId"/>
+                    <button type="submit" class="btn btn-success">Add New</button>
+                </form>
+            </div>
+            <div class="d-flex flex-row align-items-center justify-content-between">
+                @{
+                    var hasPrev = Model.HasPrevPage ? "" : "disabled";
+                    var hasNext = Model.HasNextPage ? "" : "disabled";
+                }
+                <form method="get" asp-fragment="needs">
+                    <input name="OrderBy" type="hidden" value="@Model.OrderBy">
+                    <input name="OrderDirection" type="hidden" value="@Model.OrderDirection">
+                    <input name="Search" type="hidden" value="@Model.Search">
+                    <input name="Page" type="hidden" value="@(Model.Page - 1)">
+                    <button class="btn btn-success p-2 me-3 @hasPrev">Previous</button>
+                </form>
+                <form method="get" asp-fragment="needs">
+                    <input name="OrderBy" type="hidden" value="@Model.OrderBy">
+                    <input name="OrderDirection" type="hidden" value="@Model.OrderDirection">
+                    <input name="Search" type="hidden" value="@Model.Search">
+                    <input name="Page" type="hidden" value="@(Model.Page + 1)">
+                    <button class="btn btn-success p-2 me-3 @hasNext">Next</button>
+                </form>
+                <span>Page: @Html.DisplayFor(model => model.Page) of @Html.DisplayFor(model => model.MaxPages) - </span>
+                <span>Total: @Html.DisplayFor(model => model.TotalItems)</span>
+            </div>
+        </div>
+        <table class="table table-striped table-hover w-100">
+            <thead>
+            <tr>
+                @{
+                    var direction = Model.OrderDirection == "Asc" ? "Desc" : "Asc";
+                    var arrow = direction == "Asc" ? "&darr;" : "&uarr;";
+                }
+
+                @switch (Model.OrderBy)
+                {
+                    case "Name":
+                        <th scope="col" style="width: 100%;">
+                            <a asp-route-Search="@Model.Search" asp-fragment="needs" asp-route-OrderBy="Name" asp-route-OrderDirection="@direction">Name @Html.Raw(arrow)</a>
+                        </th>
+                        break;
+                    default:
+                        <th scope="col" style="width: 100%;">
+                            <a asp-route-Search="@Model.Search" asp-fragment="needs" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
+                        </th>
+                        break;
+                }
+                <th scope="col" style="width: 100%;">Action</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            @if (Model.Categories?.Count != 0)
+            {
+                @foreach (var item in Model.Categories!)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            <form method="post" asp-page="./RecipeCategory" asp-route-id="@item.RecipeCategoryId">
+                                <input type="hidden" name="Target" value="@Model.Recipe!.RecipeId"/>
+                                <button type="submit" name="Action" value="Remove" class="btn btn-danger">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5">Nothing to display...</td>
+                </tr>
+            }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts
+{<partial name="_ValidationScriptsPartial"/>}
