@@ -260,23 +260,6 @@ public static class SeedData
         {
             Name = "Nut Cake",
             RecipeId = 13,
-            Ingredients = "1 1/2 cup sugar\n1 cup nut meats, chopped\n1/2 cup of butter\n2 teaspoon baking powder\n3 eggs, separated\n" +
-            "3/4 cups milk\n 2 1/2 cups flour\na little salt",
-            Status = Status.Approved,
-            Method = "Rub butter and sugar to a light, white cream\nAdd egg yolks and beat until smooth\nSift flour, salt and baking powder and " +
-            "add, together with milk, a little at a time, beating well\nFold in chopped nuts and stiffly beaten egg whites\nPour into 2 nine inch cake pans or one loaf pan\n" +
-            "Bake in medium oven (350-f/176-c) for 30 minutes for layer cake or 1 hour for loaf cake\nUse hickory nuts, black walnuts or shellbarks",
-            Category = new List<RecipeCategory> { DessertsCategory, vegetarianCategory },
-            Notes = "",
-            Serves = "4 People",
-            Image = await File.ReadAllBytesAsync("./wwwroot/img/Nut.jpg")
-        }).Entity;
-
-
-        _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 14) ?? ctx.Recipes.Add(new Recipe
-        {
-            Name = "Nut Cake",
-            RecipeId = 14,
             Ingredients = "1 1/2 cup sugar\n 1 cup nut meats, chopped\n 1 / 2 cup butter\n 2 teaspoon baking powder\n 3 eggs, separated\n 3 / 4 cup milk\n 2 1 / 2 cup flour\n a little salt\n",
             Status = Status.Approved,
             Method = "Rub butter and sugar to a light, white cream.\n Add egg yolks and beat until smooth\n Sift flour, salt and baking powder and add, together with milk, a little at a time, beating well.\n Fold in chopped nuts and stiffly beaten egg whites.\n Pour into 2 nine inch cake pans or 1 loaf pan.\n Bake in medium oven (350-f) for 30 minutes for layer cake or 1 hour for loaf cake.\n Use hickory nuts, black walnuts or shellbarks.",
@@ -286,11 +269,11 @@ public static class SeedData
             Image = await File.ReadAllBytesAsync("./wwwroot/img/Nut Cake.jpg")
         }).Entity;
 
-        _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 15) ?? ctx.Recipes.Add(new Recipe
+        _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 14) ?? ctx.Recipes.Add(new Recipe
         {
-            Name = "NoPorkQL",
-            RecipeId = 15,
-            Ingredients = "1 butter, nut squash\n 1 onion\n 1 stick goat cheese\n small sized pasta, (bowties, spirals)\n fresh basil\n candied pecans or walnuts",
+            Name = "Vegetable Pasta",
+            RecipeId = 14,
+            Ingredients = "1 butternut squash\n 1 onion\n 1 stick goat cheese\n small sized pasta, (bowties, spirals)\n fresh basil\n candied pecans or walnuts",
             Status = Status.Approved,
             Method = "Dice butternut squash, fennel and brown onion.\n Add to baking dish with generous amount of olive oil and mixed herbs mix ingredients.\n Place in oven at 425f for 60 minutes.\n Let stick of goat cheese sit at room temperature (or warm slightly on oven top).\n Cook pasta.\n Add goat cheese to bottom of mixing bowl, add cooked fresh pasta.\n The heat will help melt cheese.\n Add basil and pecans and mix.\n Add cooked vegetables and mix.",
             Category = new List<RecipeCategory> { vegetarianCategory },
@@ -299,10 +282,10 @@ public static class SeedData
             Image = await File.ReadAllBytesAsync("./wwwroot/img/NoPorkQL.jpg")
         }).Entity;
 
-        _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 16) ?? ctx.Recipes.Add(new Recipe
+        _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 15) ?? ctx.Recipes.Add(new Recipe
         {
             Name = "Oatmeal Porridge",
-            RecipeId = 16,
+            RecipeId = 15,
             Ingredients = "oatmeal\nwater\nmilk\nsalt\ngolden syrup",
             Status = Status.Approved,
             Method = "Boil some water with a little salt in it, sprinkle oatmeal in slowly, stirring gently for 15 or 20 minutes until it is thick enough.\nPour it at once on to the plates from which it is to be eaten, and serve with cold milk or a little syrup or your favourite fruit.",
@@ -312,10 +295,10 @@ public static class SeedData
             Image = await File.ReadAllBytesAsync("./wwwroot/img/Oatmeal Porridge.jpg")
         }).Entity;
 
-        _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 17) ?? ctx.Recipes.Add(new Recipe
+        _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 16) ?? ctx.Recipes.Add(new Recipe
         {
             Name = "Potatoes Anna",
-            RecipeId = 17,
+            RecipeId = 16,
             Ingredients = "1 cup cooked diced potatoes\n1/2 teaspoon celery salt\n2 hard-cooked eggs\n1/4 teaspoon onion salt\n1 cup thin white sauce",
             Status = Status.Approved,
             Method = "Place alternate layers of diced cooked potatoes and sliced hard-cooked eggs in a baking dish.\nSeason.\nPour a thin white sauce over all of this.\nPlace in a moderate oven fifteen \nminutes.",
@@ -325,10 +308,10 @@ public static class SeedData
             Image = await File.ReadAllBytesAsync("./wwwroot/img/Potatoes Anna.jpg")
         }).Entity;
 
-        _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 18) ?? ctx.Recipes.Add(new Recipe
+        _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 17) ?? ctx.Recipes.Add(new Recipe
         {
             Name = "Fish Chowder",
-            RecipeId = 18,
+            RecipeId = 17,
             Ingredients = "10 pound fish, (about 1 gallon, diced)\n5 1/2 quart hot fish stock\n1/2 pound salt pork, (1 cup, diced)\n6 onions, sliced\n1 teaspoon pepper\n3 tablespoon salt, (1 1/2 ounces)\n1/4 cup flour, (1 ounce)\n3 quart diced potatoes\n3 quart evaporated milk\n12 hard cooked eggs, chopped, may be omitted",
             Status = Status.Approved,
             Method = "Halibut, haddock or cod are best.\nRemove bone and cut fish into small pieces.\nCook head and back bone in 6 quarts boiling water 15 minutes.\nStrain.\nThere should be 5 1/2 quarts fish stock.\nFry salt pork and onions in soup kettle until onions are slightly brown.\nRemove pork and onions and keep hot.\nArrange layer of fish in bottom of kettle and sprinkle with salt, pepper and flour.\nAdd a layer of potatoes, and then the onion and pork.\nRepeat.\nAdd the fish stock and cook slowly without stirring until potatoes and fish are done, about 45 minutes.\nAdd scalded milk.\n Garnish each serving with chopped egg.",
@@ -338,10 +321,10 @@ public static class SeedData
             Image = await File.ReadAllBytesAsync("./wwwroot/img/Fish Chowder.jpg")
         }).Entity;
 
-        _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 19) ?? ctx.Recipes.Add(new Recipe
+        _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 18) ?? ctx.Recipes.Add(new Recipe
         {
             Name = "Cod Fish Stew",
-            RecipeId = 19,
+            RecipeId = 18,
             Ingredients = "1 1/2 pound fresh or thawed, frozen cod fillets\n1/4 cup green peppers, diced (optional)\n3 strips bacon\n4 teaspoon salt\n3 medium onions, sliced\n1/4 teaspoon pepper\n1 1/2 pound peeled white potatoes, cut in 3/4 inch cubes\n3 cup boiling water\n1 No. 2-1/2 can tomatoes\n1/2 teaspoon celery seed, or 1/2 cup diced celery\n2 tablespoon parsley, minced\n3 large peeled carrots, cut in 3/4 inch cubes",
             Status = Status.Approved,
             Method = "Saute bacon in deep kettle or dutch oven until lightly browned; then set bacon aside.\nIn same kettle, saute onions until tender.\nAdd fish cut in 2 1/2 inch pieces; add next seven ingredients.\nSimmer, covered, until vegetables are tender, about 25 minutes.\nAdd tomatoes, heat through.\nGarnish with parsley and bacon bits.In same kettle, saute onions until tender.\nAdd fish cut in 2 1/2 inch pieces; add next seven ingredients.\nSimmer, covered, until vegetables are tender, about 25 minutes.\nAdd tomatoes, heat through.\nGarnish with parsley and bacon bits.",
@@ -351,10 +334,10 @@ public static class SeedData
             Image = await File.ReadAllBytesAsync("./wwwroot/img/Cod Fish Stew.jpg")
         }).Entity;
 
-        _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 20) ?? ctx.Recipes.Add(new Recipe
+        _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 19) ?? ctx.Recipes.Add(new Recipe
         {
             Name = "Currant Jelly",
-            RecipeId = 20,
+            RecipeId = 19,
             Ingredients = "2 quart currants\nsugar",
             Status = Status.Approved,
             Method = "Pick over currants, but do not remove the stems.\n Wash and drain.\n Mash a few with a vegetable masher in the bottom of a porcelain - lined or granite kettle.\n Add more currants and mash.\n Continue adding currants until all are used.\n Bring to a boil slowly and let simmer without stirring until the currants appear white.\n Strain through a coarse strainer, and allow juice to drain through a jelly bag.\nMeasure the juice, and boil ten minutes. Gradually add an equal amount of heated sugar, stirring occasionally to prevent burning, and continue boiling until the test shows that the mixture has jelled. When filling sterilized glasses, place them in a pan containing a little boiling water.\nThis keeps the glasses from breaking when hot jelly is poured in. Fill and set the glasses of jelly aside to cool.\nCover with hot melted paraffin.",
