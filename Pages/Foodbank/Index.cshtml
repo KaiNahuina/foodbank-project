@@ -6,10 +6,6 @@
 <link rel="stylesheet" href="/css/Control.Geocoder.css" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css" />
 
-
-<script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
-<script src="/js/Control.Geocoder.js"></script>
-
 <div class="text-center ">
     <p>
         Disclaimer: Vouchers may be required to access the bank. <a class="button btn btn-sm btn-outline-success" asp-page="/GetHelp/Vouchers">Learn more here.</a>
@@ -104,6 +100,10 @@
             </div>
         </div>
     </div>
+</form>
+@section Scripts{
+    <script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
+    <script src="/js/Control.Geocoder.js"></script>
 
     <script type="text/javascript">
 
@@ -116,7 +116,7 @@
 
         var map = L.map('map').setView([ 54.596442,  -3.9], 6);
 
-        var locationMarker = L.marker([@Html.Raw(Model.Location?.Coord!.Y),@Html.Raw(Model.Location?.Coord?.X)], {icon:foodbankIcon}).bindPopup("<a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'>Click here for directions</a>").addTo(map);
+        var locationMarker = L.marker([@Html.Raw(Model.Location?.Coord!.Y),@Html.Raw(Model.Location?.Coord?.X)], {icon:foodbankIcon}).bindPopup("<a href='https://maps.google.com/?q= @Model.Location?.Coord!.Y , @Model.Location?.Coord!.X'>Click here for directions</a>").addTo(map);
 
         map.setView([@Html.Raw(Model.Location?.Coord?.Y),@Html.Raw(Model.Location?.Coord?.X)], 16);
 
@@ -139,4 +139,4 @@
         }).addTo(map);
 
     </script>
-</form>
+}

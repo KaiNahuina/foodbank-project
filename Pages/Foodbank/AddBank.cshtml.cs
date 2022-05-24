@@ -1,4 +1,4 @@
-#region
+﻿#region
 
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
@@ -6,6 +6,8 @@ using Foodbank_Project.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NetTopologySuite.Geometries;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 
 #endregion
 
@@ -22,11 +24,16 @@ public class AddBankModel : PageModel
     }
 
     [BindProperty] public Models.Foodbank Foodbank { get; set; }
-    [BindProperty] public float Lat { get; set; }
-    [BindProperty] public float Lng { get; set; }
+   
+    [BindProperty]
+    [Range(0, 9, ErrorMessage = "SOME STUFF HERE")]
+    public float Lat { get; set; }
+   
+    [BindProperty]
+    [Required(ErrorMessage = "No Long")]
+    public float Lng { get; set; }
 
     [BindProperty] public bool Consent { get; set; }
-
     [BindProperty] public bool Confirm { get; set; }
 
     public void OnGet()
@@ -45,6 +52,8 @@ public class AddBankModel : PageModel
 
         Foodbank = FoodbankHelpers.ApplySlug(Foodbank);
         Foodbank = FoodbankHelpers.ApplyFinalize(Foodbank);
+        if (Foodbank.Country!.Equals("Country")) { Foodbank.Country = null; }
+        if (Foodbank.Network!.Equals("Network")) { Foodbank.Network = null; }
         ModelState.ClearValidationState(nameof(Pages.Foodbank));
         if (!TryValidateModel(Foodbank, nameof(Pages.Foodbank))) return Page();
 

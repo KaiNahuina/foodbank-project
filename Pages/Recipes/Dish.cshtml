@@ -48,17 +48,17 @@
         </div>
         <div class="col-sm-3">
             <label>Ingredients:</label><br />
-            <p class="text-box h4 overflow-hidden">@Html.Raw(Model.Recipe.Ingredients.Replace("\n", "<br/>"))</p>
+            <p class="text-box h4 overflow-hidden">@Html.Raw(Model.Recipe?.Ingredients!.Replace("\n", "<br/>"))</p>
         </div>
         <div class="col-sm-5">
             <label> Method: </label><br />
-            <p class="text-box h4 overflow-hidden">@Html.Raw(Model.Recipe.Method.Replace("\n", "<br/>"))</p>
+            <p class="text-box h4 overflow-hidden">@Html.Raw(Model.Recipe?.Method!.Replace("\n", "<br/>"))</p>
         </div>
     </div>
 </div>
 <div class="container mt-4 mb-4">
     <div class="row">
-           @if (!string.IsNullOrEmpty(Model.Recipe.Notes))
+           @if (!string.IsNullOrEmpty(Model.Recipe?.Notes))
             {
                 <label>Notes:</label><br />
                 <p class="text-box h4 overflow-hidden">@Model.Recipe.Notes</p>

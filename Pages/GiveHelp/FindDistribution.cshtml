@@ -7,9 +7,6 @@
 <link rel="stylesheet" href="/css/Control.Geocoder.css" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css" />
 
-<script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
-<script src="/js/Control.Geocoder.js"></script>
-
 <form method="post">
     <div class="container mt-5">
         <div class="row">
@@ -33,7 +30,7 @@
     <div id="Top5Section" class="container">
         <div class="row">
             <div class="col-8 d-grid mx-auto">
-                <h1>5 closest Donation Points</h1>
+                <h1>5 Closest Donation Points</h1>
                 <div class="text-box mt-2" id="FoodbankClosest1"></div>
                 <div class="text-box mt-2" id="FoodbankClosest2"></div>
                 <div class="text-box mt-2" id="FoodbankClosest3"></div>
@@ -42,7 +39,10 @@
             </div>
         </div>
     </div>
-
+</form>
+@section Scripts{
+    <script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
+    <script src="/js/Control.Geocoder.js"></script>
 
     <script type="text/javascript">
         const Top5section = document.getElementById('Top5Section');
@@ -141,4 +141,4 @@
         }).addTo(map);
 
     </script>
-</form>
+}

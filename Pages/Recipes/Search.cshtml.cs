@@ -24,7 +24,7 @@ public class SearchModel : PageModel
 
 
     public List<Recipe>? Recipes { get; set; }
-    public string Category { get; set; }
+    public string? Category { get; set; }
 
 
     public async Task OnGetAsync([FromRoute(Name = "catName")] string category)
