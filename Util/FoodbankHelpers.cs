@@ -52,7 +52,7 @@ public static class FoodbankHelpers
             Name = externalFoodbank.Name,
             AltName = externalFoodbank.AltName,
             Slug = externalFoodbank.Slug,
-            Phone = externalFoodbank.Phone?.Replace("%2F", " / ").Replace("or", " / "),
+            Phone = externalFoodbank.Phone?.Replace("%2F", " / ").Replace("or", " / ") ?? "",
             SecondaryPhone = externalFoodbank.SecondaryPhone,
             Email = externalFoodbank.Email,
             Address = externalFoodbank.Address?.Replace(externalFoodbank.Postcode!, ""),
@@ -81,7 +81,7 @@ public static class FoodbankHelpers
                 Name = item.Name,
                 Slug = item.Slug,
                 Postcode = item.Postcode,
-                Phone = item.Phone?.Replace("%2F", " / ").Replace("or", " / "),
+                Phone = item.Phone?.Replace("%2F", " / ").Replace("or", " / ") ?? "",
                 Foodbank = foodbank
             };
 
@@ -95,7 +95,7 @@ public static class FoodbankHelpers
                 Address = foodbank.Address,
                 Coord = foodbank.Coord,
                 Foodbank = foodbank,
-                Phone = foodbank.Phone,
+                Phone = foodbank.Phone ?? "",
                 Postcode = foodbank.Postcode,
                 Slug = foodbank.Slug
             });
