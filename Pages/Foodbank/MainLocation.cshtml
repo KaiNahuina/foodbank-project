@@ -183,7 +183,7 @@
 
         var map = L.map('map').setView([ 54.596442,  -3.9], 6);
 
-        var locationMarker = L.marker([@Html.Raw(Model.Foodbank.Coord!.Y),@Html.Raw(Model.Foodbank.Coord.X)], {icon:warehouseIcon}).bindPopup("<a href='https://maps.google.com/?q= @Model.Foodbank?.Coord!.Y , @Model.Foodbank?.Coord!.X'>Click here for directions</a>").addTo(map);
+        var locationMarker = L.marker([@Html.Raw(Model.Foodbank.Coord!.Y),@Html.Raw(Model.Foodbank.Coord.X)], {icon:warehouseIcon}).bindPopup("<a href='https://maps.google.com/?q= @Model.Foodbank?.Coord!.Y, @Model.Foodbank?.Coord!.X'>Click here for directions</a>").addTo(map);
 
         map.setView([@Html.Raw(Model.Foodbank.Coord.Y),@Html.Raw(Model.Foodbank.Coord.X)], 16);
 

@@ -29,6 +29,7 @@
             <tr>
                 <th class="imageCol" scope="col"><h1>Image</h1></th>
                 <th class="nameCol" scope="col"><h1>Name</h1></th>
+                <th class="nameCol" scope="col"><h1>Link</h1></th>
             </tr>
         </thead>
         <tbody>
@@ -53,6 +54,9 @@
                         <div class="h2">
                             @Html.DisplayFor(modelItem => item.Name)
                         </div>
+                    </td>
+                    <td>
+                        <a class="button btn btn-lg btn-outline-success" asp-page="./Dish" asp-route-id="@item.RecipeId">View Recipe</a>
                     </td>
                 </tr>
             }

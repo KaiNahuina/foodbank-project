@@ -65,6 +65,10 @@ a {
     color: #115649;
 }
 
+td{
+    text-align: center;
+}
+
 .button {
     background-color: #f4faed;
     border-radius: 5px; /*border curve*/
