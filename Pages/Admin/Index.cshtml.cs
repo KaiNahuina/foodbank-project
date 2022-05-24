@@ -2,6 +2,7 @@
 
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Foodbank_Project.Pages.Admin;
 
+[Authorize(Roles = "ApprovalAdmin,SiteAdmin")]
 public class IndexModel : PageModel
 {
     private readonly ApplicationContext _ctx;
@@ -56,7 +58,7 @@ public class IndexModel : PageModel
                 || n.FoodbankId.ToString() == Search);
         
         var recipeQue = (from f in _ctx.Recipes
-                select f).AsNoTracking().Where(f => f.Status == Status.UnConfirmed).Include(f => f.Category)
+                select f).AsNoTracking().Where(f => f.Status == Status.UnConfirmed).Include(f => f.Categories)
             .OrderByDescending(n => n.Name)
             .Where(n =>
                 string.IsNullOrEmpty(Search) || n.Name!.Contains(Search) || n.Ingredients!.Contains(Search) ||

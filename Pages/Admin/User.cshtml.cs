@@ -1,9 +1,11 @@
 #region
 
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
 using Foodbank_Project.Util;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,6 +16,7 @@ using NetTopologySuite.Geometries;
 
 namespace Foodbank_Project.Pages.Admin;
 
+[Authorize(Roles = "UsersAdmin,SiteAdmin")]
 public class UserModel : PageModel
 {
     private readonly UserManager<IdentityUser> _userManager;
@@ -48,6 +51,9 @@ public class UserModel : PageModel
     
     [DataType(DataType.Password)]
     [BindProperty] public string? Password { get; set; }
+    
+    [Required]
+    [BindProperty] public int FoodbankClaim { get; set; }
 
     public async Task OnGetAsync([FromQuery(Name = "Action")] string? action, [FromQuery(Name = "OrderBy")] string? orderBy,
         [FromQuery(Name = "OrderDirection")] string? orderDirection,
@@ -111,6 +117,14 @@ public class UserModel : PageModel
             Email = u.Email;
             Id = u.Id;
             Locked = await _userManager.IsLockedOutAsync(u);
+            foreach (var claim in await _userManager.GetClaimsAsync(u))
+            {
+                if (claim.Type == "FoodbankClaim")
+                {
+                    FoodbankClaim = int.Parse(claim.Value);
+                }
+            }
+            
         }
     }
 
@@ -166,6 +180,7 @@ public class UserModel : PageModel
 
                     return Page();
                 }
+                await _userManager.AddClaimAsync(u, new Claim("FoodbankClaim", FoodbankClaim.ToString()));
                 break;
             }
             case "Update":
@@ -194,7 +209,7 @@ public class UserModel : PageModel
                
                 
                 await _userManager.UpdateAsync(u);
-
+                await _userManager.AddClaimAsync(u, new Claim("FoodbankClaim", FoodbankClaim.ToString()));
                 break;
             }
 

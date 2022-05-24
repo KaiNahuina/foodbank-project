@@ -54,7 +54,7 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Recipe>()
-            .HasMany(l => l.Category)
+            .HasMany(l => l.Categories)
             .WithMany(f => f.Recipes);
 
 

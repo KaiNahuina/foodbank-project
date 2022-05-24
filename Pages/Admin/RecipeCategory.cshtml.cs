@@ -1,11 +1,14 @@
 ﻿using Foodbank_Project.Data;
 using Foodbank_Project.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace Foodbank_Project.Pages.Admin;
 
+
+[Authorize(Roles = "RecipeAdmin,SiteAdmin")]
 public class RecipeCategoryModel : PageModel
 {
     private readonly ApplicationContext _ctx;
@@ -52,10 +55,10 @@ public class RecipeCategoryModel : PageModel
                 Target = int.Parse(Request.Form["Target"]);
                 var id = int.Parse(Request.RouteValues["id"]?.ToString());
                 var recipe = await _ctx.Recipes!.Where(f => f.RecipeId == Target)
-                    .Include(f => f.Category.Where(n => n.RecipeCategoryId == id))
+                    .Include(f => f.Categories.Where(n => n.RecipeCategoryId == id))
                     .FirstAsync();
                 
-                recipe.Category!.Clear();
+                recipe.Categories!.Clear();
 
                 await _ctx.SaveChangesAsync();
                 
@@ -65,12 +68,12 @@ public class RecipeCategoryModel : PageModel
             {
                 Target = int.Parse(Request.Form["Target"]);
                 var id = int.Parse(Request.RouteValues["id"]?.ToString());
-                var recipe = await _ctx.Recipes!.Where(f => f.RecipeId == Target).Include(f => f.Category)
+                var recipe = await _ctx.Recipes!.Where(f => f.RecipeId == Target).Include(f => f.Categories)
                     .FirstAsync();
 
                 var category = await _ctx.RecipeCategories!.Where(n => n.RecipeCategoryId == id).FirstAsync();
                 
-                recipe.Category!.Add(category);
+                recipe.Categories!.Add(category);
                 
                 await _ctx.SaveChangesAsync();
                 

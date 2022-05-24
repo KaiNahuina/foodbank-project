@@ -39,6 +39,15 @@ else
         </div>
         <div class="row">
             <div class="col">
+                <label asp-for="FoodbankClaim"></label>
+                <span asp-validation-for="FoodbankClaim" class="text-danger"></span>
+            </div>
+            <div class="col-8">
+                <input class="form-control" asp-for="FoodbankClaim"/><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
                 <label asp-for="Locked"></label>
                 <span asp-validation-for="Locked" class="text-danger"></span>
             </div>

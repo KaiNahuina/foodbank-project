@@ -3,6 +3,7 @@
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
 using Foodbank_Project.Util;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,8 @@ using NetTopologySuite.Geometries;
 
 namespace Foodbank_Project.Pages.Admin;
 
+
+[Authorize(Roles = "RecipeAdmin,SiteAdmin")]
 public class RecipeModel : PageModel
 {
     private readonly ApplicationContext _ctx;
@@ -99,7 +102,7 @@ public class RecipeModel : PageModel
 
             Categories = await categoryQue.Skip((Page - 1) * 25).Take(25).ToListAsync();
 
-            Recipe = await recipeQue.AsNoTracking().Include(l => l.Category).FirstAsync();
+            Recipe = await recipeQue.AsNoTracking().Include(l => l.Categories).FirstAsync();
         }
         else
         {

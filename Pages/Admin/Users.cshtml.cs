@@ -1,5 +1,6 @@
 #region
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Foodbank_Project.Pages.Admin;
 
+[Authorize(Roles = "UsersAdmin,SiteAdmin")]
 public class UsersModel : PageModel
 {
     private readonly RoleManager<IdentityRole> _roleManager;

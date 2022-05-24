@@ -1,6 +1,7 @@
 #region
 
 using Foodbank_Project.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Foodbank_Project.Pages.Admin;
 
+[Authorize(Roles = "FoodbanksAdmin,SiteAdmin")]
 public class FoodbanksModel : PageModel
 {
     private readonly ApplicationContext _ctx;

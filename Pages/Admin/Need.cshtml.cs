@@ -1,6 +1,7 @@
 ﻿using Foodbank_Project.Data;
 using Foodbank_Project.Models;
 using Foodbank_Project.Util;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Location = Foodbank_Project.Models.Location;
 
 namespace Foodbank_Project.Pages.Admin;
 
+[Authorize(Roles = "FoodbanksAdmin,FoodbankAdmin,SiteAdmin")] // TODO: add access for FoodbankAdmin based on claim!
 public class NeedModel : PageModel
 {
     private readonly ApplicationContext _ctx;
