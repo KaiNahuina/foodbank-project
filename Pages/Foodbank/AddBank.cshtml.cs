@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NetTopologySuite.Geometries;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 
 #endregion
 
@@ -26,14 +25,13 @@ public class AddBankModel : PageModel
     [BindProperty] public Models.Foodbank Foodbank { get; set; }
    
     [BindProperty]
-    [Range(0, 9, ErrorMessage = "SOME STUFF HERE")]
+    [Range(0, 9, ErrorMessage = "You have not filled all the required fields")]
     public float Lat { get; set; }
    
     [BindProperty]
     [Required(ErrorMessage = "No Long")]
     public float Lng { get; set; }
 
-    [BindProperty] public bool Consent { get; set; }
     [BindProperty] public bool Confirm { get; set; }
 
     public void OnGet()
