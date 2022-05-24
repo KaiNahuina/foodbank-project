@@ -33,11 +33,13 @@
             <div class="col-6 d-grid mx-auto">
                 <div class="mb-3">
                     <label asp-for="Foodbank.Name" class="form-label"><strong>Enter the name of your foodbank/charity *</strong></label>
-                    <input asp-for="Foodbank.Name" type="text" class="form-control" id="fbName" placeholder="ex: West Cheshire Foodbank"/>
+                    <span asp-validation-for="Foodbank.Name" class="text-danger"></span>
+                    <input asp-for="Foodbank.Name" type="text" class="form-control" id="fbName" placeholder="ex: West Cheshire Foodbank" />
                 </div>
                 <div class="mb-3">
                     <label asp-for="Foodbank.Email" class="form-label"><strong>Contact Email *</strong></label>
-                    <input asp-for="Foodbank.Email" type="email" class="form-control" id="fbEmail" placeholder="ex: brelan@yahoo.co.uk" aria-describedby="emInst"/>
+                    <span asp-validation-for="Foodbank.Email" class="text-danger"></span>
+                    <input asp-for="Foodbank.Email" type="email" class="form-control" id="fbEmail" placeholder="ex: brelan@yahoo.co.uk" aria-describedby="emInst" />
                     <div id="emInst" class="form-text">This will be the E-mail we'll use to comunicate with you</div>
                 </div>
                 <div class="mb-3">
@@ -52,7 +54,8 @@
                 </div>
                 <div class="mb-3">
                     <label for="pho" class="form-label"><strong>Phone number *</strong></label>
-                    <input asp-for="Foodbank.Phone" type="text" class="form-control" id="pho" placeholder="ex 123456789877" aria-describedby="phor"/>
+                    <input asp-for="Foodbank.Phone" type="text" class="form-control" id="pho" placeholder="ex 123456789877" aria-describedby="phor" />
+                    <span asp-validation-for="Foodbank.Phone" class="text-danger"></span>
                     <div id="phor" class="form-text">This will be your contact phone for general enquiries from the public</div>
                 </div>
             </div>
@@ -60,7 +63,8 @@
 
                 <div class="mb-3">
                     <label asp-for="Foodbank.Homepage" class="form-label"><strong>Website URL *</strong></label>
-                    <input asp-for="Foodbank.Homepage" type="url" class="form-control" id="website" placeholder="ex: https://www.salvationarmy.org.uk"/>
+                    <span asp-validation-for="Foodbank.Homepage" class="text-danger"></span>
+                    <input asp-for="Foodbank.Homepage" type="url" class="form-control" id="website" placeholder="ex: https://www.salvationarmy.org.uk" />
                 </div>
                 <div class="mb-3">
                     <label asp-for="Foodbank.ShoppingList" class="form-label">Shoppinglist link</label>
@@ -69,6 +73,7 @@
                 </div>
                 <div class="col-4">
                     <label asp-for="Foodbank.Country" class="form-label"><strong>Country *</strong></label>
+                    <span asp-validation-for="Foodbank.Country" class="text-danger"></span>
                     <select asp-for="Foodbank.Country" class="form-select" aria-label="Country">
                         <option selected>Country</option>
                         <option value="England">England</option>
@@ -82,31 +87,39 @@
                 </div>
                 <div class="col-4">
                     <label asp-for="Foodbank.Network" class="form-label"><strong>Network *</strong></label>
+                    <span asp-validation-for="Foodbank.Network" class="text-danger"></span>
                     <select asp-for="Foodbank.Network" class="form-select" aria-label="Network or association">
                         <option selected>Select the network you are associated with</option>
                         <option value="Trussel Trust">Trussel Trust</option>
                         <option value="IFAN">IFAN</option>
                         <option value="Independent">Independent</option>
                     </select>
+                    <span asp-validation-for="Lat" class="text-danger"></span>
                 </div>
             </div>
         </div>
-        <div class="row mt-4">
-             <div class="col-9">
-                <div class="mb-3">
-                    <label asp-for="Foodbank.Postcode" class="form-label"><strong>Type your post code in the search box below and press enter to generate coordinates and address *</strong></label>
-                    <div id="map" style="height: 25vw;
-                                      
-                                        margin: 2% auto auto;"></div>
+        <div class="col-9">
+                <label asp-for="Foodbank.Postcode" class="form-label"><strong>Type your post code in the search box below and press enter to generate coordinates and address *</strong></label>
+                <span asp-validation-for="Foodbank.Postcode" class="text-danger"></span>
+                <div id="map" style="height: 25vw;margin: 2% auto auto;"></div>
+                <div class="row">
+                    <div class="col-6 d-grid">
+                        <input class="mt-1" id="map-housenumber" value="" placeholder="House Number" />
+                        <input class="mt-1" id="map-postcode" asp-for="Foodbank.Postcode" value="" placeholder="Postcode" />
+                    </div>
+                    
+                    <div class="col-6 d-grid">
+                        <input class="mt-1" id="map-street" value="" placeholder="Street/Road" />
+                        <input class="mt-1" id="map-address" asp-for="Foodbank.Address" value="" readonly placeholder="Address" />
+                    </div>
+                </div>
 
-                    <div class="mb-3 d-grid">
-                        <input id="map-address" asp-for="Foodbank.Address" value="" readonly placeholder="Address"/>
-                    </div>
-                    <div class="mb-3 invisible">
-                        <input id="map-lat" asp-for="Lat" value="" readonly placeholder="Latitude"/>
-                        <input id="map-lng" asp-for="Lng" value="" readonly placeholder="Longitude"/>
-                        <input id="map-postcode" asp-for="Foodbank.Postcode" value="" placeholder="Postcode"/>
-                    </div>
+
+                <!--<div class="mb-3 d-grid">-->
+
+                <div class="mb-3 invisible">
+                    <input id="map-lat" asp-for="Lat" value="" readonly placeholder="Latitude" />
+                    <input id="map-lng" asp-for="Lng" value="" readonly placeholder="Longitude" />
                 </div>
             </div>
         </div>
