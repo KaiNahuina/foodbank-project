@@ -60,14 +60,14 @@ public class RecipeModel : PageModel
             
             var recipeQue = from f in _ctx.Recipes where f.RecipeId == id select f;
 
-            var categoryQue = _ctx.RecipeCategories!.AsNoTracking().Include(r => r.Recipes
-                    .Where(c => c.RecipeId == id))
+            var categoryQue = _ctx.RecipeCategories!.AsNoTracking().Include(r => r.Recipes.Where(c => c.RecipeId == id))
+                .Where(c => c.Recipes.Any(r => r.RecipeId == id))
                 .OrderByDescending(n => n.Name)
-                .Where(n => n.Recipes.Any(r => r.RecipeId == id) &&
+                .Where(n => 
                     string.IsNullOrEmpty(Search) || n.Name!.Contains(Search)
                     || n.RecipeCategoryId.ToString() == Search);
-            
-            
+
+
             switch (OrderDirection)
             {
                 case "Asc":
@@ -147,6 +147,42 @@ public class RecipeModel : PageModel
                 }
 
                 break;
+            }
+            case "Approve":
+            {
+                if (!ModelState.IsValid) return Page();
+                int id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
+
+                Recipe? fb = await _ctx.Recipes.Where(f => f.RecipeId == id).FirstOrDefaultAsync();
+
+                if (fb != null)
+                {
+                    fb.Status = Status.Approved;
+                }
+
+                await _ctx.SaveChangesAsync();
+                
+                return RedirectToPage("/Admin/Index");
+
+                
+            }
+
+            case "Deny":
+            {
+                if (!ModelState.IsValid) return Page();
+                int id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
+
+                Recipe? fb = await _ctx.Recipes.Where(f => f.RecipeId == id).FirstOrDefaultAsync();
+
+                if (fb != null)
+                {
+                    fb.Status = Status.Denied;
+                }
+                
+                await _ctx.SaveChangesAsync();
+                
+                return RedirectToPage("/Admin/Index");
+                
             }
 
         }

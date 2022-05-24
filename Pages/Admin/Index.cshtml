@@ -316,7 +316,7 @@
                         <form method="post" asp-page="/Admin/Recipe" asp-route-id="@item.RecipeId" class="d-flex flex-row">
                             <button class="btn btn-success" name="Action" value="Approve" type="submit">Approve</button>
                             <button class="btn btn-danger" name="Action" value="Deny" type="submit">Deny</button>
-                            <a asp-page="./Recipes" class="btn btn-primary" asp-route-id="@item.RecipeId">View</a>
+                            <a asp-page="./Recipe" class="btn btn-primary" asp-route-id="@item.RecipeId">View</a>
                         </form>
                     </td>
                 </tr>
