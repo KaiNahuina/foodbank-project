@@ -103,14 +103,14 @@
                 <label asp-for="Foodbank.Postcode" class="form-label"><strong>Type your post code in the search box below and press enter to generate coordinates and address *</strong></label>
                 <div id="map" style="height: 25vw;margin: 2% auto auto;"></div>
                 <div class="row">
-                    <div class="col-9 d-grid">
-                        <input id="map-housenumber" value="" placeholder="House Number" />
-                        <input id="map-postcode" asp-for="Foodbank.Postcode" value="" placeholder="Postcode" />
+                    <div class="col-6 d-grid">
+                        <input class="mt-1" id="map-housenumber" value="" placeholder="House Number" />
+                        <input class="mt-1" id="map-postcode" asp-for="Foodbank.Postcode" value="" placeholder="Postcode" />
                     </div>
 
-                    <div class="col-9 d-grid">
-                        <input id="map-street" value="" placeholder="Street/Road" />
-                        <input id="map-address" asp-for="Foodbank.Address" value="" readonly placeholder="Address" />
+                    <div class="col-6 d-grid">
+                        <input class="mt-1" id="map-street" value="" placeholder="Street/Road" />
+                        <input class="mt-1" id="map-address" asp-for="Foodbank.Address" value="" readonly placeholder="Address" />
                     </div>
                 </div>
 
