@@ -74,6 +74,7 @@ using (var scope = app.Services.CreateScope())
     await SeedData.SeedBasicUserAsync(userManager, roleManager);
     await SeedData.SeedAdminUserAsync(userManager, roleManager);
 }
+
 // Recipes and categories
 using (var scope = app.Services.CreateScope())
 {

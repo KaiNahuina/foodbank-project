@@ -11,7 +11,6 @@
 <h1 class="text-start">Add Need</h1>
 
 
-
 <div class="bg-light shadow-lg flex-fill d-flex justify-content-center align-items-center flex-column p-3">
     <h3 class="text-start">Search</h3>
     <form method="get" class="d-flex flex-column flex-fill w-100">
@@ -28,7 +27,7 @@
             </tr>
             </thead>
             <tbody>
-             @{
+            @{
                 if (Model.Needs != null && Model.Needs?.Count != 0)
                 {
                     foreach (var item in Model.Needs!)
@@ -46,32 +45,32 @@
                 }
                 else
                 {
-                    
                     if (string.IsNullOrEmpty(Model.Name))
                     {
                         <tr>
                             <td colspan="2">
                                 <div class="d-flex justify-content-center flex-column">
                                     <h5>Enter a search...</h5>
-                                </div></td>
+                                </div>
+                            </td>
                         </tr>
-                                
                     }
                     else
                     {
                         <tr>
-                            <td colspan="2"><div class="d-flex justify-content-center flex-column">
-                                <h5>No need found...</h5>
-                                <form method="post" class="d-flex justify-content-center flex-column">
-                                    <input type="hidden" name="Target" value="@Model.Target"/>
-                                    <input type="hidden" name="Name" value="@Model.Name"/>
-                                    <label class="form-label">Create @Model.Name and add to foodbank?</label>
-                                    <button name="Action" value="Create" class="btn btn-lg btn-success">Create and Add need</button>
-                                </form>
-                            </div></td>
+                            <td colspan="2">
+                                <div class="d-flex justify-content-center flex-column">
+                                    <h5>No need found...</h5>
+                                    <form method="post" class="d-flex justify-content-center flex-column">
+                                        <input type="hidden" name="Target" value="@Model.Target"/>
+                                        <input type="hidden" name="Name" value="@Model.Name"/>
+                                        <label class="form-label">Create @Model.Name and add to foodbank?</label>
+                                        <button name="Action" value="Create" class="btn btn-lg btn-success">Create and Add need</button>
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
                     }
-                    
                 }
             }
             </tbody>

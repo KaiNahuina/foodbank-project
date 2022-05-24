@@ -13,14 +13,13 @@ using NetTopologySuite.Geometries;
 
 namespace Foodbank_Project.Pages.Admin;
 
-
-[Authorize(Roles = "RecipeAdmin,SiteAdmin")]
+[Authorize(Roles = "RecipesAdmin,ApprovalAdmin,SiteAdmin")]
 public class RecipeModel : PageModel
 {
     private readonly ApplicationContext _ctx;
 
     public string? Action;
-    
+
     public bool HasNextPage;
     public bool HasPrevPage;
     public int MaxPages;
@@ -29,22 +28,26 @@ public class RecipeModel : PageModel
     public new int Page;
     public string? Search;
     public int TotalItems;
-    
-    public IList<Models.RecipeCategory>? Categories;
 
-    public RecipeModel(ApplicationContext ctx)
+    public IList<Models.RecipeCategory>? Categories;
+    private readonly ILogger<RecipeModel> _logger;
+
+    public RecipeModel(ApplicationContext ctx, ILogger<RecipeModel> logger)
     {
         _ctx = ctx;
+        _logger = logger;
     }
 
     [BindProperty] public Recipe? Recipe { get; set; }
-    
+
     [BindProperty] public IFormFile? Upload { get; set; }
 
-    public async Task OnGetAsync([FromQuery(Name = "Action")] string? action, [FromQuery(Name = "OrderBy")] string? orderBy,
+    public async Task<IActionResult> OnGetAsync([FromQuery(Name = "Action")] string? action,
+        [FromQuery(Name = "OrderBy")] string? orderBy,
         [FromQuery(Name = "OrderDirection")] string? orderDirection,
         [FromQuery(Name = "Search")] string? search, [FromQuery(Name = "Page")] string? page)
     {
+        if (User.IsInRole("ApprovalAdmin")) return Unauthorized();
         Action = action ?? "Update";
         if (Action != "Create")
         {
@@ -60,15 +63,15 @@ public class RecipeModel : PageModel
             {
                 Search = search;
             }
-            
+
             var recipeQue = from f in _ctx.Recipes where f.RecipeId == id select f;
 
             var categoryQue = _ctx.RecipeCategories!.AsNoTracking().Include(r => r.Recipes.Where(c => c.RecipeId == id))
                 .Where(c => c.Recipes.Any(r => r.RecipeId == id))
                 .OrderByDescending(n => n.Name)
-                .Where(n => 
+                .Where(n =>
                     string.IsNullOrEmpty(Search) || n.Name!.Contains(Search)
-                    || n.RecipeCategoryId.ToString() == Search);
+                                                 || n.RecipeCategoryId.ToString() == Search);
 
 
             switch (OrderDirection)
@@ -92,7 +95,7 @@ public class RecipeModel : PageModel
                     break;
                 }
             }
-            
+
             HasPrevPage = Page > 1;
 
             TotalItems = await categoryQue.CountAsync();
@@ -103,11 +106,11 @@ public class RecipeModel : PageModel
             Categories = await categoryQue.Skip((Page - 1) * 25).Take(25).ToListAsync();
 
             Recipe = await recipeQue.AsNoTracking().Include(l => l.Categories).FirstAsync();
+            return Page();
         }
-        else
-        {
-            Recipe = new Recipe();
-        }
+
+        Recipe = new Recipe();
+        return Page();
     }
 
 
@@ -117,10 +120,14 @@ public class RecipeModel : PageModel
         switch (Action)
         {
             case "Delete":
+                if (User.IsInRole("ApprovalAdmin")) return Unauthorized();
                 if (Recipe != null) _ctx.Remove(Recipe);
+                _logger.Log(LogLevel.Warning, "User {UserName} deleted recipe {Recipe}",
+                    User.Identity?.Name, Recipe?.Name);
                 break;
             case "Create":
             {
+                if (User.IsInRole("ApprovalAdmin")) return Unauthorized();
                 if (!ModelState.IsValid) return Page();
                 if (Recipe != null)
                 {
@@ -130,13 +137,18 @@ public class RecipeModel : PageModel
                         await Upload.CopyToAsync(ms);
                         Recipe.Image = ms.ToArray();
                     }
+
                     _ctx.Recipes?.Update(Recipe);
+                    
+                    _logger.Log(LogLevel.Information, "User {UserName} created recipe {Recipe}",
+                        User.Identity?.Name, Recipe?.Name);
                 }
 
                 break;
             }
             case "Update":
             {
+                if (User.IsInRole("ApprovalAdmin")) return Unauthorized();
                 if (!ModelState.IsValid) return Page();
                 if (Recipe != null)
                 {
@@ -146,13 +158,18 @@ public class RecipeModel : PageModel
                         await Upload.CopyToAsync(ms);
                         Recipe.Image = ms.ToArray();
                     }
+
                     _ctx.Recipes?.Update(Recipe);
+                    
+                    _logger.Log(LogLevel.Information, "User {UserName} updated recipe {Recipe}",
+                        User.Identity?.Name, Recipe?.Name);
                 }
 
                 break;
             }
             case "Approve":
             {
+                if (!User.IsInRole("ApprovalAdmin") || User.IsInRole("SiteAdmin")) return Unauthorized();
                 if (!ModelState.IsValid) return Page();
                 int id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
 
@@ -165,13 +182,15 @@ public class RecipeModel : PageModel
 
                 await _ctx.SaveChangesAsync();
                 
-                return RedirectToPage("/Admin/Index");
+                _logger.Log(LogLevel.Information, "User {UserName} approved recipe {Recipe}",
+                    User.Identity?.Name, Recipe?.Name);
 
-                
+                return RedirectToPage("/Admin/Index");
             }
 
             case "Deny":
             {
+                if (!User.IsInRole("ApprovalAdmin") || User.IsInRole("SiteAdmin")) return Unauthorized();
                 if (!ModelState.IsValid) return Page();
                 int id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
 
@@ -181,13 +200,14 @@ public class RecipeModel : PageModel
                 {
                     fb.Status = Status.Denied;
                 }
-                
+
                 await _ctx.SaveChangesAsync();
                 
-                return RedirectToPage("/Admin/Index");
-                
-            }
+                _logger.Log(LogLevel.Information, "User {UserName} denied recipe {Recipe}",
+                    User.Identity?.Name, Recipe?.Name);
 
+                return RedirectToPage("/Admin/Index");
+            }
         }
 
         await _ctx.SaveChangesAsync();

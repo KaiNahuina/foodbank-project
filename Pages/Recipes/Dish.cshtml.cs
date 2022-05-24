@@ -21,7 +21,7 @@ public class DishModel : PageModel
         _ctx = ctx;
     }
 
-    public async Task<IActionResult> OnGetAsync([FromRoute]int id)
+    public async Task<IActionResult> OnGetAsync([FromRoute] int id)
     {
         Recipe = await _ctx.Recipes.Where(r => r.RecipeId == id).FirstAsync();
         if (Recipe.Status != Status.Approved)

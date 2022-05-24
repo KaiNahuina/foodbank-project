@@ -24,7 +24,8 @@ public class MainLocationModel : PageModel
 
     public async Task OnGetAsync([FromRoute(Name = "id")] int foodbankid)
     {
-        var foodbank = _ctx.Foodbanks!.AsNoTracking().Where(l => l.FoodbankId == foodbankid).Include(f => f.Locations).Include(f => f.Needs);
+        var foodbank = _ctx.Foodbanks!.AsNoTracking().Where(l => l.FoodbankId == foodbankid).Include(f => f.Locations)
+            .Include(f => f.Needs);
         Foodbank = await foodbank.FirstAsync();
     }
 }

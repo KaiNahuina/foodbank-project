@@ -105,13 +105,17 @@ else
             @if (Model.Action == "Create")
             {
                 <button name="Action" value="Create" type="submit" class="btn btn-success me-3">Create</button>
-                <a asp-page="./Foodbank" asp-route-id="@Model.Location.Foodbank.FoodbankId" asp-fragment="locations"><button class="btn btn-primary" type="button">Cancel</button></a>
+                <a asp-page="./Foodbank" asp-route-id="@Model.Location.Foodbank.FoodbankId" asp-fragment="locations">
+                    <button class="btn btn-primary" type="button">Cancel</button>
+                </a>
             }
             else
             {
                 <button name="Action" value="Update" type="submit" class="btn btn-success me-3">Save</button>
                 <button name="Action" value="Delete" type="submit" class="btn btn-danger me-3">Delete</button>
-                <a asp-page="./Foodbank" asp-route-id="@Model.Location.Foodbank.FoodbankId" asp-fragment="locations"><button class="btn btn-primary" type="button">Cancel</button></a>
+                <a asp-page="./Foodbank" asp-route-id="@Model.Location.Foodbank.FoodbankId" asp-fragment="locations">
+                    <button class="btn btn-primary" type="button">Cancel</button>
+                </a>
             }
         </div>
 

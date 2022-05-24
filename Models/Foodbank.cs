@@ -2,6 +2,7 @@
 
 using NetTopologySuite.Geometries;
 using System.ComponentModel.DataAnnotations;
+
 #endregion
 
 namespace Foodbank_Project.Models;
@@ -66,6 +67,7 @@ public class Foodbank
 
     // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public DateTime? Created { get; set; }
+
     [Required(ErrorMessage = "Please enter a Homepage")]
     public string? Homepage { get; set; }
 

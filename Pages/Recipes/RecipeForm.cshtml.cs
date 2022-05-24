@@ -37,7 +37,7 @@ public class RecipeFormModel : PageModel
 
         Recipe.Categories = new List<RecipeCategory>();
 
-        
+
         if (Image != null)
         {
             var ms = new MemoryStream();

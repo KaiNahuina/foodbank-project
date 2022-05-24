@@ -10,10 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Foodbank_Project.Pages.Admin;
 
-[Authorize(Roles = "RecipeAdmin,SiteAdmin")]
+[Authorize(Roles = "RecipesAdmin,SiteAdmin")]
 public class RecipesModel : PageModel
 {
-    
     private readonly ApplicationContext _ctx;
 
     public IList<Models.Recipe>? Recipes;
@@ -31,7 +30,7 @@ public class RecipesModel : PageModel
     {
         _ctx = ctx;
     }
-    
+
     public async Task OnGetAsync([FromQuery(Name = "OrderBy")] string? orderBy,
         [FromQuery(Name = "OrderDirection")] string? orderDirection,
         [FromQuery(Name = "Search")] string? search, [FromQuery(Name = "Page")] string? page)
@@ -95,6 +94,7 @@ public class RecipesModel : PageModel
 
         Recipes = await recipeQue.Skip((Page - 1) * 25).Take(25).ToListAsync();
     }
+
     public string TrimBlob(string? blob)
     {
         if (blob is null) return "";

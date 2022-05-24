@@ -15,12 +15,10 @@ public class SearchModel : PageModel
     private readonly ApplicationContext _ctx;
 
 
-
     public SearchModel(ApplicationContext ctx)
     {
         _ctx = ctx;
     }
-
 
 
     public List<Recipe>? Recipes { get; set; }
@@ -33,6 +31,6 @@ public class SearchModel : PageModel
             .Include(r => r.Categories.Where(c => c.Name == category))
             .Where(r => r.Categories.Any(c => c.Name == category))
             .ToListAsync();
-         Category = category;        
+        Category = category;
     }
 }

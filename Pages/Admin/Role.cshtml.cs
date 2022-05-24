@@ -13,6 +13,7 @@ public class RoleModel : PageModel
 {
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<IdentityUser> _userManager;
+    private readonly ILogger<RoleModel> _logger;
 
     public string? Action { get; set; }
 
@@ -21,12 +22,13 @@ public class RoleModel : PageModel
 
     public List<IdentityRole>? Roles { get; set; }
 
-    public RoleModel(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+    public RoleModel(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, ILogger<RoleModel> logger)
     {
         _userManager = userManager;
         _roleManager = roleManager;
+        _logger = logger;
     }
-    
+
     public async Task OnGetAsync([FromQuery(Name = "Action")] string? action)
     {
         Action = action ?? "Update";
@@ -47,6 +49,7 @@ public class RoleModel : PageModel
             }
         }
     }
+
     public async Task<IActionResult> OnPostAsync()
     {
         Action = Request.Form["Action"].ToString() ?? "Update";
@@ -56,8 +59,9 @@ public class RoleModel : PageModel
             {
                 Target = Request.Form["Target"];
                 var id = Request.RouteValues["id"]?.ToString();
+                var targetUser = await _userManager.FindByIdAsync(Target);
 
-                var result = await _userManager.RemoveFromRoleAsync(await _userManager.FindByIdAsync(Target), id);
+                var result = await _userManager.RemoveFromRoleAsync(targetUser, id);
                 if (!result.Succeeded)
                 {
                     foreach (var identityError in result.Errors)
@@ -68,14 +72,18 @@ public class RoleModel : PageModel
                     return Page();
                 }
                 
-                return RedirectToPage("./User", routeValues:new  {id=Target}, fragment:"roles", pageHandler:"");
+                _logger.Log(LogLevel.Warning, "User {UserName} removed role {Role} to {TargetUser}",
+                    User.Identity?.Name, id, targetUser.UserName);
+
+                return RedirectToPage("./User", routeValues: new { id = Target }, fragment: "roles", pageHandler: "");
             }
             case "Add":
             {
                 Target = Request.Form["Target"];
                 var id = Request.RouteValues["id"]?.ToString();
-                
-                var result = await _userManager.AddToRoleAsync(await _userManager.FindByIdAsync(Target), id);
+                var targetUser = await _userManager.FindByIdAsync(Target);
+
+                var result = await _userManager.AddToRoleAsync(targetUser, id);
                 if (!result.Succeeded)
                 {
                     foreach (var identityError in result.Errors)
@@ -86,9 +94,13 @@ public class RoleModel : PageModel
                     return Page();
                 }
                 
-                return RedirectToPage("./User", routeValues:new  {id=Target}, fragment:"roles", pageHandler:"");
+                _logger.Log(LogLevel.Information, "User {UserName} added role {Role} to {TargetUser}",
+                    User.Identity?.Name, id, targetUser.UserName);
+
+                return RedirectToPage("./User", routeValues: new { id = Target }, fragment: "roles", pageHandler: "");
             }
         }
+
         return Page();
     }
 }

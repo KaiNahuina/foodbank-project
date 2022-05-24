@@ -22,7 +22,7 @@ public class UserModel : PageModel
     private readonly UserManager<IdentityUser> _userManager;
 
     public string? Action;
-    
+
     public bool HasNextPage;
     public bool HasPrevPage;
     public int MaxPages;
@@ -31,31 +31,33 @@ public class UserModel : PageModel
     public new int Page;
     public string? Search;
     public int TotalItems;
-    
-    public IList<string>? Roles;
 
-    public UserModel(UserManager<IdentityUser> userManager)
+    public IList<string>? Roles;
+    private readonly ILogger<UserModel> _logger;
+
+    public UserModel(UserManager<IdentityUser> userManager, ILogger<UserModel> logger)
     {
         _userManager = userManager;
+        _logger = logger;
     }
 
-    [Required]
-    [BindProperty] public string? Id { get; set; }
-    
-    [Required]
-    [BindProperty] public bool Locked { get; set; }
-    
+    [Required] [BindProperty] public string? Id { get; set; }
+
+    [Required] [BindProperty] public bool Locked { get; set; }
+
     [Required]
     [EmailAddress]
-    [BindProperty] public string? Email { get; set; }
-    
-    [DataType(DataType.Password)]
-    [BindProperty] public string? Password { get; set; }
-    
-    [Required]
-    [BindProperty] public int FoodbankClaim { get; set; }
+    [BindProperty]
+    public string? Email { get; set; }
 
-    public async Task OnGetAsync([FromQuery(Name = "Action")] string? action, [FromQuery(Name = "OrderBy")] string? orderBy,
+    [DataType(DataType.Password)]
+    [BindProperty]
+    public string? Password { get; set; }
+
+    [Required] [BindProperty] public int FoodbankClaim { get; set; }
+
+    public async Task OnGetAsync([FromQuery(Name = "Action")] string? action,
+        [FromQuery(Name = "OrderBy")] string? orderBy,
         [FromQuery(Name = "OrderDirection")] string? orderDirection,
         [FromQuery(Name = "Search")] string? search, [FromQuery(Name = "Page")] string? page)
     {
@@ -80,7 +82,6 @@ public class UserModel : PageModel
             var roleQue = (await _userManager.GetRolesAsync(u)).AsQueryable();
             roleQue = roleQue.Where(n =>
                 string.IsNullOrEmpty(Search) || n.Contains(Search));
-            
 
 
             switch (OrderDirection)
@@ -104,7 +105,7 @@ public class UserModel : PageModel
                     break;
                 }
             }
-            
+
             HasPrevPage = Page > 1;
 
             TotalItems = roleQue.Count();
@@ -124,7 +125,6 @@ public class UserModel : PageModel
                     FoodbankClaim = int.Parse(claim.Value);
                 }
             }
-            
         }
     }
 
@@ -147,6 +147,9 @@ public class UserModel : PageModel
 
                     return Page();
                 }
+                
+                _logger.Log(LogLevel.Warning, "User {UserName} removed user {TargetUser}",
+                    User.Identity?.Name, u.UserName);
 
                 break;
             }
@@ -169,7 +172,7 @@ public class UserModel : PageModel
                 {
                     await _userManager.SetLockoutEndDateAsync(u, DateTimeOffset.Now);
                 }
-                
+
                 var result = await _userManager.CreateAsync(u, Password);
                 if (!result.Succeeded)
                 {
@@ -180,13 +183,18 @@ public class UserModel : PageModel
 
                     return Page();
                 }
+
                 await _userManager.AddClaimAsync(u, new Claim("FoodbankClaim", FoodbankClaim.ToString()));
+                
+                _logger.Log(LogLevel.Information, "User {UserName} created user {TargetUser}",
+                    User.Identity?.Name, u.UserName);
+                
                 break;
             }
             case "Update":
             {
                 if (!ModelState.IsValid) return Page();
-                
+
                 var u = await _userManager.FindByIdAsync(Id);
                 u.Email = Email;
                 u.UserName = Email;
@@ -206,15 +214,17 @@ public class UserModel : PageModel
                     await _userManager.AddPasswordAsync(u, Password);
                 }
 
-               
-                
+
                 await _userManager.UpdateAsync(u);
                 await _userManager.AddClaimAsync(u, new Claim("FoodbankClaim", FoodbankClaim.ToString()));
+                
+                _logger.Log(LogLevel.Information, "User {UserName} updated user {TargetUser}",
+                    User.Identity?.Name, u.UserName);
+                
                 break;
             }
-
         }
-        
+
         return RedirectToPage("./Users");
     }
 }

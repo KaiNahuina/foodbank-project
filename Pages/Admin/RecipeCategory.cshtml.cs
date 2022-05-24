@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Foodbank_Project.Pages.Admin;
 
-
-[Authorize(Roles = "RecipeAdmin,SiteAdmin")]
+[Authorize(Roles = "RecipesAdmin,SiteAdmin")]
 public class RecipeCategoryModel : PageModel
 {
     private readonly ApplicationContext _ctx;
+    private readonly ILogger<RecipeCategoryModel> _logger;
 
     public string? Action { get; set; }
 
@@ -20,11 +20,12 @@ public class RecipeCategoryModel : PageModel
 
     public List<RecipeCategory>? Categories { get; set; }
 
-    public RecipeCategoryModel(ApplicationContext ctx)
+    public RecipeCategoryModel(ApplicationContext ctx, ILogger<RecipeCategoryModel> logger)
     {
         _ctx = ctx;
+        _logger = logger;
     }
-    
+
     public async Task OnGetAsync([FromQuery(Name = "Action")] string? action)
     {
         Action = action ?? "Update";
@@ -34,7 +35,8 @@ public class RecipeCategoryModel : PageModel
             {
                 Name = Request.Query["Name"];
                 Target = int.Parse(Request.Query["Target"]);
-                Categories = await _ctx.RecipeCategories!.AsNoTracking().Where(n => n.Name!.Contains(Name)).ToListAsync();
+                Categories = await _ctx.RecipeCategories!.AsNoTracking().Where(n => n.Name!.Contains(Name))
+                    .ToListAsync();
                 break;
             }
             default:
@@ -45,6 +47,7 @@ public class RecipeCategoryModel : PageModel
             }
         }
     }
+
     public async Task<IActionResult> OnPostAsync()
     {
         Action = Request.Form["Action"].ToString() ?? "Update";
@@ -57,12 +60,16 @@ public class RecipeCategoryModel : PageModel
                 var recipe = await _ctx.Recipes!.Where(f => f.RecipeId == Target)
                     .Include(f => f.Categories.Where(n => n.RecipeCategoryId == id))
                     .FirstAsync();
-                
+
                 recipe.Categories!.Clear();
 
                 await _ctx.SaveChangesAsync();
                 
-                return RedirectToPage("./Recipe", routeValues:new  {id=Target}, fragment:"categories", pageHandler:"");
+                _logger.Log(LogLevel.Information, "User {UserName} removed category id {Category} from {Recipe}",
+                    User.Identity?.Name, id, recipe.Name);
+
+                return RedirectToPage("./Recipe", routeValues: new { id = Target }, fragment: "categories",
+                    pageHandler: "");
             }
             case "Add":
             {
@@ -72,12 +79,16 @@ public class RecipeCategoryModel : PageModel
                     .FirstAsync();
 
                 var category = await _ctx.RecipeCategories!.Where(n => n.RecipeCategoryId == id).FirstAsync();
-                
+
                 recipe.Categories!.Add(category);
-                
+
                 await _ctx.SaveChangesAsync();
                 
-                return RedirectToPage("./Recipe", routeValues:new  {id=Target}, fragment:"categories", pageHandler:"");
+                _logger.Log(LogLevel.Information, "User {UserName} added category id {Category} from {Recipe}",
+                    User.Identity?.Name, id, recipe.Name);
+
+                return RedirectToPage("./Recipe", routeValues: new { id = Target }, fragment: "categories",
+                    pageHandler: "");
             }
         }
 

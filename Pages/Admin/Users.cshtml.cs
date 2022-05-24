@@ -17,7 +17,7 @@ public class UsersModel : PageModel
     private readonly UserManager<IdentityUser> _userManager;
 
     public IList<IdentityUser>? Users;
-    
+
     public bool HasNextPage;
     public bool HasPrevPage;
     public int MaxPages;

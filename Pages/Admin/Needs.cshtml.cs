@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Foodbank_Project.Pages.Admin;
 
-[Authorize(Roles = "FoodbanksAdmin,FoodbankAdmin,SiteAdmin")] // TODO: add access for FoodbankAdmin based on claim!
+[Authorize(Roles = "NeedsAdmin,SiteAdmin")]
 public class StockModel : PageModel
 {
     private readonly ApplicationContext _ctx;

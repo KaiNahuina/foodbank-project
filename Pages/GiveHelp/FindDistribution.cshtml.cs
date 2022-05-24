@@ -23,6 +23,7 @@ public class FindDistribution : PageModel
     {
         _ctx = ctx;
     }
+
     public void OnGetAsync([FromQuery(Name = "Location")] string location)
     {
         Location = location;
