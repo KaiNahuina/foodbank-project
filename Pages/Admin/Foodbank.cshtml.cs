@@ -22,6 +22,7 @@ public class FoodbankModel : PageModel
 {
     private readonly ApplicationContext _ctx;
     private readonly ILogger<FoodbankModel> _logger;
+    private readonly UserManager<IdentityUser> _userManager;
 
     public string? Action;
 
@@ -37,7 +38,6 @@ public class FoodbankModel : PageModel
     public new int Page;
     public string? Search;
     public int TotalItems;
-    private readonly UserManager<IdentityUser> _userManager;
 
 
     public FoodbankModel(ApplicationContext ctx, ILogger<FoodbankModel> logger, UserManager<IdentityUser> userManager)
@@ -204,7 +204,7 @@ public class FoodbankModel : PageModel
 
                 foreach (var entry in ModelState.Where(entry => entry.Key.Contains("Foodbank.Location")))
                     ModelState.Remove(entry.Key);
-                
+
                 if (!ModelState.IsValid) return Page();
                 if (Foodbank != null)
                 {
@@ -220,7 +220,7 @@ public class FoodbankModel : PageModel
                     await _ctx.SaveChangesAsync();
                     return RedirectToPage("/Admin/Index");
                 }
-                
+
                 break;
             }
             case "Approve":

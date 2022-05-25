@@ -13,7 +13,6 @@ namespace Foodbank_Project.Pages.Admin;
 [Authorize(Roles = "UsersAdmin,SiteAdmin")]
 public class UsersModel : PageModel
 {
-    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<IdentityUser> _userManager;
 
     public bool HasNextPage;
@@ -27,10 +26,9 @@ public class UsersModel : PageModel
 
     public IList<IdentityUser>? Users;
 
-    public UsersModel(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+    public UsersModel(UserManager<IdentityUser> userManager)
     {
         _userManager = userManager;
-        _roleManager = roleManager;
     }
 
     public async Task OnGetAsync([FromQuery(Name = "OrderBy")] string? orderBy,

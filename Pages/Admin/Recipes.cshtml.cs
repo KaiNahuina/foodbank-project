@@ -96,7 +96,9 @@ public class RecipesModel : PageModel
         Recipes = await recipeQue.Skip((Page - 1) * 25).Take(25).ToListAsync();
     }
 
+#pragma warning disable CA1822
     public string TrimBlob(string? blob)
+#pragma warning restore CA1822
     {
         if (blob is null) return "";
         if (blob.Length > 32)

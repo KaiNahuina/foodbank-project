@@ -354,22 +354,22 @@ else
             </div>
             <div class="d-flex flex-row align-items-center justify-content-between">
                 @{
-                    hasPrev = Model.HasPrevPage ? "" : "disabled";
-                    hasNext = Model.Needs?.Count >= 25 && Model.HasNextPage ? "" : "disabled";
+                    var hasPrev2 = Model.HasPrevPage ? "" : "disabled";
+                    var hasNext2 = Model.Needs?.Count >= 25 && Model.HasNextPage ? "" : "disabled";
                 }
                 <form method="get" asp-fragment="needs">
                     <input name="OrderBy" type="hidden" value="@Model.OrderBy">
                     <input name="OrderDirection" type="hidden" value="@Model.OrderDirection">
                     <input name="Search" type="hidden" value="@Model.Search">
                     <input name="Page" type="hidden" value="@(Model.Page - 1)">
-                    <button class="btn btn-success p-2 me-3 @hasPrev">Previous</button>
+                    <button class="btn btn-success p-2 me-3 @hasPrev2">Previous</button>
                 </form>
                 <form method="get" asp-fragment="needs">
                     <input name="OrderBy" type="hidden" value="@Model.OrderBy">
                     <input name="OrderDirection" type="hidden" value="@Model.OrderDirection">
                     <input name="Search" type="hidden" value="@Model.Search">
                     <input name="Page" type="hidden" value="@(Model.Page + 1)">
-                    <button class="btn btn-success p-2 me-3 @hasNext">Next</button>
+                    <button class="btn btn-success p-2 me-3 @hasNext2">Next</button>
                 </form>
                 <span>Page: @Html.DisplayFor(model => model.Page) of @Html.DisplayFor(model => model.MaxPages)</span>
             </div>
@@ -378,15 +378,15 @@ else
             <thead>
             <tr>
                 @{
-                    direction = Model.OrderDirection == "Asc" ? "Desc" : "Asc";
-                    arrow = direction == "Asc" ? "&darr;" : "&uarr;";
+                    var direction2 = Model.OrderDirection == "Asc" ? "Desc" : "Asc";
+                    var arrow2 = direction == "Asc" ? "&darr;" : "&uarr;";
                 }
 
                 @switch (Model.OrderBy)
                 {
                     case "Name":
                         <th scope="col" style="width: 100%;">
-                            <a asp-route-Search="@Model.Search" asp-fragment="needs" asp-route-OrderBy="Name" asp-route-OrderDirection="@direction">Name @Html.Raw(arrow)</a>
+                            <a asp-route-Search="@Model.Search" asp-fragment="needs" asp-route-OrderBy="Name" asp-route-OrderDirection="@direction2">Name @Html.Raw(arrow2)</a>
                         </th>
                         break;
                     default:

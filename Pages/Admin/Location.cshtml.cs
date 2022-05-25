@@ -118,7 +118,7 @@ public class LocationModel : PageModel
                         !User.HasClaim("FoodbankClaim", Location?.Foodbank?.FoodbankId.ToString()))
                         return Forbid();
 
-                
+
                 foreach (var entry in ModelState.Where(entry => entry.Key.Contains("Location.Foodbank")))
                     ModelState.Remove(entry.Key);
                 if (!ModelState.IsValid) return Page();

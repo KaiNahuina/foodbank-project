@@ -2,6 +2,7 @@
 @model AddBankModel
 @{
     ViewData["Title"] = "Add foodbank";
+    Layout = "Shared/_Layout";
 }
 
 <link rel="stylesheet" href="/css/Control.Geocoder.css"/>
@@ -153,6 +154,7 @@
         <div class="col-9 d-grid mx-auto">
             <div class="mb-3 form-check">
                 <input asp-for="Confirm" type="checkbox" class="form-check-input" required id="confirmation" onchange="this.setCustomValidity(validity.valueMissing ? 'Please indicate that you vouch for the validity of the info' : '');"/>
+                @* ReSharper disable once Html.IdNotResolved *@
                 <label class="form-check label" for="confirm">
                     <strong>
                         I confirm that the provided information is true to the extent of my knowledge

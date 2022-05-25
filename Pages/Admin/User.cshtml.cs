@@ -75,31 +75,21 @@ public class UserModel : PageModel
             var u = await _userManager.FindByIdAsync(id);
 
             var roleQue = (await _userManager.GetRolesAsync(u)).AsQueryable();
-            roleQue = roleQue.Where(n =>
-                string.IsNullOrEmpty(Search) || n.Contains(Search));
 
-
-            switch (OrderDirection)
+            roleQue = OrderDirection switch
             {
-                case "Asc":
+                "Asc" => OrderBy switch
                 {
-                    roleQue = OrderBy switch
-                    {
-                        "Name" => roleQue.OrderBy(n => n),
-                        _ => roleQue
-                    };
-                    break;
-                }
-                case "Desc":
+                    "Name" => roleQue.OrderBy(n => n),
+                    _ => roleQue
+                },
+                "Desc" => OrderBy switch
                 {
-                    roleQue = OrderBy switch
-                    {
-                        "Name" => roleQue.OrderByDescending(n => n),
-                        _ => roleQue
-                    };
-                    break;
-                }
-            }
+                    "Name" => roleQue.OrderByDescending(n => n),
+                    _ => roleQue
+                },
+                _ => roleQue.Where(n => string.IsNullOrEmpty(Search) || n.Contains(Search))
+            };
 
             HasPrevPage = Page > 1;
 
@@ -195,16 +185,12 @@ public class UserModel : PageModel
 
 
                 foreach (var claim in await _userManager.GetClaimsAsync(u))
-                {
                     if (claim.Type == "FoodbankClaim")
-                    {
                         await _userManager.RemoveClaimAsync(u, claim);
-                    }
-                }
-                
+
                 await _userManager.AddClaimAsync(u, new Claim("FoodbankClaim", FoodbankClaim.ToString()));
                 await _userManager.UpdateAsync(u);
-                
+
 
                 _logger.Log(LogLevel.Information, "User {UserName} updated user {TargetUser}",
                     User.Identity?.Name, u.UserName);

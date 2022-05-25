@@ -8,7 +8,4 @@ namespace Foodbank_Project.Pages.Foodbank;
 
 public class ConfirmationModel : PageModel
 {
-    public void OnGet()
-    {
-    }
 }

@@ -160,7 +160,8 @@ public class RecipeModel : PageModel
                     }
                     else
                     {
-                        var r = await _ctx.Recipes.AsNoTracking().Where(r => r.RecipeId == Recipe.RecipeId).FirstAsync();
+                        var r = await _ctx.Recipes.AsNoTracking().Where(r => r.RecipeId == Recipe.RecipeId)
+                            .FirstAsync();
                         Recipe.Image = r.Image;
                     }
 

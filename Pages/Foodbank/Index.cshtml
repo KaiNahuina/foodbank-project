@@ -4,8 +4,8 @@
     ViewData["Title"] = "Foodbank Page";
     Layout = "Shared/_Layout";
 }
-<link rel="stylesheet" href="/css/Control.Geocoder.css" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css" />
+<link rel="stylesheet" href="/css/Control.Geocoder.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css"/>
 
 <div class="container mt-5">
     <div class="row">
@@ -32,9 +32,9 @@
             <div class="col-md-4">
                 <h3>Address</h3>
                 <p class="text-box">
-                    <b>Address: </b>@Html.DisplayFor(modelItem => modelItem.Location!.Address) <br />
-                    <b>Postcode: </b>@Html.DisplayFor(modelItem => modelItem.Location!.Postcode) <br />
-                    <b>Country: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank!.Country) <br />
+                    <b>Address: </b>@Html.DisplayFor(modelItem => modelItem.Location!.Address) <br/>
+                    <b>Postcode: </b>@Html.DisplayFor(modelItem => modelItem.Location!.Postcode) <br/>
+                    <b>Country: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank!.Country) <br/>
                 </p>
             </div>
             <div class="col-md-4">
@@ -44,19 +44,21 @@
                     {
                         <b>Phone Number: </b>
                         @Html.DisplayFor(modelItem => modelItem.Foodbank!.Phone)
-                        <br />
+                        <br/>
                     }
                     else
                     {
                         <b>Phone Number: </b>
                         @Html.DisplayFor(modelItem => modelItem.Location!.Phone)
-                        <br />
+                        <br/>
                     }
 
-                    <b>Email: </b> <a href="mailto:@Html.DisplayFor(modelItem => modelItem.Foodbank!.Email)">@Html.DisplayFor(modelItem => modelItem.Foodbank!.Email)</a> <br />
-                    @if (Model.Foodbank?.Network.ToLower() == "independent")
+                    <b>Email: </b> <a href="mailto:@Html.DisplayFor(modelItem => modelItem.Foodbank!.Email)">@Html.DisplayFor(modelItem => modelItem.Foodbank!.Email)</a> <br/>
+                    @if (Model.Foodbank?.Network?.ToLower() == "independent")
                     {
-                        <b>Website: </b> <a href="@Html.DisplayFor(modelItem => modelItem.Foodbank!.Homepage)">@Html.DisplayFor(modelItem => modelItem.Foodbank!.Homepage)</a> <br />
+                        <b>Website: </b>
+                        <a href="@Html.DisplayFor(modelItem => modelItem.Foodbank!.Homepage)">@Html.DisplayFor(modelItem => modelItem.Foodbank!.Homepage)</a>
+                        <br/>
                     }
                     <b>Network: </b> @Html.DisplayFor(modelItem => modelItem.Foodbank!.Network)
                 </p>
@@ -64,15 +66,15 @@
             <div class="col-md-4">
                 @if (Model.Foodbank?.Network?.ToLower() == "trussell trust")
                 {
-                    <img class="img-fluid image-box" id="trusselTrust" src="/img/TT-Logo-Rect.png" alt="Trussel Trust Logo" />
+                    <img class="img-fluid image-box" id="trusselTrust" src="/img/TT-Logo-Rect.png" alt="Trussel Trust Logo"/>
                 }
                 @if (Model.Foodbank!.Network?.ToLower() == "ifan")
                 {
-                    <img class="img-fluid image-box" id="IFAN" src="/img/IFAN-Logo.jpg" alt="IFAN Logo" />
+                    <img class="img-fluid image-box" id="IFAN" src="/img/IFAN-Logo.jpg" alt="IFAN Logo"/>
                 }
                 @if (Model.Foodbank.Network?.ToLower() == "independent")
                 {
-                    <img class="img-fluid image-box" id="Independent" src="/img/Independent-logo.jpg" alt="Independent Logo" />
+                    <img class="img-fluid image-box" id="Independent" src="/img/Independent-logo.jpg" alt="Independent Logo"/>
                 }
             </div>
         </div>
@@ -106,14 +108,14 @@
                     @if (Model.Foodbank!.Needs!.Count == 0 || Model.Foodbank!.Needs!.All(n => n.NeedStr is null))
                     {
                         @Html.Raw("This foodbank has no needs")
-                        <br />
+                        <br/>
                     }
                     else
                     {
                         @foreach (var need in Model.Foodbank.Needs!)
                         {
                             @Html.DisplayFor(modelItem => need.NeedStr)
-                            <br />
+                            <br/>
                         }
                     }
                 </p>
@@ -123,10 +125,10 @@
 </form>
 
 @section Scripts{
-<script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
-<script src="/js/Control.Geocoder.js"></script>
+    <script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
+    <script src="/js/Control.Geocoder.js"></script>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
         var foodbankIcon = L.icon({
               iconUrl: '/img/leaf.png',

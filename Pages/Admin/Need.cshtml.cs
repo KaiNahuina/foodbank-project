@@ -2,7 +2,6 @@
 
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
-using Foodbank_Project.Models.External;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,12 +15,12 @@ namespace Foodbank_Project.Pages.Admin;
 public class NeedModel : PageModel
 {
     private readonly ApplicationContext _ctx;
-    private readonly ILogger<Needs> _loger;
+    private readonly ILogger<NeedModel> _logger;
 
-    public NeedModel(ApplicationContext ctx, ILogger<Needs> logger)
+    public NeedModel(ApplicationContext ctx, ILogger<NeedModel> logger)
     {
         _ctx = ctx;
-        _loger = logger;
+        _logger = logger;
     }
 
     public string? Action { get; set; }
@@ -84,7 +83,7 @@ public class NeedModel : PageModel
 
                 await _ctx.SaveChangesAsync();
 
-                _loger.Log(LogLevel.Information, "User {UserName} removed need {Need} id from foodbank {Foodbank} id",
+                _logger.Log(LogLevel.Information, "User {UserName} removed need {Need} id from foodbank {Foodbank} id",
                     User.Identity?.Name, id, foodbank.Name);
 
                 return RedirectToPage("./Foodbank", routeValues: new { id = Target }, fragment: "needs",
@@ -105,7 +104,7 @@ public class NeedModel : PageModel
 
                 foodbank.Needs!.Add(need);
 
-                _loger.Log(LogLevel.Information, "User {UserName} added need {Need} id from foodbank {Foodbank}",
+                _logger.Log(LogLevel.Information, "User {UserName} added need {Need} id from foodbank {Foodbank}",
                     User.Identity?.Name, id, foodbank.Name);
 
                 await _ctx.SaveChangesAsync();
@@ -131,7 +130,7 @@ public class NeedModel : PageModel
 
                 await _ctx.SaveChangesAsync();
 
-                _loger.Log(LogLevel.Information, "User {UserName} added need {Need} from foodbank {Foodbank}",
+                _logger.Log(LogLevel.Information, "User {UserName} added need {Need} from foodbank {Foodbank}",
                     User.Identity?.Name, Name, foodbank.Name);
 
                 return RedirectToPage("./Foodbank", routeValues: new { id = Target }, fragment: "needs",
