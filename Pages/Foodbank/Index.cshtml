@@ -53,6 +53,10 @@
                     }
 
                     <b>Email: </b> @Html.DisplayFor(modelItem => modelItem.Foodbank!.Email) <br />
+                    @if (Model.Foodbank?.Network.ToLower() == "Independent")
+                    {
+                        <b>Website: </b> <a href="@Html.DisplayFor(modelItem => modelItem.Foodbank!.Homepage)"></a> <br />
+                    }
                     <b>Network: </b> @Html.DisplayFor(modelItem => modelItem.Foodbank!.Network)
                 </p>
             </div>
