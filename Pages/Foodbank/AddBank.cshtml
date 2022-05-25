@@ -44,14 +44,7 @@
                     <span asp-validation-for="Foodbank.Name" class="text-danger"></span>
                     <input asp-for="Foodbank.Name" type="text" class="form-control" id="fbName" placeholder="ex: West Cheshire Foodbank"/>
                 </div>
-                <div class="mb-3">
-                    <label asp-for="Foodbank.Email" class="form-label">
-                        <strong>Contact Email *</strong>
-                    </label>
-                    <span asp-validation-for="Foodbank.Email" class="text-danger"></span>
-                    <input asp-for="Foodbank.Email" type="email" class="form-control" id="fbEmail" placeholder="ex: brelan@yahoo.co.uk" aria-describedby="emInst"/>
-                    <div id="emInst" class="form-text">This will be the E-mail we'll use to comunicate with you</div>
-                </div>
+                
                 <div class="mb-3">
                     <label asp-for="Foodbank.CharityNumber" class="form-label">Charity No (if applicable)</label>
                     <input asp-for="Foodbank.CharityNumber" type="text" class="form-control" id="charno" placeholder="ex: 1234567" aria-describedby="measure"/>
@@ -62,14 +55,7 @@
                     <input asp-for="Foodbank.CharityRegisterUrl" type="url" class="form-control" id="regurl" aria-describedby="urlwhat"/>
                     <div id="urlwhat" class="form-text">The link to your charity page on the national register</div>
                 </div>
-                <div class="mb-3">
-                    <label for="pho" class="form-label">
-                        <strong>Phone number *</strong>
-                    </label>
-                    <input asp-for="Foodbank.Phone" type="text" class="form-control" id="pho" placeholder="ex 123456789877" aria-describedby="phor"/>
-                    <span asp-validation-for="Foodbank.Phone" class="text-danger"></span>
-                    <div id="phor" class="form-text">This will be your contact phone for general enquiries from the public</div>
-                </div>
+                
             </div>
             <div class="col-6 d-grid">
 
@@ -80,7 +66,29 @@
                     <span asp-validation-for="Foodbank.Homepage" class="text-danger"></span>
                     <input asp-for="Foodbank.Homepage" type="url" class="form-control" id="website" placeholder="ex: https://www.salvationarmy.org.uk"/>
                 </div>
-                <div class="col-4">
+                <div class="mb-3">
+                    <label asp-for="Foodbank.Email" class="form-label">
+                        <strong>Contact Email *</strong>
+                    </label>
+                    <span asp-validation-for="Foodbank.Email" class="text-danger"></span>
+                    <input asp-for="Foodbank.Email" type="email" class="form-control" id="fbEmail" placeholder="ex: brelan@yahoo.co.uk" aria-describedby="emInst"/>
+                    <div id="emInst" class="form-text">This will be the E-mail we'll use to comunicate with you</div>
+                </div>
+                <div class="mb-3">
+                    <label for="pho" class="form-label">
+                        <strong>Phone number *</strong>
+                    </label>
+                    <input asp-for="Foodbank.Phone" type="text" class="form-control" id="pho" placeholder="ex 123456789877" aria-describedby="phor"/>
+                    <span asp-validation-for="Foodbank.Phone" class="text-danger"></span>
+                    <div id="phor" class="form-text">This will be your contact phone for general enquiries from the public</div>
+                </div>
+                
+                
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-6">
+                <div class="col-8">
                     <label asp-for="Foodbank.Country" class="form-label">
                         <strong>Country *</strong>
                     </label>
@@ -96,21 +104,21 @@
                         <option value="Isle of Man">Isle of Man</option>
                     </select>
                 </div>
-                <div class="col-4">
-                    <label asp-for="Foodbank.Network" class="form-label">
+            </div>
+            <div class="col-6">
+                <label asp-for="Foodbank.Network" class="form-label">
                         <strong>Network *</strong>
                     </label>
                     <span asp-validation-for="Foodbank.Network" class="text-danger"></span>
                     <select asp-for="Foodbank.Network" class="form-select" aria-label="Network or association">
-                        <option selected>Select the network you are associated with</option>
+                        <option selected>Select your network</option>
                         <option value="Trussel Trust">Trussel Trust</option>
                         <option value="IFAN">IFAN</option>
                         <option value="Independent">Independent</option>
                     </select>
-                </div>
             </div>
         </div>
-        <div class="col-9">
+        <div class="col-12">
             <label asp-for="Foodbank.Postcode" class="form-label">
                 <strong>Type your post code in the search box below and press enter to generate coordinates and address *</strong>
             </label>
