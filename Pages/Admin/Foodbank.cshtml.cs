@@ -215,25 +215,41 @@ public class FoodbankModel : PageModel
             case "Approve":
             {
                 if (!User.IsInRole("ApprovalAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
-                if (!ModelState.IsValid) return Page();
                 var id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
 
-                var fb = await _ctx.Foodbanks.Where(f => f.FoodbankId == id).FirstOrDefaultAsync();
-
-                if (fb != null) fb.Status = Status.Approved;
+                Foodbank = await _ctx.Foodbanks.Where(f => f.FoodbankId == id).FirstOrDefaultAsync();
+            
+                if (Foodbank != null) Foodbank.Status = Status.Approved;
 
                 await _ctx.SaveChangesAsync();
 
                 var u = new IdentityUser
                 {
-                    UserName = fb?.Email,
-                    Email = fb?.Email,
+                    UserName = Foodbank?.Email,
+                    Email = Foodbank?.Email,
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true
                 };
-                await _userManager.AddToRoleAsync(u, "FoodbankAdmin");
-                await _userManager.AddClaimAsync(u, new Claim("FoodbankAdmin", fb?.FoodbankId.ToString()));
-                var result = await _userManager.CreateAsync(u, "DefaultPassword");
+                var result = await _userManager.CreateAsync(u);
+                if (!result.Succeeded)
+                {
+                    foreach (var identityError in result.Errors)
+                        ModelState.AddModelError(string.Empty, identityError.Code + " :: " + identityError.Description);
+
+                    return Page();
+                }
+
+                u = await _userManager.FindByEmailAsync(Foodbank?.Email);
+                
+                result = await _userManager.AddToRoleAsync(u, "FoodbankAdmin");
+                if (!result.Succeeded)
+                {
+                    foreach (var identityError in result.Errors)
+                        ModelState.AddModelError(string.Empty, identityError.Code + " :: " + identityError.Description);
+
+                    return Page();
+                }
+                result = await _userManager.AddClaimAsync(u, new Claim("FoodbankClaim", Foodbank?.FoodbankId.ToString()));
                 if (!result.Succeeded)
                 {
                     foreach (var identityError in result.Errors)
