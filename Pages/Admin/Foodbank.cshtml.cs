@@ -1,9 +1,11 @@
 #region
 
+using System.Security.Claims;
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
 using Foodbank_Project.Util;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -35,12 +37,14 @@ public class FoodbankModel : PageModel
     public new int Page;
     public string? Search;
     public int TotalItems;
+    private readonly UserManager<IdentityUser> _userManager;
 
 
-    public FoodbankModel(ApplicationContext ctx, ILogger<FoodbankModel> logger)
+    public FoodbankModel(ApplicationContext ctx, ILogger<FoodbankModel> logger, UserManager<IdentityUser> userManager)
     {
         _ctx = ctx;
         _logger = logger;
+        _userManager = userManager;
     }
 
     [BindProperty] public Models.Foodbank? Foodbank { get; set; }
@@ -220,8 +224,28 @@ public class FoodbankModel : PageModel
 
                 await _ctx.SaveChangesAsync();
 
+                var u = new IdentityUser
+                {
+                    UserName = fb?.Email,
+                    Email = fb?.Email,
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true
+                };
+                await _userManager.AddToRoleAsync(u, "FoodbankAdmin");
+                await _userManager.AddClaimAsync(u, new Claim("FoodbankAdmin", fb?.FoodbankId.ToString()));
+                var result = await _userManager.CreateAsync(u, "DefaultPassword");
+                if (!result.Succeeded)
+                {
+                    foreach (var identityError in result.Errors)
+                        ModelState.AddModelError(string.Empty, identityError.Code + " :: " + identityError.Description);
+
+                    return Page();
+                }
+
                 _logger.Log(LogLevel.Information, "User {UserName} approved foodbank {Name}", User.Identity?.Name,
                     Foodbank?.Name);
+                
+                
 
                 return RedirectToPage("/Admin/Index");
             }

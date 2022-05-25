@@ -25,7 +25,7 @@ public class AddBankModel : PageModel
     [BindProperty] public Models.Foodbank Foodbank { get; set; }
 
     [BindProperty]
-    [Range(0, 9, ErrorMessage = "You have not filled all the required fields")]
+    [Required(ErrorMessage = "No Lat")]
     public float Lat { get; set; }
 
     [BindProperty]

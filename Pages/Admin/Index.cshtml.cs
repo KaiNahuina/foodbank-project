@@ -35,7 +35,6 @@ public class IndexModel : PageModel
         [FromQuery(Name = "OrderDirection")] string? orderDirection,
         [FromQuery(Name = "Search")] string? search, [FromQuery(Name = "Page")] string? page)
     {
-        ///// DO SOME REDIRECTION LOGIC!!
         if (!User.IsInRole("SiteAdmin"))
         {
             if (User.IsInRole("ApprovalAdmin")) return RedirectToPage("./Index");

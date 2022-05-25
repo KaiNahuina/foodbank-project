@@ -2,11 +2,11 @@
 @model RoleModel
 
 @{
-    ViewData["Title"] = "Recipe Category - Admin";
+    ViewData["Title"] = "Roles - Admin";
 }
 
 
-<h1 class="text-start">Add Recipe Category</h1>
+<h1 class="text-start">Add Role</h1>
 
 
 <div class="bg-light shadow-lg flex-fill d-flex justify-content-center align-items-center flex-column p-3">
@@ -35,7 +35,7 @@
                             <td>
                                 <form method="post" asp-route-id="@item.Name">
                                     <input type="hidden" name="Target" value="@Model.Target"/>
-                                    <button type="submit" name="Action" value="Add" class="btn btn-success">Add to Recipe</button>
+                                    <button type="submit" name="Action" value="Add" class="btn btn-success">Add to User</button>
                                 </form>
                             </td>
                         </tr>
@@ -46,7 +46,7 @@
                     <tr>
                         <td colspan="2">
                             <div class="d-flex justify-content-center flex-column">
-                                <h5>No category found...</h5>
+                                <h5>No Role found...</h5>
                             </div>
                         </td>
                     </tr>
