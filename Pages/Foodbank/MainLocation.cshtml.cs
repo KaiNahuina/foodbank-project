@@ -1,7 +1,6 @@
 #region
 
 using Foodbank_Project.Data;
-using Foodbank_Project.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -20,11 +19,11 @@ public class MainLocationModel : PageModel
     }
 
     public Models.Foodbank? Foodbank { get; set; }
-    public Location? Location { get; set; }
 
-    public async Task OnGetAsync([FromRoute(Name = "id")] int foodbankid)
+    public async Task OnGetAsync([FromRoute(Name = "id")] int foodbankId)
     {
-        var foodbank = _ctx.Foodbanks!.AsNoTracking().Where(l => l.FoodbankId == foodbankid).Include(f => f.Locations).Include(f => f.Needs);
+        var foodbank = _ctx.Foodbanks!.AsNoTracking().Where(l => l.FoodbankId == foodbankId).Include(f => f.Locations)
+            .Include(f => f.Needs);
         Foodbank = await foodbank.FirstAsync();
     }
 }

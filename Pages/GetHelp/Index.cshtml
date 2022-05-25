@@ -2,19 +2,21 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Get Help";
+    Layout = "Shared/_Layout";
 }
-<link rel="stylesheet" href="/css/Control.Geocoder.css" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css" />
-
-<script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
-<script src="/js/Control.Geocoder.js"></script>
+<link rel="stylesheet" href="/css/Control.Geocoder.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css"/>
 
 <form method="post">
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-3">
-                <div class="m-2 d-grid">    <a class="button btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelp/Vouchers">How&nbsp;the System&nbsp;Works</a>   </div>
-                <div class="m-2 d-grid">    <a class="button btn btn-lg btn-outline-success" asp-area="" asp-page="/Index">Home</a>    </div>
+                <div class="m-2 d-grid">
+                    <a class="button btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelp/Vouchers">How the System Works</a>
+                </div>
+                <div class="m-2 d-grid">
+                    <a class="button btn btn-lg btn-outline-success" asp-area="" asp-page="/Index">Home</a>
+                </div>
             </div>
 
             <div class="col-md-6 text-center">
@@ -33,7 +35,7 @@
     <div id="Top5Section" class="container">
         <div class="row">
             <div class="col-8 d-grid mx-auto">
-                <h1>5 closest Foodbanks</h1>
+                <h1>5 Closest Foodbanks</h1>
                 <div class="text-box mt-2" id="FoodbankClosest1"></div>
                 <div class="text-box mt-2" id="FoodbankClosest2"></div>
                 <div class="text-box mt-2" id="FoodbankClosest3"></div>
@@ -42,7 +44,11 @@
             </div>
         </div>
     </div>
+</form>
 
+@section Scripts{
+    <script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
+    <script src="/js/Control.Geocoder.js"></script>
 
     <script type="text/javascript">
         const Top5section = document.getElementById('Top5Section');
@@ -105,7 +111,7 @@
                  var closest5Markers = [];
                  var iterator = 0;
                  for(const element of result){
-                     closest5Markers[iterator] = L.marker([element.coord.lat, element.coord.lng], {icon:foodbankIcon}).bindPopup(element.name.toString() + " <br> " + element.distance.toString() + "m away<br> " + '<a href="/Foodbank/Index/'+ element.id +'">Click here to learn more</a>');    //need to figure out how to new line these and format the distance so we get no deciamals
+                     closest5Markers[iterator] = L.marker([element.coord.lat, element.coord.lng], {icon:foodbankIcon}).bindPopup(element.name.toString() + " <br> " + element.distance.toString() + "meters away<br> " + '<a href="/Foodbank/Index/'+ element.id +'">Click here to learn more</a>');    //need to figure out how to new line these and format the distance so we get no deciamals
                      $("#FoodbankClosest" + (iterator+1)).html("<p>" + element.name.toString() + "<br>" + element.address.toString() + "<br>" + element.postcode.toString() + "<br>" + element.distance.toString() + "m away <br> " + ' <a href="/Foodbank/Index/'+ element.id + '">Click here to learn more</a>' + "</p>");
                      iterator++;
                  }
@@ -113,7 +119,7 @@
                  markerGroup = L.featureGroup([closest5Markers[0],closest5Markers[1],closest5Markers[2],closest5Markers[3],closest5Markers[4]]);
                  map.addLayer(markerGroup);
                  map.fitBounds([markerGroup.getBounds().pad(0.2), e.bbox]);
-                 Top5Section.style.display = 'block'
+                 Top5Section.style.display = 'block';
 
                  if (history.pushState) {
                     var newurl = window.location.protocol + "//" + window.location.host + '/GetHelp/Index/?Location=' + control._input.value;   //change testmap name
@@ -146,4 +152,4 @@
         }).addTo(map);
 
     </script>
-</form>
+}

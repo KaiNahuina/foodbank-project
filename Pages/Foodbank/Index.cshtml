@@ -2,23 +2,29 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Foodbank Page";
+    Layout = "Shared/_Layout";
 }
-<link rel="stylesheet" href="/css/Control.Geocoder.css" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css" />
+<link rel="stylesheet" href="/css/Control.Geocoder.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css"/>
 
-
-<script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
-<script src="/js/Control.Geocoder.js"></script>
-
-<div class="text-center ">
-    <p>
-        Disclaimer: Vouchers may be required to access the bank. <a class="button btn btn-sm btn-outline-success" asp-page="/GetHelp/Vouchers">Learn more here.</a>
-    </p>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="m-2 d-grid">
+                <a class="button btn btn-lg btn-outline-success" onclick="history.back()">Back</a>
+            </div>
+        </div>
+        <div class="col-md-6 text-center">
+            <p> Disclaimer: Vouchers may be required to access the bank. <a class="button btn btn-md btn-outline-success" asp-page="/GetHelp/Vouchers">Learn more here.</a> </p>
+        </div>
+    </div>
 </div>
 
 <form method="post">
     <div class="text-center">
-        <h1 class="display-4"><b>Foodbank Name: </b>@Html.DisplayFor(modelItem => modelItem.Location!.Name)</h1>
+        <h1 class="display-4">
+            <b>Foodbank Name: </b>@Html.DisplayFor(modelItem => modelItem.Location!.Name)
+        </h1>
     </div>
 
     <div class="container mt-2">
@@ -26,9 +32,9 @@
             <div class="col-md-4">
                 <h3>Address</h3>
                 <p class="text-box">
-                    <b>Address: </b>@Html.DisplayFor(modelItem => modelItem.Location!.Address) <br />
-                    <b>Postcode: </b>@Html.DisplayFor(modelItem => modelItem.Location!.Postcode) <br />
-                    <b>Country: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank!.Country) <br />
+                    <b>Address: </b>@Html.DisplayFor(modelItem => modelItem.Location!.Address) <br/>
+                    <b>Postcode: </b>@Html.DisplayFor(modelItem => modelItem.Location!.Postcode) <br/>
+                    <b>Country: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank!.Country) <br/>
                 </p>
             </div>
             <div class="col-md-4">
@@ -36,29 +42,39 @@
                 <p class="text-box">
                     @if (string.IsNullOrEmpty(Model.Location?.Phone))
                     {
-                        <b>Phone Number: </b> @Html.DisplayFor(modelItem => modelItem.Foodbank!.Phone) <br />
+                        <b>Phone Number: </b>
+                        @Html.DisplayFor(modelItem => modelItem.Foodbank!.Phone)
+                        <br/>
                     }
                     else
                     {
-                        <b>Phone Number: </b> @Html.DisplayFor(modelItem => modelItem.Location!.Phone) <br />
+                        <b>Phone Number: </b>
+                        @Html.DisplayFor(modelItem => modelItem.Location!.Phone)
+                        <br/>
                     }
 
-                    <b>Email: </b> @Html.DisplayFor(modelItem => modelItem.Foodbank!.Email)             <br />
+                    <b>Email: </b> <a href="mailto:@Html.DisplayFor(modelItem => modelItem.Foodbank!.Email)">@Html.DisplayFor(modelItem => modelItem.Foodbank!.Email)</a> <br/>
+                    @if (Model.Foodbank?.Network?.ToLower() == "independent")
+                    {
+                        <b>Website: </b>
+                        <a href="@Html.DisplayFor(modelItem => modelItem.Foodbank!.Homepage)">@Html.DisplayFor(modelItem => modelItem.Foodbank!.Homepage)</a>
+                        <br/>
+                    }
                     <b>Network: </b> @Html.DisplayFor(modelItem => modelItem.Foodbank!.Network)
                 </p>
             </div>
             <div class="col-md-4">
-                @if (Model.Foodbank?.Network == "Trussell Trust")
+                @if (Model.Foodbank?.Network?.ToLower() == "trussell trust")
                 {
-                    <img class="img-fluid image-box" id="trusselTrust" src="/img/TT-Logo-Rect.png" alt="Trussel Trust Logo" />
+                    <img class="img-fluid image-box" id="trusselTrust" src="/img/TT-Logo-Rect.png" alt="Trussel Trust Logo"/>
                 }
-                @if (Model.Foodbank!.Network == "IFAN")
+                @if (Model.Foodbank!.Network?.ToLower() == "ifan")
                 {
-                    <img class="img-fluid image-box" id="IFAN" src="/img/IFAN-Logo.jpg" alt="IFAN Logo" />
+                    <img class="img-fluid image-box" id="IFAN" src="/img/IFAN-Logo.jpg" alt="IFAN Logo"/>
                 }
-                @if (Model.Foodbank.Network == "Independent")
+                @if (Model.Foodbank.Network?.ToLower() == "independent")
                 {
-                    <img class="img-fluid image-box" id="Independent" src="/img/Independent-logo.jpg" alt="Independent Logo" />
+                    <img class="img-fluid image-box" id="Independent" src="/img/Independent-logo.jpg" alt="Independent Logo"/>
                 }
             </div>
         </div>
@@ -67,14 +83,14 @@
     <div class="container mt-2">
         <div class="row">
             <!-- get the name of the location id, if it == salvation army skip displaying the view distribution center -->
-            <div class="col-lg-3">  </div>
+            <div class="col-lg-3"> </div>
             <div class="col-lg-3 text-center">
                 <a class="button btn btn-lg btn-outline-success" asp-page="/Foodbank/MainLocation" asp-route-id="@Model.Foodbank?.FoodbankId">Main Location Details</a>
             </div>
             <div class="col-lg-3 text-center">
                 <a class="button btn btn-lg btn-outline-success" href="https://maps.google.com/?q= @Model.Location?.Coord!.Y ,@Model.Location?.Coord!.X">Click here for directions</a> <!-- link that sends them to google with their lat and long as a search function-->
             </div>
-            <div class="col-lg-3">  </div>
+            <div class="col-lg-3"> </div>
         </div>
     </div>
 
@@ -91,19 +107,26 @@
                 <p class="text-box">
                     @if (Model.Foodbank!.Needs!.Count == 0 || Model.Foodbank!.Needs!.All(n => n.NeedStr is null))
                     {
-                        @Html.Raw("This foodbank has no needs") <br />
+                        @Html.Raw("This foodbank has no needs")
+                        <br/>
                     }
                     else
                     {
                         @foreach (var need in Model.Foodbank.Needs!)
                         {
-                            @Html.DisplayFor(modelItem => need.NeedStr) <br />
+                            @Html.DisplayFor(modelItem => need.NeedStr)
+                            <br/>
                         }
                     }
                 </p>
             </div>
         </div>
     </div>
+</form>
+
+@section Scripts{
+    <script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
+    <script src="/js/Control.Geocoder.js"></script>
 
     <script type="text/javascript">
 
@@ -116,7 +139,7 @@
 
         var map = L.map('map').setView([ 54.596442,  -3.9], 6);
 
-        var locationMarker = L.marker([@Html.Raw(Model.Location?.Coord!.Y),@Html.Raw(Model.Location?.Coord?.X)], {icon:foodbankIcon}).bindPopup("<a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley'>Click here for directions</a>").addTo(map);
+        var locationMarker = L.marker([@Html.Raw(Model.Location?.Coord!.Y),@Html.Raw(Model.Location?.Coord?.X)], {icon:foodbankIcon}).bindPopup("<a href='https://maps.google.com/?q= @Model.Location?.Coord!.Y , @Model.Location?.Coord!.X'>Click here for directions</a>").addTo(map);
 
         map.setView([@Html.Raw(Model.Location?.Coord?.Y),@Html.Raw(Model.Location?.Coord?.X)], 16);
 
@@ -138,5 +161,5 @@
           attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-    </script>
-</form>
+</script>
+}

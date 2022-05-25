@@ -85,6 +85,7 @@ namespace Foodbank_Project.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Homepage")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -99,6 +100,7 @@ namespace Foodbank_Project.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Postcode")
@@ -455,13 +457,13 @@ namespace Foodbank_Project.Migrations
 
             modelBuilder.Entity("RecipeRecipeCategory", b =>
                 {
-                    b.Property<int>("CategoryRecipeCategoryId")
+                    b.Property<int>("CategoriesRecipeCategoryId")
                         .HasColumnType("int");
 
                     b.Property<int>("RecipesRecipeId")
                         .HasColumnType("int");
 
-                    b.HasKey("CategoryRecipeCategoryId", "RecipesRecipeId");
+                    b.HasKey("CategoriesRecipeCategoryId", "RecipesRecipeId");
 
                     b.HasIndex("RecipesRecipeId");
 
@@ -548,7 +550,7 @@ namespace Foodbank_Project.Migrations
                 {
                     b.HasOne("Foodbank_Project.Models.RecipeCategory", null)
                         .WithMany()
-                        .HasForeignKey("CategoryRecipeCategoryId")
+                        .HasForeignKey("CategoriesRecipeCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

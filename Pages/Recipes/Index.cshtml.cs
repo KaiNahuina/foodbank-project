@@ -8,5 +8,4 @@ namespace Foodbank_Project.Pages.Recipes;
 
 public class IndexModel : PageModel
 {
-  
 }

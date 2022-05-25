@@ -5,15 +5,11 @@
 }
 
 
-
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-3">
             <div class="m-2 d-grid">
                 <a class="button btn btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Index">Back</a>
-            </div>
-            <div class="m-2 d-grid">
-                <a class="button btn btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Thankyou">Tep thanks button</a>
             </div>
         </div>
         <div class="col-sm-6 text-center">
@@ -33,12 +29,14 @@
 
         <div class="col-md-3">
             <label asp-for="Recipe.Name">Recipe Name:</label><br/>
+            <span asp-validation-for="Recipe.Name" class="text-danger"></span>
             <input class="text-box" asp-for="Recipe.Name" type="text"/><br/>
             <label asp-for="Recipe.Serves">Recipe Serves:</label><br/>
             <input class="text-box" asp-for="Recipe.Serves" type="text"/><br/>
         </div>
 
-        <label asp-for="Recipe.Category">Select recipe Categories::</label> <br/>
+        <label asp-for="Recipe.Categories">Select recipe Categories:</label> <br/>
+        <span asp-validation-for="Recipe.Categories" class="text-danger"></span>
         <div class="text-box col-md-2">
             @foreach (var category in Model.SelectedCategories)
             {
@@ -51,6 +49,7 @@
     </div>
     <div class="container  spacingT">
         <label asp-for="Recipe.Ingredients">Ingredients:</label>
+        <span asp-validation-for="Recipe.Ingredients" class="text-danger"></span>
 
         <textarea asp-for="Recipe.Ingredients" rows="4" cols="1" class="form-control text-box"></textarea><br/>
 
@@ -59,6 +58,7 @@
 
     <div class="container">
         <label asp-for="Recipe.Method">Recipe Method:</label><br/>
+        <span asp-validation-for="Recipe.Method" class="text-danger"></span>
         <textarea asp-for="Recipe.Method" rows="4" cols="1" class="form-control text-box"></textarea><br/>
     </div>
     <div class="container">
@@ -74,7 +74,7 @@
 
         <br/>
         <input class="button mt-3 btn btn-lg btn-outline-success" type="submit"/> <br/>
-        <label asp-for="Recipe.Status">Status is awaiting approval:</label>
+        <!--<label asp-for="Recipe.Status">Status is awaiting approval:</label>-->
 
     </div>
 </form>

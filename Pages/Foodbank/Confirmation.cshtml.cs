@@ -1,12 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
+#region
+
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Foodbank_Project.Pages.Foodbank
+#endregion
+
+namespace Foodbank_Project.Pages.Foodbank;
+
+public class ConfirmationModel : PageModel
 {
-    public class ConfirmationModel : PageModel
-    {
-        public void OnGet()
-        {
-        }
-    }
 }

@@ -1,5 +1,6 @@
-#region
+﻿#region
 
+using System.ComponentModel.DataAnnotations;
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
 using Foodbank_Project.Util;
@@ -22,12 +23,18 @@ public class AddBankModel : PageModel
     }
 
     [BindProperty] public Models.Foodbank Foodbank { get; set; }
-    [BindProperty] public float Lat { get; set; }
-    [BindProperty] public float Lng { get; set; }
 
-    [BindProperty] public bool Consent { get; set; }
+    [BindProperty]
+    [Required(ErrorMessage = "No Lat")]
+    public float Lat { get; set; }
+
+    [BindProperty]
+    [Required(ErrorMessage = "No Long")]
+    public float Lng { get; set; }
 
     [BindProperty] public bool Confirm { get; set; }
+
+    [BindProperty] public bool Consent { get; set; }
 
     public void OnGet()
     {
@@ -45,17 +52,15 @@ public class AddBankModel : PageModel
 
         Foodbank = FoodbankHelpers.ApplySlug(Foodbank);
         Foodbank = FoodbankHelpers.ApplyFinalize(Foodbank);
+        if (Foodbank.Country!.Equals("Country")) Foodbank.Country = null;
+
+        if (Foodbank.Network!.Equals("Network")) Foodbank.Network = null;
+
         ModelState.ClearValidationState(nameof(Pages.Foodbank));
         if (!TryValidateModel(Foodbank, nameof(Pages.Foodbank))) return Page();
 
         _ap.Foodbanks?.Add(Foodbank);
         await _ap.SaveChangesAsync();
         return RedirectToPage("/Foodbank/Confirmation");
-    }
-
-    public class Coords
-    {
-        public double Lat { get; set; }
-        public double Lng { get; set; }
     }
 }

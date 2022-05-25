@@ -15,23 +15,22 @@ public class SearchModel : PageModel
     private readonly ApplicationContext _ctx;
 
 
-
     public SearchModel(ApplicationContext ctx)
     {
         _ctx = ctx;
     }
 
 
-
     public List<Recipe>? Recipes { get; set; }
-    public string Category { get; set; }
+    public string? Category { get; set; }
 
 
     public async Task OnGetAsync([FromRoute(Name = "catName")] string category)
     {
-         Recipes = await _ctx.RecipeCategories.AsNoTracking().Where(r => r.Name == category)
-            .Include(r => r.Recipes).Select(r => new List<Recipe>(r.Recipes)).FirstOrDefaultAsync();
-
-         Category = category;        
+        Recipes = await _ctx.Recipes.Where(r => r.Status == Status.Approved)
+            .Include(r => r.Categories.Where(c => c.Name == category))
+            .Where(r => r.Categories.Any(c => c.Name == category))
+            .ToListAsync();
+        Category = category;
     }
 }

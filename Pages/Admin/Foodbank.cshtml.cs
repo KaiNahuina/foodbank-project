@@ -1,48 +1,58 @@
 #region
 
+using System.Security.Claims;
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
 using Foodbank_Project.Util;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
+using Location = Foodbank_Project.Models.Location;
 
 #endregion
 
 namespace Foodbank_Project.Pages.Admin;
 
+[Authorize(Roles =
+    "FoodbanksAdmin,FoodbankAdmin,SiteAdmin,ApprovalAdmin")]
 public class FoodbankModel : PageModel
 {
     private readonly ApplicationContext _ctx;
+    private readonly ILogger<FoodbankModel> _logger;
+    private readonly UserManager<IdentityUser> _userManager;
 
     public string? Action;
-    
-    public IList<Models.Location>? Locations;
-    
-    public IList<Models.Need>? Needs;
-    
+
     public bool HasNextPage;
     public bool HasPrevPage;
+
+    public IList<Location>? Locations;
     public int MaxPages;
+
+    public IList<Need>? Needs;
     public string? OrderBy;
     public string? OrderDirection;
     public new int Page;
     public string? Search;
     public int TotalItems;
-    
-    
 
-    public FoodbankModel(ApplicationContext ctx)
+
+    public FoodbankModel(ApplicationContext ctx, ILogger<FoodbankModel> logger, UserManager<IdentityUser> userManager)
     {
         _ctx = ctx;
+        _logger = logger;
+        _userManager = userManager;
     }
 
     [BindProperty] public Models.Foodbank? Foodbank { get; set; }
     [BindProperty] public double Lat { get; set; }
     [BindProperty] public double Lng { get; set; }
 
-    public async Task OnGetAsync([FromQuery(Name = "Action")] string? action, [FromQuery(Name = "OrderBy")] string? orderBy,
+    public async Task<IActionResult> OnGetAsync([FromQuery(Name = "Action")] string? action,
+        [FromQuery(Name = "OrderBy")] string? orderBy,
         [FromQuery(Name = "OrderDirection")] string? orderDirection,
         [FromQuery(Name = "Search")] string? search, [FromQuery(Name = "Page")] string? page)
     {
@@ -50,6 +60,10 @@ public class FoodbankModel : PageModel
         if (Action != "Create")
         {
             var id = int.Parse(RouteData.Values["id"] as string ?? "");
+            if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
+                if (User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", id.ToString()))
+                    return Forbid();
+
             OrderBy = string.IsNullOrEmpty(orderBy) ? "Name" : orderBy;
             OrderDirection = string.IsNullOrEmpty(orderDirection) ? "Desc" : orderDirection;
             if (!int.TryParse(page, out Page)) Page = 1;
@@ -64,19 +78,20 @@ public class FoodbankModel : PageModel
 
             var foodbankQue = _ctx.Foodbanks!.Where(f => f.FoodbankId == id);
 
-            var locationQue = _ctx.Locations!.AsNoTracking().Include(l => l.Foodbank).Where(l => l.Foodbank!.FoodbankId == id)
+            var locationQue = _ctx.Locations!.AsNoTracking().Include(l => l.Foodbank)
+                .Where(l => l.Foodbank!.FoodbankId == id)
                 .OrderByDescending(n => n.Name)
-                .Where(n => 
-                            string.IsNullOrEmpty(Search) || n.Name!.Contains(Search) || n.Address!.Contains(Search) ||
-                            n.Postcode!.Contains(Search)
-                            || n.LocationId.ToString() == Search);
-            
-            
+                .Where(n =>
+                    string.IsNullOrEmpty(Search) || n.Name!.Contains(Search) || n.Address!.Contains(Search) ||
+                    n.Postcode!.Contains(Search)
+                    || n.LocationId.ToString() == Search);
+
+
             var needQue = _ctx.Needs.AsNoTracking().Include(n => n.Foodbanks.Where(f => f.FoodbankId == id))
                 .Where(n => n.Foodbanks.Any(f => f.FoodbankId == id)) // huh
                 .OrderByDescending(n => n.NeedStr)
-                .Where(n => 
-                    string.IsNullOrEmpty(Search) || n.NeedStr!.Contains(Search) 
+                .Where(n =>
+                    string.IsNullOrEmpty(Search) || n.NeedStr!.Contains(Search)
                                                  || n.NeedId.ToString() == Search);
 
             switch (OrderDirection)
@@ -89,7 +104,7 @@ public class FoodbankModel : PageModel
                         "Address" => locationQue.OrderBy(n => n.Address),
                         _ => locationQue
                     };
-                    
+
                     needQue = OrderBy switch
                     {
                         "Name" => needQue.OrderBy(n => n.NeedStr),
@@ -106,7 +121,7 @@ public class FoodbankModel : PageModel
                         "Address" => locationQue.OrderByDescending(n => n.Address),
                         _ => locationQue
                     };
-                    
+
                     needQue = OrderBy switch
                     {
                         "Name" => needQue.OrderByDescending(n => n.NeedStr),
@@ -127,18 +142,19 @@ public class FoodbankModel : PageModel
             Locations = await locationQue.Skip((Page - 1) * 25).Take(25).ToListAsync();
 
             Foodbank = await foodbankQue.FirstAsync();
-            
+
             Needs = await needQue.Skip((Page - 1) * 25).Take(25).ToListAsync();
             Lat = Foodbank.Coord!.Y;
             Lng = Foodbank.Coord.X;
+            return Page();
         }
-        else
+
+        if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
+        Foodbank = new Models.Foodbank
         {
-            Foodbank = new Models.Foodbank
-            {
-                Created = DateTime.Now
-            };
-        }
+            Created = DateTime.Now
+        };
+        return Page();
     }
 
 
@@ -148,11 +164,23 @@ public class FoodbankModel : PageModel
         switch (Action)
         {
             case "Delete":
+
+                if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
+                    if (User.IsInRole("FoodbankAdmin") &&
+                        !User.HasClaim("FoodbankClaim", Foodbank?.FoodbankId.ToString()))
+                        return Forbid();
+
                 if (Foodbank != null) _ctx.Remove(Foodbank);
+
+                _logger.Log(LogLevel.Warning, "User {UserName} deleted foodbank {Name}", User.Identity?.Name,
+                    Foodbank?.Name);
 
                 break;
             case "Create":
             {
+                if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
+                foreach (var entry in ModelState.Where(entry => entry.Key.Contains("Foodbank.Location")))
+                    ModelState.Remove(entry.Key);
                 if (!ModelState.IsValid) return Page();
                 if (Foodbank != null)
                 {
@@ -162,10 +190,21 @@ public class FoodbankModel : PageModel
                     _ctx.Foodbanks?.Update(Foodbank);
                 }
 
+                _logger.Log(LogLevel.Information, "User {UserName} created foodbank {Name}", User.Identity?.Name,
+                    Foodbank?.Name);
+
                 break;
             }
             case "Update":
             {
+                if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
+                    if (User.IsInRole("FoodbankAdmin") &&
+                        !User.HasClaim("FoodbankClaim", Foodbank?.FoodbankId.ToString()))
+                        return Forbid();
+
+                foreach (var entry in ModelState.Where(entry => entry.Key.Contains("Foodbank.Location")))
+                    ModelState.Remove(entry.Key);
+
                 if (!ModelState.IsValid) return Page();
                 if (Foodbank != null)
                 {
@@ -173,45 +212,88 @@ public class FoodbankModel : PageModel
                     _ctx.Foodbanks?.Update(Foodbank);
                 }
 
+                _logger.Log(LogLevel.Information, "User {UserName} updated foodbank {Name}", User.Identity?.Name,
+                    Foodbank?.Name);
+
+                if (User.IsInRole("FoodbankAdmin"))
+                {
+                    await _ctx.SaveChangesAsync();
+                    return RedirectToPage("/Admin/Index");
+                }
+
                 break;
             }
             case "Approve":
             {
-                if (!ModelState.IsValid) return Page();
-                int id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
+                if (!User.IsInRole("ApprovalAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
+                var id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
 
-                Models.Foodbank? fb = await _ctx.Foodbanks.Where(f => f.FoodbankId == id).FirstOrDefaultAsync();
+                Foodbank = await _ctx.Foodbanks.Where(f => f.FoodbankId == id).FirstOrDefaultAsync();
 
-                if (fb != null)
-                {
-                    fb.Status = Status.Approved;
-                }
+                if (Foodbank != null) Foodbank.Status = Status.Approved;
 
                 await _ctx.SaveChangesAsync();
-                
-                return RedirectToPage("/Admin/Index");
 
-                
+                var u = new IdentityUser
+                {
+                    UserName = Foodbank?.Email,
+                    Email = Foodbank?.Email,
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true
+                };
+                var result = await _userManager.CreateAsync(u);
+                if (!result.Succeeded)
+                {
+                    foreach (var identityError in result.Errors)
+                        ModelState.AddModelError(string.Empty, identityError.Code + " :: " + identityError.Description);
+
+                    return Page();
+                }
+
+                u = await _userManager.FindByEmailAsync(Foodbank?.Email);
+
+                result = await _userManager.AddToRoleAsync(u, "FoodbankAdmin");
+                if (!result.Succeeded)
+                {
+                    foreach (var identityError in result.Errors)
+                        ModelState.AddModelError(string.Empty, identityError.Code + " :: " + identityError.Description);
+
+                    return Page();
+                }
+
+                result = await _userManager.AddClaimAsync(u,
+                    new Claim("FoodbankClaim", Foodbank?.FoodbankId.ToString()));
+                if (!result.Succeeded)
+                {
+                    foreach (var identityError in result.Errors)
+                        ModelState.AddModelError(string.Empty, identityError.Code + " :: " + identityError.Description);
+
+                    return Page();
+                }
+
+                _logger.Log(LogLevel.Information, "User {UserName} approved foodbank {Name}", User.Identity?.Name,
+                    Foodbank?.Name);
+
+
+                return RedirectToPage("/Admin/Index");
             }
 
             case "Deny":
             {
-                if (!ModelState.IsValid) return Page();
-                int id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
+                if (!User.IsInRole("ApprovalAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
+                var id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
 
-                Models.Foodbank? fb = await _ctx.Foodbanks.Where(f => f.FoodbankId == id).FirstOrDefaultAsync();
+                var fb = await _ctx.Foodbanks.Where(f => f.FoodbankId == id).FirstOrDefaultAsync();
 
-                if (fb != null)
-                {
-                    fb.Status = Status.Denied;
-                }
-                
+                if (fb != null) fb.Status = Status.Denied;
+
                 await _ctx.SaveChangesAsync();
-                
+
+                _logger.Log(LogLevel.Information, "User {UserName} denied foodbank {Name}", User.Identity?.Name,
+                    Foodbank?.Name);
+
                 return RedirectToPage("/Admin/Index");
-                
             }
-                
         }
 
         await _ctx.SaveChangesAsync();

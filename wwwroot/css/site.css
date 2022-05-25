@@ -65,6 +65,7 @@ a {
     color: #115649;
 }
 
+
 .button {
     background-color: #f4faed;
     border-radius: 5px; /*border curve*/
@@ -73,10 +74,10 @@ a {
     display: inline-block;
 }
 
-    .button:hover {
-        background-color: #115649;
-        color: white
-    }
+.button:hover {
+    background-color: #115649;
+    color: white
+}
 
 .carousel-control .icon-prev, .carousel-control .icon-next {
     font-size: 100px;
@@ -243,11 +244,12 @@ a:hover {
 .noUnderlines {
     text-decoration: none;
 }
-.imageCol{
+
+.imageCol {
     width: 25%;
 }
 
-#Top5Section{
+#Top5Section {
     display: none;
 }
 
@@ -255,6 +257,6 @@ a:hover {
     display: none;
 }
 
-#viewMoreButton{
+#viewMoreButton {
     display: block;
 }

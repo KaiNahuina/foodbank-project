@@ -5,7 +5,6 @@
 }
 
 
-
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-3">
@@ -15,11 +14,11 @@
             <div class="m-2 d-grid">
                 <a class="button btn btn-lg btn-outline-success" asp-area="" asp-page="/Index">Home</a>
             </div>
-            
-        </div>
-        <div class="col-md-4 text-center">
 
-            <h1 class="display-4 mx-auto">Select a recipe category</h1>
+        </div>
+        <div class="col">
+
+            <h1 class="display-4 text-center">Select a recipe category</h1>
         </div>
         <div class="col-md-3 text-center">
             <h1 class="display-4"></h1>
@@ -29,38 +28,35 @@
 </div>
 
 
-
 <div class="container mt-5">
     <div class="row spacingB">
-        <div class="container col-md-3 text-center">
+        <div class="col-md-3 mt-4 text-center">
 
-            <img src="~/img/SpecialEvent.jpg" alt="Special Event" class="recipe-icons" /><br />
-            <a asp-page="/Recipes/Search">
-                <a class="button btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Special">Special Events</a>
+            <a asp-page="/Recipes/Search" asp-route-catName="Special">
+                <img src="~/img/SpecialEvent.jpg" alt="Special Event" class="recipe-icons"/><br/>
             </a>
+            <a class="button btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Special">Special Events</a>
         </div>
-        <div class="col-md-3 text-center">
+        <div class="col-md-3 mt-4 text-center">
 
-            <img src="~/img/Vegetables.jpg" alt="Vegetarian Dishes" class="recipe-icons" /><br />
-            <a asp-page="/Recipes/Search">
-                <a class="button btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Vegetarian">Vegetarian Dishes</a>
-
+            <a asp-page="/Recipes/Search" asp-route-catName="Vegetarian">
+                <img src="~/img/Vegetables.jpg" alt="Vegetarian Dishes" class="recipe-icons"/><br/>
             </a>
+            <a class="button btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Vegetarian">Vegetarian Dishes</a>
         </div>
-        <div class="col-md-3 text-center">
+        <div class="col-md-3 mt-4 text-center">
 
-            <img src="~/img/Meat.jpg" alt="Meat Dishes" class="recipe-icons" /><br />
-            <a asp-page="/Recipes/Search">
-                <a class="button btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Meat">Meat Dishes</a>
 
+            <a asp-page="/Recipes/Search" asp-route-catName="Meat">
+                <img src="~/img/Meat.jpg" alt="Meat Dishes" class="recipe-icons"/><br/>
             </a>
+            <a class="button btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Meat">Meat Dishes</a>
         </div>
-        <div class="col-md-3 text-center">
-            <a asp-page="/Recipes/Search">
-                <img src="~/img/Fish.jpg" alt="Fish Dishes" class="recipe-icons" /><br />
-                <a class="button btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Fish">Fish Dishes</a>
-
+        <div class="col-md-3 mt-4 text-center">
+            <a asp-page="/Recipes/Search" asp-route-catName="Fish">
+                <img src="~/img/Fish.jpg" alt="Fish Dishes" class="recipe-icons"/><br/>
             </a>
+            <a class="button btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Fish">Fish Dishes</a>
         </div>
     </div>
 </div>
@@ -68,36 +64,39 @@
 
 <div class="container mt-5">
     <div class="row spacingB">
-        <div class="col-md-3 text-center">
-            <a asp-page="/Recipes/Search">
-                <img src="~/img/Soup.jpg" alt="Soups" class="recipe-icons" /><br />
-                <a class="button btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Soups">Soups</a>
-
+        <div class="col-md-3 mt-4 text-center">
+            <a asp-page="/Recipes/Search" asp-route-catName="Soups">
+                <img src="~/img/Soup.jpg" alt="Soups" class="recipe-icons"/><br/>
             </a>
+            <a class="button btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Soups">Soups</a>
+
+
         </div>
-        <div class="col-md-3 text-center">
+        <div class="col-md-3 mt-4 text-center">
 
-            <img src="~/img/SideDish.jpg" alt="Side Dishes" class="recipe-icons" /><br />
-            <a asp-page="/Recipes/Search">
-                <a class="button btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Side">Side Dishes</a>
 
+            <a asp-page="/Recipes/Search" asp-route-catName="Side">
+                <img src="~/img/SideDish.jpg" alt="Side Dishes" class="recipe-icons"/><br/>
             </a>
+            <a class="button btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Side">Side Dishes</a>
         </div>
-        <div class="col-md-3 text-center">
+        <div class="col-md-3 mt-4 text-center">
 
-            <img src="~/img/Desserts.jpg" alt="Desserts" class="recipe-icons" /><br />
-            <a asp-page="/Recipes/Search">
-                <a class="button btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Desserts">Desserts</a>
 
+            <a asp-page="/Recipes/Search" asp-route-catName="Desserts">
+                <img src="~/img/Desserts.jpg" alt="Desserts" class="recipe-icons"/><br/>
             </a>
+            <a class="button btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search" asp-route-catName="Desserts">Desserts</a>
         </div>
-        <div class="col-md-3 text-center">
+        <div class="col-md-3 mt-4 text-center">
 
-            <img src="~/img/Snacks.jpg" alt="Snacks" class="recipe-icons" /><br />
-            <a asp-page="/Recipes/Search">
-                <a class="button btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search"asp-route-catName="Snacks">Snacks</a>
 
+            <a asp-page="/Recipes/Search" asp-route-catName="Snacks">
+                <img src="~/img/Snacks.jpg" alt="Snacks" class="recipe-icons"/><br/>
             </a>
+            <a class="button btn mt-2 btn-lg btn-outline-success" asp-area="" asp-page="/Recipes/Search"asp-route-catName="Snacks">Snacks</a>
+
+
         </div>
     </div>
 </div>

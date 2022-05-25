@@ -13,16 +13,16 @@ namespace Foodbank_Project.Pages.Admin;
 public class IndexModel : PageModel
 {
     private readonly ApplicationContext _ctx;
-    
+
     public IList<Models.Foodbank>? Foodbanks;
-    public IList<Recipe>? Recipes;
-    
+
     public bool HasNextPage;
     public bool HasPrevPage;
     public int MaxPages;
     public string? OrderBy;
     public string? OrderDirection;
     public new int Page;
+    public IList<Recipe>? Recipes;
     public string? Search;
     public int TotalItems;
 
@@ -30,11 +30,28 @@ public class IndexModel : PageModel
     {
         _ctx = ctx;
     }
-    
-    public async Task OnGetAsync([FromQuery(Name = "OrderBy")] string? orderBy,
+
+    public async Task<IActionResult> OnGetAsync([FromQuery(Name = "OrderBy")] string? orderBy,
         [FromQuery(Name = "OrderDirection")] string? orderDirection,
         [FromQuery(Name = "Search")] string? search, [FromQuery(Name = "Page")] string? page)
     {
+        if (!User.IsInRole("SiteAdmin") && !User.IsInRole("ApprovalAdmin"))
+        {
+            if (User.IsInRole("FoodbankAdmin"))
+            {
+                var id = User.Claims.Where(c => c.Type == "FoodbankClaim").Select(c => c.Value).First();
+                return RedirectToPage("./Foodbank",
+                    new { id });
+            }
+
+            if (User.IsInRole("FoodbanksAdmin")) return RedirectToPage("./Foodbanks");
+            if (User.IsInRole("UsersAdmin")) return RedirectToPage("./Users");
+            if (User.IsInRole("RecipesAdmin")) return RedirectToPage("./Recipes");
+            if (User.IsInRole("NeedsAdmin")) return RedirectToPage("./Needs");
+        }
+
+
+        if (!User.IsInRole("SiteAdmin") && !User.IsInRole("ApprovalAdmin")) return Forbid();
         OrderBy = string.IsNullOrEmpty(orderBy) ? "Locations" : orderBy;
         OrderDirection = string.IsNullOrEmpty(orderDirection) ? "Desc" : orderDirection;
         if (!int.TryParse(page, out Page)) Page = 1;
@@ -54,9 +71,9 @@ public class IndexModel : PageModel
                 string.IsNullOrEmpty(Search) || n.Name!.Contains(Search) || n.Address!.Contains(Search) ||
                 n.Postcode!.Contains(Search)
                 || n.FoodbankId.ToString() == Search);
-        
+
         var recipeQue = (from f in _ctx.Recipes
-                select f).AsNoTracking().Where(f => f.Status == Status.UnConfirmed).Include(f => f.Category)
+                select f).AsNoTracking().Where(f => f.Status == Status.UnConfirmed).Include(f => f.Categories)
             .OrderByDescending(n => n.Name)
             .Where(n =>
                 string.IsNullOrEmpty(Search) || n.Name!.Contains(Search) || n.Ingredients!.Contains(Search) ||
@@ -96,7 +113,7 @@ public class IndexModel : PageModel
                     "Locations" => foodbankQue.OrderByDescending(n => n.Locations!.Count),
                     _ => foodbankQue
                 };
-                
+
                 recipeQue = OrderBy switch
                 {
                     "Name" => recipeQue.OrderByDescending(n => n.Name),
@@ -119,8 +136,12 @@ public class IndexModel : PageModel
 
         Foodbanks = await foodbankQue.Skip((Page - 1) * 25).Take(25).ToListAsync();
         Recipes = await recipeQue.Skip((Page - 1) * 25).Take(25).ToListAsync();
+        return Page();
     }
+
+#pragma warning disable CA1822
     public string TrimBlob(string? blob)
+#pragma warning restore CA1822
     {
         if (blob is null) return "";
         if (blob.Length > 32)

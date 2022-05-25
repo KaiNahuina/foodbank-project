@@ -14,7 +14,6 @@
             </div>
         </div>
         <div class="col-sm-6 text-center">
-
             <h1 class="display-4">@Model.Category </h1>
         </div>
         <div class="col-md-3 text-center">
@@ -25,46 +24,52 @@
 </div>
 <div class="container mt-5">
 
-<table class="table table-striped table-hover w-80">
-    <thead>
+    <table class="table table-striped table-hover w-80">
+        <thead>
         <tr>
-            
-            <th class="imageCol" scope="col">image</th>
-            <th class = "nameCol" scope="col">names</th>
-           
-
+            <th class="imageCol" scope="col">
+                <h1>Image</h1>
+            </th>
+            <th class="nameCol" scope="col">
+                <h1>Name</h1>
+            </th>
+            <th class="nameCol" scope="col">
+                <h1>Link</h1>
+            </th>
         </tr>
-    </thead>
-    <tbody>
-        @foreach (Recipe item in Model.Recipes ?? new())
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Recipes ?? new List<Recipe>())
         {
-        
             <tr>
-                
-
                 @{
-                    try
+                    if (item.Image == null)
                     {
                         <td>
-                            <a asp-page="./Dish" asp-route-id="@item.RecipeId"><img src="@string.Format("data:Images/jpg;base64,{0}",Convert.ToBase64String(item.Image))" alt="@item.Name" /></a>
+                            <a asp-page="./Dish" asp-route-id="@item.RecipeId">
+                                <img src="/img/no-image-available.png" alt="No Image available" style="width: 100%;"/>
+                            </a>
                         </td>
                     }
-                    catch
+                    else
                     {
                         <td>
-                            <img src="/Images/Empty.png" alt="No Image available" />
+                            <a asp-page="./Dish" asp-route-id="@item.RecipeId">
+                                <img src="@($"data:Images/jpg;base64,{Convert.ToBase64String(item.Image!)}")" alt="@item.Name" style="width: 100%;">
+                            </a>
                         </td>
                     }
                 }
-
-
-                <td>
+                <td style="text-align: center; vertical-align: middle;">
                     <div class="h2">
-                    @Html.DisplayFor(modelItem => item.Name)
+                        <a asp-page="./Dish" asp-route-id="@item.RecipeId">@Html.DisplayFor(modelItem => item.Name)</a>
                     </div>
+                </td>
+                <td style="text-align: center; vertical-align: middle;">
+                    <a class="button btn btn-lg btn-outline-success" asp-page="./Dish" asp-route-id="@item.RecipeId">View Recipe</a>
                 </td>
             </tr>
         }
-    </tbody>
-</table>
+        </tbody>
+    </table>
 </div>

@@ -4,6 +4,159 @@
     ViewData["Title"] = "Recipes - Admin";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="text-start">Recipes</h1>
 
-Contetn here
+<div class="bg-light shadow-lg">
+    <div class="p-3 d-flex flex-row align-items-center justify-content-between">
+        <div>
+            <form method="get" class="d-flex flex-row align-items-center">
+                <input class="me-3" placeholder="Search columns..." name="Search" value="@Model.Search"/>
+                <button type="submit" class="btn btn-success me-3">Search</button>
+            </form>
+        </div>
+        <div>
+            <form method="get" asp-page="./Recipe" asp-route-id="0">
+                <button type="submit" name="Action" value="Create" class="btn btn-success">Add New</button>
+            </form>
+        </div>
+        <div class="d-flex flex-row align-items-center justify-content-between">
+            @{
+                var hasPrev = Model.HasPrevPage ? "" : "disabled";
+                var hasNext = Model.HasNextPage ? "" : "disabled";
+            }
+            <form method="get">
+                <input name="OrderBy" type="hidden" value="@Model.OrderBy">
+                <input name="OrderDirection" type="hidden" value="@Model.OrderDirection">
+                <input name="Search" type="hidden" value="@Model.Search">
+                <input name="Page" type="hidden" value="@(Model.Page - 1)">
+                <button class="btn btn-success p-2 me-3 @hasPrev">Previous</button>
+            </form>
+            <form method="get">
+                <input name="OrderBy" type="hidden" value="@Model.OrderBy">
+                <input name="OrderDirection" type="hidden" value="@Model.OrderDirection">
+                <input name="Search" type="hidden" value="@Model.Search">
+                <input name="Page" type="hidden" value="@(Model.Page + 1)">
+                <button class="btn btn-success p-2 me-3 @hasNext">Next</button>
+            </form>
+            <span>Page: @Html.DisplayFor(model => model.Page) of @Html.DisplayFor(model => model.MaxPages) - </span>
+            <span>Total: @Html.DisplayFor(model => model.TotalItems)</span>
+        </div>
+    </div>
+    <table class="table table-striped table-hover w-100">
+        <thead>
+        <tr>
+            @{
+                var direction = Model.OrderDirection == "Asc" ? "Desc" : "Asc";
+                var arrow = direction == "Asc" ? "&darr;" : "&uarr;";
+            }
+
+            @switch (Model.OrderBy)
+            {
+                case "Name":
+                    <th scope="col" style="width: 15%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="@direction">Name @Html.Raw(arrow)</a>
+                    </th>
+                    <th scope="col" style="width: 50%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Ingredients" asp-route-OrderDirection="Desc">Ingredients</a>
+                    </th>
+                    <th scope="col" style="width: 20%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Method" asp-route-OrderDirection="Desc">Method</a>
+                    </th>
+                    <th scope="col" style="width: 35%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Notes" asp-route-OrderDirection="Desc">Notes</a>
+                    </th>
+                    break;
+                case "Ingredients":
+                    <th scope="col" style="width: 15%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
+                    </th>
+                    <th scope="col" style="width: 50%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Ingredients" asp-route-OrderDirection="@direction">Ingredients @Html.Raw(arrow)</a>
+                    </th>
+                    <th scope="col" style="width: 20%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Method" asp-route-OrderDirection="Desc">Method</a>
+                    </th>
+                    <th scope="col" style="width: 35%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Notes" asp-route-OrderDirection="Desc">Notes</a>
+                    </th>
+                    break;
+                case "Method":
+                    <th scope="col" style="width: 15%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
+                    </th>
+                    <th scope="col" style="width: 50%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Ingredients" asp-route-OrderDirection="Desc">Ingredients</a>
+                    </th>
+                    <th scope="col" style="width: 20%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Method" asp-route-OrderDirection="@direction">Method @Html.Raw(arrow)</a>
+                    </th>
+                    <th scope="col" style="width: 35%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Notes" asp-route-OrderDirection="Desc">Notes</a>
+                    </th>
+                    break;
+                case "Notes":
+                    <th scope="col" style="width: 15%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Name" asp-route-OrderDirection="Desc">Name</a>
+                    </th>
+                    <th scope="col" style="width: 50%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Ingredients" asp-route-OrderDirection="Desc">Ingredients</a>
+                    </th>
+                    <th scope="col" style="width: 20%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Method" asp-route-OrderDirection="Desc">Method</a>
+                    </th>
+                    <th scope="col" style="width: 35%;">
+                        <a asp-route-Search="@Model.Search" asp-route-OrderBy="Notes" asp-route-OrderDirection="@direction">Notes @Html.Raw(arrow)</a>
+                    </th>
+                    break;
+            }
+            <th scope="col" style="width: 100%;">Action</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        @if (Model.Recipes?.Count != 0)
+        {
+            @foreach (var item in Model.Recipes!)
+            {
+                <tr>
+                    <td>
+                        @{
+                            item.Name = Model.TrimBlob(item.Name);
+                            @Html.DisplayFor(modelItem => item.Name)
+                        }
+                    </td>
+                    <td>
+                        @{
+                            item.Ingredients = Model.TrimBlob(item.Ingredients);
+                            @Html.DisplayFor(modelItem => item.Ingredients)
+
+                        }
+                    </td>
+                    <td>
+                        @{
+                            item.Method = Model.TrimBlob(item.Method);
+                            @Html.DisplayFor(modelItem => item.Method)
+                        }
+                    </td>
+                    <td>
+                        @{
+                            item.Notes = Model.TrimBlob(item.Notes);
+                            @Html.DisplayFor(modelItem => item.Notes)
+                        }
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" asp-page="./Recipe" asp-route-id="@item.RecipeId">Edit</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5">Nothing to display...</td>
+            </tr>
+        }
+
+        </tbody>
+    </table>
+</div>

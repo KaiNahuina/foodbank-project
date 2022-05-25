@@ -1,6 +1,7 @@
 #region
 
 using Foodbank_Project.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Foodbank_Project.Pages.Admin;
 
+[Authorize(Roles = "FoodbanksAdmin,SiteAdmin")]
 public class FoodbanksModel : PageModel
 {
     private readonly ApplicationContext _ctx;
@@ -29,10 +31,11 @@ public class FoodbanksModel : PageModel
         _ctx = ctx;
     }
 
-    public async Task OnGetAsync([FromQuery(Name = "OrderBy")] string? orderBy,
+    public async Task<IActionResult> OnGetAsync([FromQuery(Name = "OrderBy")] string? orderBy,
         [FromQuery(Name = "OrderDirection")] string? orderDirection,
         [FromQuery(Name = "Search")] string? search, [FromQuery(Name = "Page")] string? page)
     {
+        if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
         OrderBy = string.IsNullOrEmpty(orderBy) ? "Locations" : orderBy;
         OrderDirection = string.IsNullOrEmpty(orderDirection) ? "Desc" : orderDirection;
         if (!int.TryParse(page, out Page)) Page = 1;
@@ -91,5 +94,7 @@ public class FoodbanksModel : PageModel
         HasNextPage = Page < MaxPages;
 
         Foodbanks = await foodbankQue.Skip((Page - 1) * 25).Take(25).ToListAsync();
+
+        return Page();
     }
 }
