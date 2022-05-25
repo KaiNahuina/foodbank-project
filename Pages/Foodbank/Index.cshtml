@@ -13,14 +13,10 @@
                 <a class="button btn btn-lg btn-outline-success" onclick="history.back()">Back</a>
             </div>
         </div>
+        <div class="col-md-6 text-center">
+            <p> Disclaimer: Vouchers may be required to access the bank. <a class="button btn btn-md btn-outline-success" asp-page="/GetHelp/Vouchers">Learn more here.</a> </p>
+        </div>
     </div>
-</div>
-
-
-<div class="text-center ">
-    <p>
-        Disclaimer: Vouchers may be required to access the bank. <a class="button btn btn-sm btn-outline-success" asp-page="/GetHelp/Vouchers">Learn more here.</a>
-    </p>
 </div>
 
 <form method="post">
@@ -127,36 +123,36 @@
 
 <script type="text/javascript">
 
-    var foodbankIcon = L.icon({
-          iconUrl: '/img/leaf.png',
-          iconSize:     [50, 50],
-          iconAnchor:   [28, 37],
-          popupAnchor:  [-5, -35]
-    });
+        var foodbankIcon = L.icon({
+              iconUrl: '/img/leaf.png',
+              iconSize:     [50, 50],
+              iconAnchor:   [28, 37],
+              popupAnchor:  [-5, -35]
+        });
 
-    var map = L.map('map').setView([ 54.596442,  -3.9], 6);
+        var map = L.map('map').setView([ 54.596442,  -3.9], 6);
 
-    var locationMarker = L.marker([@Html.Raw(Model.Location?.Coord!.Y),@Html.Raw(Model.Location?.Coord?.X)], {icon:foodbankIcon}).bindPopup("<a href='https://maps.google.com/?q= @Model.Location?.Coord!.Y , @Model.Location?.Coord!.X'>Click here for directions</a>").addTo(map);
+        var locationMarker = L.marker([@Html.Raw(Model.Location?.Coord!.Y),@Html.Raw(Model.Location?.Coord?.X)], {icon:foodbankIcon}).bindPopup("<a href='https://maps.google.com/?q= @Model.Location?.Coord!.Y , @Model.Location?.Coord!.X'>Click here for directions</a>").addTo(map);
 
-    map.setView([@Html.Raw(Model.Location?.Coord?.Y),@Html.Raw(Model.Location?.Coord?.X)], 16);
+        map.setView([@Html.Raw(Model.Location?.Coord?.Y),@Html.Raw(Model.Location?.Coord?.X)], 16);
 
-    var geocoder = L.Control.Geocoder.nominatim({
-         geocodingQueryParams: {countrycodes: 'gb,im,gg,je'}
-    });
-    if (typeof URLSearchParams !== 'undefined' && location.search) {
-      var params = new URLSearchParams(location.search);
-      var geocoderString = params.get('geocoder');
-      if (geocoderString && L.Control.Geocoder[geocoderString]) {
-        console.log('Using geocoder', geocoderString);
-        geocoder = L.Control.Geocoder[geocoderString]();
-      } else if (geocoderString) {
-        console.warn('Unsupported geocoder', geocoderString);
-      }
-    }
+        var geocoder = L.Control.Geocoder.nominatim({
+             geocodingQueryParams: {countrycodes: 'gb,im,gg,je'}
+        });
+        if (typeof URLSearchParams !== 'undefined' && location.search) {
+          var params = new URLSearchParams(location.search);
+          var geocoderString = params.get('geocoder');
+          if (geocoderString && L.Control.Geocoder[geocoderString]) {
+            console.log('Using geocoder', geocoderString);
+            geocoder = L.Control.Geocoder[geocoderString]();
+          } else if (geocoderString) {
+            console.warn('Unsupported geocoder', geocoderString);
+          }
+        }
 
-    L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+        L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
 
 </script>
 }
