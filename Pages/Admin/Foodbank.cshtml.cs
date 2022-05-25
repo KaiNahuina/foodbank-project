@@ -179,6 +179,8 @@ public class FoodbankModel : PageModel
             case "Create":
             {
                 if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
+                foreach (var entry in ModelState.Where(entry => entry.Key.Contains("Foodbank.Location")))
+                    ModelState.Remove(entry.Key);
                 if (!ModelState.IsValid) return Page();
                 if (Foodbank != null)
                 {
@@ -200,6 +202,9 @@ public class FoodbankModel : PageModel
                         !User.HasClaim("FoodbankClaim", Foodbank?.FoodbankId.ToString()))
                         return Forbid();
 
+                foreach (var entry in ModelState.Where(entry => entry.Key.Contains("Foodbank.Location")))
+                    ModelState.Remove(entry.Key);
+                
                 if (!ModelState.IsValid) return Page();
                 if (Foodbank != null)
                 {
@@ -210,30 +215,54 @@ public class FoodbankModel : PageModel
                 _logger.Log(LogLevel.Information, "User {UserName} updated foodbank {Name}", User.Identity?.Name,
                     Foodbank?.Name);
 
+                if (User.IsInRole("FoodbankAdmin"))
+                {
+                    await _ctx.SaveChangesAsync();
+                    return RedirectToPage("/Admin/Index");
+                }
+                
                 break;
             }
             case "Approve":
             {
                 if (!User.IsInRole("ApprovalAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
-                if (!ModelState.IsValid) return Page();
                 var id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
 
-                var fb = await _ctx.Foodbanks.Where(f => f.FoodbankId == id).FirstOrDefaultAsync();
+                Foodbank = await _ctx.Foodbanks.Where(f => f.FoodbankId == id).FirstOrDefaultAsync();
 
-                if (fb != null) fb.Status = Status.Approved;
+                if (Foodbank != null) Foodbank.Status = Status.Approved;
 
                 await _ctx.SaveChangesAsync();
 
                 var u = new IdentityUser
                 {
-                    UserName = fb?.Email,
-                    Email = fb?.Email,
+                    UserName = Foodbank?.Email,
+                    Email = Foodbank?.Email,
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true
                 };
-                await _userManager.AddToRoleAsync(u, "FoodbankAdmin");
-                await _userManager.AddClaimAsync(u, new Claim("FoodbankAdmin", fb?.FoodbankId.ToString()));
-                var result = await _userManager.CreateAsync(u, "DefaultPassword");
+                var result = await _userManager.CreateAsync(u);
+                if (!result.Succeeded)
+                {
+                    foreach (var identityError in result.Errors)
+                        ModelState.AddModelError(string.Empty, identityError.Code + " :: " + identityError.Description);
+
+                    return Page();
+                }
+
+                u = await _userManager.FindByEmailAsync(Foodbank?.Email);
+
+                result = await _userManager.AddToRoleAsync(u, "FoodbankAdmin");
+                if (!result.Succeeded)
+                {
+                    foreach (var identityError in result.Errors)
+                        ModelState.AddModelError(string.Empty, identityError.Code + " :: " + identityError.Description);
+
+                    return Page();
+                }
+
+                result = await _userManager.AddClaimAsync(u,
+                    new Claim("FoodbankClaim", Foodbank?.FoodbankId.ToString()));
                 if (!result.Succeeded)
                 {
                     foreach (var identityError in result.Errors)
@@ -244,8 +273,7 @@ public class FoodbankModel : PageModel
 
                 _logger.Log(LogLevel.Information, "User {UserName} approved foodbank {Name}", User.Identity?.Name,
                     Foodbank?.Name);
-                
-                
+
 
                 return RedirectToPage("/Admin/Index");
             }
@@ -253,7 +281,6 @@ public class FoodbankModel : PageModel
             case "Deny":
             {
                 if (!User.IsInRole("ApprovalAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
-                if (!ModelState.IsValid) return Page();
                 var id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
 
                 var fb = await _ctx.Foodbanks.Where(f => f.FoodbankId == id).FirstOrDefaultAsync();

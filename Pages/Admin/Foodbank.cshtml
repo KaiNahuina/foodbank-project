@@ -3,6 +3,7 @@
 @model FoodbankModel
 @{
     ViewData["Title"] = "Foodbank - Admin";
+    Layout = "_Layout";
 }
 
 @if (Model.Action != "Create")
@@ -18,6 +19,7 @@ else
 
 @* Info *@
 <form method="post" class="container">
+<div asp-validation-summary="All" class="text-danger"></div>
 <div class="row">
     <div class="col">
         <label>ID</label>
@@ -242,7 +244,7 @@ else
             <div class="d-flex flex-row align-items-center justify-content-between">
                 @{
                     var hasPrev = Model.HasPrevPage ? "" : "disabled";
-                    var hasNext = Model.Locations!.Count >= 25 && Model.HasNextPage ? "" : "disabled";
+                    var hasNext = Model.Locations?.Count >= 25 && Model.HasNextPage ? "" : "disabled";
                 }
                 <form method="get" asp-fragment="locations">
                     <input name="OrderBy" type="hidden" value="@Model.OrderBy">
@@ -301,31 +303,33 @@ else
             </tr>
             </thead>
             <tbody>
-            @if (Model.Locations?.Count != 0)
-            {
-                @foreach (var item in Model.Locations!)
+            @{
+                if (Model.Locations?.Count != 0 && Model.Locations is not null)
+                {
+                    foreach (var item in Model.Locations)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td>
+                                <form method="get" asp-page="./Location" asp-route-id="@item.LocationId">
+                                    <input type="hidden" name="target" value="@item.Foodbank?.FoodbankId"/>
+                                    <button class="btn btn-primary">Edit</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
                 {
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Address)
-                        </td>
-                        <td>
-                            <form method="get" asp-page="./Location" asp-route-id="@item.LocationId">
-                                <input type="hidden" name="target" value="@item.Foodbank?.FoodbankId"/>
-                                <button class="btn btn-primary">Edit</button>
-                            </form>
-                        </td>
+                        <td colspan="5">Nothing to display...</td>
                     </tr>
                 }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="5">Nothing to display...</td>
-                </tr>
             }
 
             </tbody>
@@ -351,7 +355,7 @@ else
             <div class="d-flex flex-row align-items-center justify-content-between">
                 @{
                     hasPrev = Model.HasPrevPage ? "" : "disabled";
-                    hasNext = Model.Needs!.Count >= 25 && Model.HasNextPage ? "" : "disabled";
+                    hasNext = Model.Needs?.Count >= 25 && Model.HasNextPage ? "" : "disabled";
                 }
                 <form method="get" asp-fragment="needs">
                     <input name="OrderBy" type="hidden" value="@Model.OrderBy">
@@ -396,28 +400,30 @@ else
             </tr>
             </thead>
             <tbody>
-            @if (Model.Locations?.Count != 0)
-            {
-                @foreach (var item in Model.Needs!)
+            @{
+                if (Model.Locations?.Count != 0 && Model.Needs is not null)
+                {
+                    foreach (var item in Model.Needs)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NeedStr)
+                            </td>
+                            <td>
+                                <form method="post" asp-page="./Need" asp-route-id="@item.NeedId">
+                                    <input type="hidden" name="Target" value="@Model.Foodbank!.FoodbankId"/>
+                                    <button type="submit" name="Action" value="Remove" class="btn btn-danger">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
                 {
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NeedStr)
-                        </td>
-                        <td>
-                            <form method="post" asp-page="./Need" asp-route-id="@item.NeedId">
-                                <input type="hidden" name="Target" value="@Model.Foodbank!.FoodbankId"/>
-                                <button type="submit" name="Action" value="Remove" class="btn btn-danger">Remove</button>
-                            </form>
-                        </td>
+                        <td colspan="5">Nothing to display...</td>
                     </tr>
                 }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="5">Nothing to display...</td>
-                </tr>
             }
 
             </tbody>

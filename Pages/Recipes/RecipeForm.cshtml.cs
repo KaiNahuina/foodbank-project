@@ -57,7 +57,7 @@ public class RecipeFormModel : PageModel
         if (!TryValidateModel(Recipe, nameof(Recipe))) return Page();
         _ctx.Recipes?.Update(Recipe);
         await _ctx.SaveChangesAsync();
-        return RedirectToPage("/Recipes/RecipeForm");
+        return RedirectToPage("/Foodbank/Confirmation");
     }
 
     public class Pair<T1, T2>

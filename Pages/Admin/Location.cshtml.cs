@@ -90,21 +90,19 @@ public class LocationModel : PageModel
                     if (!User.IsInRole("FoodbankAdmin") &&
                         !User.HasClaim("FoodbankClaim", Location?.Foodbank?.FoodbankId.ToString()))
                         return Forbid();
-                
+
                 if (Location != null)
                 {
                     Location.Coord = new Point(Lng, Lat) { SRID = 4326 };
                     Location = FoodbankHelpers.ApplySlug(Location);
                 }
-                
+
                 ModelState.ClearValidationState(nameof(Location));
                 TryValidateModel(Location, nameof(Location));
                 foreach (var entry in ModelState.Where(entry => entry.Key.Contains("Location.Foodbank")))
-                {
                     ModelState.Remove(entry.Key);
-                }
                 if (!ModelState.IsValid) return Page();
-                
+
                 _ctx.Foodbanks!.Attach(Location.Foodbank);
                 _ctx.Locations?.Update(Location);
 
@@ -120,6 +118,9 @@ public class LocationModel : PageModel
                         !User.HasClaim("FoodbankClaim", Location?.Foodbank?.FoodbankId.ToString()))
                         return Forbid();
 
+                
+                foreach (var entry in ModelState.Where(entry => entry.Key.Contains("Location.Foodbank")))
+                    ModelState.Remove(entry.Key);
                 if (!ModelState.IsValid) return Page();
                 if (Location != null)
                 {

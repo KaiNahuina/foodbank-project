@@ -7,4 +7,5 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Foodbank_Project.Pages.GiveHelp;
 
 public class DonateMoneyModel : PageModel
-{}
+{
+}
