@@ -158,6 +158,11 @@ public class RecipeModel : PageModel
                         await Upload.CopyToAsync(ms);
                         Recipe.Image = ms.ToArray();
                     }
+                    else
+                    {
+                        var r = await _ctx.Recipes.AsNoTracking().Where(r => r.RecipeId == Recipe.RecipeId).FirstAsync();
+                        Recipe.Image = r.Image;
+                    }
 
                     _ctx.Recipes?.Update(Recipe);
 
