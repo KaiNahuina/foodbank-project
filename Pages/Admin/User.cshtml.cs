@@ -194,8 +194,17 @@ public class UserModel : PageModel
                 }
 
 
-                await _userManager.UpdateAsync(u);
+                foreach (var claim in await _userManager.GetClaimsAsync(u))
+                {
+                    if (claim.Type == "FoodbankClaim")
+                    {
+                        await _userManager.RemoveClaimAsync(u, claim);
+                    }
+                }
+                
                 await _userManager.AddClaimAsync(u, new Claim("FoodbankClaim", FoodbankClaim.ToString()));
+                await _userManager.UpdateAsync(u);
+                
 
                 _logger.Log(LogLevel.Information, "User {UserName} updated user {TargetUser}",
                     User.Identity?.Name, u.UserName);
