@@ -35,7 +35,7 @@ public class IndexModel : PageModel
         [FromQuery(Name = "OrderDirection")] string? orderDirection,
         [FromQuery(Name = "Search")] string? search, [FromQuery(Name = "Page")] string? page)
     {
-        if (!User.IsInRole("SiteAdmin"))
+        if (!User.IsInRole("SiteAdmin") && !User.IsInRole("ApprovalAdmin"))
         {
             if (User.IsInRole("FoodbankAdmin"))
             {
