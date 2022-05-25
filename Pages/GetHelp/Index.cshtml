@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="m-2 d-grid">
-                    <a class="button btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelp/Vouchers">How&nbsp;the System&nbsp;Works</a>
+                    <a class="button btn btn-lg btn-outline-success" asp-area="" asp-page="/GetHelp/Vouchers">How the System Works</a>
                 </div>
                 <div class="m-2 d-grid">
                     <a class="button btn btn-lg btn-outline-success" asp-area="" asp-page="/Index">Home</a>
@@ -111,7 +111,7 @@
                  var closest5Markers = [];
                  var iterator = 0;
                  for(const element of result){
-                     closest5Markers[iterator] = L.marker([element.coord.lat, element.coord.lng], {icon:foodbankIcon}).bindPopup(element.name.toString() + " <br> " + element.distance.toString() + "m away<br> " + '<a href="/Foodbank/Index/'+ element.id +'">Click here to learn more</a>');    //need to figure out how to new line these and format the distance so we get no deciamals
+                     closest5Markers[iterator] = L.marker([element.coord.lat, element.coord.lng], {icon:foodbankIcon}).bindPopup(element.name.toString() + " <br> " + element.distance.toString() + "meters away<br> " + '<a href="/Foodbank/Index/'+ element.id +'">Click here to learn more</a>');    //need to figure out how to new line these and format the distance so we get no deciamals
                      $("#FoodbankClosest" + (iterator+1)).html("<p>" + element.name.toString() + "<br>" + element.address.toString() + "<br>" + element.postcode.toString() + "<br>" + element.distance.toString() + "m away <br> " + ' <a href="/Foodbank/Index/'+ element.id + '">Click here to learn more</a>' + "</p>");
                      iterator++;
                  }
