@@ -86,8 +86,9 @@
             </div>
         </div>
         <div class="row mb-3">
-            <div class="col-4">
-                <label asp-for="Foodbank.Country" class="form-label">
+            <div class="col-6">
+                <div class="col-8">
+                    <label asp-for="Foodbank.Country" class="form-label">
                         <strong>Country *</strong>
                     </label>
                     <span asp-validation-for="Foodbank.Country" class="text-danger"></span>
@@ -101,8 +102,9 @@
                         <option value="Jersey">Jersey</option>
                         <option value="Isle of Man">Isle of Man</option>
                     </select>
+                </div>
             </div>
-            <div class="col-6 text-end">
+            <div class="col-6">
                 <label asp-for="Foodbank.Network" class="form-label">
                         <strong>Network *</strong>
                     </label>
