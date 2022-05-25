@@ -218,7 +218,7 @@ public class FoodbankModel : PageModel
                 var id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
 
                 Foodbank = await _ctx.Foodbanks.Where(f => f.FoodbankId == id).FirstOrDefaultAsync();
-            
+
                 if (Foodbank != null) Foodbank.Status = Status.Approved;
 
                 await _ctx.SaveChangesAsync();
@@ -240,7 +240,7 @@ public class FoodbankModel : PageModel
                 }
 
                 u = await _userManager.FindByEmailAsync(Foodbank?.Email);
-                
+
                 result = await _userManager.AddToRoleAsync(u, "FoodbankAdmin");
                 if (!result.Succeeded)
                 {
@@ -249,7 +249,9 @@ public class FoodbankModel : PageModel
 
                     return Page();
                 }
-                result = await _userManager.AddClaimAsync(u, new Claim("FoodbankClaim", Foodbank?.FoodbankId.ToString()));
+
+                result = await _userManager.AddClaimAsync(u,
+                    new Claim("FoodbankClaim", Foodbank?.FoodbankId.ToString()));
                 if (!result.Succeeded)
                 {
                     foreach (var identityError in result.Errors)
@@ -260,8 +262,7 @@ public class FoodbankModel : PageModel
 
                 _logger.Log(LogLevel.Information, "User {UserName} approved foodbank {Name}", User.Identity?.Name,
                     Foodbank?.Name);
-                
-                
+
 
                 return RedirectToPage("/Admin/Index");
             }

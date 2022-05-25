@@ -303,7 +303,8 @@ else
             </thead>
             <tbody>
             @{
-                if (Model.Locations?.Count != 0 && Model.Locations is not null){
+                if (Model.Locations?.Count != 0 && Model.Locations is not null)
+                {
                     foreach (var item in Model.Locations)
                     {
                         <tr>
