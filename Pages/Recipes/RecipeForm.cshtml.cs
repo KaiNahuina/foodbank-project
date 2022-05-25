@@ -20,6 +20,8 @@ public class RecipeFormModel : PageModel
 
     [BindProperty] public Recipe Recipe { get; set; } = new();
     [BindProperty] public IFormFile? Image { get; set; }
+
+
     [BindProperty] public Dictionary<int, Pair<RecipeCategory, bool>> SelectedCategories { get; set; } = new();
 
     public void OnGet()
@@ -49,6 +51,12 @@ public class RecipeFormModel : PageModel
 
         foreach (var category in SelectedCategories.Where(category => category.Value.Item2))
             Recipe.Categories.Add(category.Value.Item1!);
+
+        if(Recipe.Categories.Count <= 0)
+        {
+            ModelState.AddModelError("Recipe.Categories", "Must have at least one category selected");
+            return Page();
+        }
 
         Recipe.Status = Status.UnConfirmed;
 

@@ -26,5 +26,6 @@ public class Recipe
     public Status? Status { get; set; }
 
 
+
     public ICollection<RecipeCategory>? Categories { get; set; }
 }
