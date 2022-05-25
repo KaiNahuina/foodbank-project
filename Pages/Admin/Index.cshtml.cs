@@ -37,7 +37,6 @@ public class IndexModel : PageModel
     {
         if (!User.IsInRole("SiteAdmin"))
         {
-            if (User.IsInRole("ApprovalAdmin")) return RedirectToPage("./Index");
             if (User.IsInRole("FoodbankAdmin"))
             {
                 var id = User.Claims.Where(c => c.Type == "FoodbankClaim").Select(c => c.Value).First();
