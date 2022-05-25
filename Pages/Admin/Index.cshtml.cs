@@ -139,7 +139,9 @@ public class IndexModel : PageModel
         return Page();
     }
 
+#pragma warning disable CA1822
     public string TrimBlob(string? blob)
+#pragma warning restore CA1822
     {
         if (blob is null) return "";
         if (blob.Length > 32)

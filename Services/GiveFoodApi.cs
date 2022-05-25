@@ -51,6 +51,7 @@ public class GiveFoodApiService : BackgroundService
                     await GetFoodbank<List<Foodbank>>("https://www.givefood.org.uk/api/2/foodbanks/",
                         token), stoppingToken);
 
+            // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
             switch (resultWrapper.ResultCode)
             {
                 case ServiceHelpers.ResultWrapper<List<Foodbank>>.Code.Success:
@@ -66,6 +67,7 @@ public class GiveFoodApiService : BackgroundService
                                 await GetFoodbank<Foodbank>(resultWrapper.Result?[i].Urls?.Self ?? "",
                                     token), stoppingToken);
 
+                        // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
                         switch (resultWrapperInner.ResultCode)
                         {
                             case ServiceHelpers.ResultWrapper<Foodbank>.Code.Success:
@@ -140,7 +142,9 @@ public class GiveFoodApiService : BackgroundService
     /// <summary>
     ///     > The Dispose() function is called when the service is stopped
     /// </summary>
+#pragma warning disable CA1816
     public override void Dispose()
+#pragma warning restore CA1816
     {
         _logger.LogInformation("Gracefully stopping service...");
         _httpClient.Dispose();

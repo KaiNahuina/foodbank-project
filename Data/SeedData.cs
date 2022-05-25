@@ -55,7 +55,7 @@ public static class SeedData
                 RecipeCategoryId = 7,
                 Name = "Side Dishes"
             }).Entity;
-        var DessertsCategory = await ctx.RecipeCategories.FirstOrDefaultAsync(c => c.RecipeCategoryId == 8) ?? ctx
+        var dessertsCategory = await ctx.RecipeCategories.FirstOrDefaultAsync(c => c.RecipeCategoryId == 8) ?? ctx
             .RecipeCategories.Add(new RecipeCategory
             {
                 RecipeCategoryId = 8,
@@ -71,8 +71,6 @@ public static class SeedData
             await transaction.CommitAsync();
         }
 
-        ;
-
 
         var _ = await ctx.Recipes.FirstOrDefaultAsync(r => r.RecipeId == 1) ?? ctx.Recipes.Add(new Recipe
         {
@@ -82,7 +80,7 @@ public static class SeedData
                 "4 eggs \n 1/8 teaspoon of pepper \n 4 tablespoons of water \n 1 tablespoon of butter \n 1/2 teaspoon of salt \n a little parsley",
             Status = Status.Approved,
             Method =
-                "Beat the yolks until thick and lemon colored\nAdd hot water (one tablespoonfull to an egg), salt and pepper\n" +
+                "Beat the yolks until thick and lemon colored\nAdd hot water (one table spoon full to an egg), salt and pepper\n" +
                 "Beat the whites till stiff and dry\nCut and fold into first mixture\nHeat the omelette pan, add the butter, turn the pan so that the" +
                 "melted butter covers teh sides and the bottom of the pan.\nTurn in mixture, spread evenly, turn down the fire and allow the omelette to cook slowly\n" +
                 "Turn the pan so that the omelette will brown evenly",
@@ -104,7 +102,7 @@ public static class SeedData
                 "Wash the fruit, mix with the sugar, flour, salt and lemon juice.\nLine a deep pie tin with a plain pie paste and sprinkle" +
                 " one tablespoon of sugar over the bottom crust\nAdd the berry mixture\nWet the lower crust slightly\nRoll out the upper crust and make " +
                 "slits in the middle to allow the steam to escape\nPlace on the lower crust pinching the edges together\nBake in a moderately hot oven 40 min",
-            Categories = new List<RecipeCategory> { DessertsCategory },
+            Categories = new List<RecipeCategory> { dessertsCategory },
             Notes = "",
             Serves = "4 People",
             Image = await File.ReadAllBytesAsync("./wwwroot/img/Berry.jpg")
@@ -131,13 +129,13 @@ public static class SeedData
             Name = "Veal Loaf",
             RecipeId = 4,
             Ingredients =
-                "2 pounds of lean veal\n4 tespoons of onion salt\n1/2 pound of salt pork\n1 tablespoon of salt\n6 large crackers\n1/2 teaspoon pepper/n" +
+                "2 pounds of lean veal\n4 tea spoons of onion salt\n1/2 pound of salt pork\n1 tablespoon of salt\n6 large crackers\n1/2 teaspoon pepper/n" +
                 "2 tablespoon lemon juice\n4 tablespoon cream",
             Status = Status.Approved,
             Method =
                 "Put 2 crackers in meat grinder, add bits of meat and pork and the rest of the crackers\nThe crackers first and last prevent " +
                 "the pork and meat from sticking to the grinder\nAdd another ingredient in order named\nPack in a well-buttered bread-pan\nSmooth evenly on top, brush " +
-                "with white of an egg and bake 1 hour in a moderate oven\nBaste frequently\nThe meat may be cooked in a fireless cooker between two stones\n" +
+                "with white of an egg and bake 1 hour in a moderate oven\nBaste frequently\nThe meat may be cooked in a fire less cooker between two stones\n" +
                 "It is perfectly satisfactory cooked this way, and requires no basting",
             Categories = new List<RecipeCategory> { meatCategory, specialCategory },
             Notes = "",
@@ -150,12 +148,12 @@ public static class SeedData
             Name = "Stuffed Tomatoes Bettina",
             RecipeId = 5,
             Ingredients =
-                "2 firm good sized tomatoes\n3 tablespoon fresh-baked bread crumbs\n2 tablespoons of mixed vegs\n1 tablespoon chopped cooked " +
+                "2 firm good sized tomatoes\n3 tablespoon fresh-baked bread crumbs\n2 tablespoons of mixed vegetables\n1 tablespoon chopped cooked " +
                 "ham or cooked bacon\n1/8 tablespoon paprika\n1 tablespoon egg\n1 tablespoon melted butter\n1/2 teaspoon salt",
             Status = Status.Approved,
             Method =
                 "Wash tomatoes thoroughly and cut a slice 1 inch in diameter from the blossom end, reserving it for future use\n" +
-                "Carefully scoop out the pulp, being careful to leave the shell firm\nAdd bread crumbs, tomato pulp, vegs, chopped meat, egg, melted butter, " +
+                "Carefully scoop out the pulp, being careful to leave the shell firm\nAdd bread crumbs, tomato pulp, vegetables, chopped meat, egg, melted butter, " +
                 "salt and paprika\nCook the mixture four minutes over the fire\nPut the slices back on the tomatoes\nPlace in a small pan and bake twenty minutes in a hot oven\nServe",
             Categories = new List<RecipeCategory> { meatCategory },
             Notes = "",
@@ -201,14 +199,14 @@ public static class SeedData
             Name = "Goulash",
             RecipeId = 8,
             Ingredients =
-                "1/4 pound of pork\n1 1/4 pound of beef\n7 cups water\n1 tablespoon of finely chopped celery/celery salt\n1 teaspoon chilipowder\n" +
+                "1/4 pound of pork\n1 1/4 pound of beef\n7 cups water\n1 tablespoon of finely chopped celery/celery salt\n1 teaspoon chili powder\n" +
                 "1 teaspoon parsley\n1/4 cup onion\n 1/8 pepper\n1/4 teaspoon paprika\n6 tablespoons flour\n1 1/2 cups water\n8 gingersnaps\n1/2 cup water\n" +
                 "2 cup ketchup\n1 tablespoon brown sugar\n1/2 cup water/n2 tablespoon vinegar\n1/2 can kidney beans",
             Status = Status.Approved,
             Method =
                 "Cut meat into bite-sized pieces\nPlace meat in pressure cooker with water or boil in pot\nAdd: celery salt, chili powder, parsley " +
                 "onion, pepper, paprika\nBoil 50 minutes under 10 pounds pressure or until tender\nWhile cooking place 2 tbsp grease in medium-sized skillet " +
-                "on medium heat\nBlend in flour\nBrown stirring frequently and let cood\nAdd 1 1/2 cups water gradually\nStir until smooth then set aside\n" +
+                "on medium heat\nBlend in flour\nBrown stirring frequently and let cool\nAdd 1 1/2 cups water gradually\nStir until smooth then set aside\n" +
                 "Place gingersnaps in a bowl\nPour 1/2 cup water over the gingersnaps\nSet aside until meat is done\nThen add gingersnaps and browned flour mix\n" +
                 "Add: ketchup, brown sugar, vinegar, 1/2 cup water, kidney beans\nBest when let it set for 3 to 4 hours\nAdd 1/2 if it is too thick",
             Categories = new List<RecipeCategory> { meatCategory, soupsCategory },
@@ -226,7 +224,7 @@ public static class SeedData
                 "pound pork, roast\n8 cups chicken stock\n2 tablespoons dried oregano\nsalt\ndiced tomatoes",
             Status = Status.Approved,
             Method =
-                "Heat olive oil in a saucepan over medium high heat\nAdd onion, garlics and sautee until soft\nAdd green chile and sautee for 3-4 minutes " +
+                "Heat olive oil in a saucepan over medium high heat\nAdd onion, garlics and saute until soft\nAdd green chile and saute for 3-4 minutes " +
                 "more until chile is heated through\nRemove from heat\nTrim excess fat from pork roast and season with salt and pepper\nPlace pork in a large " +
                 "slow cooker (5-6 quarts)\nCover roast with onion mixture\nAdd chicken stock to roast\nAdd oregano and tomatoes\nCover pot and cook for " +
                 "6-8 hours on medium low heat\nRemove roast from cooker and let cool for a few minutes\nRoast should break into manageable chunks\nTrim fat " +
@@ -293,8 +291,8 @@ public static class SeedData
                 "1 1/2 cup sugar\n 1 cup nut meats, chopped\n 1 / 2 cup butter\n 2 teaspoon baking powder\n 3 eggs, separated\n 3 / 4 cup milk\n 2 1 / 2 cup flour\n a little salt\n",
             Status = Status.Approved,
             Method =
-                "Rub butter and sugar to a light, white cream.\n Add egg yolks and beat until smooth\n Sift flour, salt and baking powder and add, together with milk, a little at a time, beating well.\n Fold in chopped nuts and stiffly beaten egg whites.\n Pour into 2 nine inch cake pans or 1 loaf pan.\n Bake in medium oven (350-f) for 30 minutes for layer cake or 1 hour for loaf cake.\n Use hickory nuts, black walnuts or shellbarks.",
-            Categories = new List<RecipeCategory> { vegetarianCategory, DessertsCategory, specialCategory },
+                "Rub butter and sugar to a light, white cream.\n Add egg yolks and beat until smooth\n Sift flour, salt and baking powder and add, together with milk, a little at a time, beating well.\n Fold in chopped nuts and stiffly beaten egg whites.\n Pour into 2 nine inch cake pans or 1 loaf pan.\n Bake in medium oven (350-f) for 30 minutes for layer cake or 1 hour for loaf cake.\n Use hickory nuts, black walnuts or shell-barks.",
+            Categories = new List<RecipeCategory> { vegetarianCategory, dessertsCategory, specialCategory },
             Notes = "",
             Serves = "5 People",
             Image = await File.ReadAllBytesAsync("./wwwroot/img/Nut Cake.jpg")
@@ -305,7 +303,7 @@ public static class SeedData
             Name = "Vegetable Pasta",
             RecipeId = 14,
             Ingredients =
-                "1 butternut squash\n 1 onion\n 1 stick goat cheese\n small sized pasta, (bowties, spirals)\n fresh basil\n candied pecans or walnuts",
+                "1 butternut squash\n 1 onion\n 1 stick goat cheese\n small sized pasta, (bowtie, spirals)\n fresh basil\n candied pecans or walnuts",
             Status = Status.Approved,
             Method =
                 "Dice butternut squash, fennel and brown onion.\n Add to baking dish with generous amount of olive oil and mixed herbs mix ingredients.\n Place in oven at 425f for 60 minutes.\n Let stick of goat cheese sit at room temperature (or warm slightly on oven top).\n Cook pasta.\n Add goat cheese to bottom of mixing bowl, add cooked fresh pasta.\n The heat will help melt cheese.\n Add basil and pecans and mix.\n Add cooked vegetables and mix.",
@@ -323,7 +321,7 @@ public static class SeedData
             Status = Status.Approved,
             Method =
                 "Boil some water with a little salt in it, sprinkle oatmeal in slowly, stirring gently for 15 or 20 minutes until it is thick enough.\nPour it at once on to the plates from which it is to be eaten, and serve with cold milk or a little syrup or your favourite fruit.",
-            Categories = new List<RecipeCategory> { DessertsCategory },
+            Categories = new List<RecipeCategory> { dessertsCategory },
             Notes = "",
             Serves = "1",
             Image = await File.ReadAllBytesAsync("./wwwroot/img/Oatmeal Porridge.jpg")
@@ -382,7 +380,7 @@ public static class SeedData
             Status = Status.Approved,
             Method =
                 "Pick over currants, but do not remove the stems.\n Wash and drain.\n Mash a few with a vegetable masher in the bottom of a porcelain - lined or granite kettle.\n Add more currants and mash.\n Continue adding currants until all are used.\n Bring to a boil slowly and let simmer without stirring until the currants appear white.\n Strain through a coarse strainer, and allow juice to drain through a jelly bag.\nMeasure the juice, and boil ten minutes. Gradually add an equal amount of heated sugar, stirring occasionally to prevent burning, and continue boiling until the test shows that the mixture has jelled. When filling sterilized glasses, place them in a pan containing a little boiling water.\nThis keeps the glasses from breaking when hot jelly is poured in. Fill and set the glasses of jelly aside to cool.\nCover with hot melted paraffin.",
-            Categories = new List<RecipeCategory> { DessertsCategory, specialCategory, sideDishesCategory },
+            Categories = new List<RecipeCategory> { dessertsCategory, specialCategory, sideDishesCategory },
             Notes = "",
             Serves = "9",
             Image = await File.ReadAllBytesAsync("./wwwroot/img/Currant Jelly.jpg")

@@ -2,9 +2,10 @@
 @model MainLocationModel
 @{
     ViewData["Title"] = "Main Location";
+    Layout = "Shared/_Layout";
 }
-<link rel="stylesheet" href="/css/Control.Geocoder.css" />
-<link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css" />
+<link rel="stylesheet" href="/css/Control.Geocoder.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css"/>
 
 <div class="container mt-5">
     <div class="row">
@@ -32,32 +33,32 @@
             <div class="col-md-4">
                 <h3>Address</h3>
                 <p class="text-box">
-                    <b>Address: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank!.Address) <br />
-                    <b>Postcode: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank!.Postcode) <br />
-                    <b>Country: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank!.Country) <br />
+                    <b>Address: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank!.Address) <br/>
+                    <b>Postcode: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank!.Postcode) <br/>
+                    <b>Country: </b>@Html.DisplayFor(modelItem => modelItem.Foodbank!.Country) <br/>
                 </p>
             </div>
             <div class="col-md-4">
                 <h3>Contact Infomation</h3>
                 <p class="text-box">
-                    <b>Phone Number: </b> @Html.DisplayFor(modelItem => modelItem.Foodbank!.Phone) <br />
-                    <b>Email: </b> <a href="mailto:@Html.DisplayFor(modelItem => modelItem.Foodbank!.Email)">@Html.DisplayFor(modelItem => modelItem.Foodbank!.Email)</a> <br />
-                    <b>Website: </b> <a href="@Html.DisplayFor(modelItem => modelItem.Foodbank!.Homepage)">@Html.DisplayFor(modelItem => modelItem.Foodbank!.Homepage)</a> <br />
+                    <b>Phone Number: </b> @Html.DisplayFor(modelItem => modelItem.Foodbank!.Phone) <br/>
+                    <b>Email: </b> <a href="mailto:@Html.DisplayFor(modelItem => modelItem.Foodbank!.Email)">@Html.DisplayFor(modelItem => modelItem.Foodbank!.Email)</a> <br/>
+                    <b>Website: </b> <a href="@Html.DisplayFor(modelItem => modelItem.Foodbank!.Homepage)">@Html.DisplayFor(modelItem => modelItem.Foodbank!.Homepage)</a> <br/>
                     <b>Network: </b> @Html.DisplayFor(modelItem => modelItem.Foodbank!.Network)
                 </p>
             </div>
             <div class="col-md-4">
                 @if (Model.Foodbank?.Network == "Trussell Trust")
                 {
-                    <img class="img-fluid image-box" id="trusselTrust" src="/img/TT-Logo-Rect.png" alt="Trussel Trust Logo" />
+                    <img class="img-fluid image-box" id="trusselTrust" src="/img/TT-Logo-Rect.png" alt="Trussel Trust Logo"/>
                 }
                 @if (Model.Foodbank!.Network == "IFAN")
                 {
-                    <img class="img-fluid image-box" id="IFAN" src="/img/IFAN-Logo.jpg" alt="IFAN Logo" />
+                    <img class="img-fluid image-box" id="IFAN" src="/img/IFAN-Logo.jpg" alt="IFAN Logo"/>
                 }
                 @if (Model.Foodbank.Network == "Independent")
                 {
-                    <img class="img-fluid image-box" id="Independent" src="/img/Independent-logo.jpg" alt="Independent Logo" />
+                    <img class="img-fluid image-box" id="Independent" src="/img/Independent-logo.jpg" alt="Independent Logo"/>
                 }
             </div>
         </div>
@@ -86,14 +87,14 @@
                     @if (Model.Foodbank!.Needs?.Count == 0 || Model.Foodbank!.Needs!.All(n => n.NeedStr is null))
                     {
                         @Html.Raw("This foodbank has no needs")
-                        <br />
+                        <br/>
                     }
                     else
                     {
                         @foreach (var need in Model.Foodbank.Needs!)
                         {
                             @Html.DisplayFor(modelItem => need.NeedStr)
-                            <br />
+                            <br/>
                         }
                     }
                 </p>
@@ -110,27 +111,27 @@
         <div class="container">
             <table class="table table-striped table-hover w-100 ">
                 <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Foodbank</th>
-                    </tr>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Foodbank</th>
+                </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.Foodbank.Locations!)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Address)
-                            </td>
-                            <td>
-                                <a class="button btn btn-lg btn-outline-success" asp-page="/Foodbank/Index" asp-route-id="@item.LocationId">View foodbank</a>
-                            </td>
-                        </tr>
-                    }
+                @foreach (var item in Model.Foodbank.Locations!)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            <a class="button btn btn-lg btn-outline-success" asp-page="/Foodbank/Index" asp-route-id="@item.LocationId">View foodbank</a>
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>
@@ -144,27 +145,27 @@
         <div class="container">
             <table id="salvationArmyList" class="table table-striped table-hover w-100">
                 <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Foodbank</th>
-                    </tr>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Foodbank</th>
+                </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.Foodbank.Locations!)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Address)
-                            </td>
-                            <td>
-                                <a class="button btn btn-lg btn-outline-success" asp-page="/Foodbank/Index" asp-route-id="@item.LocationId">View foodbank</a>
-                            </td>
-                        </tr>
-                    }
+                @foreach (var item in Model.Foodbank.Locations!)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            <a class="button btn btn-lg btn-outline-success" asp-page="/Foodbank/Index" asp-route-id="@item.LocationId">View foodbank</a>
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>
@@ -173,10 +174,10 @@
 </form>
 
 @section Scripts{
-<script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
-<script src="/js/Control.Geocoder.js"></script>
+    <script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
+    <script src="/js/Control.Geocoder.js"></script>
 
-<script type="text/javascript">
+    <script type="text/javascript">
     const viewMoreButton = document.getElementById('viewMoreButton');
     const salvationArmyList = document.getElementById('salvationArmyList');
 
@@ -194,9 +195,9 @@
 
     var map = L.map('map').setView([ 54.596442,  -3.9], 6);
 
-    var locationMarker = L.marker([@Html.Raw(Model.Foodbank.Coord!.Y),@Html.Raw(Model.Foodbank.Coord.X)], {icon:warehouseIcon}).bindPopup("<a href='https://maps.google.com/?q= @Model.Foodbank?.Coord!.Y, @Model.Foodbank?.Coord!.X'>Click here for directions</a>").addTo(map);
+    var locationMarker = L.marker([@Html.Raw(Model.Foodbank?.Coord?.Y),@Html.Raw(Model.Foodbank?.Coord?.X)], {icon:warehouseIcon}).bindPopup("<a href='https://maps.google.com/?q= @Model.Foodbank?.Coord?.Y, @Model.Foodbank?.Coord?.X'>Click here for directions</a>").addTo(map);
 
-    map.setView([@Html.Raw(Model.Foodbank.Coord.Y),@Html.Raw(Model.Foodbank.Coord.X)], 16);
+    map.setView([@Html.Raw(Model.Foodbank?.Coord?.Y),@Html.Raw(Model.Foodbank?.Coord?.X)], 16);
 
     var geocoder = L.Control.Geocoder.nominatim({
          geocodingQueryParams: {countrycodes: 'gb,im,gg,je'}

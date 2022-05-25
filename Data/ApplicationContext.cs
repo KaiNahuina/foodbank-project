@@ -17,18 +17,21 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
     }
 
     // ReSharper disable once UnusedMember.Global
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public DbSet<Foodbank>? Foodbanks { get; set; }
 
     // ReSharper disable once UnusedMember.Global
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public DbSet<Location>? Locations { get; set; }
 
     // ReSharper disable once UnusedMember.Global
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public DbSet<Need>? Needs { get; set; }
 
-    public DbSet<Content>? Contents { get; set; }
-
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public DbSet<Recipe>? Recipes { get; set; }
 
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public DbSet<RecipeCategory>? RecipeCategories { get; set; }
 
 
@@ -37,7 +40,6 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
         modelBuilder.Entity<Foodbank>(f => f.HasKey(pl => pl.FoodbankId));
         modelBuilder.Entity<Location>(f => f.HasKey(pl => pl.LocationId));
         modelBuilder.Entity<Need>(f => f.HasKey(pl => pl.NeedId));
-        modelBuilder.Entity<Content>(f => f.HasKey(pl => pl.ContentId));
         modelBuilder.Entity<Recipe>(f => f.HasKey(pl => pl.RecipeId));
         modelBuilder.Entity<RecipeCategory>(f => f.HasKey(pl => pl.RecipeCategoryId));
 
@@ -45,7 +47,6 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
         modelBuilder.Entity<Location>().Property(f => f.LocationId).ValueGeneratedOnAdd();
         modelBuilder.Entity<Need>().Property(f => f.NeedId).ValueGeneratedOnAdd();
         modelBuilder.Entity<Recipe>().Property(f => f.RecipeId).ValueGeneratedOnAdd();
-        modelBuilder.Entity<Content>().Property(f => f.ContentId).ValueGeneratedOnAdd();
         modelBuilder.Entity<RecipeCategory>().Property(f => f.RecipeCategoryId).ValueGeneratedOnAdd();
 
         modelBuilder.Entity<Location>()
@@ -88,9 +89,6 @@ public class ApplicationContext : IdentityDbContext<IdentityUser>
         modelBuilder.Entity<Recipe>().Property(fl => fl.Status).IsRequired();
         modelBuilder.Entity<Recipe>().Property(fl => fl.Serves);
         modelBuilder.Entity<Recipe>().Property(fl => fl.Notes);
-
-        modelBuilder.Entity<Content>().Property(fl => fl.Blob).IsRequired();
-        modelBuilder.Entity<Content>().Property(fl => fl.Name).IsRequired();
 
         modelBuilder.Entity<RecipeCategory>().Property(fl => fl.Name).IsRequired();
 

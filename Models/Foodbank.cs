@@ -19,10 +19,10 @@ public class Foodbank
     public string? Name { get; set; }
 
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
-    public string? AltName { get; set; }
+    public string? AltName { get; init; }
 
     // ReSharper disable once UnusedMember.Global
-    public string? Notes { get; set; }
+    public string? Notes { get; init; }
 
     // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
     public bool Protected { get; set; }
@@ -69,13 +69,14 @@ public class Foodbank
     public DateTime? Created { get; set; }
 
     [Required(ErrorMessage = "Please enter a Homepage")]
-    public string? Homepage { get; set; }
+    public string? Homepage { get; init; }
 
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public string? ShoppingList { get; set; }
 
-    public string? CharityNumber { get; set; }
+    public string? CharityNumber { get; init; }
 
-    public string? CharityRegisterUrl { get; set; }
+    public string? CharityRegisterUrl { get; init; }
 
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public Provider Provider { get; set; }

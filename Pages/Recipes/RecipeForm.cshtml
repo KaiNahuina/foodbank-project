@@ -29,6 +29,7 @@
 
         <div class="col-md-3">
             <label asp-for="Recipe.Name">Recipe Name:</label><br/>
+            <span asp-validation-for="Recipe.Name" class="text-danger"></span>
             <input class="text-box" asp-for="Recipe.Name" type="text"/><br/>
             <label asp-for="Recipe.Serves">Recipe Serves:</label><br/>
             <input class="text-box" asp-for="Recipe.Serves" type="text"/><br/>
@@ -47,6 +48,7 @@
     </div>
     <div class="container  spacingT">
         <label asp-for="Recipe.Ingredients">Ingredients:</label>
+        <span asp-validation-for="Recipe.Ingredients" class="text-danger"></span>
 
         <textarea asp-for="Recipe.Ingredients" rows="4" cols="1" class="form-control text-box"></textarea><br/>
 
@@ -55,6 +57,7 @@
 
     <div class="container">
         <label asp-for="Recipe.Method">Recipe Method:</label><br/>
+        <span asp-validation-for="Recipe.Method" class="text-danger"></span>
         <textarea asp-for="Recipe.Method" rows="4" cols="1" class="form-control text-box"></textarea><br/>
     </div>
     <div class="container">

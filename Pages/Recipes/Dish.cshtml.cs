@@ -19,7 +19,7 @@ public class DishModel : PageModel
         _ctx = ctx;
     }
 
-    public Recipe Recipe { get; set; }
+    public Recipe? Recipe { get; set; }
 
     public async Task<IActionResult> OnGetAsync([FromRoute] int id)
     {

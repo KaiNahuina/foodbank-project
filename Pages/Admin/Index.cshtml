@@ -176,22 +176,22 @@
         </div>
         <div class="d-flex flex-row align-items-center justify-content-between ">
             @{
-                hasPrev = Model.HasPrevPage ? "" : "disabled";
-                hasNext = Model.Recipes!.Count >= 25 && Model.HasNextPage ? "" : "disabled";
+                var hasPrev2 = Model.HasPrevPage ? "" : "disabled";
+                var hasNext2 = Model.Recipes!.Count >= 25 && Model.HasNextPage ? "" : "disabled";
             }
             <form method="get">
                 <input name="OrderBy" type="hidden" value="@Model.OrderBy">
                 <input name="OrderDirection" type="hidden" value="@Model.OrderDirection">
                 <input name="Search" type="hidden" value="@Model.Search">
                 <input name="Page" type="hidden" value="@(Model.Page - 1)">
-                <button class="btn btn-success p-2 me-3 @hasPrev">Previous</button>
+                <button class="btn btn-success p-2 me-3 @hasPrev2">Previous</button>
             </form>
             <form method="get">
                 <input name="OrderBy" type="hidden" value="@Model.OrderBy">
                 <input name="OrderDirection" type="hidden" value="@Model.OrderDirection">
                 <input name="Search" type="hidden" value="@Model.Search">
                 <input name="Page" type="hidden" value="@(Model.Page + 1)">
-                <button class="btn btn-success p-2 me-3 @hasNext">Next</button>
+                <button class="btn btn-success p-2 me-3 @hasNext2">Next</button>
             </form>
             <span>Page: @Html.DisplayFor(model => model.Page) of @Html.DisplayFor(model => model.MaxPages)</span>
         </div>
@@ -291,28 +291,24 @@
                         @{
                             item.Name = Model.TrimBlob(item.Name);
                             @Html.DisplayFor(modelItem => item.Name)
-                            ;
                         }
                     </td>
                     <td>
                         @{
                             item.Ingredients = Model.TrimBlob(item.Ingredients);
                             @Html.DisplayFor(modelItem => item.Ingredients)
-                            ;
                         }
                     </td>
                     <td>
                         @{
                             item.Method = Model.TrimBlob(item.Method);
                             @Html.DisplayFor(modelItem => item.Method)
-                            ;
                         }
                     </td>
                     <td>
                         @{
                             item.Notes = Model.TrimBlob(item.Notes);
                             @Html.DisplayFor(modelItem => item.Notes)
-                            ;
                         }
                     </td>
                     <td>

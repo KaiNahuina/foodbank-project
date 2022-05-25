@@ -63,10 +63,4 @@ public class AddBankModel : PageModel
         await _ap.SaveChangesAsync();
         return RedirectToPage("/Foodbank/Confirmation");
     }
-
-    public class Coords
-    {
-        public double Lat { get; set; }
-        public double Lng { get; set; }
-    }
 }
