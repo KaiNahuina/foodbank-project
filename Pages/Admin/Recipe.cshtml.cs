@@ -147,6 +147,8 @@ public class RecipeModel : PageModel
             case "Update":
             {
                 if (User.IsInRole("ApprovalAdmin")) return Forbid();
+                /*foreach (var entry in ModelState.Where(entry => entry.Key.Contains("Recipe.Categories")))
+                    ModelState.Remove(entry.Key);*/
                 if (!ModelState.IsValid) return Page();
                 if (Recipe != null)
                 {
@@ -168,12 +170,11 @@ public class RecipeModel : PageModel
             case "Approve":
             {
                 if (!User.IsInRole("ApprovalAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
-                if (!ModelState.IsValid) return Page();
                 var id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
 
-                var fb = await _ctx.Recipes.Where(f => f.RecipeId == id).FirstOrDefaultAsync();
+                Recipe = await _ctx.Recipes.Where(f => f.RecipeId == id).FirstOrDefaultAsync();
 
-                if (fb != null) fb.Status = Status.Approved;
+                if (Recipe != null) Recipe.Status = Status.Approved;
 
                 await _ctx.SaveChangesAsync();
 
@@ -186,12 +187,11 @@ public class RecipeModel : PageModel
             case "Deny":
             {
                 if (!User.IsInRole("ApprovalAdmin") && !User.IsInRole("SiteAdmin")) return Forbid();
-                if (!ModelState.IsValid) return Page();
                 var id = int.Parse(RouteData.Values["id"]?.ToString() ?? "");
 
-                var fb = await _ctx.Recipes.Where(f => f.RecipeId == id).FirstOrDefaultAsync();
+                Recipe = await _ctx.Recipes.Where(f => f.RecipeId == id).FirstOrDefaultAsync();
 
-                if (fb != null) fb.Status = Status.Denied;
+                if (Recipe != null) Recipe.Status = Status.Denied;
 
                 await _ctx.SaveChangesAsync();
 

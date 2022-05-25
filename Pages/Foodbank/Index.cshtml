@@ -2,6 +2,7 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Foodbank Page";
+    Layout = "Shared/_Layout";
 }
 <link rel="stylesheet" href="/css/Control.Geocoder.css" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@latest/dist/leaflet.css" />
@@ -57,15 +58,15 @@
                 </p>
             </div>
             <div class="col-md-4">
-                @if (Model.Foodbank?.Network == "Trussell Trust")
+                @if (Model.Foodbank?.Network?.ToLower() == "trussell trust")
                 {
                     <img class="img-fluid image-box" id="trusselTrust" src="/img/TT-Logo-Rect.png" alt="Trussel Trust Logo" />
                 }
-                @if (Model.Foodbank!.Network == "IFAN")
+                @if (Model.Foodbank!.Network?.ToLower() == "ifan")
                 {
                     <img class="img-fluid image-box" id="IFAN" src="/img/IFAN-Logo.jpg" alt="IFAN Logo" />
                 }
-                @if (Model.Foodbank.Network == "Independent")
+                @if (Model.Foodbank.Network?.ToLower() == "independent")
                 {
                     <img class="img-fluid image-box" id="Independent" src="/img/Independent-logo.jpg" alt="Independent Logo" />
                 }
