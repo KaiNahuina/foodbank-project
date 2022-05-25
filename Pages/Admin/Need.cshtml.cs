@@ -117,7 +117,7 @@ public class NeedModel : PageModel
             {
                 Target = int.Parse(Request.Form["Target"]);
                 if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-                    if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", Target.ToString()))
+                    if (User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", Target.ToString()))
                         return Forbid();
 
                 Name = Request.Form["Name"];

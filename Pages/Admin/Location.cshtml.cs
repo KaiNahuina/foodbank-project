@@ -39,7 +39,7 @@ public class LocationModel : PageModel
             var id = int.Parse(RouteData.Values["id"] as string ?? "");
 
             if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-                if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", id.ToString()))
+                if (User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", id.ToString()))
                     return Forbid();
 
             var locations = from f in _ctx.Locations where f.LocationId == id select f;
@@ -52,7 +52,7 @@ public class LocationModel : PageModel
         }
 
         if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-            if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", Request.Query["target"]))
+            if (User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", Request.Query["target"]))
                 return Forbid();
 
         Location = new Location
@@ -73,7 +73,7 @@ public class LocationModel : PageModel
         {
             case "Delete":
                 if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-                    if (!User.IsInRole("FoodbankAdmin") &&
+                    if (User.IsInRole("FoodbankAdmin") &&
                         !User.HasClaim("FoodbankClaim", Location?.Foodbank?.FoodbankId.ToString()))
                         return Forbid();
 
@@ -87,7 +87,7 @@ public class LocationModel : PageModel
             case "Create":
             {
                 if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-                    if (!User.IsInRole("FoodbankAdmin") &&
+                    if (User.IsInRole("FoodbankAdmin") &&
                         !User.HasClaim("FoodbankClaim", Location?.Foodbank?.FoodbankId.ToString()))
                         return Forbid();
 
@@ -114,7 +114,7 @@ public class LocationModel : PageModel
             case "Update":
             {
                 if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-                    if (!User.IsInRole("FoodbankAdmin") &&
+                    if (User.IsInRole("FoodbankAdmin") &&
                         !User.HasClaim("FoodbankClaim", Location?.Foodbank?.FoodbankId.ToString()))
                         return Forbid();
 

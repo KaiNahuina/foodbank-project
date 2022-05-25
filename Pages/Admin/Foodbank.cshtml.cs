@@ -61,7 +61,7 @@ public class FoodbankModel : PageModel
         {
             var id = int.Parse(RouteData.Values["id"] as string ?? "");
             if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-                if (!User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", id.ToString()))
+                if (User.IsInRole("FoodbankAdmin") && !User.HasClaim("FoodbankClaim", id.ToString()))
                     return Forbid();
 
             OrderBy = string.IsNullOrEmpty(orderBy) ? "Name" : orderBy;
@@ -166,7 +166,7 @@ public class FoodbankModel : PageModel
             case "Delete":
 
                 if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-                    if (!User.IsInRole("FoodbankAdmin") &&
+                    if (User.IsInRole("FoodbankAdmin") &&
                         !User.HasClaim("FoodbankClaim", Foodbank?.FoodbankId.ToString()))
                         return Forbid();
 
@@ -198,7 +198,7 @@ public class FoodbankModel : PageModel
             case "Update":
             {
                 if (!User.IsInRole("FoodbanksAdmin") && !User.IsInRole("SiteAdmin"))
-                    if (!User.IsInRole("FoodbankAdmin") &&
+                    if (User.IsInRole("FoodbankAdmin") &&
                         !User.HasClaim("FoodbankClaim", Foodbank?.FoodbankId.ToString()))
                         return Forbid();
 
