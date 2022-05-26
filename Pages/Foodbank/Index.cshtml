@@ -53,12 +53,10 @@
                         <br/>
                     }
 
-                    <b>Email: </b> <a href="mailto:@Html.DisplayFor(modelItem => modelItem.Foodbank!.Email)">@Html.DisplayFor(modelItem => modelItem.Foodbank!.Email)</a> <br/>
+                    <b>Email: </b> <a>@Html.DisplayFor(modelItem => modelItem.Foodbank!.Email)</a> <br/>
                     @if (Model.Foodbank?.Network?.ToLower() == "independent")
                     {
-                        <b>Website: </b>
-                        <a href="@Html.DisplayFor(modelItem => modelItem.Foodbank!.Homepage)">@Html.DisplayFor(modelItem => modelItem.Foodbank!.Homepage)</a>
-                        <br/>
+                        <b>Website: </b> <a>@Html.DisplayFor(modelItem => modelItem.Foodbank!.Homepage)</a> <br/>
                     }
                     <b>Network: </b> @Html.DisplayFor(modelItem => modelItem.Foodbank!.Network)
                 </p>

@@ -1,5 +1,6 @@
 #region
 
+using System.ComponentModel;
 using System.Security.Claims;
 using Foodbank_Project.Data;
 using Foodbank_Project.Models;
@@ -48,7 +49,9 @@ public class FoodbankModel : PageModel
     }
 
     [BindProperty] public Models.Foodbank? Foodbank { get; set; }
+    [DisplayName("Latitude")]
     [BindProperty] public double Lat { get; set; }
+    [DisplayName("Longitude")]
     [BindProperty] public double Lng { get; set; }
 
     public async Task<IActionResult> OnGetAsync([FromQuery(Name = "Action")] string? action,

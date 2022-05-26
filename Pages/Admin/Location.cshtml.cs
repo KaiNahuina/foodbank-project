@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
+using System.ComponentModel;
 using Location = Foodbank_Project.Models.Location;
 
 #endregion
@@ -28,7 +29,11 @@ public class LocationModel : PageModel
     }
 
     [BindProperty] public Location? Location { get; set; }
+
+    [DisplayName("Latitude")]
     [BindProperty] public double Lat { get; set; }
+
+    [DisplayName("Longitude")]
     [BindProperty] public double Lng { get; set; }
 
     public async Task<IActionResult> OnGetAsync([FromQuery(Name = "Action")] string? action)
